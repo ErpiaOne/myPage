@@ -1,0 +1,34 @@
+<ion-view view-title="설정">
+	<ion-nav-buttons side="right" ng-show="false">
+		<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
+	</ion-nav-buttons>
+	<ion-content class="padding2">
+		<body>
+			<div ng-switch="loginState">
+				<div class="list">
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/Info')">
+					<i class="icon ion-information"></i>프로그램 정보</a>
+
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/notice')">
+					<i class="icon ion-alert"></i>공지사항</a>
+
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/custom')">
+					<i class="icon ion-person-stalker"></i>고객센터</a>
+
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/alarm')">
+					<i class="icon ion-ios-bell"></i>알림설정</a>
+					<div ng-switch-when="E">
+						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/statistics')">
+						<i class="icon ion-stats-bars"></i>통계 리포트 설정</a>
+					</div>
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/loginConfig')">
+					<i class="icon ion-person"></i>로그인 설정</a>
+					<div ng-switch-when="E">
+						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/meaipchul/m_Setup')">
+						<i class="icon ion-gear-a"></i>매입/매출 설정</a>
+					</div>
+				</div>
+			</div>
+		</body>
+	</ion-content>
+</ssion-view>

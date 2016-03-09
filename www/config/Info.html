@@ -1,0 +1,40 @@
+<ion-view view-title="프로그램 정보">
+	<ion-nav-bar>
+		<ion-nav-back-button ng-click="goBack_with_clearHistory()">설정</ion-nav-back-button>
+		<ion-nav-buttons side="right" ng-show="false">
+			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
+		</ion-nav-buttons>
+	</ion-nav-bar>
+	<ion-content class="padding2">
+		<div class="card">
+			<div class="item item-image" style="background-color:#aaa;">
+				<img src="img/ERPia_logo2.png" style="width:127px;">
+			</div>
+		</div>
+		<div class="list card">
+
+			<a class="item item-icon-left">
+				<i class="icon ion-information-circled"></i>
+				현재버전
+				<font style="margin-left:20%;">{{AppInfo.currentVer}}</font>
+			</a>
+
+			<a class="item item-icon-left">
+				<i class="icon ion-iphone"></i>
+				기기정보
+				<font style="margin-left:20%;">{{AppInfo.deviceInfo}}</font>
+			</a>
+
+			<!-- <a class="item item-icon-left">
+			<i class="icon ion-wifi"></i>
+			Enter wireless password
+			</a>
+
+			<a class="item item-icon-left">
+			<i class="icon ion-card"></i>
+			Enter card information
+			</a> -->
+
+		</div>
+	</ion-content>
+</ion-view>

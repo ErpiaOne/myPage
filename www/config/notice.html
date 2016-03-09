@@ -1,0 +1,22 @@
+<ion-view view-title="공지사항">
+	<ion-nav-bar>
+		<ion-nav-back-button ng-click="goBack_with_clearHistory()">설정</ion-nav-back-button>
+		<ion-nav-buttons side="right" ng-show="false">
+			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
+		</ion-nav-buttons>
+	</ion-nav-bar>
+	<ion-content class="padding2">
+		<body ng-app="ngAnimate">
+			<ion-list>
+				<ion-item ng-repeat="item in items" style="padding:0px;">
+					<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
+						<li class="item">
+							<font>{{item.inDate}}</font><br/>{{item.subject}}
+						</li>
+					</ui>
+					<pre class="lhkNoticeContent" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
+				</ion-item>
+			</ion-list>
+		</body>
+	</ion-content>
+</ion-view>

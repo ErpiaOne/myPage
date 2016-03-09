@@ -1,0 +1,22 @@
+<!-- 빠른등록 리스트 모달 -->
+<ion-modal-view title="">
+  <ion-header-bar>
+    <div class="buttons"><button class="button" ng-click='quickMcancle()'>취소</button></div>
+    <h1 class="title">빠른등록리스트</h1>
+  </ion-header-bar>
+
+  <ion-content>
+    <ion-checkbox ng-repeat='x in quicklists' ng-model="x.checked"  ng-click='quickcheck($index)'>
+      {{x.GerName}}<br>
+      <any ng-if='x.Subul_kind == 111'>매입입고</any><any ng-if='x.Subul_kind == 122'>매입반품</any>/ {{x.GoodsName}}
+      <any ng-if='x.Subul_kind == 212'>매출출고</any><any ng-if='x.Subul_kind == 224'>매출반품</any>/ {{x.GoodsName}}
+    </ion-checkbox>
+
+    <ion-footer-bar align-title="left" class="bar-assertive">
+      <div class="buttons" ng-click="closemodesear()"><button class="button" ng-click="quickde()">삭제</button></div>
+      <h1 class="title"></h1>
+      <div class="buttons"><button class="button" ng-click="quick_i()">확인</button></div>
+    </ion-footer-bar>
+</ion-modal-view>
+
+

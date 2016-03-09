@@ -1,0 +1,30 @@
+<ion-view view-title="통계 리포트 설정">
+	<ion-nav-bar>
+		<ion-nav-back-button ng-click="goBack_with_clearHistory()">설정</ion-nav-back-button>
+		<ion-nav-buttons side="right" ng-show="false">
+			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
+		</ion-nav-buttons>
+	</ion-nav-bar>
+	<ion-content class="padding2">
+		<body>
+			<ion-header-bar class="bar-positive">
+				<div class="buttons">
+					<!-- <button class="button button-icon icon ion-ios-minus-outline" ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button> -->
+				</div>
+				<h1 class="title">메인리포트 순서/노출여부</h1>
+				<div class="buttons">
+					<button class="button" ng-click="data.showDelete = false; data.showReorder = !data.showReorder">Reorder</button>
+				</div>
+			</ion-header-bar>
+
+			<ion-content>
+				<ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
+					<ion-item ng-repeat="item in items" item="item" class="item-remove-animate">{{item.title}}
+						<ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button>
+						<ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+					</ion-item>
+				</ion-list>
+			</ion-content>
+		</body>
+	</ion-content>
+</ion-view>

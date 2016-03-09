@@ -1,0 +1,50 @@
+{
+  "name": "angular-utf8-base64",
+  "version": "0.0.2",
+  "author": {
+    "name": "Ivan Hayes",
+    "url": "http://www.ivanhayes.com"
+  },
+  "description": "Base64 encoding/decoding with UTF8 support for AngularJS Apps, and including CommonJS module support.",
+  "main": "angular-utf8-base64.js",
+  "keywords": [
+    "Base64",
+    "angular",
+    "javascript",
+    "library",
+    "encoding",
+    "ajax"
+  ],
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/munkychop/angular-utf8-base64.git"
+  },
+  "gitHead": "dcd6d69d5e907148e8e93c2cef5f87fee6e4f6b9",
+  "bugs": {
+    "url": "https://github.com/munkychop/angular-utf8-base64/issues"
+  },
+  "homepage": "https://github.com/munkychop/angular-utf8-base64",
+  "_id": "angular-utf8-base64@0.0.2",
+  "scripts": {},
+  "_shasum": "3afae6363bb9e06c4f65adb9ba30c694bf7f26cd",
+  "_from": "angular-utf8-base64@*",
+  "_npmVersion": "1.4.21",
+  "_npmUser": {
+    "name": "munkychop",
+    "email": "hello@ivanhayes.com"
+  },
+  "maintainers": [
+    {
+      "name": "munkychop",
+      "email": "hello@ivanhayes.com"
+    }
+  ],
+  "dist": {
+    "shasum": "3afae6363bb9e06c4f65adb9ba30c694bf7f26cd",
+    "tarball": "http://registry.npmjs.org/angular-utf8-base64/-/angular-utf8-base64-0.0.2.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/angular-utf8-base64/-/angular-utf8-base64-0.0.2.tgz",
+  "readme": "ERROR: No README data found!"
+}

@@ -1,0 +1,123 @@
+<!-- 매입 등록/수정 페이지 -->
+<ion-view title="간편매입 {{mode}}" cache-view="false">
+  <ion-nav-bar>
+    <ion-nav-back-button ng-click="backControll()">Back</ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content style="background: #bca1b4">
+	<div style="background: #bca1b4"><img src="./img/img_meme.jpg" width="100%; border:0; margin:0; padding:0;"></div>
+	<div>
+	  <div  style="background: #bca1b4; padding: 10px;" >
+	    <div style="background: #fff;" >
+	      <label class=" item-input" style="border:0;">매입일&nbsp;:&nbsp;
+	        <input type="date"  ng-disabled="{{sbu}}" style="text-align:right;" ng-model='date.todate1' ng-change="datechange(date.todate1,1)">
+	      </label>
+	    </div>
+	  </div>
+	  <div class="list list-inset" style="padding: 10px;" align="left">
+	    <div ng-click="Next()"><i class="{{upAnddown}}"></i> &nbsp;&nbsp; 매입정보</div>
+	    <div ng-if="basictype" class="l" style="align:center; padding-top:15px">
+		  <table width="100%" class=""style="align:center;vertical-align:middle;">
+		    <tr>
+			  <td width="20%">거래처</td>
+			  <td width="40%">
+			    <input type="search" ng-model="datas.userGerName" ng-disabled="{{sbu}}" placeholder="거래처명검색" size="35" style="border:1px solid #eee;" ng-change="company_auto()">
+			  </td>
+			  <td width="20%">
+			    <i class='ion-close-circled' style='margin-left:-38px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size:25px;' ng-if="sbu == false" ng-click='clearcompany()'></i>
+			    <i class='ion-help-circled' style='font-size:35px;vertical-align:middle;' ng-click='gerDetail()'></i>
+			  </td>
+		    </tr>
+		  </table>
+
+		  <div class="list">
+		    <li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code);checkup()">{{x.G_Name}}</li>
+		  </div>
+
+		  <label class="item item-input" style="border:0; padding-left: 0;">
+		    <span style="display: inline-block; widht: 30%; padding-right: 20px;">수불구분</span>
+		    <ion-radio ng-click="checkup()" ng-disabled="{{sbu}}" ng-model="datas.subulkind" ng-value="111">매입입고</ion-radio>
+		    <ion-radio ng-click="checkup()" ng-disabled="{{sbu}}" ng-model="datas.subulkind" ng-value="122">매입반품</ion-radio>
+		  </label>
+
+		  <label class="item item-input item-select" style="border:0; padding-left: 0">
+		    <span style="display: inline-block; widht: 30%; padding-right: 20px;">매장지정</span>
+		    <select ng-model="setupData.basic_Place_Code" ng-change='Link_Chango();checkup()' style="width:50%">
+			  <option value="000" ng-selected="setupData.basic_Place_Code == 000">매장미지정</option>
+			  <option ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}" ng-selected="setupData.basic_Place_Code == {{x.Sale_Place_Code}}">{{x.Sale_Place_Name}}</option>
+		    </select>
+		  </label>
+
+		  <label class="item item-input item-select" style="border:0; padding-left: 0">
+		    <span style="display: inline-block; widht: 30%; padding-right: 20px;">창고지정</span>
+		    <select ng-model="setupData.basic_Ch_Code" ng-change='Changosave({{x.Code}});checkup()' style="width:50%">
+			  <option ng-repeat="x in changolists" value="{{x.Code}}" ng-selected="setupData.basic_Ch_Code == {{x.Code}}">{{x.Name}}</option>
+		    </select>
+		  </label>
+	    </div>
+	  </div>
+
+      <div class="list list-inset" align="left" style="padding: 10px;">
+		<div ng-click="Next2()"><i class="{{upAnddown2}}"></i> &nbsp;&nbsp; 상품</div>
+		<div ng-if="basic2type">
+		  <div class="list list-inset" style="align:center;" >
+		    <table width="100%" ng-if="sbu == false">
+			  <tr>
+				<td>
+				  &nbsp;
+				  <select ng-model="user.userMode" ng-change="modeselect()">
+					<option ng-repeat="x in modeselectlist" value="{{x.Code}}" ng-selected="user.userMode == x.Code">{{x.Name}}</option>
+				  </select>&nbsp;&nbsp;
+				</td>
+				<td><i class="ion-ios-barcode" style="font-size:30px" ng-click="scanBarcode()"></i></td>
+			  </tr>
+			  <tr>
+				<td><input type="text" placeholder="상품정보를 입력하세요" size="30" style="border:1px solid #eee;" ng-model="user.userGoodsName"></td>
+				<td><i class="ion-search" style="font-size:30px" ng-click="goods_searchM()"></i></td>
+			  </tr>
+			</table>
+
+			<table width="100%" style="text-align:center;">
+			  <tr bgcolor="#EAEAEA">
+				<td width="10%" style="font-size:12px">번호</td>
+				<td width="40%" style="font-size:12px">상품명</td>
+				<td width="10%" style="font-size:12px">수 량</td>
+				<td width="40%" style="font-size:12px" colspan='2'>단 가</td>
+			  </tr>
+			  <tr ng-repeat="y in goodsaddlists">
+				<td style="vertical-align:middle;">{{$index+1}}.</td>
+				<td style="vertical-align:middle; text-align:left">{{y.name}}</td>
+				<td style="width:20%">
+				  <input type="number" ng-disabled="{{sbu}}" min="0" max="999" ng-bind-html="goods_totalprice1($index)" style="text-align:right; border: 1px solid silver; width:80%" ng-model="y.num" required>
+				</td>
+				<td align="right" style="width:28%; padding-left:1%; padding-right:1%">
+				  <input type="tel" ng-disabled="{{sbu}}" style="width:100%; border: 1px solid silver; text-align:right" ng-change="goods_totalprice1($index)" ng-model="y.goodsprice" fcsa-number="{ preventInvalidInput: true }" pattern="\d*"/>
+				</td>
+				<td><i class="ion-android-remove-circle" ng-if="sbu == false" ng-click="goodsDelete($index);goods_totalprice1()"></i>&nbsp;</td>
+			  </tr>
+			</table>
+		  </div>
+		  <div class="list list-inset" align="right">
+		    <b>최종가격 :{{datas.totalsumprices | number:0}} 원</b>
+		  </div>
+		</div>
+	  </div>
+
+	  <div class="list list-inset" style="padding: 10px;" align="left">
+		<div ng-click="Next3()" style="width: 100%;"><i class="{{upAnddown3}}"></i> &nbsp;&nbsp; 관리비고</div>
+		<div ng-if="basic3type" class="list list-inset">
+		  <label class="item item-input item-stacked-label">
+			<textarea placeholder="관리자비고란 입니다." rows="8" cols="10" ng-model="compo.remk"></textarea>
+		  </label>
+		</div>
+	  </div>
+	</div>
+  <br><br>
+  </ion-content>
+
+  <ion-footer-bar align-title="left" class="bar-assertive" ng-click='ijmodal_function()'>
+	<div class="buttons"></div>
+	<h1 class="title">다음<h1>
+	<div class="buttons"></div>
+  </ion-footer-bar>
+</ion-view>

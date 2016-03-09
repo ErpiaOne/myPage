@@ -1,0 +1,106 @@
+<!-- 매출전표조회 페이지 -->
+<!-- 매입페이지 -->
+<style>
+table {width:100%}
+table td.td1-1{width:20%; text-align:center; vertical-align:middle; color: #fff;}
+td.td1-2{width:55%; vertical-align:middle; margin-top:20px}
+td.td1-2 input{font-size:15px; width:100%; border: 1px solid silver}
+td.td1-3{width:25%}
+td button{border:0; background:white; font-size:20px}
+
+table tbody{width:100%;}
+td.resulttd1-1{width:10%; border-bottom:1px solid black; vertical-align:middle}
+td.resulttd1-2{padding-left:5px; width:25%}
+td.resulttd1-3{width:30%}
+td.resulttd1-4{width:30%; padding-right:15px; border-bottom:1px solid black}
+td.resulttd2-1{width:55% ; padding-bottom:10px; padding-left:5px; border-bottom:1px solid black;}
+div.footbtn{margin-top:600px}
+div.footbtn button{position:relative; z-index:1000;}
+div.col1{width:20%; border-right: #BDBDBD 2px solid; text-align:center; color: #fff;}
+div.col2{width:5%;}
+div.col3{width:45%; color: #fff;}
+div.col4{width:30%; color: #fff;}
+</style>
+
+<ion-view title="매출전표조회" cache-view="false">
+  <ion-nav-buttons side="right">
+    <button menu-toggle="right" ng-click="meaipchul_i()" class="button button-small button-psm00">등록</button>
+  </ion-nav-buttons>
+
+  <ion-content class="">
+    <div style="background: #b572a0;"><img src="./img/img_meme.jpg" width="100%; border:0; margin:0; padding:0;"></div> <!-- // 빼달라는 요청사항이 있었습니다. -->
+    <div class="item" style="background: #b572a0; border:0; padding-top:6px;">
+      <div  style="clear: both; width:100%">
+        <div style="float: left; width:14%; padding-top:6px; color: #fff;"> 검 색 </div>
+        <div style="float: left; width:76%;">
+          <input type="text" ng-model="company.username" placeholder="거래처명 입력" style="width: 100%; height: 30px; background: #b572a0; border:0; border-bottom: 1px solid #fff; color: #fff;" ng-change="company_auto()">
+          <li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code,x.G_GDamdang)">{{x.G_Name}}</li>
+        </div>
+        <div style="float: left; width:10%;">
+          <i class='ion-close-circled' style='margin-left:-38px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size:25px; color:#fff' ng-click='clearcompany()'></i>
+          <button ng-click="searches()" class="button button-small button-psm00 ion-search" style="width: 100%; height: 30px;"></button>
+        </div>
+      </div>
+      <div style="clear: both; width:100%; padding-top:10px;">
+        <div style="float: left; width:14%; padding-top:9px; color: #fff;"> 일 자 </div>
+        <div style="float: left; width:36%;">
+          <input type="date" ng-model="date.sDate1" ng-change="mydate1(date.sDate1)" style="width: 100%; height: 30px; background: #b572a0; border:0; border-bottom: 1px solid #fff; color: #fff;">
+        </div>
+        <div style="float: left; width:4%; padding-top:5px; color: #fff;"> ~ </div>
+        <div style="float: left; width:36%;">
+          <input type="date" ng-model="date.eDate1" ng-change="mydate2(date.eDate1)" style="width: 100%; height: 30px; background: #b572a0; border:0; border-bottom: 1px solid #fff; color: #fff;">
+        </div>
+        <div style="float: left; width:10%;"><button ng-click="detailSet_openModal()" class="button button-small button-psm00 ion-arrow-down-b" style="width: 100%; height: 30px; padding:0;"></button></div>
+      </div>
+    </div>
+
+    <div align="center" style="width:100%; clear: both; margin-top:10px;">
+      <button class="button button-small button-psm01" ng-click="sear_day(0)" style="width:30%">금일</button>
+      <button class="button button-small button-psm02" ng-click="sear_day(7)" style="width:30%">1주일</button>
+      <button class="button button-small button-psm03" ng-click="sear_day(30)" style="width:30%">1개월</button>
+    </div>
+
+    <div class="padding">
+      <table style="border-top: 1px solid #e0e0e0;">
+        <thead>
+          <th style="width:10%; padding-top:5px; padding-bottom:5px;" align="center">순번</th>
+          <th style="width:30%; padding-top:5px; padding-bottom:5px;" align="center">매입일</th>
+          <th style="width:30%; padding-top:5px; padding-bottom:5px;" align="center">업체명</th>
+          <th style="width:30%; padding-top:5px; padding-bottom:5px;" align="center">금액</th>
+        </thead>
+      </table>
+
+      <any ng-repeat="x in chit_lists" >
+        <table on-swipe-up="search_more()" style="border-top: 1px solid #e0e0e0; font-size:12px">
+          <tbody ng-click="chit_de(x.Sl_No)">
+            <tr>
+              <td class="resulttd1-1" rowspan="2" align="center" style="padding-top: 8px;">{{$index+1}}.</td>
+              <td class="resulttd1-2" align="left" style="padding-top: 8px;">{{x.MeaChul_Date}}</td>
+              <td class="resulttd1-3" align="center" style="padding-top: 8px;"><b>{{x.GerName}}</b></td>
+              <td class="resulttd1-4" rowspan="2" align="right" style="padding-top: 8px;">{{x.MeaChul_Amt| number:0}}원</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="resulttd2-1" align="left">{{x.G_Name}}<br></td>
+            </tr>
+          </tbody>
+            <tr ng-if="moreloading==1&&$last">
+              <td colspan="4" align="center"><ion-spinner icon="spiral" ></ion-spinner></td>
+            </tr> 
+        </table>
+      </any>
+    </div>
+  </ion-content>
+
+  <div style="margin-top:140%" align="right">
+    <i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:50px;" ng-click='quickReg()'></i>&nbsp;&nbsp;
+    <i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:50px; color:gray" ng-click='scrollTop()'></i>&nbsp;&nbsp;
+  </div>
+
+  <ion-footer-bar align-title="left" style="background: #795e81; height: 50px;" width="100%">
+    <div class="col1" >기간<br>현황</div>
+    <div class="col2">&nbsp;</div>
+    <div class="col3" style="font-size:12px;">매출액 {{chit_atmSum | number:0}}원<br>지급액 {{chit_jiSum | number:0}}원</div>
+    <div class="col4" ng-if='balance == true' style="font-size:10px; margin-left:-48px;">이월잔액 {{money.emoon | number:0}}원<br>총액 {{money.hap | number:0}}원</div>
+  </ion-footer-bar>
+
+</ion-view>

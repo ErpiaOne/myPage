@@ -1,0 +1,39 @@
+<ion-view view-title="알림">
+	<ion-nav-back-button></ion-nav-back-button>
+	<ion-nav-buttons side="right" ng-show="false">
+		<button class="button button-icon button-clear {{icon_home}}" menu-close ng-click="goHome()"></button>
+		<div class="buttons"><button class="button button-icon icon ion-ios-minus-outline" ng-click="data.showDelete = !data.showDelete;"></button></div>
+	</ion-nav-buttons>
+	<!-- <ion-content class="padding2">
+		<div class="list card">
+			<a href="#" class="item item-icon-left"><i class="icon ion-wifi"></i>PUSH CONTENTS</a>
+		</div>
+	</ion-content> -->
+	<ion-content overflow-scroll="false">
+		<div style="height: 100%;">
+			<ion-list show-delete="data.showDelete">
+				<ion-item	ng-repeat="item in items" 
+							style="padding:0px;"
+							item="item"
+							class="item-remove-animate item-icon-right"
+							>
+							<!-- href="#/item/{{item.Seq}}" --> 
+							
+					<!-- <ui class="list" ng-click="toggle_{{item.idx}} = !toggle_{{item.idx}}">
+						<li class="item"> -->
+						<p>
+							<font>No.{{item.Seq}} {{item.in_date}}</font><br/>
+						</p>
+						<p>{{item.subject}}</p><br/>
+						<pre>{{item.contents}}</pre>
+						<i class="icon ion-chevron-right icon-accessory"></i>
+						<!-- <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button> -->
+						<!-- <i class="icon ion-chevron-right icon-accessory" ng-click="PushDetail()"></i> -->
+						<!-- </li> -->
+					<!-- </ui>
+					<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.Seq}}" ng-animate="'box'" ng-bind-html="item.content"></pre> -->
+				</ion-item>
+			</ion-list>
+		</div>
+	</ion-content>
+</ion-view> 

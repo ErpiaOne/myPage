@@ -1,0 +1,59 @@
+<!-- 매입/매출 환경설정 -->
+<style>
+  select {width:50%}
+</style>
+
+<ion-view title="매입매출설정">
+  <ion-nav-bar>
+	<ion-nav-back-button ng-click="configback(configState)">이전</ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+	<div class="list list-inset">
+	  <label class="item item-input">
+		<span class="input-label psm_sang_01"><i class="ion-record">&nbsp;&nbsp;기본창고 지정</i></span>
+		<select ng-model="setupData.basic_Ch_Code" ng-change='Changosave()'>
+		  <option ng-repeat="x in changolists" value="{{x.Code}}" ng-selected="setupData.basic_Ch_Code == {{x.Code}}">{{x.Name}}</option>
+		</select><br>
+	  </label>
+
+	  <label class="item item-input">
+		<span class="input-label psm_sang_01"><i class="ion-record">&nbsp;&nbsp;기본매장 지정</i></span>
+		<select ng-model="setupData.basic_Place_Code" ng-change='Link_Chango()'>
+		  <option value='000' ng-selected="setupData.basic_Place_Code == 000">매장미지정</option>
+		  <option ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}" ng-selected="setupData.basic_Place_Code == {{x.Sale_Place_Code}}">{{x.Sale_Place_Name}}</option>
+		</select><br>
+	  </label>
+
+	  <label class="item item-input">
+		<span class="input-label psm_sang_01"><i class="ion-record">&nbsp;&nbsp;기본매출단가 지정</i></span>
+		<select ng-model="setupData.basic_Dn_Sale">
+		  <option ng-repeat="x in MchulDn" value="{{x.num}}" ng-selected="setupData.basic_Dn_Sale == {{x.num}}">{{x.id}}</option>
+		</select><br>
+	  </label>
+
+	  <label class="item item-input">
+		<span class="input-label psm_sang_01"><i class="ion-record">&nbsp;&nbsp;기본매입단가 지정</i></span>
+		<select ng-model="setupData.basic_Dn_Meaip">
+		  <option ng-repeat="x in MeaipDn" value="{{x.num}}" ng-selected="setupData.basic_Dn_Meaip == {{x.num}}">{{x.id}}</option>
+		</select><br>
+	  </label>
+
+	  <label class="item item-input">
+		<span class="input-label psm_sang_01"><i class="ion-record">&nbsp;&nbsp;기본매출수불 지정</i></span>
+		<select ng-model="setupData.basic_Subul_Sale">
+		  <option ng-repeat="x in configbasicS" value="{{x.num}}" ng-selected="setupData.basic_Subul_Sale == {{x.num}}">{{x.id}}</option>
+		</select><br>
+	  </label>
+
+	  <label class="item item-input">
+		<span class="input-label psm_sang_01"><i class="ion-record">&nbsp;&nbsp;기본매입수불 지정</i></span>
+		<select ng-model="setupData.basic_Subul_Meaip">
+		  <option ng-repeat="x in configbasicM" value="{{x.num}}" ng-selected="setupData.basic_Subul_Meaip == {{x.num}}">{{x.id}}</option>
+		</select><br>
+	  </label>
+	</div>
+  </ion-content>
+</ion-view>
+
+

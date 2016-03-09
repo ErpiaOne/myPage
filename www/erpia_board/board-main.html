@@ -1,0 +1,86 @@
+<ion-view view-title="Board Main">
+	<ion-nav-bar>
+		<ion-nav-back-button ng-click="goBack_with_clearHistory()">Back</ion-nav-back-button>
+	</ion-nav-bar>
+	<ion-content scroll="false">
+		<tab-slide-box>
+			<div class="tsb-icons">
+				<div class="tsb-ic-wrp">
+					<ion-scroll direction="x" class="tsb-hscroll">
+						<a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs2" on-finish-render="test()">{{tab.text}}</a>
+					</ion-scroll>
+				</div>
+			</div>
+
+			<ion-slide-box does-continue="true" show-pager="true" on-slide-changed="slideHasChanged($index)">
+				<ion-slide>
+					<ion-content overflow-scroll="false">
+						<div style="height: 100%;">
+							<ion-list>
+								<ion-item ng-repeat="item in items" style="padding:0px;">
+									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
+										<li class="item">
+											<font>{{item.inDate}}</font><br/>{{item.subject}}
+										</li>
+									</ui>
+									<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
+								</ion-item>
+							</ion-list>
+						</div>
+					</ion-content>
+				</ion-slide>
+
+				<ion-slide>
+					<ion-content overflow-scroll="false">
+						<div style="height: 100%;">
+							<ion-list>
+								<ion-item ng-repeat="item in items" style="padding:0px;">
+									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
+										<li class="item">
+											<font>{{item.inDate}}</font><br/>{{item.subject}}
+										</li>
+									</ui>
+									<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
+								</ion-item>
+							</ion-list>
+						</div>
+					</ion-content>
+				</ion-slide>
+
+				<ion-slide>
+					<ion-content overflow-scroll="false">
+						<div style="height: 100%;">
+							<ion-list>
+								<ion-item ng-repeat="item in items" style="padding:0px;">
+									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
+										<li class="item">
+											<font>{{item.inDate}}</font><br/>{{item.subject}}
+										</li>
+									</ui>
+									<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
+								</ion-item>
+							</ion-list>
+						</div>
+					</ion-content>
+				</ion-slide>
+
+				<ion-slide>
+					<ion-content overflow-scroll="false">
+						<div style="height: 100%;">
+							<ion-list>
+								<ion-item ng-repeat="item in items" style="padding:0px;">
+									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
+										<li class="item">
+											<font>{{item.inDate}}</font><br/>{{item.subject}}
+										</li>
+									</ui>
+									<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
+								</ion-item>
+							</ion-list>
+						</div>
+					</ion-content>
+				</ion-slide>
+			</ion-slide-box>
+		</tab-slide-box>
+	</ion-content>
+</ion-view>

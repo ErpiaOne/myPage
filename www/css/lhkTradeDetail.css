@@ -1,0 +1,145 @@
+.blueTable{
+    border:1px solid blue;
+    text-align:center;
+}
+.tdText{
+    text-align:left;
+    padding-left:5px;
+    border: 2px solid;
+	border-color: blue;
+	vertical-align: middle;
+}
+.tdNumber{
+    text-align: right;
+    padding-right: 5px;
+    border: 2px solid;
+    border-color:blue;
+    vertical-align: middle;
+    /*font-color:black;*/
+}
+.markTd{
+    width:40px;
+    color:blue;
+    vertical-align: middle;
+	border-left: 0px;
+	border-right:2px solid;
+	border-bottom: 2px solid;
+}
+
+.blueFont{
+    color:blue;
+    border:2px solid;
+    vertical-align: middle;
+}
+.tdHead{
+    border:1px;
+    border-top:2px;
+    border-bottom:2px;
+    border-right-style:solid;
+    border-left-style:solid;
+    border-bottom-style:solid;
+    border-top-style:solid;
+    height:30px;
+}
+.tdList{
+    border:1px;
+    border-bottom-style:dashed;
+    border-right-style:solid;
+    border-left-style:solid;
+    border-color:blue;
+    height:30px;
+}
+.tdListEnd{
+    border:1px;
+    border-bottom-style:solid;
+    border-right-style:solid;
+    border-left-style:solid;
+    border-color:blue;
+    height:30px;
+}
+.tdLeftSolid{
+    border-left:2px;
+    border-left-style:solid;
+    border-color:blue;
+}
+.tdRightSolid{
+    border-right:2px;
+    border-right-style:solid;
+    border-color:blue;
+}
+.tdBottomSolid{
+    border-bottom:2px;
+    border-bottom-style:solid;
+    border-color:blue;
+}
+.trH{
+    height:35px;
+}
+
+
+.redTable{
+    border:1px solid red;
+    text-align:center;
+}
+.tdText_red{
+    text-align:left;
+    padding-left:5px;
+    border: 2px solid;
+	border-color: red;
+	vertical-align: middle;
+}
+.tdNumber_red{
+    text-align: right;
+    padding-right: 5px;
+    border: 2px solid;
+    border-color:red;
+    vertical-align: middle;
+    /*font-color:black;*/
+}
+.markTd_Red{
+    width:40px;
+    color:red;
+    vertical-align: middle;
+	border-left: 0px;
+	border-right:2px solid;
+	border-bottom: 2px solid;
+}
+.redFont{
+    color:red;
+    border:2px solid;
+    vertical-align: middle;
+}
+.tdList_red{
+    border:1px;
+    border-bottom-style:dashed;
+    border-right-style:solid;
+    border-left-style:solid;
+    border-color:red;
+    height:30px;
+}
+.tdListEnd_red{
+    border:1px;
+    border-bottom-style:solid;
+    border-right-style:solid;
+    border-left-style:solid;
+    border-color:red;
+    height:30px;
+}
+.tdLeftSolid_red{
+    border-left:2px;
+    border-left-style:solid;
+    border-color:red;
+}
+.tdRightSolid_red{
+    border-right:2px;
+    border-right-style:solid;
+    border-color:red;
+}
+.tdBottomSolid_red{
+    border-bottom:2px;
+    border-bottom-style:solid;
+    border-color:red;
+}
+.markTd2{
+    border-right:0px;
+}

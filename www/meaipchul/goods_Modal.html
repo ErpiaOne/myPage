@@ -1,0 +1,61 @@
+<!-- 매입/매출 상품조회 모달 -->
+<ion-modal-view title="">
+  <ion-header-bar class="bar bar-header" style="background: #474747; border:0;">
+    <h1 class="title" style="color: #fff;">상품 검색</h1>
+  </ion-header-bar>
+
+  <ion-header-bar class="bar bar-subheader">
+    <table width="100%">
+      <tr>
+        <td style="text-align:center">상품정보</td>
+        <td><input type="text" placeholder="상품정보를 입력하세요" size="20" ng-model="user.userGoodsName"></td>
+        <td><i class="ion-search" style="font-size:30px" ng-click="goods_searchM()"></i></td>
+      </tr>
+    </table>
+  </ion-header-bar>
+
+  <ion-content>
+    <div class="list list-inset" style="align:center;" >
+      <table width="100%" style="text-align:center">
+        <tr>
+          <td width="10%"></td>
+          <td width="40%" style="text-align:center">상품코드</td>
+          <td width="40%" style="text-align:center">상품명</td>
+          <td width="10%"></td>
+        </tr>
+      </table>
+      <table width="100%" style="text-align:center">
+        <tr>
+          <td colspan="4"><hr></td> 
+        </tr>
+      </table>
+      <any ng-repeat="x in goodslists">
+        <table on-swipe-up="goods_more()" width='90%'>
+          <tr>
+            <td width='80%'>
+              <ion-checkbox ng-click='goodsCheck(x)'>
+                {{x.G_Code}}<br>
+                <b ng-bind-html='goodslists[$index].G_Name1'></b><br>
+                가용재고: <font color="red" ng-if="x.Jego<=0">{{x.Jego}}</font>
+                <font color="blue" ng-if="x.Jego>0">{{x.Jego}}</font>
+              </ion-checkbox>
+            </td>
+            <td width='20%'>&nbsp;&nbsp;&nbsp;<i class="ion-help-circled" style="font-size:60px;vertical-align:middle;" ng-click='goodsDetail($index)'></i></td>
+          </tr>
+          <tr ng-if="moreloading==1&&$last">
+            <td colspan="2" align="center" style="width:90%"><ion-spinner icon="spiral"></ion-spinner></td>
+          </tr>
+        </table>
+      </any>
+    </div>
+  <br><br>
+  </ion-content>
+
+  <ion-footer-bar align-title="left" class="bar-assertive">
+    <div class="buttons" ng-click="goods_searchM_close()"><button class="button">취소</button></div>
+    <h1 class="title"></h1>
+    <div class="buttons" ng-click="checkdataSave()"><button class="button">확인</button></div>
+  </ion-footer-bar>
+</ion-modal-view>
+
+

@@ -1,0 +1,248 @@
+/*.naviBack {
+	background: #ffffff;
+}
+
+.naviBar {
+	background: #222d32;
+	border-color: transparent;
+}
+
+.naviTitle {
+
+	width: 100%;
+	height: 100%;
+	color: #ffffff;
+	background: #222d32;
+	padding-top: 0.5em;
+	font-size: 1.0em;
+	font-weight: bold;
+	text-align: center;
+}
+
+
+
+.naviButton {
+	background: #000;
+	color: #fff;
+	border-color: transparent;
+}
+
+.naviButton:active {
+	background: #555;
+	color: #000;
+	border-color: transparent;
+}*/
+   
+.psm_left_top {
+	color: #ffffff;
+	text-align: left;
+	padding: 0.8em 0 0.8em 0;
+	font-size: 1em;
+	background: #462445;
+}
+ 
+.psm_left_topta {
+	width:100%;
+}
+
+.psm_left_toptd1 {
+	width: 35%;
+	padding-left: 1.2em;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: middle;
+}
+.psm_left_toptd2 {
+	width: 45%;
+	height: 100%;
+	color: #ffffff;
+	line-height: 1em;
+	font-size: 1em;
+	text-align: center;
+	vertical-align: middle;
+	cursor:pointer; 
+}
+
+.psm_left_toptd2 a {color:#ffffff; font-size: 1em;}
+.psm_left_toptd2 a:hover   {color:#ffffff; font-size: 1em;}
+.psm_left_toptd2 a:active   {color:#ffffff; font-size: 1em;}
+.psm_left_toptd2 a:focus  {color:#ffffff; font-size: 1em;}
+
+
+.psm_left_toptd3 {
+	width: 20%;
+	font-size: 0.9em;
+	vertical-align: middle;
+	text-align: center;
+	cursor:pointer
+}
+
+
+
+
+.psm_left_img1 {
+	width: 70px;
+}
+.psm_left_img2 {
+	margin-top: 0.5em;
+	width: 2.5em;
+	margin-bottom:  -1em;
+}
+.psm_left_img3 {
+	width: 2.7em;
+}
+.psm_left_img4 {
+	margin-top: 0.5em;
+	width: 3.0em;
+	margin-bottom:  -1em;
+}   
+  
+
+.psm_left_mediv {
+	font-size: 0.85em;
+	line-height: 2.5em;
+	display: inline-block;
+}
+
+.psm_left_mediv img {margin-top: 1em;}
+
+.psm_left_mespan {
+	font-size: 1em;
+	line-height: 1em;
+	display: inline-block;
+	padding-top:7px;
+}
+
+.psm_left_box1 {
+	background: #b0606d; border:0; color: #ffffff;
+}
+
+.psm_left_box2 {
+	background: #c48f7a; border:0; color: #ffffff;
+}
+
+
+.psm_left_box3 {
+	background: #ef7a69; border:0; color: #ffffff;
+}
+
+
+.psm_left_box4 {
+	background: #fec771; border:0; color: #ffffff;
+}
+
+
+.psm_left_box5 {
+	background: #52bcae; border:0; color: #ffffff;
+}
+
+
+
+
+.psm_left_icon {
+	width: 1.3em;
+}
+
+.naviList {
+	margin-top: 4em;
+}
+
+.navi-item{
+	height: 4.5em;
+}
+
+.navi-item-leftText{
+	width:6em;
+	margin-left:  1.0em;
+	font-size: 0.4em;
+}
+
+.navi-item-rightText{
+	width:6em;
+	margin-left:  1.0em;
+	font-size: 0.4em;
+}
+
+.naviGubun {
+	height: 3.0em;
+	font-size: 0.9em;
+	padding:  0.6em 0 0.4em 1.5em;
+	color: #ffffff;
+	background: #76839d;
+	clear: both;
+}
+
+.psm_segum01 {width:100%; height:100%; background: #94c6cd; text-align:center; margin:0 auto;}
+.psm_segum02 {margin-top:30px;}
+.psm_segum03 {text-align:center; color:#fff;}
+.psm_segum04 {position: relative; width:100%; left: 50%; margin-left: -100px; margin-top:20px;}
+.psm_segum05 {width:200px; padding:2px 7px; text-align:center;}
+.psm_segum06 {width:100px; background: #d6562f; color: #fff; border:0; padding:5px 10px;}
+
+
+.psm_segum11 {padding-bottom:10px; padding-top:8px; color:#fff; border-bottom: 1px solid #e0e0e0; font-size: 1em; background: #a298b0; font-weight: bold;}
+.psm_segum12 {width:13%; text-align: center; vertical-align: middle;}
+.psm_segum13 {width:22%; text-align: center; vertical-align: middle;}
+.psm_segum14 {width:55%; text-align: center; vertical-align: middle;}
+.psm_segum15 {width:10%; text-align: center; vertical-align: middle; min-width:37px; max-width:39px;}
+.psm_segum16 {padding:10px 0; border-bottom: 1px solid #e0e0e0;}
+.psm_segum17 {width:100%; font-size: 1em;}
+.psm_segum18 {width:13%; text-align: center; vertical-align: middle;}
+.psm_segum19 {width:22%; text-align: center; vertical-align: middle;}
+.psm_segum20 {width:55%; text-align: center; vertical-align: middle;}
+.psm_segum21 {width:10%; text-align: center; vertical-align: middle;}
+.psm_segum22 {width:70%; text-align: left; vertical-align: middle;}
+
+
+
+
+
+
+.psm_login_body {background: #f8f7f3;}
+.psm_login_all {width:100%; height:100%; font-family:NanumGothic, "돋움", Dotum; color:#555555; font-size: 0.9em; text-align:center;}
+.psm_login_logo {position: absolute;top:40px; left:50%; margin-left:-180px; }
+.psm_login_inp {position: absolute;top:220px; left:50%; width:360px; margin-left:-180px; text-align:left;}
+.psm_login_title {padding-left:60px; padding-top:15px; color:#6f747a;}
+.psm_login_intex {padding-left:60px; padding-top:5px;}
+.psm_login_intex2 {padding-left:60px; padding-top:15px; padding-bottom:40px;}
+.psm_login_auto {padding-left:60px; height:30px; padding-top:15px; padding-bottom:15px; color:#6f747a; vertical-align:top;}
+.psm_login_autx {position: relative; top:-7px; color:#b6b9bd;}
+
+.psm_input {width:240px; height:35px; text-align:center; background:#22242c; border:0px; color:#b6b9bd; font-size: 1.3em;}
+.psm_checkbox {width:25px; height:25px;}
+.psm_login_bt {width:240px; height:35px; text-align:center; background:#e04a32; border:0px; color:#87220c; font-weight:bold; font-size: 1.1em; cursor:pointer;}
+.psm_label {cursor:pointer;}
+
+
+.ss {height: 12em;}
+
+.logo-image {width: 25em;}
+
+
+.psm_login_ile {width:70%; text-align:center; margin: 0 auto;}
+.psm_login_qwc1 {background: #673653; width:50%; height:9em; color: #ffffff; vertical-align: middle; cursor: pointer;}
+.psm_login_qwc2 {background: #b16069; width:50%; height:9em; color: #ffffff; vertical-align: middle; cursor: pointer;}
+.psm_login_qwc3 {background: #ea6753; width:50%; height:9em; color: #ffffff; vertical-align: middle; cursor: pointer;}
+.psm_login_qwc4 {background: #fca94d; width:50%; height:9em; color: #ffffff; vertical-align: middle; cursor: pointer;}
+.psm_login_pci1 {border:0px; padding-right:30px; padding-left:30px; padding-top:30px; background: #613a60;}
+.psm_login_pci2 {border:0px; padding-right:30px; padding-left:30px; background: #613a60;}
+.psm_login_pci3 {color:#f6eff7; font-size: 0.8em;}
+.psm_login_pci4 {border:0px; padding-right:30px; padding-left:30px; background: #613a60; border:0px;}
+.psm_login_ink {background: #52bcae; color:#fff; border:0;}
+
+.psm_sang_01 {width:100px;  font-size: 0.8em;}
+.psm_sang_02 {width:65%; text-align:left;}
+.psm_sang_03 {height:150px; width:100%; padding: 10px; border-left: 1px solid #e0e0e0;}
+
+
+
+
+.iframe-wrapper iframe {
+   width: 100%;
+   height: 100%;
+ }
+.lhkNoticeContent{
+	padding: 15px;
+	font-size: 12pt;
+	background: whitesmoke;
+}

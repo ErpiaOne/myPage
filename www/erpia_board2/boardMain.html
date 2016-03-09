@@ -1,0 +1,53 @@
+<ion-view view-title="Board Main" ng-controller="BoardMainCtrl">
+	<ion-content scroll="false">
+		<tab-slide-box>
+			<div class="tsb-icons">
+				<div class="tsb-ic-wrp">
+					<ion-scroll direction="x" class="tsb-hscroll">
+						<a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs2" on-finish-render="test()">{{tab.text}}</a>
+					</ion-scroll>
+				</div>
+			</div>
+
+			<ion-slide-box does-continue="true" show-pager="true" on-slide-changed="slideHasChanged($index)">
+				<ion-slide>
+					<ion-content  overflow-scroll="true" > 
+						<!-- <div style="height: 90%;">  -->
+							<!-- <iframe src="#/erpia_erpiahome/erpiahome" frameborder=0 marginwidth=0 marginheight=0 scrolling=no align="left" ng-style="myStyle"></iframe> -->
+							<iframe ng-src="http://www.erpia.net/brd/brdMobile.asp?brdKinds=notice" style="width: 100%; height: 100%" frameborder=0 marginwidth=0 marginheight=0 scrolling=yes align="center"></iframe>
+						<!-- </div> -->
+					</ion-content>
+				</ion-slide>
+
+				<ion-slide>
+					<ion-content overflow-scroll="true">
+					<p ng-bind-html="login_alert"></p>
+						<!-- <div style="height: 100%;"> -->
+							<iframe ng-src="http://www.erpia.net/brd/brdMobile.asp?brdKinds=erpup" style="width: 100%; height: 100%" frameborder=0 marginwidth=0 marginheight=0 scrolling=yes align="center"></iframe>
+						<!-- </div> -->
+					</ion-content>
+				</ion-slide>
+				
+				<ion-slide>
+					<ion-content overflow-scroll="true">
+					<p ng-bind-html="login_alert"></p>
+						<div style="height: 100%;">
+							<!-- <iframe src="{{url}}" ng-style="myStyle"></iframe> -->
+							<iframe ng-src="http://www.erpia.net/brd/brdMobile.asp?brdKinds=faq" style="width: 100%; height: 100%" frameborder=0 marginwidth=0 marginheight=0 scrolling=yes align="center"></iframe>
+						</div>
+					</ion-content>
+				</ion-slide>
+
+				<ion-slide>
+					<ion-content overflow-scroll="true">
+					<p ng-bind-html="login_alert"></p>
+						<div style="height: 100%;">
+							<!-- <iframe src="{{url}}" ng-style="myStyle"></iframe> -->
+ 							업체별게시판
+						</div>
+					</ion-content>
+				</ion-slide>
+			</ion-slide-box>
+		</tab-slide-box>
+	</ion-content>
+</ion-view>

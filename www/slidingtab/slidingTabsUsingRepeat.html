@@ -1,0 +1,188 @@
+<ion-view view-title="MY PAGE">
+	<ion-content scroll="false">
+		<div style="position:absolute; bottom:0px; z-index:1;">
+			<img src="./img/banner_event1.jpg" width="100%">
+		</div>
+		<tab-slide-box>
+			<div class="tsb-icons">
+				<div class="tsb-ic-wrp">
+					<ion-scroll direction="x" class="tsb-hscroll">
+						<a ng-href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.title}}</a>
+					</ion-scroll>
+				</div>
+			</div>
+
+			<ion-slide-box does-continue="true" show-pager="false" on-slide-changed="slideHasChanged($index)">
+				<ion-slide>
+					<ion-content overf low-scroll="false">
+					<p ng-bind-html="login_alert"></p>
+						<div style="height:100%">
+							<!-- <iframe src="#/erpia_erpiahome/erpiahome" frameborder=0 marginwidth=0 marginheight=0 scrolling=no align="left" ng-style="myStyle"></iframe> -->
+							<!--  <iframe src="http://www.erpia.net/psm/02/html/dashboard_top.asp?gu=2&admin_code=YGNEXT#" frameborder=0 marginwidth=0 marginheight=0 scrolling=no align="left" ng-style="myStyle" height="200px"></iframe> -->
+							<!-- <img src="./img/banner_event1.jpg" width="100%"> -->
+
+
+							<!-- 컨텐츠 상단 (정보)-->
+							<!-- <link ng-href="./css/bootstrap.css" rel="stylesheet" type="text/css" /> -->
+							<link ng-href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+							<link ng-href="./css/AdminLTE.css" rel="stylesheet" type="text/css" />
+
+
+
+							<div class="row" style="letter-spacing:-1px; width:100%;">
+
+								<!-- 사용만료일 -->
+								<div class=" col-xs-psm3" style="width:33%; padding-right: 2px;">
+									<div class="info-box bg-yellow">
+										<span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
+										<div class="info-box-content">
+											<span class="info-box-text">사용만료일</span>
+											<span class="info-box-number" ng-bind-html="userData.expire_date"></span>
+											<div class="progress">
+												<div class="progress-bar" style="width: 30%"></div>
+											</div>
+											<span class="progress-description">31일 중 10일 사용.</span>
+										</div><!-- /.info-box-content -->
+									</div><!-- /.info-box -->
+								</div>
+
+								<!-- 남은기간 -->
+								<div class=" col-xs-psm3"  style="width:33%;  padding-left: 2px;  padding-right: 2px;">
+									<div class="info-box bg-aqua">
+										<span class="info-box-icon"><i class="ion ion-ios-clock-outline"></i></span>
+										<div class="info-box-content">
+											<span class="info-box-text">남은기간(일)</span>
+											<span class="info-box-number" ng-bind-html="userData.expire_days"></span>
+											<div class="progress">
+												<div class="progress-bar" style="width: 30%"></div>
+											</div>
+											<span class="progress-description">만료일 까지 {{userData.expire_days}}일 남음.</span>
+										</div><!-- /.info-box-content -->
+									</div><!-- /.info-box -->
+								</div>
+
+								<!-- 계산서 미수신건 -->
+								<div class=" col-xs-psm3"  style="width:33%; padding-left: 2px; ">
+									<div class="info-box bg-red">
+										<span class="info-box-icon"><i class="ion ion-ios-paper-outline"></i></span>
+										<div class="info-box-content">
+											<span class="info-box-text">계산서 미수신건</span>
+											<span class="info-box-number" ng-bind-html="userData.cntNotRead"></span>
+											<div class="progress">
+												<div class="progress-bar" style="width: 80%;"></div>
+											</div>
+											<span class="progress-description">계산서 100중 80개 처리</span>
+										</div><!-- /.info-box-content -->
+									</div><!-- /.info-box -->
+								</div>
+
+							</div>
+							<!-- // 컨텐츠 상단 (정보)-->
+
+							<section class="content-header">
+								<table style="width:100%">
+									<tr>
+										<td style="width:20%"></td>
+										<td style='width:60%; font-size:17pt; font-weight:bold;'>미처리 조회</td>
+										<td style="width:20%; cursor:pointer;" ng-click="ERPiaBaseData()"><img src="./img/icon_toggle.png" width='20px'></td>
+									</tr>
+								</table>
+								<!-- <span><h4 style="font-weight:bold;">미처리 조회</h4></span>
+								<span class="refresh" ng-click="ERPiaBaseData()"><img src="./img/icon_toggle.png" width=25px></span> -->
+								<ol class="breadcrumb"></ol>
+							</section>
+
+							<div style="width:100%; text-align:right; margin-top:15px">
+								<span style="display:inline-blank; margin-top:-10px;" ng-bind-html='nowTime' ng-click="ERPiaBaseData()"></span>
+							</div>
+
+							<!-- 컨텐츠 상단 (미처리 조회)-->
+							<div class="row" style="letter-spacing:-1px;">
+
+								<!-- 신규주문 -->
+								<div class="col-xs-psm">
+									<div style="text-align:center;"><img src="./img/icon_sin.png" style="max-width:120px; width:100%;"></div>
+									<div class="psm-box">
+										<div class="inner" style="text-align:center;">
+											<p style="margin:10px 0 0 0; word-break:keep-all">신규 주문</p>
+											<h1 style="margin:0 0 10px 0;" ng-bind-html='dashBoard.E_NewOrder'></h1>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-psm2" style="padding-top:40px;"><img src="./img/img_hwa.png" style="max-width:50px; min-width:10px; width:100%;"></div>
+
+								<div class="col-xs-psm">
+									<div style="text-align:center;"><img src="./img/icon_mul.png" style="max-width:120px; width:100%;"></div>
+									<div class="psm-box">
+										<div class="inner" style="text-align:center;">
+											<p style="margin:10px 0 0 0; word-break:keep-all">물류 처리</p>
+											<h1 style="margin:0 0 10px 0;" ng-bind-html='dashBoard.E_BsComplete'></h1>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-psm2" style="padding-top:40px;"><img src="./img/img_hwa.png" style="max-width:50px; min-width:10px; width:100%;"></div>
+
+								<div class="col-xs-psm">
+									<div style="text-align:center;"><img src="./img/icon_songin.png" style="max-width:120px; width:100%;"></div>
+									<div class="psm-box">
+										<div class="inner" style="text-align:center;">
+											<p style="margin:10px 0 0 0; word-break:keep-all">송장 입력</p>
+											<h1 style="margin:0 0 10px 0;" ng-bind-html='dashBoard.E_InputMno'></h1>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-psm2" style="padding-top:40px;"><img src="./img/img_hwa.png" style="max-width:50px; min-width:10px; width:100%;"></div>
+
+								<div class="col-xs-psm">
+									<div style="text-align:center;"><img src="./img/icon_bei.png" style="max-width:120px; width:100%;"></div>
+									<div class="psm-box">
+										<div class="inner" style="text-align:center;">
+											<p style="margin:10px 0 0 0; word-break:keep-all">출고 처리</p>
+											<h1 style="margin:0 0 10px 0;" ng-bind-html='dashBoard.E_CgComplete'></h1>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-psm2" style="padding-top:40px;"><img src="./img/img_hwa.png" style="max-width:50px; min-width:10px; width:100%;"></div>
+
+								<div class="col-xs-psm">
+									<div style="text-align:center;"><img src="./img/icon_songout.png" style="max-width:120px; width:100%;"></div>
+									<div class="psm-box">
+										<div class="inner" style="text-align:center;">
+											<p style="margin:10px 0 0 0; word-break:keep-all">송장 전송</p>
+											<h1 style="margin:0 0 10px 0;" ng-bind-html='dashBoard.E_RegistMno'></h1>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<!-- <div>
+								
+							</div> -->
+						</div>
+					</ion-content>
+				</ion-slide>
+				<ion-slide id="s1"></ion-slide>
+				<ion-slide id="s2"></ion-slide>
+				<ion-slide id="s3"></ion-slide>
+				<ion-slide id="s4"></ion-slide>
+				<ion-slide id="s5"></ion-slide>
+				<ion-slide id="s6"></ion-slide>
+				<ion-slide id="s7"></ion-slide>
+				<ion-slide id="s8"></ion-slide>
+				<ion-slide id="s9"></ion-slide>
+				<ion-slide id="s10"></ion-slide>
+				<ion-slide id="s11"></ion-slide>
+				<ion-slide id="s12"></ion-slide>
+				<ion-slide id="s13"></ion-slide>
+				<ion-slide id="s14"></ion-slide>
+				<ion-slide id="s15"></ion-slide>
+				<ion-slide id="s16"></ion-slide>
+				<ion-slide id="s17"></ion-slide>
+			</ion-slide-box>
+		</tab-slide-box>
+	</ion-content>
+</ion-view>

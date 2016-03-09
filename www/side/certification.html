@@ -1,0 +1,41 @@
+<ion-modal-view class="psm_login_body" style="height:100%; padding-top:40px;">
+	<div class="bar bar-header bar-balanced">
+		<h1 class="title">모바일 보안인증</h1>
+		<div class="buttons">
+			<button class="button button-clear" ng-click="close_cert()">
+				닫기
+			</button>
+		</div>
+	</div>
+	<div class="card" style="height:95%">
+		<div class="item item-divider">
+			모바일 보안인증
+		</div>
+		<div class="item item-text-wrap" style="overflow-y:scroll; height:70%; font-size:14px;">
+안녕하세요!<br>
+ERPia 모바일에 오신 것을 환영합니다.<br>
+<br>
+ERPia 애플리케이션은 고객분들의 소중한 정보 유출을 방지하기 위해 인증된 휴대폰에서만 이용이 가능합니다.<br>
+		</div>
+		<form ng-submit="click_Certification()">
+			<div class="item item-input-inset">
+				<label class="item-input-wrapper" style="background:transparent">
+					<input type="tel" placeholder="전화번호 입력" ng-model="SMSData.recUserTel">
+				</label>
+				<button class="button button-block button-balanced" style="margin:0px 10px 0px 0px; width:105px; font-size:13px; line-height:0px;" type='submit'>
+					인증번호발송
+				</button>
+			</div>
+		</form>
+		<form ng-submit="click_responseText()">
+			<div class="item item-input-inset">
+				<label class="item-input-wrapper" style="background:transparent">
+					<input type="tel" placeholder="인증번호 입력" ng-model="SMSData.rspnText">
+				</label>
+				<button class="button button-block button-balanced" style="margin:0px 10px 0px 0px; width:105px; font-size:13px; line-height:0px;" type='submit'>
+					인증완료
+				</button> 
+			</div>
+		</form>
+	</div>
+</ion-modal-view>

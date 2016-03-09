@@ -1,0 +1,76 @@
+{
+  "_args": [
+    [
+      "angular-fcsa-number",
+      "D:\\works\\myPage"
+    ]
+  ],
+  "_from": "angular-fcsa-number@*",
+  "_id": "angular-fcsa-number@1.5.7",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/angular-fcsa-number",
+  "_npmUser": {
+    "email": "zvasylvv@gmail.com",
+    "name": "zubb"
+  },
+  "_npmVersion": "1.4.9",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "angular-fcsa-number",
+    "raw": "angular-fcsa-number",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "*",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-fcsa-number/-/angular-fcsa-number-1.5.7.tgz",
+  "_shasum": "ad32edc2ff399965eca7b81cf698fb47b5228b31",
+  "_shrinkwrap": null,
+  "_spec": "angular-fcsa-number",
+  "_where": "D:\\works\\myPage",
+  "author": {
+    "name": "https://github.com/ZuBB/angular-fcsa-number/graphs/contributors"
+  },
+  "dependencies": {},
+  "description": "An Angular directive that validates numbers and adds commas for the thousands separator.",
+  "devDependencies": {
+    "express": "~4.x",
+    "grunt": "0.4.5",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-copy": "~0.5",
+    "grunt-contrib-uglify": "~0.2.5",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-express-server": "~0.4.17",
+    "grunt-file-append": "0.0.5",
+    "grunt-karma": "0.8.3",
+    "grunt-shell": "~0.7.0",
+    "karma": "^0.12.0",
+    "karma-chrome-launcher": "^0.1.2",
+    "matchdep": "0.3.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "ad32edc2ff399965eca7b81cf698fb47b5228b31",
+    "tarball": "http://registry.npmjs.org/angular-fcsa-number/-/angular-fcsa-number-1.5.7.tgz"
+  },
+  "homepage": "https://github.com/ZuBB/angular-fcsa-number",
+  "license": "MIT",
+  "main": "src/fcsaNumber.js",
+  "maintainers": [
+    {
+      "name": "zubb",
+      "email": "zvasylvv@gmail.com"
+    }
+  ],
+  "name": "angular-fcsa-number",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "scripts": {
+    "test": "grunt --verbose"
+  },
+  "version": "1.5.7"
+}

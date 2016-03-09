@@ -1,0 +1,14 @@
+<ion-nav-bar>
+  <ion-nav-back-button ng-click="goBack_with_clearHistory()">push Test</ion-nav-back-button>
+  <ion-nav-buttons side="right" ng-show="false">
+    <button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
+  </ion-nav-buttons>
+</ion-nav-bar>
+<ion-content class="padding2">
+  <button class="button button-block button-dark" ng-click="identifyUser()">
+  Identify a user
+  </button>
+  <button class="button button-block button-positive" ng-if="identified" ng-click="pushRegister()">
+  Register for Push
+  </button>
+</ion-content>

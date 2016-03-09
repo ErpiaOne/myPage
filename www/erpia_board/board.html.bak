@@ -1,0 +1,33 @@
+<ion-view view-title="Board Select">
+    <ion-content class="padding">
+         
+        <div style="width:100%; height: 100%; background: #bfd5d8;">
+
+            <div class="button-bar" style="padding-top:80px;  background: #bfd5d8;">                       
+				<a class="button button-light" style="border:0px"  ng-click="BoardSelect1()"> 
+					<img src="./img/icon_gongji.jpg" class="psm_left_img2" style="width:70%"><br>
+					<span class="psm_left_mediv">공지사항</span>
+				</a>
+				<a class="button button-light" style="border:0px"   ng-click="BoardSelect2()"> 
+					<img src="./img/icon_up.jpg" class="psm_left_img2" style="width:70%"><br>
+					<span class="psm_left_mediv">업데이트 현황</span> 
+				</a>
+            </div>
+
+            <div class="button-bar" style="background: #bfd5d8;">
+				<a class="button button-light" style="border:0px"   ng-click="BoardSelect3()"> 
+					<img src="./img/icon_jisik.jpg" class="psm_left_img4" style="width:70%"><br>
+					<span class="psm_left_mediv">지식 나눔방</span> 
+				</a>
+				<a class="button button-light" style="border:0px"   ng-click="BoardSelect4()"> 
+					<img src="./img/icon_qna.jpg" class="psm_left_img4" style="width:70%"><br>
+					<span class="psm_left_mediv">업체문의 Q&A</span> 
+				</a>
+            </div>
+        </div>
+
+        <div style="position:fixed; bottom:0px">
+            <img src="./img/banner_event1.jpg" width="100%">
+        </div> 
+    </ion-content> 
+</ion-view> 

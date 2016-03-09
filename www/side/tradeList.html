@@ -1,0 +1,47 @@
+<ion-view view-title="{{tradeList.Title}}">
+	<ion-content class="padding2" style="width:100%;">
+		<!-- <a ng-href="tel:070-7012-3071" class="button button-positive"> call me</a> -->
+		<link ng-href="css/lhkTradeDetail.css" rel="stylesheet">
+		<div class="psm_segum11">
+			<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+				<tr>
+					<td class="psm_segum12">No</td>
+					<td class="psm_segum13">{{tradeList.MeaipMeachul}}</td>
+					<td class="psm_segum14">{{tradeList.Publisher}}</td>
+					<td class="psm_segum15">{{tradeList.isRead}}</td>
+				</tr>
+			</table>
+		</div>
+		<div ng-switch='haveList'>
+			<div ng-switch-when='Y'>
+				<ion-list>
+					<ion-item ng-repeat="item in items" style="padding:0px;">
+						<div ng-click="readTradeDetail('{{item.Sl_No + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}')"  class="psm_segum16">
+							<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+								<tr>
+									<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
+									<td class="psm_segum19">{{item.in_date}}</td>
+									<td class="psm_segum20" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
+									<td class="psm_segum20" ng-if="userType == 'ERPia'">
+									{{ (item.G_name.length>15?item.G_name.substring(0,15) + "..." : item.G_name) }}
+									</td>
+									<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? 'O' : 'X')}}</td>
+								</tr>
+								<tr>							
+									<td colspan="2" class="psm_segum22">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
+								</tr>
+							</table>
+						</div>
+					</ion-item>
+				</ion-list>
+			</div>
+			<div ng-switch-when='N'>
+				<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+					<tr>
+						<td colspan="4" class="psm_segum18">확인할 명세서가 없습니다.</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</ion-content>
+</ion-item>

@@ -1,0 +1,65 @@
+<ion-view title="Scrollable Tabbed Slide box">
+	<ion-content scroll="false">
+		<tab-slide-box>
+			<div class="tsb-icons">
+				<div class="tsb-ic-wrp">
+					<ion-scroll direction="x" class="tsb-hscroll">
+						<a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.title}}</a>
+					</ion-scroll>
+				</div>
+			</div>
+			<ion-slide-box does-continue="true" show-pager="false" on-slide-changed="slideHasChanged($index)">
+				<ion-slide id="s1">
+				 	 
+				</ion-slide>
+				<ion-slide id="s2">
+					 
+				</ion-slide>
+				<ion-slide id="s3">
+					 
+				</ion-slide>
+				<ion-slide id="s4">
+					 
+				</ion-slide>
+				<ion-slide id="s5">
+					 
+				</ion-slide>
+				<ion-slide id="s6">
+						
+				</ion-slide>
+				<ion-slide id="s7"> 
+					 
+				</ion-slide>
+				<ion-slide id="s8">
+				</ion-slide>
+				<ion-slide id="s9">
+					 
+				</ion-slide>
+				<ion-slide id="s10">
+					 
+				</ion-slide>
+				<ion-slide id="s11">
+					 
+				</ion-slide>
+				<ion-slide id="s12">
+						
+				</ion-slide>
+				<ion-slide id="s13"> 
+					 
+				</ion-slide>
+				<ion-slide id="s14">
+					 
+				</ion-slide>
+				<ion-slide id="s15">
+					 
+				</ion-slide>
+				<ion-slide id="s16">
+					 
+				</ion-slide>
+				<ion-slide id="s17">
+					 
+				</ion-slide>
+			</ion-slide-box>
+		</tab-slide-box>
+	</ion-content>
+</ion-view>

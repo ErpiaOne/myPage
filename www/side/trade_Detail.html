@@ -1,0 +1,333 @@
+<ion-modal-view class="psm_login_body">
+	<ion-header-bar class="bar-dark">
+		<h1 class="title ">{{detail_title}}</h1>
+		<div class="buttons">
+			<button class="button button-clear" ng-click="close()">
+				닫기
+			</button>
+		</div>
+	</ion-header-bar>
+	<ion-view view-title="거래명세서">
+		<ion-content class="padding2">
+			<ion-scroll zooming="true" direction="xy" style="width:100%; height:100%;">
+				<div id="divTradeDetail_Print_Area" style="width: 1110px; height: 850px;">
+					<link href="css/lhkTradeDetail.css" rel="stylesheet">
+					<ion-item ng-repeat="detail in detail_items">
+						<table width=1080>
+						    <tr>
+						        <td name='td_User_Date' width=300 align=left>{{userData.GerName}}({{loginData.UserId}})<br/>{{currentDate | date:'yyyy-MM-dd'}}</td>
+						        <td width=420 align=center style='color:blue;'><u style='font-size:30px;'>거래명세표</u> (공급받는자용)</td>
+						        <td name='td_Sl_No_Time' width=300 align=right>No.{{detail.Publish_No}}</td>
+						    </tr>
+						</table>
+						<table class='blueTable' border=1 cellspacing=0 cellpadding=0 width=1080>
+						    <tr class='trH'>
+						        <td class='blueFont' width=25 rowspan=4>공<br/>급<br/>자</td>
+						        <td class='blueFont' style='line-height:15px;' width=45>등 록<br/>번 호</td>
+						        <td name='td_SaNo1' class='tdText' colspan=6>{{detail.R_Sano}}</td>
+						        <td class='blueFont' width=25 rowspan=5>공<br/>급<br/>받<br/>는<br/>자</td>
+						        <td class='blueFont' style='line-height:15px;' width=45>등 록<br/>번 호</td>
+						        <td name='td_SaNo2' class='tdText' colspan=6>{{detail.Sano}}</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='blueFont'>상 호</td>
+						        <td name='td_GerName1' class='tdText' colspan=2>{{detail.R_Snm}}</td>
+						        <td class='blueFont' width=10 colspan=2>성 명</td>
+						        <td name='td_userName1' class='tdText markTd2'>{{detail.R_Boss}}</td>
+						        <td class='markTd'>(인)</td>
+						        <td class='blueFont'>상 호</td>
+						        <td name='td_GerName2' class='tdText' colspan=3>{{detail.Snm}}</td>
+						        <td class='blueFont' width=45>성 명</td>
+						        <td name='td_userName2' class='tdText markTd2'>{{detail.Boss}}</td>
+						        <td class='markTd'>(인)</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='blueFont'>주 소</td>
+						        <td name='td_Addr1' class='tdText' colspan=6>{{detail.R_Addr}}</td>
+						        <td class='blueFont'>주 소</td>
+						        <td name='td_Addr2' class='tdText' colspan=6>{{detail.Addr}}</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='blueFont'>업 태</td>
+						        <td name='td_UpType1' class='tdText'>{{detail.R_up}}</td>
+						        <td class='blueFont' width=45>종 목</td>
+						        <td name='td_Category1' class='tdText' colspan=4>{{detail.R_jong}}</td>
+						        <td class='blueFont'>업 태</td>
+						        <td name='td_UpType2' class='tdText' colspan=2>{{detail.Up}}</td>
+						        <td class='blueFont' width=45>종 목</td>
+						        <td name='td_Category2' class='tdText' colspan=3>{{detail.Jong}}</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='blueFont' colspan=2>합계금액</td>
+						        <td name='td_TotAmt' class='tdNumber'>{{detail.Hap | number:0}}</td>
+						        <td class='blueFont' colspan=2>전잔액</td>
+						        <td name='td_PreJanAmt'class='tdNumber' colspan=3>{{detail.Pre_Jan_Amt | number:0}}</td>
+						        <td class='blueFont'>담 당</td>
+						        <td name='td_DamDang' class='tdText' colspan=2>{{detail.G_GDamdang}}</td>
+						        <td class='blueFont'>전 화</td>
+						        <td name='td_Tel' class='tdText' colspan=3>{{detail.G_GDamdangTel}}</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='blueFont' colspan=2>입 금 액</td>
+						        <td name='td_Deposit' class='tdNumber'>{{detail.In_Amt | number:0}}</td>
+						        <td class='blueFont' colspan=2>현잔액</td>
+						        <td name='td_NowJanAmt' class='tdNumber' colspan=3>{{detail.Cur_Jan_Amt | number:0}}</td>
+						        <td class='blueFont' colspan=2>인 수 자</td>
+						        <td name='td_Receiver' class='tdText markTd2'>{{detail.Boss}}</td>
+						        <td class='markTd'>(인)</td>
+						        <td name='td_Receiver_Mark' class='tdText blueFont' colspan=4>아래의 금액을     합니다.</td>
+						    </tr>
+						</table>
+						<table class='blueTable' border=0 cellspacing=0 cellpadding=0 width=1080 style='margin-top:10px; border:transparent'>
+						    <thead class='blueFont'>
+						        <th class='tdHead tdLeftSolid' width=550 colspan=3>품목 및 규격</th>
+						        <th class='tdHead' width=97>수 량</th>
+						        <th class='tdHead' width=140>단 가</th>
+						        <th class='tdHead' width=140>공 급 가 액</th>
+						        <th class='tdHead tdRightSolid' width=140>세 액</th>
+						    </thead>
+						    <tr>
+						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name1)?detail.G_name1:'-')}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_ea1)?detail.G_ea1:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_price1)?detail.G_price1:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_Gong1)?detail.G_Gong1:'-') | number:0}}</td>
+						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name2)?detail.G_name2:'-')}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_ea2)?detail.G_ea2:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_price2)?detail.G_price2:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_Gong2)?detail.G_Gong2:'-') | number:0}}</td>
+						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name3)?detail.G_name3:'-')}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_ea3)?detail.G_ea3:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_price3)?detail.G_price3:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_Gong3)?detail.G_Gong3:'-') | number:0}}</td>
+						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name4)?detail.G_name4:'-')}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_ea4)?detail.G_ea4:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_price4)?detail.G_price4:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_Gong4)?detail.G_Gong4:'-') | number:0}}</td>
+						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name5)?detail.G_name5:'-')}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_ea5)?detail.G_ea5:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_price5)?detail.G_price5:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_Gong5)?detail.G_Gong5:'-') | number:0}}</td>
+						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name6)?detail.G_name6:'-')}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_ea6)?detail.G_ea6:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_price6)?detail.G_price6:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_Gong6)?detail.G_Gong6:'-') | number:0}}</td>
+						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name7)?detail.G_name7:'-')}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_ea7)?detail.G_ea7:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_price7)?detail.G_price7:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_Gong7)?detail.G_Gong7:'-') | number:0}}</td>
+						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name8)?detail.G_name8:'-')}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_ea8)?detail.G_ea8:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_price8)?detail.G_price8:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_Gong8)?detail.G_Gong8:'-') | number:0}}</td>
+						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name9)?detail.G_name9:'-')}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_ea9)?detail.G_ea9:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_price9)?detail.G_price9:'-') | number:0}}</td>
+						        <td class='tdNumber tdList'>{{((detail.G_Gong9)?detail.G_Gong9:'-') | number:0}}</td>
+						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText tdListEnd tdLeftSolid tdBottomSolid' colspan=3>{{((detail.G_name10)?detail.G_name10:'-')}}</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid'>{{((detail.G_ea10)?detail.G_ea10:'-') | number:0}}</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid'>{{((detail.G_price10)?detail.G_price10:'-') | number:0}}</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid'>{{((detail.G_Gong10)?detail.G_Gong10:'-') | number:0}}</td>
+						        <td class='tdNumber tdListEnd tdRightSolid tdBottomSolid'>.</td>
+						    </tr>
+						    <tr height=30>
+						        <td class='tdList tdListEnd tdLeftSolid tdBottomSolid' rowspan=2 width=45>비 고<br/><br/>사 항</td>
+						        <td class='tdListEnd' width=450 style='border-bottom:0px;'>.</td>
+						        <td class='tdText tdListEnd tdBottomSolid'>합계</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid'>{{detail.G_tot_Ea | number:0}}</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid'>{{(detail.Hap / detail.G_tot_Ea) | number:0}}</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid'>{{detail.Hap | number:0}}</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid tdRightSolid'>.</td>
+						    </tr>
+						    <tr><td class='tdListEnd tdRightSolid tdBottomSolid' colspan=6 style='height:45px;'>.</td></tr>
+						</table>
+						<br/>
+
+					<table width=1020>
+						    <tr>
+						        <td name='td_User_Date' width=300 align=left>{{userData.GerName}}({{loginData.UserId}})<br/>{{currentDate | date:'yyyy-MM-dd'}}</td>
+						        <td width=420 align=center style='color:red;'><u style='font-size:30px;'>거래명세표</u> (공급받는자용)</td>
+						        <td name='td_Sl_No_Time' width=300 align=right>No.{{detail.Publish_No}}</td>
+						    </tr>
+						</table>
+						<table class='redTable' border=1 cellspacing=0 cellpadding=0 width=1080>
+						    <tr class='trH'>
+						        <td class='redFont' width=25 rowspan=4>공<br/>급<br/>자</td>
+						        <td class='redFont' style='line-height:15px;' width=45>등 록<br/>번 호</td>
+						        <td name='td_SaNo1' class='tdText_red' colspan=6>{{detail.R_Sano}}</td>
+						        <td class='redFont' width=25 rowspan=5>공<br/>급<br/>받<br/>는<br/>자</td>
+						        <td class='redFont' style='line-height:15px;' width=45>등 록<br/>번 호</td>
+						        <td name='td_SaNo2' class='tdText_red' colspan=6>{{detail.Sano}}</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='redFont'>상 호</td>
+						        <td name='td_GerName1' class='tdText_red' colspan=2>{{detail.R_Snm}}</td>
+						        <td class='redFont' width=10 colspan=2>성 명</td>
+						        <td name='td_userName1' class='tdText_red markTd2'>{{detail.R_Boss}}</td>
+						        <td class='markTd_Red'>(인)</td>
+						        <td class='redFont'>상 호</td>
+						        <td name='td_GerName2' class='tdText_red' colspan=3>{{detail.Snm}}</td>
+						        <td class='redFont' width=45>성 명</td>
+						        <td name='td_userName2' class='tdText_red markTd2'>{{detail.Boss}}</td>
+						        <td class='markTd_Red'>(인)</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='redFont'>주 소</td>
+						        <td name='td_Addr1' class='tdText_red' colspan=6>{{detail.R_Addr}}</td>
+						        <td class='redFont'>주 소</td>
+						        <td name='td_Addr2' class='tdText_red' colspan=6>{{detail.Addr}}</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='redFont'>업 태</td>
+						        <td name='td_UpType1' class='tdText_red'>{{detail.R_up}}</td>
+						        <td class='redFont' width=45>종 목</td>
+						        <td name='td_Category1' class='tdText_red' colspan=4>{{detail.R_jong}}</td>
+						        <td class='redFont'>업 태</td>
+						        <td name='td_UpType2' class='tdText_red' colspan=2>{{detail.Up}}</td>
+						        <td class='redFont' width=45>종 목</td>
+						        <td name='td_Category2' class='tdText_red' colspan=3>{{detail.Up}}</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='redFont' colspan=2>합계금액</td>
+						        <td name='td_TotAmt' class='tdNumber_red'>{{detail.Hap | number:0}}</td>
+						        <td class='redFont' colspan=2>전잔액</td>
+						        <td name='td_PreJanAmt' class='tdNumber_red' colspan=3>{{detail.Pre_Jan_Amt | number:0}}</td>
+						        <td class='redFont'>담 당</td>
+						        <td name='td_DamDang' class='tdText_red' colspan=2>{{detail.G_GDamdang}}</td>
+						        <td class='redFont'>전 화</td>
+						        <td name='td_Tel' class='tdText_red' colspan=3>{{detail.G_GDamdangTel}}</td>
+						    </tr>
+						    <tr class='trH'>
+						        <td class='redFont' colspan=2>입 금 액</td>
+						        <td name='td_Deposit' class='tdNumber_red'>{{detail.In_Amt | number:0}}</td>
+						        <td class='redFont' colspan=2>현잔액</td>
+						        <td name='td_NowJanAmt' class='tdNumber_red' colspan=3>{{detail.Cur_Jan_Amt | number:0}}</td>
+						        <td class='redFont' colspan=2>인 수 자</td>
+						        <td name='td_Receiver' class='tdText_red markTd2'>{{detail.Boss}}</td>
+						        <td class='markTd_Red'>(인)</td>
+						        <td name='td_Receiver_Mark' class='tdText_red redFont' colspan=4>아래의 금액을     합니다.</td>
+						    </tr>
+						</table>
+						<table class='redTable' border=0 cellspacing=0 cellpadding=0 width=1080 style='margin-top:10px; border:transparent'>
+						    <thead class='redFont'>
+						        <th class='tdHead tdLeftSolid_red' width=550 colspan=3>품목 및 규격</th>
+						        <th class='tdHead' width=97>수 량</th>
+						        <th class='tdHead' width=140>단 가</th>
+						        <th class='tdHead' width=140>공 급 가 액</th>
+						        <th class='tdHead tdRightSolid_red' width=140>세 액</th>
+						    </thead>
+						    <tr>
+						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name1)?detail.G_name1:'-')}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea1)?detail.G_ea1:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_price1)?detail.G_price1:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong1)?detail.G_Gong1:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name2)?detail.G_name2:'-')}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea2)?detail.G_ea2:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_price2)?detail.G_price2:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong2)?detail.G_Gong2:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name3)?detail.G_name3:'-')}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea3)?detail.G_ea3:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_price3)?detail.G_price3:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong3)?detail.G_Gong3:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name4)?detail.G_name4:'-')}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea4)?detail.G_ea4:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_price4)?detail.G_price4:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong4)?detail.G_Gong4:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name4)?detail.G_name4:'-')}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea4)?detail.G_ea4:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_price4)?detail.G_price4:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong4)?detail.G_Gong4:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name6)?detail.G_name6:'-')}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea6)?detail.G_ea6:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_price6)?detail.G_price6:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong6)?detail.G_Gong6:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name7)?detail.G_name7:'-')}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea7)?detail.G_ea7:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_price7)?detail.G_price7:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong7)?detail.G_Gong7:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name8)?detail.G_name8:'-')}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea8)?detail.G_ea8:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_price8)?detail.G_price8:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong8)?detail.G_Gong8:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name9)?detail.G_name9:'-')}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea9)?detail.G_ea9:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_price9)?detail.G_price9:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong9)?detail.G_Gong9:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr>
+						        <td class='tdText_red tdListEnd_red tdLeftSolid_red tdBottomSolid_red' colspan=3>{{((detail.G_name10)?detail.G_name10:'-')}}</td>
+						        <td class='tdNumber_red tdListEnd_red tdBottomSolid_red'>{{((detail.G_ea10)?detail.G_ea10:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdListEnd_red tdBottomSolid_red'>{{((detail.G_price10)?detail.G_price10:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdListEnd_red tdBottomSolid_red'>{{((detail.G_Gong10)?detail.G_Gong10:'-') | number:0}}</td>
+						        <td class='tdNumber_red tdListEnd_red tdRightSolid_red tdBottomSolid_red'>.</td>
+						    </tr>
+						    <tr height=30>
+						        <td class='tdList_red tdListEnd_red tdLeftSolid_red tdBottomSolid_red' rowspan=2 width=45>비 고<br/><br/>사 항</td>
+						        <td class='tdListEnd_red' width=450 style='border-bottom:0px;'>.</td>
+						        <td class='tdListEnd_red tdBottomSolid_red tdText_red'>합계</td>
+						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{detail.G_tot_Ea | number:0}}</td>
+						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{(detail.Hap / detail.G_tot_Ea) | number:0}}</td>
+						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{detail.Hap | number:0}}</td>
+						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red tdRightSolid_red'>.</td>
+						    </tr>
+						    <tr><td class='tdListEnd_red tdRightSolid_red tdBottomSolid_red' colspan=6 style='height:45px;'>.</td></tr>
+						</table>
+						<!-- <button class='button button-block psm_login_ink' ng-click='print()'>출력하기</button>
+						<button class='button button-block psm_login_ink' ng-click='createPDF()'>PDF</button> -->
+					</ion-item>
+				</div>
+			</ion-scroll>
+		</ion-content>
+	</ion-view>
+</ion-modal-view>

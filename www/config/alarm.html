@@ -1,0 +1,16 @@
+<ion-view view-title="알림 설정">
+	<ion-nav-bar>
+		<ion-nav-back-button ng-click="goBack_with_clearHistory()">설정</ion-nav-back-button>
+		<ion-nav-buttons side="right" ng-show="false">
+			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
+		</ion-nav-buttons>
+	</ion-nav-bar>
+	<ion-content class="padding2">
+		<ion-toggle ng-model="selectedAll" ng-change='check_alarm(selectedAll)'>
+          	푸시알림
+        </ion-toggle>
+		<ion-toggle ng-repeat="item in settingsList" ng-model="item.checked" ng-checked="item.checked" ng-change='check_change(item)'>
+          	{{ item.name }}
+        </ion-toggle>
+	</ion-content>
+</ion-view>
