@@ -32,8 +32,9 @@ div.col4{width:30%; color: #fff;}
       <div  style="clear: both; width:100%">
         <div style="float: left; width:14%; padding-top:6px; color: #fff;"> 검 색 </div>
         <div style="float: left; width:76%;">
-          <input type="text" ng-model="company.username" placeholder="거래처명 입력" style="width: 100%; height: 30px; background: #b572a0; border:0; border-bottom: 1px solid #fff; color: #fff;" ng-change="company_auto()">
+          <input type="text" ng-click='company_lately()' ng-model="company.username" placeholder="거래처명 입력" style="width: 100%; height: 30px; background: #b572a0; border:0; border-bottom: 1px solid #fff; color: #fff;" ng-change="company_auto()">
           <li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code,x.G_GDamdang)">{{x.G_Name}}</li>
+          <li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name)">{{x.Search_Ger_Name}}</li>
         </div>
         <div style="float: left; width:10%;">
           <i class='ion-close-circled' style='margin-left:-38px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size:25px; color:#fff' ng-click='clearcompany()'></i>

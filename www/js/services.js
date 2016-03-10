@@ -1073,12 +1073,52 @@ return{
 
 	};
 })
+//erpia.net/include/ERPiaApi_TestProject.asp?Admin_Code=onz&UserId=yyk0628&Kind=ERPia_Meaip_Sel_G_Lately&Mode=Sel_GerGoods_Search_Lately&G_Gubun=Ger
+//erpia.net/include/ERPiaApi_TestProject.asp?Admin_Code=onz&UserId=yyk0628&Kind=ERPia_Sale_Sel_G_Lately&Mode=Sel_GerGoods_Search_Lately&G_Gubun=Ger
 
 /* 매입 & 매출 등록 & 수정 통합 */
 .factory('MiuService', function($http, ERPiaAPI, $q, $cordovaToast, $rootScope){
 return{
-	company_sear: function(admin_code, userid, com_name){
+	company_lately: function(admin_code, userid, gubun){
+				console.log("MiuService and company_lately");
+				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Sel_G_Lately';
+				else var kind = 'ERPia_Sale_Sel_G_Lately';
+				
+				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Sel_GerGoods_Search_Lately&G_Gubun=' + gubun;
+				return $http.get(url + '?' + data)
+					.then(function(response){
+						if(typeof response == 'object'){
+							return response.data;
+						}else{
+							return $q.reject(response.data);
+						}
+					}, function(response){
+						return $q.reject(response.data);
+					})
+	
+	}, company_latelysave: function(admin_code, userid, gubun, username){
+				console.log("MiuService and company_latelysave");
+				var gername = escape(username);
+				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Sel_G_Lately';
+				else var kind = 'ERPia_Sale_Sel_G_Lately';
+				
+				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Reg_Select_GerGoods_Search_Lately&G_Gubun=' + gubun + '&G_Gubun_Value=' + gername;
+				return $http.get(url + '?' + data)
+					.then(function(response){
+						if(typeof response == 'object'){
+							return response.data;
+						}else{
+							return $q.reject(response.data);
+						}
+					}, function(response){
+						return $q.reject(response.data);
+					})
+	
+	}, company_sear: function(admin_code, userid, com_name){
 				console.log("MiuService and company_sear");
+				
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_GerName';
 				else var kind = 'ERPia_Sale_Select_GerName';
 				
@@ -1095,7 +1135,7 @@ return{
 						return $q.reject(response.data);
 					})
 	
-	},company_detail_sear: function(admin_code, userid, GerCode){
+	}, company_detail_sear: function(admin_code, userid, GerCode){
 			console.log("MiuService and company_detail_sear");
 			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_GerName';
 			else var kind = 'ERPia_Sale_Select_GerName';
@@ -1468,6 +1508,25 @@ return{
 			console.log("MiuService and seq_del");
 			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Delete_Goods&Mode=Delete_Meaip&iL_No=' + no;
 			else var kind = 'ERPia_Sale_Delete_Goods&Mode=Delete_MeaChul&Sl_No=' + no;
+			
+			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+			var data = 'Admin_Code=' + admin_code +'&UserId=' + userid + '&Kind='+ kind;
+			
+			return $http.get(url + '?' + data)
+				.then(function(response){
+					if(typeof response == 'object'){
+						return response.data;
+					}else{
+						return $q.reject(response.data);
+					}
+				}, function(response){
+					return $q.reject(response.data);
+				})
+
+	}, pay_delete : function(admin_code, userid, acno){
+			console.log("MiuService and pay_delete", admin_code, userid,acno);
+			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Delete_Goods&Mode=Delete_Acct_Info&AC_No=' + acno;
+			else var kind = 'ERPia_Sale_Delete_Goods&Mode=Delete_Acct_Info&AC_No=' + acno;
 			
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + userid + '&Kind='+ kind;

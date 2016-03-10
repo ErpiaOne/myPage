@@ -17,6 +17,7 @@
 
     <div class="list list-inset">
       &nbsp;<b>지급정보</b>
+      <span ng-if='pay.delete == false'><button ng-click='paydelete()'>삭제</button></span>
       <label class="item item-input">
         <span class="input-label psm_sang_01">&nbsp;&nbsp;지급일</span>&nbsp;&nbsp;
         <input type="date" style="text-align:right;" ng-disabled="tax_u" ng-model='date.payday1' ng-change="datechange(date.payday1,2)"><br>
