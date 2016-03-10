@@ -23,7 +23,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
-		ionic.Platform.fullScreen();
+		// ionic.Platform.fullScreen();
 		if(window.cordova && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
@@ -31,13 +31,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
         if(window.StatusBar) {
 			StatusBar.styleDefault();
 		}
-		$rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
-		    // alert("Successfully registered token " + data.token);
-		    console.log('Ionic Push: Got token ', data.token, data.platform);
-		    $rootScope.token = data.token;
-		    //디바이스 토큰 값 받는곳
-		});
-		//★push regist
+		// //★push regist
 		console.log('Ionic Push: Registering user');
 		var user = $ionicUser.get();
 		if(!user.user_id) {
@@ -208,6 +202,12 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				}
 			}
 		});
+		$rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
+		    // alert("Successfully registered token " + data.token);
+		    console.log('Ionic Push: Got token ', data.token, data.platform);
+		    $rootScope.token = data.token;
+		    //디바이스 토큰 값 받는곳
+		});
 	});
 	$rootScope.goHome = function(userType){
 		$ionicHistory.clearCache();
@@ -220,12 +220,26 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		} 
 	}
 	$rootScope.goto_with_clearHistory = function(goto_Href){
+		var no = 'Y'; // 매입&매출 백버튼 이슈사항 때문에 두번눌렸을 경우의 구분을 짓는 변수
 		$ionicHistory.clearCache();
 		$ionicHistory.clearHistory();
 		$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-		if(goto_Href == '#app/meachul_page') $rootScope.distinction = 'meachul';
-		else if(goto_Href == '#app/meaip_page') $rootScope.distinction = 'meaip';
-		location.href = goto_Href;
+		if(goto_Href == '#app/meachul_page'){
+			if($rootScope.distinction == 'meachul') var no = 'N';
+			else $rootScope.distinction = 'meachul';
+		} 
+		else if(goto_Href == '#app/meaip_page'){
+			if($rootScope.distinction == 'meaip') var no = 'N';
+			else $rootScope.distinction = 'meaip';
+		} 
+		// 
+		if(no == 'N'){
+			if($rootScope.distinction == 'meaip') $state.go('app.meaip_page', {}, {reload: true});
+			else $state.go('app.meachul_page', {}, {reload: true});
+		}else{
+			location.href = goto_Href;
+		}
+		
 	}
 	$rootScope.goto_with_backButton = function(goto_Href){
 		$ionicHistory.clearCache();
