@@ -1920,15 +1920,21 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	    $scope.reqparams.sDate = yy + "-" + mm + "-" + dd;
 	    $scope.date.sDate1=new Date(sdate1);
 
-	    if($scope.date.sDate1>$scope.date.eDate1){
+	    if($scope.date.sDate1 > $scope.date.eDate1){
 		    $scope.reqparams.eDate = yy + "-" + mm + "-" + dd;
 		    $scope.date.eDate1=new Date(sdate1);
 		}
+		console.log('sdate: ',  $scope.reqparams.sDate, 'sdate1: ',  $scope.date.sDate1, 'edate: ',  $scope.reqparams.eDate, 'edate1: ',  $scope.date.eDate1);
 	};
 
 	$scope.mydate2=function(edate1){
 		if(edate1 < $scope.date.sDate1){
-			edate1 = new Date($scope.date.sDate1);
+			var nday = new Date(edate1);  //선택2 날짜
+		    var yy = nday.getFullYear();
+		    var mm = nday.getMonth()+1;
+		    var dd = nday.getDate();
+			$scope.reqparams.sDate = yy + "-" + mm + "-" + dd;
+			$scope.date.sDate1=new Date(edate1);
 		}
 			var nday = new Date(edate1);  //선택2 날짜
 		    var yy = nday.getFullYear();
@@ -1940,6 +1946,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		    $scope.reqparams.eDate = yy + "-" + mm + "-" + dd;
 		    $scope.date.eDate1=new Date(edate1);
+		    console.log('sdate: ',  $scope.reqparams.sDate, 'sdate1: ',  $scope.date.sDate1, 'edate: ',  $scope.reqparams.eDate, 'edate1: ',  $scope.date.eDate1);
 	};
 
 	$scope.mydate1($scope.date.sDate1);

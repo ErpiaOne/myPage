@@ -10,19 +10,19 @@
   <ion-content>
     <div class="list list-inset">
       <label class="item item-input">
-        <span class="input-label psm_sang_01">&nbsp;&nbsp;매입액</span>
+        <span class="input-label psm_sang_01">&nbsp;&nbsp;<any ng-if="distinction == 'meaip'">매입액</any><any ng-if="distinction == 'meachul'">매출액</any></span>
         <input type="text" style="text-align:right" readonly value='총 {{totalnum}}개 / {{datas.totalsumprices}}원'><br>
       </label><br>
     </div>
 
     <div class="list list-inset">
-      &nbsp;<b>지급정보</b>
+      &nbsp;<b><any ng-if="distinction == 'meaip'">지급정보</any><any ng-if="distinction == 'meachul'">입금정보</any></b>
       <label class="item item-input">
-        <span class="input-label psm_sang_01">&nbsp;&nbsp;지급일</span>&nbsp;&nbsp;
+        <span class="input-label psm_sang_01">&nbsp;&nbsp;<any ng-if="distinction == 'meaip'">지급일</any><any ng-if="distinction == 'meachul'">입금일</any></span>&nbsp;&nbsp;
         <input type="date" style="text-align:right;" ng-disabled="tax_u" ng-model='date.payday1' ng-change="datechange(date.payday1,2)"><br>
       </label>
       <label class="item">
-        <span class="input-label psm_sang_01">지급구분</span>
+        <span class="input-label psm_sang_01"><any ng-if="distinction == 'meaip'">지급구분</any><any ng-if="distinction == 'meachul'">입금구분</any></span>
         <table>
           <tr>
             <td><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(0)' ng-model='payment[0].checked'>현금결제</ion-checkbox></td>
@@ -46,7 +46,7 @@
       </label><br>
 
       <label class="item item-input">
-        <span class="input-label psm_sang_01">&nbsp;&nbsp;지급액</span>
+        <span class="input-label psm_sang_01">&nbsp;&nbsp;<any ng-if="distinction == 'meaip'">지급액</any><any ng-if="distinction == 'meachul'">입금액</any></span>
         <input type="tel" ng-disabled="pay.use" style="text-align:right" min='0' value='0' ng-model='pay.payprice' fcsa-number="{ preventInvalidInput: true }" pattern="\d*">
         <span class="input-label psm_sang_01" >원</span><br>
       </label><br>
