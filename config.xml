@@ -16,6 +16,7 @@
   <allow-intent href="*://*www.erpia.net/*"/>
   <allow-intent href="*://*erpia2.godohosting.com/*"/>
   <allow-intent href="https://code.ionicframework.com/*"/>
+  <allow-navigation href="*" />
   <allow-navigation href="http://*/*"/>
   <allow-navigation href="https://*/*"/>
   <allow-navigation href="data:*"/>
@@ -32,6 +33,12 @@
   <feature name="InAppBrowser">
     <param name="ios-package" value="CDVInAppBrowser" />
   </feature>
+  <feature name="SplashScreen">
+    <param name="android-package" value="org.apache.cordova.SplashScreen" />
+</feature>
+<feature name="SplashScreen">
+    <param name="ios-package" value="CDVSplashScreen" />
+</feature>
   <platform name="android">
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>
