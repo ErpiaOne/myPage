@@ -984,15 +984,31 @@ return{
 					}, function(response){
 						return $q.reject(response.data);
 					})
-		}, detailSet: function(admin_code, userid, date, ger, mejang){
+		}, detailSet: function(admin_code, userid, date, ger, mejang, pageCnt, todate){
 				console.log("MLookupService and detailSet");
+				if(todate == date.eDate) date.eDate = 'today';
+				if(todate == date.sDate) date.sDate = 'today';
 
-				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt=1&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
+				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
+				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
+
+				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';				
+				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind;
 				console.log(url, '?', data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
+							if(response.data == '<!--Parameter Check-->'){
+								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+								else alert('조회된 데이터가 없습니다.');
+							}else{
+								for(var i=0; i<response.data.list.length; i++){
+									if(response.data.list[i].G_Name.length>=10||response.data.list[i].GerName.length>=7){
+										response.data.list[i].G_Name=response.data.list[i].G_Name.substr(0,9)+'...';
+										response.data.list[i].GerName=response.data.list[i].GerName.substr(0,9)+'...';
+									}
+								}
+							}	
 							return response.data;
 						}else{
 							return $q.reject(response.data);
@@ -1000,7 +1016,7 @@ return{
 					}, function(response){
 						return $q.reject(response.data);
 					})
-		}, lqdetail_set: function(admin_code, userid, date, ger, mejang, gubun,todate){
+		}, lqdetail_set: function(admin_code, userid, date, ger, mejang, gubun, todate){
 				console.log("MLookupService and latelydetail_set");
 				if(gubun == 1){
 					console.log('최근등록');
@@ -1010,10 +1026,13 @@ return{
 					var mode = 'Reg_Select_OptSet_Rapid';
 				}
 				if(todate == date.eDate) date.eDate = 'today';
-				else if(todate == date.sDate) date.sDate = 'today';
+				if(todate == date.sDate) date.sDate = 'today';
+				console.log('오늘이랑 같나요??', date.sDate, date.eDate, todate)
+				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_OptSet';
+				else var kind = 'ERPia_Sale_Select_OptSet';
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=ERPia_Meaip_Select_OptSet&Mode=' + mode + '&GerCode=' + escape(ger.code) + '&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang;
+				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind + '&Mode=' + mode + '&GerCode=' + escape(ger.code) + '&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang;
 				console.log(url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
@@ -1070,55 +1089,16 @@ return{
 						return $q.reject(response.data);
 					})
 		}
+		
 
 	};
 })
-//erpia.net/include/ERPiaApi_TestProject.asp?Admin_Code=onz&UserId=yyk0628&Kind=ERPia_Meaip_Sel_G_Lately&Mode=Sel_GerGoods_Search_Lately&G_Gubun=Ger
-//erpia.net/include/ERPiaApi_TestProject.asp?Admin_Code=onz&UserId=yyk0628&Kind=ERPia_Sale_Sel_G_Lately&Mode=Sel_GerGoods_Search_Lately&G_Gubun=Ger
 
 /* 매입 & 매출 등록 & 수정 통합 */
 .factory('MiuService', function($http, ERPiaAPI, $q, $cordovaToast, $rootScope){
 return{
-	company_lately: function(admin_code, userid, gubun){
-				console.log("MiuService and company_lately");
-				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Sel_G_Lately';
-				else var kind = 'ERPia_Sale_Sel_G_Lately';
-				
-				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Sel_GerGoods_Search_Lately&G_Gubun=' + gubun;
-				return $http.get(url + '?' + data)
-					.then(function(response){
-						if(typeof response == 'object'){
-							return response.data;
-						}else{
-							return $q.reject(response.data);
-						}
-					}, function(response){
-						return $q.reject(response.data);
-					})
-	
-	}, company_latelysave: function(admin_code, userid, gubun, username){
-				console.log("MiuService and company_latelysave");
-				var gername = escape(username);
-				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Sel_G_Lately';
-				else var kind = 'ERPia_Sale_Sel_G_Lately';
-				
-				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Reg_Select_GerGoods_Search_Lately&G_Gubun=' + gubun + '&G_Gubun_Value=' + gername;
-				return $http.get(url + '?' + data)
-					.then(function(response){
-						if(typeof response == 'object'){
-							return response.data;
-						}else{
-							return $q.reject(response.data);
-						}
-					}, function(response){
-						return $q.reject(response.data);
-					})
-	
-	}, company_sear: function(admin_code, userid, com_name){
+	company_sear: function(admin_code, userid, com_name){
 				console.log("MiuService and company_sear");
-				
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_GerName';
 				else var kind = 'ERPia_Sale_Select_GerName';
 				
@@ -1135,109 +1115,110 @@ return{
 						return $q.reject(response.data);
 					})
 	
-	}, company_detail_sear: function(admin_code, userid, GerCode){
-			console.log("MiuService and company_detail_sear");
-			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_GerName';
-			else var kind = 'ERPia_Sale_Select_GerName';
-			
-			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-			var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_Hangul&GerName=' + com_name + '&pageCnt=1&pageRow=5';
-			return $http.get(url + '?' + data)
-				.then(function(response){
-					if(typeof response == 'object'){
-							if(response.data != '<!--Parameter Check-->'){
-								return response.data;
-							}else{
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되어있는 초기값이 없습니다.', 'short', 'center');
-								else console.log('저장되어있는 초기값이 없습니다.');
+	},company_detail_sear: function(admin_code, userid, GerCode){
+				console.log("MiuService and company_detail_sear");
+				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_GerName';
+				else var kind = 'ERPia_Sale_Select_GerName';
+				
+				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=select_detail&GerCode=' + GerCode;
+				return $http.get(url + '?' + data)
+					.then(function(response){
+						if(typeof response == 'object'){
+								if(response.data != '<!--Parameter Check-->'){
+									return response.data;
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되어있는 초기값이 없습니다.', 'long', 'center');
+									else console.log('저장되어있는 초기값이 없습니다.');
+										var data = {
+											G_Code : '업체정보가없습니다.',
+											G_Name : '',
+											G_DanGa_Gu : '',
+											Use_Recent_DanGa_YN : '',
+											G_Tel : '',
+											G_Juso : '',
+											Recent_purchase_date : '',
+											Recent_sales_date : ''
+									};
+										
+										console.log('확인=>', data);
+										return data;
+								}
 
-								var data = {
-									G_Code : '업체정보가없습니다.',
-									G_Name : '',
-									G_DanGa_Gu : '',
-									Use_Recent_DanGa_YN : '',
-									G_Tel : '',
-									G_Juso : '',
-									Recent_purchase_date : '',
-									Recent_sales_date : ''
-								};
-								return data;
-							}
-
-				}
-				}, function(response){
-					return $q.reject(response.data);
-				})
-	
+					}
+					}, function(response){
+						return $q.reject(response.data);
+					})
+		
 	}, goods_sear: function(admin_code, userid, mode, goods_name, Ccode, pageCnt){
-			console.log("MiuService and goods_sear");
-			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Goods';
-			else var kind = 'ERPia_Sale_Select_Goods';
+		console.log("MiuService and goods_sear");
+		if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Goods';
+		else var kind = 'ERPia_Sale_Select_Goods';
 
-			switch (mode) {
-			    case 'Select_GoodsName' : console.log('Select_GoodsName'); mode = 'Select_Hangul';  var dataDetail = '&GoodsName='+goods_name; break;
-			    case 'Select_G_OnCode' : console.log('Select_G_OnCode'); var dataDetail = '&G_OnCode='+goods_name; break;
-			    case 'Select_G_Code' : console.log('Select_G_Code'); var dataDetail = '&GoodsCode='+goods_name; break;
-			    case 'Select_GI_Code' : console.log('Select_GI_Code'); var dataDetail = '&GI_Code='+goods_name; break;
+		switch (mode) {
+		    case 'Select_GoodsName' : console.log('Select_GoodsName'); mode = 'Select_Hangul';  var dataDetail = '&GoodsName='+goods_name; break;
+		    case 'Select_G_OnCode' : console.log('Select_G_OnCode'); var dataDetail = '&G_OnCode='+goods_name; break;
+		    case 'Select_G_Code' : console.log('Select_G_Code'); var dataDetail = '&GoodsCode='+goods_name; break;
+		    case 'Select_GI_Code' : console.log('Select_GI_Code'); var dataDetail = '&GI_Code='+goods_name; break;
 
-			    default : console.log('셀렉트 된 것이 없습니다.'); break;
-			}
-			
-			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-			var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind + '&Mode=' + mode + dataDetail + '&Changgo_Code=' + Ccode + '&pageCnt=' +pageCnt+ '&pageRow=10';
-			console.log(data);
-			return $http.get(url + '?' + data)
-				.then(function(response){
-					console.log('dmadma?=', response.data);
-					if(typeof response == 'object'){
-						if(response.data == '<!--Parameter Check-->'){
-							if(pageCnt > 1){
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('마지막 데이터 입니다.', 'short', 'center');
-								else alert('마지막 데이터 입니다.');
-							}else{
-								if(ERPiaAPI.toast == 'Y'){
-									$cordovaToast.show('일치하는 정보가 없습니다.', 'short', 'center');
-								} 
-								else{
-									alert('일치하는 정보가 없습니다.');
-									console.log('=======================>',response);
-								} 
-
-							}
+		    default : console.log('셀렉트 된 것이 없습니다.'); break;
+		}
+		
+		var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+		var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind + '&Mode=' + mode + dataDetail + '&Changgo_Code=' + Ccode + '&pageCnt=' +pageCnt+ '&pageRow=10';
+		console.log(data);
+		return $http.get(url + '?' + data)
+			.then(function(response){
+				console.log('dmadma?=', response.data);
+				if(typeof response == 'object'){
+					if(response.data == '<!--Parameter Check-->'){
+						if(pageCnt > 1){
+							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('마지막 데이터 입니다.', 'short', 'center');
+							else alert('마지막 데이터 입니다.');
 						}else{
-							for(var i=0; i<response.data.list.length; i++){
-								var G_Name1='';
-								if(response.data.list[i].G_Name.length > 13){
-									for(var j=0; j<response.data.list[i].G_Name.length; j += 13){
-										if(j == 0){
-											G_Name1 = G_Name1 + response.data.list[i].G_Name.substring(0,13); 
-										}else if(j+13 > response.data.list[i].G_Name.length){
-											G_Name1 = G_Name1 + '<br>' + response.data.list[i].G_Name.substring(j,response.data.list[i].G_Name.length); 
+							if(ERPiaAPI.toast == 'Y'){
+								$cordovaToast.show('일치하는 정보가 없습니다.', 'short', 'center');
+							} 
+							else{
+								alert('일치하는 정보가 없습니다.');
+								console.log('=======================>',response);
+							} 
+
+						}
+					}else{
+						for(var i=0; i<response.data.list.length; i++){
+							var G_Name1='';
+							if(response.data.list[i].G_Name.length > 13){
+								for(var j=0; j<response.data.list[i].G_Name.length; j += 13){
+									if(j == 0){
+										G_Name1 = G_Name1 + response.data.list[i].G_Name.substring(0,13); 
+									}else if(j+13 > response.data.list[i].G_Name.length){
+										G_Name1 = G_Name1 + '<br>' + response.data.list[i].G_Name.substring(j,response.data.list[i].G_Name.length); 
+										response.data.list[i].G_Name1 = G_Name1;
+									}else{
+										G_Name1 = G_Name1 + '<br>' + response.data.list[i].G_Name.substring(j,j+13);
+										if(response.data.list[i].G_Name.length == j+13){
 											response.data.list[i].G_Name1 = G_Name1;
-										}else{
-											G_Name1 = G_Name1 + '<br>' + response.data.list[i].G_Name.substring(j,j+13);
-											if(response.data.list[i].G_Name.length == j+13){
-												response.data.list[i].G_Name1 = G_Name1;
-											}
 										}
 									}
-								}else{
-									G_Name1 = response.data.list[i].G_Name;
-									response.data.list[i].G_Name1 = G_Name1;
 								}
+							}else{
+								G_Name1 = response.data.list[i].G_Name;
+								response.data.list[i].G_Name1 = G_Name1;
 							}
 						}
-						return response.data;
-					}else{
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('일치하는 정보가 없습니다.', 'short', 'center');
-						else alert('일치하는 정보가 없습니다.2');
-						return $q.reject(response);
 					}
-				}, function(response){
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('일치하는 정보가 없습니다.', 'short', 'center');
-						else alert('일치하는 정보가 없습니다.3');
-						return $q.reject(response);
-				})
+					return response.data;
+				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('일치하는 정보가 없습니다.', 'short', 'center');
+					else alert('일치하는 정보가 없습니다.2');
+					return $q.reject(response);
+				}
+			}, function(response){
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('일치하는 정보가 없습니다.', 'short', 'center');
+					else alert('일치하는 정보가 없습니다.3');
+					return $q.reject(response);
+			})
 
 	}, com_Dn : function(admin_code, userid, goods_code, ger_code,i,bar){
 			console.log("MiuService and com_Dn");
@@ -1508,25 +1489,6 @@ return{
 			console.log("MiuService and seq_del");
 			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Delete_Goods&Mode=Delete_Meaip&iL_No=' + no;
 			else var kind = 'ERPia_Sale_Delete_Goods&Mode=Delete_MeaChul&Sl_No=' + no;
-			
-			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-			var data = 'Admin_Code=' + admin_code +'&UserId=' + userid + '&Kind='+ kind;
-			
-			return $http.get(url + '?' + data)
-				.then(function(response){
-					if(typeof response == 'object'){
-						return response.data;
-					}else{
-						return $q.reject(response.data);
-					}
-				}, function(response){
-					return $q.reject(response.data);
-				})
-
-	}, pay_delete : function(admin_code, userid, acno){
-			console.log("MiuService and pay_delete", admin_code, userid,acno);
-			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Delete_Goods&Mode=Delete_Acct_Info&AC_No=' + acno;
-			else var kind = 'ERPia_Sale_Delete_Goods&Mode=Delete_Acct_Info&AC_No=' + acno;
 			
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + userid + '&Kind='+ kind;

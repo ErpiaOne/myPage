@@ -698,13 +698,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 // 프로그램정보 컨트롤러
 .controller('configCtrl_Info', function($scope, $rootScope) {
 	// 기본정보를 디폴트 값으로 넣었다.
-	$scope.AppInfo = {currentVer:"1.0.0", deviceInfo:"webView"};
-	console.log(ionic.Platform);
+	$scope.AppInfo = {currentVer:"1.0.0"};
+	$scope.deviceInfo = "";
+	console.log(ionic.Platform.version(), ionic.Platform.device().cordova, ionic.Platform.device().manufacturer, ionic.Platform.device().model, ionic.Platform.device().platform, ionic.Platform.device().uuid);
 	// 여기서 정보를 가져와야하는데 안가져와짐.. 해결해주길...
-	if(ionic.Platform.length > 0){
-		$scope.AppInfo.currentVer = ionic.Platform.version();
-		$scope.AppInfo.deviceInfo = ionic.Platform.device();	
-	}
+		var deviceInformation = ionic.Platform.device();
+		$scope.AppInfo.currentVer = parseInt(ionic.Platform.version());
+		$scope.deviceInfo = { 
+		 	cordova : "cordova버전 : "+ ionic.Platform.device().cordova,
+		 	manufacturer : "제조사 : "+ ionic.Platform.device().manufacturer,
+		 	model : "모델명 : "+ionic.Platform.device().model,
+		 	platform : "플랫폼 : "+ ionic.Platform.device().platform,
+		 	uuid : "uuid : " + ionic.Platform.device().uuid,
+			version : "디바이스버전 : " + ionic.Platform.device().version
+		 };
+	
+	console.log('>>>>>',$scope.AppInfo.currentVer, '<<<<<<<<<', $scope.deviceInfo)
 })// 공지사항 컨트롤러
 .controller('configCtrl_Notice', function($scope, $ionicPopup, $ionicHistory, NoticeService) {
 	$scope.myGoBack = function() {
@@ -2174,7 +2183,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		  		console.log($scope.chit_lists.length);
 		  		
 		  		if($scope.maxover==0){
-					$scope.pageCnt+=1;
+				    $scope.pageCnt+=1;
 				    $scope.moreloading=1; 
 
 					MLookupService.chit_lookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams, $scope.company.name, $scope.pageCnt)
@@ -2411,15 +2420,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.chit_lists = [];//조회배열 초기화
 				for(var m = 0; m < data.list.length; m++){
 					$scope.chit_lists.push(data.list[m]);
-				}
-		        for (var i = 0; i < $scope.chit_lists.length; i++) {
-		        	if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
-		        		$scope.chit_atmSum = parseInt($scope.chit_atmSum) + parseInt($scope.chit_lists[i].Meaip_Amt);
-		        		$scope.chit_jiSum = parseInt($scope.chit_jiSum) + parseInt($scope.chit_lists[i].IpJi_Amt);
-		        	}else{ /* 매출일 경우 */
-		        		$scope.chit_atmSum = parseInt($scope.chit_atmSum) + parseInt($scope.chit_lists[i].MeaChul_Amt);
-		        		$scope.chit_jiSum = parseInt($scope.chit_jiSum) + parseInt($scope.chit_lists[i].IpJi_Amt);
-		        	}
 				}
 				$scope.detailSet_modal.hide();
 				//최근등록
