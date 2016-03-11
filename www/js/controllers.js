@@ -2045,7 +2045,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     $scope.company_lately =  function(){
     		if($scope.company.username.length == 0){
     			var gubun = 'Ger'
-    			MiuService.company_lately($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun)
+    			MiuService.companyAndgoods_lately($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun)
 			.then(function(data){
 				console.log(data);
 				if(data != '<!--Parameter Check-->'){
@@ -2070,15 +2070,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
     }
     
-    /*거래처창고 조회후 값저장*/
-    $scope.company_Func=function(gname,gcode,gdam){
-    	$scope.companyDatas = ''; // data배열 초기화
-        $scope.company.name=gname;
-        $scope.company.username = gname;
+   	 /*거래처창고 조회후 값저장*/
+    	$scope.company_Func=function(gname,gcode,gdam){
+	    	$scope.companyDatas = ''; // data배열 초기화
+	       $scope.company.name=gname;
+	       $scope.company.username = gname;
 		$scope.company.code=gcode;
 		$scope.company.dam=gdam;
+       }
 
-    }
 	/*---------로딩화면-----------*/
 	$rootScope.loadingani=function(){
 	    $ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
@@ -2101,7 +2101,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     		$scope.maxover=0;
     		var gubun = 'Ger';
     		console.log('$scope.company.username');
-    		MiuService.company_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun, $scope.company.username)
+    		MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun, $scope.company.username)
 		.then(function(data){
 			console.log(data);
 		})
@@ -3119,15 +3119,44 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     	$scope.pageCnt=1;
     	$scope.maxover=0;
     	var goodsname = escape($scope.user.userGoodsName);
+
     	MiuService.goods_sear($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.user.userMode, goodsname, $scope.setupData.basic_Ch_Code,$scope.pageCnt)
-		.then(function(data){
-			console.log('컨트롤러=>',data);
+	.then(function(data){
+		console.log('컨트롤러=>',data);
+
+		if(data !=  '<!--Parameter Check-->'){ // 최근 상품 거래 조회목록에 저장.
+			var gubun = 'Goods';
+			MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun,goodsname)
+			.then(function(data){
+				console.log(data);
+				if(data != '<!--Parameter Check-->'){
+					$scope.goodlately_slists = data.list;
+				}
+			})
+
 			$scope.goodslists = data.list;
-		})
+		}
+	})
 		if($scope.checkedDatas.length != 0){
 			$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
 		}
     	$scope.goodsmodal.show();
+    }
+
+    /*상품 최근 검색 조회*/
+    $scope.goods_lately = function(){
+    	console.log('안녕!');
+    	if($scope.user.userGoodsName.length == 0){
+    		console.log('실행할것.');
+    		var gubun = 'Goods';
+    		MiuService.companyAndgoods_lately($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun)
+			.then(function(data){
+				console.log(data);
+				if(data != '<!--Parameter Check-->'){
+					$scope.goodlately_slists = data.list;
+				}
+			})
+    	}
     }
 //------------------상품 더보기(페이징)------------------------------------------
     /* 더보기 버튼 클릭시 */

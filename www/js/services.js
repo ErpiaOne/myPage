@@ -1073,14 +1073,12 @@ return{
 
 	};
 })
-//erpia.net/include/ERPiaApi_TestProject.asp?Admin_Code=onz&UserId=yyk0628&Kind=ERPia_Meaip_Sel_G_Lately&Mode=Sel_GerGoods_Search_Lately&G_Gubun=Ger
-//erpia.net/include/ERPiaApi_TestProject.asp?Admin_Code=onz&UserId=yyk0628&Kind=ERPia_Sale_Sel_G_Lately&Mode=Sel_GerGoods_Search_Lately&G_Gubun=Ger
 
 /* 매입 & 매출 등록 & 수정 통합 */
 .factory('MiuService', function($http, ERPiaAPI, $q, $cordovaToast, $rootScope){
 return{
-	company_lately: function(admin_code, userid, gubun){
-				console.log("MiuService and company_lately");
+	companyAndgoods_lately: function(admin_code, userid, gubun){
+				console.log("MiuService and companyAndgoods_lately");
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Sel_G_Lately';
 				else var kind = 'ERPia_Sale_Sel_G_Lately';
 				
@@ -1097,9 +1095,11 @@ return{
 						return $q.reject(response.data);
 					})
 	
-	}, company_latelysave: function(admin_code, userid, gubun, username){
-				console.log("MiuService and company_latelysave");
-				var gername = escape(username);
+	}, companyAndgoods_latelysave: function(admin_code, userid, gubun, username){
+				console.log("MiuService and companyAndgoods_latelysave");
+				
+				if(gubun == 'Ger') var gername = escape(username);
+				
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Sel_G_Lately';
 				else var kind = 'ERPia_Sale_Sel_G_Lately';
 				
