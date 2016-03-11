@@ -71,7 +71,7 @@ div.col4{width:30%; color: #fff;}
       </table>
 
       <any ng-repeat="x in chit_lists" >
-        <table on-swipe-up="search_more()" style="border-top: 1px solid #e0e0e0; font-size:12px">
+        <table on-swipe-up="search_more(searchmode)" style="border-top: 1px solid #e0e0e0; font-size:12px">
           <tbody ng-click="chit_de(x.Sl_No)">
             <tr>
               <td class="resulttd1-1" rowspan="2" align="center" style="padding-top: 8px;">{{$index+1}}.</td>
@@ -99,8 +99,8 @@ div.col4{width:30%; color: #fff;}
   <ion-footer-bar align-title="left" style="background: #795e81; height: 50px;" width="100%">
     <div class="col1" >기간<br>현황</div>
     <div class="col2">&nbsp;</div>
-    <div class="col3" style="font-size:12px;">매출액 {{chit_atmSum | number:0}}원<br>지급액 {{chit_jiSum | number:0}}원</div>
-    <div class="col4" ng-if='balance == true' style="font-size:10px; margin-left:-48px;">이월잔액 {{money.emoon | number:0}}원<br>총액 {{money.hap | number:0}}원</div>
+    <div class="col3" style="font-size:12px;">입금액 {{chit_atmSum | number:0}}원</div>
+    <div class="col4" ng-if='balance == true' style="font-size:10px; margin-left:-48px;">이월잔액 {{money.emoon | number:0}}원<br>총잔액 {{money.hap | number:0}}원</div>
   </ion-footer-bar>
 
 </ion-view>
