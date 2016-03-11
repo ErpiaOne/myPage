@@ -12,7 +12,8 @@
 	<ion-content overflow-scroll="false">
 		<div style="height: 100%;">
 			<ion-list show-delete="data.showDelete">
-				<ion-item	ng-repeat="item in items" 
+				<ion-item ng-if="items==undefined">새로운소식이 없습니다.</ion-item>
+				<ion-item  ng-if="items!==undefined"	ng-repeat="item in items" 
 							style="padding:0px;"
 							item="item"
 							class="item-remove-animate item-icon-right"

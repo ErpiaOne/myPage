@@ -19,7 +19,7 @@
 		  <table width="100%" class="list list-inset"style="align:center;vertical-align:middle;">
 			<tr>
 			  <td width="20%">거래처</td>
-			  <td width="40%"><input type="search"ng-model="datas.userGerName" placeholder="거래처명검색" size="25" ng-disabled="{{sbu}}" style="border:1px solid #eee;" ng-change="company_auto()"></td>
+			  <td width="40%"><input type="search" ng-click='company_lately()' ng-model="datas.userGerName" placeholder="거래처명검색" size="25" ng-disabled="{{sbu}}" style="border:1px solid #eee;" ng-change="company_auto()"></td>
 			  <td width="20%">
 			    <i class='ion-close-circled' style='margin-left:-38px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size:25px;' ng-if="sbu == false" ng-click='clearcompany()'></i>
 			    <i class='ion-help-circled' style='font-size:35px;vertical-align:middle;' ng-click='gerDetail()'></i>
@@ -28,7 +28,8 @@
 		  </table>
 		  <!-- 거래처 자동검색결과 div -->
 		  <div class="list">
-			<li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code);checkup()">{{x.G_Name}}</li>
+		    <li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code);checkup()">{{x.G_Name}}</li>
+		    <li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code);checkup()">{{x.Search_Ger_Name}}</li>
 		  </div>
 
 		  <label class="item item-input" style="border:0;">
@@ -64,12 +65,14 @@
 				<td>
 				  &nbsp;
 				  <select ng-model="user.userMode" ng-change="modeselect()">
-				    <option ng-repeat="x in modeselectlist" value="{{x.Code}}" ng-selected="user.userMode == x.Code">{{x.Name}}</option>
+					<option ng-repeat="x in modeselectlist" value="{{x.Code}}" ng-selected="user.userMode == x.Code">{{x.Name}}</option>
 				  </select>&nbsp;&nbsp;
 				</td>
-				<td><input type="text" placeholder="상품정보를 입력하세요" size="20" style="border:1px solid #eee;" ng-model="user.userGoodsName"></td>
-				<td><i class="ion-search" style="font-size:30px" ng-click="goods_searchM()"></i></td>
 				<td><i class="ion-ios-barcode" style="font-size:30px" ng-click="scanBarcode()"></i></td>
+			  </tr>
+			  <tr>
+				<td><input type="text" placeholder="상품정보를 입력하세요" size="30" style="border:1px solid #eee;" ng-model="user.userGoodsName"></td>
+				<td><i class="ion-search" style="font-size:30px" ng-click="goods_searchM()"></i></td>
 			  </tr>
 			</table>
 			<hr>

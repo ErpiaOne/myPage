@@ -9,13 +9,13 @@
       <tr>
         <td style="text-align:center">상품정보</td>
         <td><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" size="20" ng-model="user.userGoodsName"></td>
-        <td><i class="ion-search" style="font-size:30px" ng-click="goods_searchM()"></i></td>
+        <td><i class="ion-search" style="font-size:30px" ng-click="goods_searchM(1)"></i></td>
       </tr>
     </table>
   </ion-header-bar>
 
   <ion-content>
-  <li class="item" ng-repeat="x in goodlately_slists" ng-click="company_Func2(x.Search_Ger_Name)">{{x.Search_Goods_Name}}</li>
+      <li class="item" ng-repeat="x in goodlately_slists"  ng-click="goods_lately_serarch(x.Search_Goods_Name)">{{x.Search_Goods_Name}}</li>
     <div class="list list-inset" style="align:center;" >
       <table width="100%" style="text-align:center">
         <tr>

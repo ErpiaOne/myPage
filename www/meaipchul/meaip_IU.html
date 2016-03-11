@@ -21,7 +21,7 @@
 		    <tr>
 			  <td width="20%">거래처</td>
 			  <td width="40%">
-			    <input type="search" ng-model="datas.userGerName" ng-disabled="{{sbu}}" placeholder="거래처명검색" size="25" style="border:1px solid #eee;" ng-change="company_auto()">
+			    <input type="search" ng-click='company_lately()' ng-model="datas.userGerName" ng-disabled="{{sbu}}" placeholder="거래처명검색" size="25" style="border:1px solid #eee;" ng-change="company_auto()">
 			  </td>
 			  <td width="20%">
 			    <i class='ion-close-circled' style='margin-left:-38px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size:25px;' ng-if="sbu == false" ng-click='clearcompany()'></i>
@@ -32,6 +32,7 @@
 
 		  <div class="list">
 		    <li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code);checkup()">{{x.G_Name}}</li>
+		    <li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code);checkup()">{{x.Search_Ger_Name}}</li>
 		  </div>
 
 		  <label class="item item-input" style="border:0; padding-left: 0;">
