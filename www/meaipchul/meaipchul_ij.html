@@ -16,9 +16,10 @@
     </div>
 
     <div class="list list-inset">
-      &nbsp;<b><any ng-if="distinction == 'meaip'">지급정보</any><any ng-if="distinction == 'meachul'">입금정보</any></b>
+      &nbsp;<b>지급정보</b>
+      <span ng-if='pay.delete == false'><button ng-click='paydelete()'>삭제</button></span>
       <label class="item item-input">
-        <span class="input-label psm_sang_01">&nbsp;&nbsp;<any ng-if="distinction == 'meaip'">지급일</any><any ng-if="distinction == 'meachul'">입금일</any></span>&nbsp;&nbsp;
+        <span class="input-label psm_sang_01">&nbsp;&nbsp;지급일</span>&nbsp;&nbsp;
         <input type="date" style="text-align:right;" ng-disabled="tax_u" ng-model='date.payday1' ng-change="datechange(date.payday1,2)"><br>
       </label>
       <label class="item">
@@ -31,7 +32,7 @@
           <tr>
             <td><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(2)' ng-model='payment[2].checked'>어음결제</ion-checkbox></td>
             <td><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(3)' ng-model='payment[3].checked'>카드결제</ion-checkbox></td>
-          </tr>
+          </tr>   
         </table>
       </label><br>
     </div>
