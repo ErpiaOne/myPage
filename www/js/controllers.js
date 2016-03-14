@@ -22,30 +22,29 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
 	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI){
 
+	// $scope.html2image = function(){
+	// 		console.log('image test');
+	// 		var element = $("#html-content-holder"); // global variable
+	// 		var getCanvas; // global variable
 
-	$scope.html2image = function(){
-			console.log('image test');
-			var element = $("#html-content-holder"); // global variable
-			var getCanvas; // global variable
+	// 			html2canvas(element, {
+	// 				onrendered: function (canvas) {
+	// 					$("#previewImage").append(canvas);
+	// 					getCanvas = canvas;
+	// 					console.log(getCanvas);
+	// 					var imgageData = getCanvas.toDataURL("image/png");
+	// 					// Now browser starts downloading it instead of just showing it
+	// 					var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+	// 					$("#btn-Convert-Html2Image").attr("download", "your_pic_name.png").attr("href", newData);
+	// 					console.log('data=',newData);
+	// 				}
+	// 			});
 
-				html2canvas(element, {
-					onrendered: function (canvas) {
-						$("#previewImage").append(canvas);
-						getCanvas = canvas;
-						console.log(getCanvas);
-						var imgageData = getCanvas.toDataURL("image/png");
-						// Now browser starts downloading it instead of just showing it
-						var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-						$("#btn-Convert-Html2Image").attr("download", "your_pic_name.png").attr("href", newData);
-						console.log('data=',newData);
-					}
-				});
-
-			console.log(element);
-			// $("#btn-Preview-Image").on('click', function () {
+	// 		console.log(element);
+	// 		// $("#btn-Preview-Image").on('click', function () {
 			
 
-		}
+	// 	}
 
 
 	$rootScope.loginState = "R"; //R: READY, E: ERPIA LOGIN TRUE, S: SCM LOGIN TRUE
@@ -559,29 +558,75 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
 	, tradeDetailService, ERPiaAPI){
 
-	$scope.htmlimage = function(){
-		console.log('image test');
-		var element = $("#divTradeDetail_Print_Area"); // global variable
-		var getCanvas; // global variable
 
-			html2canvas(element, {
-				onrendered: function (canvas) {
-					$("#viewImage").append(canvas);
-					alert(canvas);
-					getCanvas = canvas;
-					console.log(getCanvas);
-					var imgageData = getCanvas.toDataURL("image/png");
-					// Now browser starts downloading it instead of just showing it
-					var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-					$("#btn-Convert-HtmlImage").attr("download", "your_pic_name.png").attr("href", newData);
-				}
-			});
 
-		console.log(element);
+	$scope.html3image = function(){
+		console.log('image test22222');
+		var element = document.getElementById('divTradeDetail_Print_Area');
+
+		// var style = clone.style;
+		// style.position = 'relative';
+		// style.top = window.innerHeight + 'px';
+		// style.left = 0;
+
+		console.log('요기 =>',element);
+		document.body.appendChild(element);
+		html2canvas(element, {
+		      onrendered: function(canvas) {
+			console.log(canvas);
+		      var imgageData = canvas.toDataURL("image/jpg");
+
+			var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+			$("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
+		    }
+		});
+			// html2canvas(element, {
+			// 	onrendered: function (canvas) {
+			// 		console.log('죠기=>',canvas);
+
+			// 		$("#previewImage3").append(canvas);
+			// 		getCanvas = canvas;
+			// 		document.body.appendChild(getCanvas);
+   //     				// document.body.removeChild(element);
+			// 		var imgageData = getCanvas.toDataURL("image/jpg");
+
+			// 		var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+			// 		$("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
+			// 	}
+			// });
+
+
 		// $("#btn-Preview-Image").on('click', function () {
-		
-
 	}
+// $scope.html3image = function(){
+// 	var element = document.getElementById("divTradeDetail_Print_Area"),
+// 	    				useWidth      = 1100,
+// 	    				useHeight     = 1100;
+
+// 	// position it relatively, just below the fold..
+// 	element.style.position = 'relative';
+// 	element.style.left = 0;
+
+// 	html2canvas(element, {
+// 	    width: useWidth,
+// 	    height: useHeight,
+// 	    onrendered: function(canvas) {
+
+// 	       // restore the old offscreen position
+// 	      element.style.position = 'absolute';
+// 	      element.style.top = 0;
+// 	      element.style.left = "-9999px"
+// 	      $("#previewImage3").append(canvas);
+// 	      console.log(canvas);
+// 	      var imgageData = canvas.toDataURL("image/jpg");
+
+// 		var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+// 		$("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
+
+// 	    }
+
+// 	});
+// }
 
 	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
 		scope : $scope

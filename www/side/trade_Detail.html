@@ -5,20 +5,17 @@
 			<button class="button button-clear" ng-click="close()">
 				닫기
 			</button>
+			<a id="btn-Convert-Html3Image"  ng-click='html3image()' href="#">Download</a>
 		</div>
 	</ion-header-bar>
 	<ion-view view-title="거래명세서">
 		<ion-content class="padding2">
-		<!-- <button class="button button-clear" id='bububu' ng-click="htmlimage()"  href="#">
-				저장
-			</button> -->
-			
-			<ion-scroll zooming="true" direction="xy" style="width:100%; height:100%;">
-			<!-- <a id="btn-Convert-HtmlI2mage"  ng-click='htmlimage()' href="#">Download</a>
-			<div id="viewImage">
-  			</div> -->
-  			
-				<div id="divTradeDetail_Print_Area" style="width: 1110px; height: 850px;" >
+		<div id="previewImage3">
+    		</div>
+
+			<ion-scroll zooming="true" direction="xy" style="width:100%; height:100%;" >
+				<div  style="width: 1110px; height: 850px;" >
+<div id="divTradeDetail_Print_Area" ng-click='html3image()'>
 					<link href="css/lhkTradeDetail.css" rel="stylesheet">
 					<ion-item ng-repeat="detail in detail_items">
 						<table width=1080>
@@ -334,6 +331,7 @@
 						<!-- <button class='button button-block psm_login_ink' ng-click='print()'>출력하기</button>
 						<button class='button button-block psm_login_ink' ng-click='createPDF()'>PDF</button> -->
 					</ion-item>
+</div>
 				</div>
 			</ion-scroll>
 		</ion-content>
