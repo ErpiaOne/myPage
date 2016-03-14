@@ -34,7 +34,7 @@ div.col4{width:30%; color: #fff;}
         <div style="float: left; width:76%;">
           <input type="text" ng-click='company_lately()' ng-model="company.username" placeholder="거래처명 입력" style="width: 100%; height: 30px; background: #b572a0; border:0; border-bottom: 1px solid #fff; color: #fff;" ng-change="company_auto()">
           <li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code,x.G_GDamdang)">{{x.G_Name}}</li>
-          <li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name)">{{x.Search_Ger_Name}}</li>
+          <li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code,x.G_GDamdang)">{{x.Search_Ger_Name}}</li>
         </div>
         <div style="float: left; width:10%;">
           <i class='ion-close-circled' style='margin-left:-38px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size:25px; color:#fff' ng-click='clearcompany()'></i>
@@ -99,8 +99,8 @@ div.col4{width:30%; color: #fff;}
   <ion-footer-bar align-title="left" style="background: #795e81; height: 50px;" width="100%">
     <div class="col1" >기간<br>현황</div>
     <div class="col2">&nbsp;</div>
-    <div class="col3" style="font-size:12px;">지급액 {{chit_jiSum | number:0}}원</div>
-    <div class="col4" ng-if='balance == true' style="font-size:10px; margin-left:-48px;">이월잔액 {{money.emoon | number:0}}원<br>매출잔액 {{money.hap | number:0}}원</div>
+    <div class="col3" style="font-size:12px;">매입액 {{money.meaipchulsum | number:0}}원<br><any ng-if='balance == true'>지급액 {{chit_jiSum | number:0}}원</any></div>
+    <div class="col4" ng-if='balance == true' style="font-size:10px; margin-left:-48px;">이월잔액 {{money.emoon | number:0}}원<br>총잔액 {{money.hap | number:0}}원</div>
   </ion-footer-bar>
 
 </ion-view>
