@@ -7,6 +7,10 @@
 	</ion-nav-bar>
 	<ion-content class="padding2">
 		<body ng-app="ngAnimate">
+			<br>
+			<!-- Need a subject and even image sharing? It's only supported on iOS for now and falls back to just message sharing on Android -->
+<!-- <button ng-click="sendSMS()">share via SMS</button> --> <button ng-click="shareAnywhere()">share via anywhere</button><!--  <button ng-click="sendEmail()">share via email</button> -->
+
 			<ion-list>
 				<ion-item ng-repeat="item in items" style="padding:0px;">
 					<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">

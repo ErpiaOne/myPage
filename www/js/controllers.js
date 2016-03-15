@@ -531,6 +531,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.certificationModal.hide();
 		$scope.init('logout');
 	}
+
+
+
 	// 단말기로 접속시 UUID의 정보를 불러와서 자동로그인 여부를 체크한 후 자동 로그인 시켜준다. 
 	document.addEventListener("deviceready", function () {
 		$rootScope.deviceInfo.device = $cordovaDevice.getDevice();
@@ -693,17 +696,32 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 })
 // 아래부터 설정 화면에 있는 컨트롤러들..
 // 프로그램정보 컨트롤러
-.controller('configCtrl_Info', function($scope, $rootScope) {
+.controller('configCtrl_Info', function($scope, $rootScope, $cordovaAppVersion) {
 	// 기본정보를 디폴트 값으로 넣었다.
-	$scope.AppInfo = {currentVer:"1.0.0", deviceInfo:"webView"};
-	console.log(ionic.Platform);
+	$scope.AppInfo = {currentVer:"1.0.0"};
+	// console.log(cordovaAppVersion.getVersionNumber(), cordovaAppVersion.getVersionCode(), cordovaAppVersion.getVersionNumber());
+	
+	var deviceInformation = ionic.Platform.device();
+	$scope.AppInfo = parseInt(ionic.Platform.version());
+	$scope.deviceInfo = { 
+	 	cordova : "cordova버전 : "+ ionic.Platform.device().cordova,
+	 	manufacturer : "제조사 : "+ ionic.Platform.device().manufacturer,
+	 	model : "모델명 : "+ionic.Platform.device().model,
+	 	platform : "플랫폼 : "+ ionic.Platform.device().platform,
+	 	uuid : "uuid : " + ionic.Platform.device().uuid,
+		version : "디바이스버전 : " + ionic.Platform.device().version
+	 };
+	
+	console.log('>>>>>',$scope.AppInfo, '<<<<<<<<<', $scope.deviceInfo)
 	// 여기서 정보를 가져와야하는데 안가져와짐.. 해결해주길...
-	if(ionic.Platform.length > 0){
-		$scope.AppInfo.currentVer = ionic.Platform.version();
-		$scope.AppInfo.deviceInfo = ionic.Platform.device();	
-	}
+	
+		// $scope.AppInfo.currentVer = '0.0.8';
+
+		// $scope.AppInfo.deviceInfo = '0.0.8';	
+	
+
 })// 공지사항 컨트롤러
-.controller('configCtrl_Notice', function($scope, $ionicPopup, $ionicHistory, NoticeService) {
+.controller('configCtrl_Notice', function($scope, $ionicPopup, $ionicHistory, NoticeService, $cordovaSocialSharing) {
 	$scope.myGoBack = function() {
 		$ionicHistory.goBack();
 		$ionicHistory.clearCache();
@@ -716,6 +734,21 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		.then(function(data){
 			$scope.items = data.list;
 		})
+
+	// $scope.sendSMS = function (message) {
+	// 	  KakaoLinkPlugin.call("kakaotalk share...");
+	// }
+
+	$scope.shareAnywhere = function(url) {
+		url = 'http://erpia.net';
+	        $cordovaSocialSharing.share("[Erpia 거래명세표] "+url);
+	    }
+	// $scope.sendEmail = function (message, subject) {
+	// 	message="테스트입니당.";
+	// 	subject="[이알피아모바일]세금계산서"
+	// 	fromemail="khs239@erpia.net"
+	//     $cordovaSocialSharing.shareViaEmail(message, subject, null, fromemail, null);
+	// }
 })// 통계리포트 설정 컨트롤러
 .controller('configCtrl_statistics', function($scope, $rootScope, statisticService, publicFunction){
 	statisticService.all('myPage_Config_Stat', 'select_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
@@ -1021,6 +1054,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 .controller('CsCtrl', function($rootScope, $scope, $ionicModal, $timeout, $stateParams, $location, $http, csInfoService, TestService){
 	console.log("CsCtrl");
 	$scope.csData = {};
+	$scope.cscustomagree = false;
 
 	var ChkinterestTopic = [];
 	$scope.interestTopic1 = "";
@@ -1029,6 +1063,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	var csResigtData = [];
 	$scope.interestTopicRemoveYN = "";
+    $scope.csagree=function(){
+    	if($scope.cscustomagree == false) $scope.cscustomagree =true;
+    	else $scope.cscustomagree = false;
+    	console.log($scope.cscustomagree);
+    }
 
     $scope.dialNumber = function(number) {
         window.open('tel:' + number, '_system');
