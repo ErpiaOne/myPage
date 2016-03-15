@@ -558,75 +558,67 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
 	, tradeDetailService, ERPiaAPI){
 
+// var html_string =  "<html><head></head><body><p>HI</p></body></html>" ; 
+// var iframe = document . createElement ( 'iframe' ); 
+// document . body . appendChild ( iframe ); 
+
+//     var iframedoc = iframe . contentDocument || iframe . contentWindow . document ; 
+//     iframedoc . body . innerHTML = html_string ; 
+//     html2canvas ( iframedoc . body ,  { 
+//         onrendered :  function ( canvas )  { 
+//             document . body . appendChild ( canvas ); 
+//             document . body . removeChild ( iframe ); 
+//         } 
+//     }); 
 
 
-	$scope.html3image = function(){
-		console.log('image test22222');
-		var element = document.getElementById('divTradeDetail_Print_Area');
+	$scope.html3image = function(detaillist){
+		var detail = detaillist[0];
+		console.log(detail);
+		var html_start =  "<html><head></head><body>";
+		var html_view1 = "<table width=1080 ><tr><td name='td_User_Date' width=300 align=left>"+ $scope.userData.GerName+'('+$scope.loginData.UserId+')' +"<br/>"+ new Date($scope.currentDate) + "</td><td width=420 align=center style='color:blue;'><u style='font-size:30px;'>거래명세표</u> (공급받는자용)</td><td name='td_Sl_No_Time' width=300 align=right>No."+ detail.Publish_No +"</td></tr></table>";
+		var html_view2 = "<table bordercolor=bule width=1080 ><tr class='trH'><td class='blueFont' width=25 rowspan=4>공<br/>급<br/>자</td><td class='blueFont' style='line-height:15px;' width=45>등 록<br/>번 호</td><td name='td_SaNo1' class='tdText' colspan=6>" + detail.R_Sano + "</td><td class='blueFont' width=25 rowspan=5>공<br/>급<br/>받<br/>는<br/>자</td><td class='blueFont' style='line-height:15px;' width=45>등 록<br/>번 호</td><td name='td_SaNo2' class='tdText' colspan=6>" + detail.Sano + "</td></tr>";
+		var html_view3 = "<tr class='trH'><td class='blueFont'>상 호</td><td name='td_GerName1' class='tdText' colspan=2>" + detail.R_Snm +"</td><td class='blueFont' width=10 colspan=2>성 명</td><td name='td_userName1' class='tdText markTd2'>" + detail.R_Boss + "</td><td class='markTd'>(인)</td><td class='blueFont'>상 호</td><td name='td_GerName2' class='tdText' colspan=3>" + detail.Snm + "</td><td class='blueFont' width=45>성 명</td><td name='td_userName2' class='tdText markTd2'>" + detail.Boss + "</td><td class='markTd'>(인)</td></tr>";
+		var html_view4 = "<tr class='trH'><td class='blueFont'>주 소</td><td name='td_Addr1' class='tdText' colspan=6>"+detail.R_Addr+"</td><td class='blueFont'>주 소</td><td name='td_Addr2' class='tdText' colspan=6>"+detail.Addr+"</td> </tr>";
+		var html_view5 = "<tr class='trH'><td class='blueFont'>업 태</td><td name='td_UpType1' class='tdText'>"+ detail.R_up +"</td><td class='blueFont' width=45>종 목</td><td name='td_Category1' class='tdText' colspan=4>"+detail.R_jong+"</td><td class='blueFont'>업 태</td><td name='td_UpType2' class='tdText' colspan=2>"+detail.Up+"</td><td class='blueFont' width=45>종 목</td><td name='td_Category2' class='tdText' colspan=3>"+detail.Jong+"</td></tr>";			        
+		var html_view6 = "<tr class='trH'><td class='blueFont' colspan=2>합계금액</td><td name='td_TotAmt' class='tdNumber'>"+detail.Hap+"</td><td class='blueFont' colspan=2>전잔액</td><td name='td_PreJanAmt'class='tdNumber' colspan=3>"+detail.Pre_Jan_Amt+"</td><td class='blueFont'>담 당</td><td name='td_DamDang' class='tdText' colspan=2>"+detail.G_GDamdang+"</td><td class='blueFont'>전 화</td><td name='td_Tel' class='tdText' colspan=3>"+detail.G_GDamdangTel+"</td></tr>";			        
+		var html_view7 = "<tr class='trH'><td class='blueFont' colspan=2>입 금 액</td><td name='td_Deposit' class='tdNumber'>"+detail.In_Amt+"</td><td class='blueFont' colspan=2>현잔액</td><td name='td_NowJanAmt' class='tdNumber' colspan=3>" + detail.Cur_Jan_Amt + "</td><td class='blueFont' colspan=2>인 수 자</td><td name='td_Receiver' class='tdText markTd2'>"+detail.Boss+"</td><td class='markTd'>(인)</td>	<td name='td_Receiver_Mark' class='tdText blueFont' colspan=4>아래의 금액을     합니다.</td></tr></table>";		        
+						        
+						   
+		var html_end =  "<html><head></head><body></body></html>" ; 
+		var html_string = html_start + html_view1 + html_view2 + html_view3 + html_view4 + html_view5 + html_view6 + html_view7 + html_end;
+		var iframe = document . createElement ( 'iframe' ); 
+		document . body . appendChild ( iframe ); 
 
-		// var style = clone.style;
-		// style.position = 'relative';
-		// style.top = window.innerHeight + 'px';
-		// style.left = 0;
+		var iframedoc = iframe . contentDocument || iframe . contentWindow . document ; 
+		    iframedoc.body.innerHTML = html_string ; 
+		    html2canvas ( iframedoc.body ,  { 
+		        onrendered :  function ( canvas )  { 
+		            document . body . appendChild ( canvas ); 
+		            document . body . removeChild ( iframe ); 
+		            var imgageData = canvas.toDataURL("image/jpg");
+		            var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+		 	$("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
+		        } 
+		    }); 
 
-		console.log('요기 =>',element);
-		document.body.appendChild(element);
-		html2canvas(element, {
-		      onrendered: function(canvas) {
-			console.log(canvas);
-		      var imgageData = canvas.toDataURL("image/jpg");
-
-			var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-			$("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
-		    }
-		});
-			// html2canvas(element, {
-			// 	onrendered: function (canvas) {
-			// 		console.log('죠기=>',canvas);
-
-			// 		$("#previewImage3").append(canvas);
-			// 		getCanvas = canvas;
-			// 		document.body.appendChild(getCanvas);
-   //     				// document.body.removeChild(element);
-			// 		var imgageData = getCanvas.toDataURL("image/jpg");
-
-			// 		var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-			// 		$("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
-			// 	}
-			// });
-
-
-		// $("#btn-Preview-Image").on('click', function () {
+		// var element = document.getElementById("divTradeDetail_Print_Area");
+		// var element = $('#divTradeDetail_Print_Area');
+		// document.body.appendChild(element);
+		// $('body').append(element);
+		// html2canvas(element, {
+		//       onrendered: function(canvas) {
+		// 	console.log(canvas);
+		// 	$("#previewImage3").append(canvas);
+		//       var imgageData = canvas.toDataURL("image/jpg");
+		// 	var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+		// 	$("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
+		//     }
+		// });
 	}
-// $scope.html3image = function(){
-// 	var element = document.getElementById("divTradeDetail_Print_Area"),
-// 	    				useWidth      = 1100,
-// 	    				useHeight     = 1100;
 
-// 	// position it relatively, just below the fold..
-// 	element.style.position = 'relative';
-// 	element.style.left = 0;
 
-// 	html2canvas(element, {
-// 	    width: useWidth,
-// 	    height: useHeight,
-// 	    onrendered: function(canvas) {
 
-// 	       // restore the old offscreen position
-// 	      element.style.position = 'absolute';
-// 	      element.style.top = 0;
-// 	      element.style.left = "-9999px"
-// 	      $("#previewImage3").append(canvas);
-// 	      console.log(canvas);
-// 	      var imgageData = canvas.toDataURL("image/jpg");
-
-// 		var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-// 		$("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
-
-// 	    }
-
-// 	});
-// }
 
 	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
 		scope : $scope
@@ -653,7 +645,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				console.log('haveList', $scope.haveList);
 			})
 	}else if($rootScope.userType == 'ERPia'){
-		console.log('여기를 찾아라!', $scope.loginData.Pwd);
 		$scope.tradeList.Title = '매출거래처 발송 내역';
 		$scope.tradeList.MeaipMeachul = '매입일';
 		$scope.tradeList.Publisher = '발송처';
@@ -718,6 +709,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				else alert('사업자 번호와 일치하지 않습니다.');
 			}
 		}else if($rootScope.userType == "ERPia"){
+			// alert($scope.loginData.Pwd);
+			$scope.userData.Sano = $scope.loginData.Pwd; // =========================== 지워야되.
 			if($scope.loginData.Pwd == $scope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
