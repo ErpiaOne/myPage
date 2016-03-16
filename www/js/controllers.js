@@ -1051,7 +1051,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     }
 })
 
-.controller('CsCtrl', function($rootScope, $scope, $ionicModal, $timeout, $stateParams, $location, $http, csInfoService, TestService){
+.controller('CsCtrl', function($rootScope, $scope, $ionicModal, $ionicPopup, $timeout, $stateParams, $location, $http, csInfoService, TestService){
 	console.log("CsCtrl");
 	$scope.csData = {};
 	$scope.cscustomagree = false;
@@ -1063,12 +1063,24 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	var csResigtData = [];
 	$scope.interestTopicRemoveYN = "";
+
+	$ionicModal.fromTemplateUrl('erpia_cs/csagreement.html', {
+	    	scope: $scope
+	    }).then(function(modal) {
+	    	$scope.csagreeModal = modal;
+	    });
+
     $scope.csagree=function(){
     	if($scope.cscustomagree == false) $scope.cscustomagree =true;
     	else $scope.cscustomagree = false;
     	console.log($scope.cscustomagree);
     }
-
+    $scope.csagreemodalopen=function(){
+    	$scope.csagreeModal.show();
+     }
+    $scope.csagreemodalclose=function(){
+     	$scope.csagreeModal.hide();
+     }
     $scope.dialNumber = function(number) {
         window.open('tel:' + number, '_system');
     }
@@ -1161,16 +1173,29 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	  		if(errMsg.substring(0, 1) == "/"){
 	  			errMsg = errMsg.replace("/", "");
 	  		}
-	  		alert(errMsg + " 은(는) 필수 입력 항목입니다.")
+	  		$ionicPopup.alert({
+			        title: '<b>경고</b>',
+			        subTitle: '',
+			        template: errMsg + ' 은(는)<br> 필수 입력 항목입니다.'
+	    		})
+	  	if($scope.cscustomagree == false){
+	  		$ionicPopup.alert({
+			        title: '<b>경고</b>',
+			        subTitle: '',
+			        template: '개인정보이용 및 활용동의(필수)를 해주시기 바랍니다.'
+	    		})
+	  	}
 	  	}else{
 			// Admin_Code, UserId, kind, chkAdmin, comName, writer, subject, tel, sectors, interestTopic1,interestTopic2, interestTopic3, inflowRoute, contents
 			csInfoService.csInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_CS_Save', $rootScope.loginState, escape(csResigtData[0]),
 								 escape(csResigtData[1]), escape(csResigtData[2]), escape(csResigtData[3]), escape(csResigtData[4]), escape(csResigtData[5]),
 								 escape(csResigtData[6]), escape(csResigtData[7]), escape(csResigtData[8]), escape(csResigtData[9]))
 		    .then(function(csInfo){
-		    	alert('등록 성공');
+		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 성공하였습니다.', 'long', 'center');
+			else alert('IndexService Error');
 		    },function(){
-				alert('등록 실패')	
+		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 실패하였습니다.', 'long', 'center');
+			else alert('IndexService Error');
 			});
 		};
 	};
@@ -3033,25 +3058,46 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.u_no)
 		.then(function(data){
 			if($rootScope.distinction == 'meaip'){
-				$scope.date.todate1 = new Date(data.list[0].Meaip_Date);
-				$scope.date.todate = data.list[0].Meaip_Date;
+				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+					$scope.date.todate1 = new Date(data.list[0].Meaip_Date);
+					$scope.date.todate = data.list[0].Meaip_Date;
+				}else{
+					$scope.date.todate1 = $scope.date.todate1=new Date($scope.dateMinus(0));
+					$scope.date.todate = $scope.dateMinus(0);
+				} //오늘날짜 스코프
 				$scope.pay.acno = data.list[0].AC_No;
 				$scope.pay.no = data.list[0].iL_No;
 				$scope.pay.goods_seq_end = data.list[data.list.length-1].Seq;
 
 				if(data.list[0].IpJi_Date.length > 0){
-					$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
-					$scope.date.payday = data.list[0].IpJi_Date;
+					if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+						$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
+						$scope.date.payday = data.list[0].IpJi_Date;
+					}else{
+						$scope.date.payday1=new Date($scope.date.payday);
+						$scope.date.payday=$scope.dateMinus(0);
+					}
 				} 
 			}else{
-				$scope.date.todate1 = new Date(data.list[0].MeaChul_Date);
-				$scope.date.todate = data.list[0].MeaChul_Date;
+				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+					$scope.date.todate1 = new Date(data.list[0].MeaChul_Date);
+					$scope.date.todate = data.list[0].MeaChul_Date;
+				}else{
+					$scope.date.todate1 = $scope.date.todate1=new Date($scope.dateMinus(0));
+					$scope.date.todate = $scope.dateMinus(0);
+				}
 				$scope.pay.acno = data.list[0].AC_No;
 				$scope.pay.no = data.list[0].Sl_No;
 				$scope.pay.goods_seq_end = data.list[data.list.length-1].Seq;
 				if(data.list[0].IpJi_Date.length > 0){
-					$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
-					$scope.date.payday = data.list[0].IpJi_Date;
+					if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+						$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
+						$scope.date.payday = data.list[0].IpJi_Date;
+					}else{
+						$scope.date.payday1=new Date($scope.date.payday);
+						$scope.date.payday=$scope.dateMinus(0);
+					}
+
 				} 
 			} 
 
@@ -3087,7 +3133,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			/*지급구분*/
 			if(data.list[0].IpJi_Gubun.length > 0){
 				$scope.pay.use = false;
-				$scope.pay.delete=false;
+				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' )  $scope.pay.delete=false;
+				else  $scope.pay.delete=true;
 				$scope.pay.payprice = parseInt(data.list[0].IpJi_Amt);
 				switch(parseInt(data.list[0].IpJi_Gubun)){
 					case 701 : $scope.payment[0].checked = true; $scope.pay.gubun = 0; break;
@@ -3108,11 +3155,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.Payments_division(3);
 					$scope.pay.paycardbank = data.list[0].Card_Code + ',' + data.list[0].Card_Name + ',' + data.list[0].Card_Num;
 					$scope.pay.codenum = data.list[0].Card_Code;
-
+					console.log(">>>pay.paycardbank",$scope.pay.paycardbank, data.list);
 				}else if(data.list[0].IpJi_Gubun == 702 || data.list[0].IpJi_Gubun == 722){
 					$scope.Payments_division(1);
 					$scope.pay.paycardbank = data.list[0].Bank_Code + ',' + data.list[0].Bank_Name + ',' + data.list[0].Bank_Account;
 					$scope.pay.codenum = data.list[0].Bank_Code;
+					console.log(">>>pay.paycardbank",$scope.pay.paycardbank, data.list);
 				}else{
 					for(var i=0; i<2; i++){
 						$scope.paylist.push({
@@ -3412,7 +3460,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 			}else{
 				switch(d){
-					case '0': console.log('거래처별 단가'); var price = $scope.checkedDatas[i].G_Dn3; break;
+				case '0': console.log('거래처별 단가'); var price = $scope.checkedDatas[i].G_Dn3; break;
 		    		case '1': console.log('매입가&매출가'); var price = $scope.checkedDatas[i].G_Dn1; break;
 		    		case '2': console.log('도매가'); var price = $scope.checkedDatas[i].G_Dn2; break;
 		    		case '3': console.log('인터넷가'); var price = $scope.checkedDatas[i].G_Dn3; break;
@@ -3622,7 +3670,7 @@ $scope.goods_seqlist = [];
     		if($scope.datas.GerCode == 0){
     			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('거래처를 선택해주세요.', 'short', 'center');
 				else alert('거래처를 선택해주세요.');
-    			$scope.basictype=true;
+    				$scope.basictype=true;
 				$scope.basic2type=false;
 				$scope.basic3type=false;
 				$scope.upAnddown="ion-arrow-down-b";
@@ -3632,7 +3680,7 @@ $scope.goods_seqlist = [];
     		}else if($scope.datas.subulkind == 0){
     			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('수불구분을 지정하지 않었습니다.', 'short', 'center');
 				else alert('수불구분을 지정하지 않었습니다.');
-    			$scope.basictype=true;
+    				$scope.basictype=true;
 				$scope.basic2type=false;
 				$scope.basic3type=false;
 				$scope.upAnddown="ion-arrow-down-b";
@@ -3642,7 +3690,7 @@ $scope.goods_seqlist = [];
     		}else{
     			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상품정보가 존재하지 않습니다. 한번더 확인하세요.', 'short', 'center');
 				else alert('상품정보가 존재하지 않습니다. 한번더 확인하세요.');
-    			$scope.basictype=false;
+    				$scope.basictype=false;
 				$scope.basic2type=true;
 				$scope.basic3type=false;
 				$scope.upAnddown="ion-arrow-up-b";
@@ -3658,7 +3706,7 @@ $scope.goods_seqlist = [];
 	    		if($scope.goodsaddlists[i].num == 0){
 	    			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('0개의 상품은 등록할 수 없습니다.', 'short', 'center');
 					else alert('0개의 상품은 등록할 수 없습니다.');
-	    			$scope.basictype=false;
+	    				$scope.basictype=false;
 					$scope.basic2type=true;
 					$scope.basic3type=false;
 					$scope.upAnddown="ion-arrow-up-b";
@@ -3668,7 +3716,7 @@ $scope.goods_seqlist = [];
 	    		}else if(isNaN($scope.datas.totalsumprices) || $scope.goodsaddlists[i].num == null || $scope.goodsaddlists[i].num == undefined){ //상품가격이 제대로 입력되지 않았을시. -->isNaN == NaN걸러주는거
 	    			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상품정보를 바르게 적어주세요.', 'short', 'center');
 					else alert('상품정보를 바르게 적어주세요.');
-	    			$scope.basictype=false;
+	    				$scope.basictype=false;
 					$scope.basic2type=true;
 					$scope.basic3type=false;
 					$scope.upAnddown="ion-arrow-up-b";
@@ -3730,7 +3778,7 @@ $scope.goods_seqlist = [];
 			.then(function(data){
 				if(index == 1){
 					$scope.payname = '지급은행';
-					$scope.pay.paycardbank = 'no';
+					if($scope.pay.paycardbank.length<3) $scope.pay.paycardbank = 'no'; 
 					for(var i=0; i < data.list.length; i++){
 						$scope.paycardbank.push({
 							num : data.list[i].Bank_Account,
@@ -3740,7 +3788,7 @@ $scope.goods_seqlist = [];
 					}
 				}else{
 					$scope.payname = '지급카드';
-					$scope.pay.paycardbank = 'no';
+					if($scope.pay.paycardbank.length<3) $scope.pay.paycardbank = 'no';
 					for(var i=0; i < data.list.length; i++){
 						$scope.paycardbank.push({
 							num : data.list[i].Card_Num,
@@ -3755,6 +3803,7 @@ $scope.goods_seqlist = [];
   		}else{
   			$scope.pay.gubun = 0;
   			$scope.paytype = false;
+  			$scope.pay.paycardbank = 'no';
   			for(var i=0; i<2; i++){
 				$scope.paylist.push({
 	    			code : '',

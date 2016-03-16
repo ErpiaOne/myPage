@@ -56,7 +56,7 @@
 				<textarea placeholder="내용을 입력하세요" class="psm_sang_03" ng-model="csData.contents"></textarea>
 			</label>
 			<div class="item item-divider" style="height:30%">
-				<input type="checkbox" id="agree_2" class="checkbox-style" ng-model='cscustomagree' ng-click='csagree()'/><label for="agree_2">개인정보 이용 및 활용동의</label> 	<button>전문보기</button>
+				<input type="checkbox" id="agree_2" class="checkbox-style" ng-model='cscustomagree' ng-click='csagree()'/><label for="agree_2">개인정보 이용 및 활용동의</label> 	<button ng-click='csagreemodalopen()'>전문보기</button>
 			</div>
 				
 			<form ng-submit="csRegist()">
