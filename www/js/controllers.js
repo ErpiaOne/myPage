@@ -220,9 +220,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						// $scope.loginData.Pwd = 'scmtest';
 					break;
 					case 'ERPia':
-						$scope.loginData.Admin_Code = 'onz';
-						$scope.loginData.UserId = 'test1234';
-						$scope.loginData.Pwd = 'test1234!';
+						$scope.loginData.Admin_Code = 'hj0712';
+						$scope.loginData.UserId = 'hj0712';
+						$scope.loginData.Pwd = '1234';
 					break;
 				}
 			}
@@ -332,7 +332,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									G_Expire_Days = '무제한';
 									G_Expire_Date = '무제한';
 								}else{
-									if (Last_Pay_YM == '')	//당월결재미존재, 이전결재내역미존재
+									if (Last_Pay_YM == '' )	//당월결재미존재, 이전결재내역미존재
 									{
 										G_Expire_Days = "0";
 										G_Expire_Date = "기간만료";
@@ -3384,6 +3384,27 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	      }
 	    };
     //---------------------------상품정보 디테일 조회--------------------------------
+    function commaChange(Num)
+	{
+		fl="" 
+		Num = new String(Num) 
+		temp="" 
+		co=3 
+		num_len=Num.length 
+		while (num_len>0)
+		{ 
+			num_len=num_len-co 
+			if(num_len<0)
+			{
+				co=num_len+co;
+				num_len=0
+			} 
+			temp=","+Num.substr(num_len,co)+temp 
+		} 
+		rResult =  fl+temp.substr(1);
+		return rResult;
+	}
+
    $scope.goodsDetail=function(indexnum){
    		$scope.G_NameS =  $scope.goodslists[indexnum].G_Name;
    		$scope.G_OnCodeS = $scope.goodslists[indexnum].G_OnCode;
@@ -3393,7 +3414,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$ionicPopup.alert({
 		         title: '<b>상품 정보</b>',
 		         subTitle: '',
-		         template: '<table width="100%"><tr><td width="40%" style="border-right:1px solid black;">상품명</td><td width="55%" style="padding-left:5px">'+$scope.G_NameS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">규격</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Stand+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">로케이션</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Location+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">자체코드</td><td width="55%" style="padding-left:5px">'+$scope.G_OnCodeS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">매입가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn1+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">도매가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn2+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">인터넷가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn3+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">소매가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn4+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">권장소비자가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn5+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">입수량</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Box_In_Qty+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">재고</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Jego+'</td></tr></table>'
+		         template: '<table width="100%"><tr><td width="40%" style="border-right:1px solid black;">상품명</td><td width="55%" style="padding-left:5px">'+$scope.G_NameS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">규격</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Stand+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">로케이션</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Location+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">자체코드</td><td width="55%" style="padding-left:5px">'+$scope.G_OnCodeS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">매입가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn1)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">도매가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn2)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">인터넷가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn3)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">소매가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn4)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">권장소비자가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn5)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">입수량</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Box_In_Qty+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">재고</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Jego+'</td></tr></table>'
 		  })
  	};
 

@@ -6,18 +6,18 @@
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
 	, 'starter.services'])
 
- .constant('ERPiaAPI',{
- 	url:'http://localhost:8100/include'
- 	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	, toast:'N'
- })
+ // .constant('ERPiaAPI',{
+ // 	url:'http://localhost:8100/include'
+ // 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ // 	, toast:'N'
+ // })
 
 //실제 사용시
-// .constant('ERPiaAPI',{
-// 	url:'http://www.erpia.net/include'
-// 	, imgUrl:'http://erpia2.godohosting.com/erpia_update/img'
-// 	, toast:'Y'
-// })
+.constant('ERPiaAPI',{
+	url:'http://www.erpia.net/include'
+	, imgUrl:'http://erpia2.godohosting.com/erpia_update/img'
+	, toast:'Y'
+})
 
 .run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup) {
 	$ionicPlatform.ready(function() {
@@ -47,7 +47,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		});
 //----------------뒤로가기 마지막페이지일때 ....----
 		$ionicPlatform.registerBackButtonAction(function(e){
-		    if ($location.url()=='/app/main') { //현재 페이지 url이 메인일 때,
+		    if ($location.url()=='/app/main' ||  $location.url()=='/app/slidingtab'  || $location.url() == '/app/scmhome'  || $location.url() == '/app/sample/Main') { //현재 페이지 url이 메인일 때,
 		      $ionicPopup.show({
 				title: '경고',
 				subTitle: '',
@@ -77,7 +77,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		    	}else if($location.url()=='/app/meachul_depage'){
 		    		$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 		    		location.href = '#/app/meachul_page';
-				}else if($location.url()=='/app/meaip_IU'||$location.url()=='/app/meachul_IU'){  		
+				}else if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){  		
 		    	      $ionicPopup.show({
 				         title: '경고',
 				         subTitle: '',
@@ -153,8 +153,13 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		     $ionicHistory.clearCache();
 			 $ionicHistory.clearHistory();
 			 $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-		     location.href = '#/app/main';
-
+		     
+		switch($rootScope.userType){
+			case 'ERPia': location.href = '#/app/slidingtab'; break;
+			case 'SCM' : location.href = '#/app/scmhome'; break;
+			case 'Geust': location.href = '#/app/sample/Main'; break;
+			default : location.href = '#/app/main'; break;
+		} 
 		     $rootScope.backButtonPressedOnceToExit = true;
 		      // setTimeout(function(){
 		      	
