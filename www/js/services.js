@@ -199,20 +199,58 @@ angular.module('starter.services', [])
 				.then(function(response){
 					console.log('readDetail_Service : ', response.data.list[0].G_ea1);
 					if(typeof response.data == 'object'){
-						var tot_Ea = 0;
-						for(var i=0; i<response.data.length; i++){
-							tot_Ea += Number(((response.data.list[i].G_ea1)?response.data.list[0].G_ea1:0));
-							tot_Ea += Number(((response.data.list[i].G_ea2)?response.data.list[0].G_ea2:0));
-							tot_Ea += Number(((response.data.list[i].G_ea3)?response.data.list[0].G_ea3:0));
-							tot_Ea += Number(((response.data.list[i].G_ea4)?response.data.list[0].G_ea4:0));
-							tot_Ea += Number(((response.data.list[i].G_ea5)?response.data.list[0].G_ea5:0));
-							tot_Ea += Number(((response.data.list[i].G_ea6)?response.data.list[0].G_ea6:0));
-							tot_Ea += Number(((response.data.list[i].G_ea7)?response.data.list[0].G_ea7:0));
-							tot_Ea += Number(((response.data.list[i].G_ea8)?response.data.list[0].G_ea8:0));
-							tot_Ea += Number(((response.data.list[i].G_ea9)?response.data.list[0].G_ea9:0));
-							tot_Ea += Number(((response.data.list[i].G_ea10)?response.data.list[0].G_ea10:0));
-							response.data.list[i].tot_Ea = tot_Ea;
+
+						if(response.data.list[0].G_name1 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea1) * parseInt(response.data.list[0].G_price1) - parseInt(response.data.list[0].G_Gong1);
+							response.data.list[0].tax1 = tax;
 						}
+						if(response.data.list[0].G_name2 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea2) * parseInt(response.data.list[0].G_price2) - parseInt(response.data.list[0].G_Gong2);
+							response.data.list[0].tax2 = tax;
+						}
+						if(response.data.list[0].G_name3 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea3) * parseInt(response.data.list[0].G_price3) - parseInt(response.data.list[0].G_Gong3);
+							response.data.list[0].tax3 = tax;
+						}
+						if(response.data.list[0].G_name4 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea4) * parseInt(response.data.list[0].G_price4) - parseInt(response.data.list[0].G_Gong4);
+							response.data.list[0].tax4 = tax;
+						}
+						if(response.data.list[0].G_name5 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea5) * parseInt(response.data.list[0].G_price5) - parseInt(response.data.list[0].G_Gong5);
+							response.data.list[0].tax5 = tax;
+						}
+						if(response.data.list[0].G_name6 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea6) * parseInt(response.data.list[0].G_price6) - parseInt(response.data.list[0].G_Gong6);
+							response.data.list[0].tax6 = tax;
+						}
+						if(response.data.list[0].G_name7 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea7) * parseInt(response.data.list[0].G_price7) - parseInt(response.data.list[0].G_Gong7);
+							response.data.list[0].tax7 = tax;
+						}
+						if(response.data.list[0].G_name8 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea8) * parseInt(response.data.list[0].G_price8) - parseInt(response.data.list[0].G_Gong8);
+							response.data.list[0].tax8 = tax;
+						}
+						if(response.data.list[0].G_name9 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea9) * parseInt(response.data.list[0].G_price9) - parseInt(response.data.list[0].G_Gong9);
+							response.data.list[0].tax9 = tax;
+						}
+						if(response.data.list[0].G_name10 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea10) * parseInt(response.data.list[0].G_price10) - parseInt(response.data.list[0].G_Gong10);
+							response.data.list[0].tax10 = tax;
+						}
+
 						return response.data;
 					}else{
 						return $q.reject(response.data);

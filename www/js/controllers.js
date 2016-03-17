@@ -556,7 +556,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 })
 // 거래명세표 컨트롤러
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
-	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing){
+	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer){
 
 // var html_string =  "<html><head></head><body><p>HI</p></body></html>" ; 
 // var iframe = document . createElement ( 'iframe' ); 
@@ -619,7 +619,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		var html_view4 = "<tr><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>주 소</td><td name='td_Addr1' style='border-bottom: solid #0100FF;'colspan=6>"+detail.R_Addr+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>주 소</td><td name='td_Addr2' style='border-bottom: solid #0100FF; border-right: solid #0100FF;' colspan=6>"+detail.Addr+"</td> </tr>";
 		var html_view5 = "<tr><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>업 태</td><td name='td_UpType1' style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+ detail.R_up +"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=45>종 목</td><td name='td_Category1' style='border-bottom: solid #0100FF;' colspan=4>"+detail.R_jong+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;''>업 태</td><td name='td_UpType2' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>"+detail.Up+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=45>종 목</td><td name='td_Category2'style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=3>"+detail.Jong+"</td></tr>";			        
 		var html_view6 = "<tr><td style='color:blue; border-left: solid #0100FF; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>합계금액</td><td name='td_TotAmt' style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+commaChange(detail.Hap)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>전잔액</td><td name='td_PreJanAmt' style='border-bottom: solid #0100FF;' colspan=3>"+commaChange(detail.Pre_Jan_Amt)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>담 당</td><td name='td_DamDang' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>"+detail.G_GDamdang+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>전 화</td><td name='td_Tel' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=3>"+detail.G_GDamdangTel+"</td></tr>";			        
-		var html_view7 = "<tr><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+commaChange(detail.In_Amt)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #0100FF;' colspan=3>" + commaChange(detail.Cur_Jan_Amt )+ "</td><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #0100FF; '>"+detail.Boss+"</td><td style='color: blue; border-bottom: solid #0100FF; border-right: solid #0100FF;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";		        
+		var html_view7 = "<tr><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+commaChange(detail.In_Amt)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #0100FF;' colspan=3>" + commaChange(detail.Cur_Jan_Amt )+ "</td><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #0100FF; '>"+detail.Boss+"</td><td style='color: blue; border-bottom: solid #0100FF; border-right: solid #0100FF;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";		        
 		
 		//두번째 테이블
 		var html_view8 = "<table bordercolor='#0100FF' border=3 width=1080 style='margin-top:10px;' cellspacing=0 cellpadding=0><thead style='color:blue; border-bottom: solid #0100FF;'><th width=550 style='border-right:2px solid #0100FF;'' colspan=3>품목 및 규격</th><th style='border-right:2px solid #0100FF;'' width=97>수 량</th><th style='border-right:2px solid #0100FF;'' width=140>단 가</th><th style='border-right:2px solid #0100FF;'' width=140>공 급 가 액</th><th width=140>세 액</th></thead>";
@@ -633,7 +633,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		var html_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
 		var html_view17 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name9)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea9)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price9)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong9)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
 		var html_view18 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;'>"+ checklist(detail.G_name10)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.G_ea10)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.G_price10)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.G_Gong10)+"</td><td width=140 style='border-bottom: solid #0100FF;' align=right>.</td></tr>";
-		var html_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #0100FF;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #0100FF; border-bottom: solid #0100FF; border-left:2px solid #0100FF;'>합계</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.G_tot_Ea)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+detail.Hap / detail.G_tot_Ea+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #0100FF;' align=right>.</td></tr><tr><td colspan=6 ></td></tr></table><br>"
+		var html_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #0100FF;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #0100FF; border-bottom: solid #0100FF; border-left:2px solid #0100FF;'>합계</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #0100FF;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6 ></td></tr></table><br>"
 
 		
 
@@ -643,7 +643,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		var html2_view4 = "<tr><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>주 소</td><td name='td_Addr1' style='border-bottom: solid #FF0000;'colspan=6>"+detail.R_Addr+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>주 소</td><td name='td_Addr2' style='border-bottom: solid #FF0000; border-right: solid #FF0000;' colspan=6>"+detail.Addr+"</td> </tr>";
 		var html2_view5 = "<tr><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>업 태</td><td name='td_UpType1' style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+ detail.R_up +"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=45>종 목</td><td name='td_Category1' style='border-bottom: solid #FF0000;' colspan=4>"+detail.R_jong+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;''>업 태</td><td name='td_UpType2' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>"+detail.Up+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=45>종 목</td><td name='td_Category2'style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=3>"+detail.Jong+"</td></tr>";			        
 		var html2_view6 = "<tr><td style='color:red; border-left: solid #FF0000; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>합계금액</td><td name='td_TotAmt' style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+commaChange(detail.Hap)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>전잔액</td><td name='td_PreJanAmt' style='border-bottom: solid #FF0000;' colspan=3>"+commaChange(detail.Pre_Jan_Amt)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>담 당</td><td name='td_DamDang' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>"+detail.G_GDamdang+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>전 화</td><td name='td_Tel' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=3>"+detail.G_GDamdangTel+"</td></tr>";			        
-		var html2_view7 = "<tr><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+commaChange(detail.In_Amt)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #FF0000;' colspan=3>" + commaChange(detail.Cur_Jan_Amt) + "</td><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #FF0000;'>"+detail.Boss+"</td><td style='color: red; border-bottom: solid #FF0000; border-right: solid #FF0000;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";		        
+		var html2_view7 = "<tr><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+commaChange(detail.In_Amt)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #FF0000;' colspan=3>" + commaChange(detail.Cur_Jan_Amt) + "</td><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #FF0000;'>"+detail.Boss+"</td><td style='color: red; border-bottom: solid #FF0000; border-right: solid #FF0000;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";		        
 		
 
 		//두번째 테이블
@@ -659,13 +659,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		var html2_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
 		var html2_view17 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name9)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea9)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price9)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong9)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
 		var html2_view18 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;'>"+ checklist(detail.G_name10)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.G_ea10)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.G_price10)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.G_Gong10)+"</td><td width=140 style='border-bottom: solid #FF0000;' align=right>.</td></tr>";
-		var html2_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #FF0000;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #FF0000; border-bottom: solid #FF0000; border-left:2px solid #FF0000;'>합계</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.G_tot_Ea)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+detail.Hap / detail.G_tot_Ea+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #FF0000;' align=right>.</td></tr><tr><td colspan=6 ></td></tr></table><br>"
+		var html2_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #FF0000;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #FF0000; border-bottom: solid #FF0000; border-left:2px solid #FF0000;'>합계</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #FF0000;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6 ></td></tr></table><br>"
 
 
 		var html_end =  "</body></html>" ; 
 
 		var html_string = html_start + html_view1 + html_view2 + html_view3 + html_view4 + html_view5 + html_view6 + html_view7 + html_view8 + html_view9  + html_view10 + html_view11 + html_view12 + html_view13 + html_view14 + html_view15 + html_view16 + html_view17 + html_view18 + html_view19;
 		var html_string2 = html_string + html2_view1 + html2_view2 + html2_view3 + html2_view4 + html2_view5 + html2_view6 + html2_view7 + html2_view8 + html2_view9 + html2_view10 + html2_view11 + html2_view12 + html2_view13 + html2_view14 + html2_view15 + html2_view16 + html2_view17 + html2_view18 + html2_view19 + html_end;
+		
 		var iframe = document . createElement ( 'iframe' ); 
 		document . body . appendChild ( iframe ); 
 
@@ -679,10 +680,39 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		            var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
 		 		$("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
 
-		 		var file = newData;
-		 		// var file = newData;
-		 		$cordovaSocialSharing
-			        	.share(file);
+		 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		 		// var url = ERPiaAPI.gurl;
+		 		// console.log(url);
+		 		uploadPhoto(newData);
+
+				function uploadPhoto(imageURI){
+			          var options = new FileUploadOptions();
+			          options.fileKey="file";
+			          options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+			          options.mimeType="image/jpeg";
+			          var params = {};
+			          params.value1 = "20132354";
+			          params.value2 = "2410724";
+			          options.params = params;
+			          var ft = new FileTransfer();
+			          ft.upload(imageURI, encodeURI("ftp.168.126.146.37/20132354/final/"), win, fail, options);
+			        }
+
+			        function win(r)
+			        {
+			            console.log("Code = " + r.responseCode);
+			            console.log("Response = " + r.response);
+			            console.log("Sent = " + r.bytesSent);
+			        }
+
+			        function fail(error)
+			        {
+			            alert("An error has occurred: Code = " + error.code);
+			            console.log("upload error source " + error.source);
+			            console.log("upload error target " + error.target);
+			        }
+
+				 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		        } 
 		    }); 
 
@@ -747,28 +777,87 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				console.log('haveList', $scope.haveList);
 			})
 	}
-	// 거래명세표 보기 
+
+	/*거래명세표 보기 */
 	$scope.readTradeDetail = function(dataParam){
 		var Sl_No = dataParam.substring(0, dataParam.indexOf('^'));
 		var detail_title = dataParam.substring(dataParam.indexOf('^') + 1);
 		tradeDetailService.readDetail($scope.loginData.Admin_Code, Sl_No)
 			.then(function(response){
 				console.log('readDetail', response);
+				
+				var numhap = 0; // 수량합계
+				var num = 1;
+				switch( num ){
+					case 1:  response.list[0].numhap = response.list[0].G_ea1;
+							 response.list[0].taxhap = response.list[0].tax1;
+							 response.list[0].pricehap = response.list[0].G_price1;
+							 if(response.list[0].G_ea2 == null) break;
+
+					case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2); 
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2); 
+							 if(response.list[0].G_ea3 == null) break;
+
+					case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3); 
+							 if(response.list[0].G_ea4 == null) break;
+
+					case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4); 
+							 if(response.list[0].G_ea5 == null) break;
+
+					case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5); 
+							 if(response.list[0].G_ea6 == null) break;
+
+					case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6); 
+							 if(response.list[0].G_ea7 == null) break;
+
+					case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7); 
+							 if(response.list[0].G_ea8 == null) break;
+
+					case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8); 
+							 if(response.list[0].G_ea9 == null) break;
+
+					case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9); 
+							 if(response.list[0].G_ea10 == null) break;
+
+					case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10); 
+							   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10); 
+							   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10); 
+							   break;
+					default : console.log('여기올일 없을껄....');
+				}
+
 				$scope.detail_items = response.list;
 				$scope.trade_Detail_Modal.show();
 			})
 		if($rootScope.userType!='ERPia') tradeDetailService.chkRead($scope.loginData.Admin_Code, Sl_No, $scope.loginData.User_Id)
-	} //거래명세표 사업자 번호 입력 모달 닫기
+	}
+	 /*거래명세표 사업자 번호 입력 모달 닫기*/
 	$scope.close_sano = function(){
 		$scope.check_sano_Modal.hide();
-	} //거래명세표 닫기
+	} 
+	/*거래명세표 닫기*/
 	$scope.close = function(){
 		$scope.trade_Detail_Modal.hide();
 	}
 	// $scope.backToList = function(){
 	// 	$ionicSlideBoxDelegate.previous();
 	// }
-	// 프린트 (거래명세표 화면에서 프린트 버튼의 주석을 해제해야 기능을 사용할 수 있음.. 블루투스 연결까지는 확인했으나 프린트 잉크가 없어서 테스트 못함.)
+	/*프린트 (거래명세표 화면에서 프린트 버튼의 주석을 해제해야 기능을 사용할 수 있음.. 블루투스 연결까지는 확인했으나 프린트 잉크가 없어서 테스트 못함.)*/
 	$scope.print = function(){
 		cordova.plugins.printer.isAvailable(
 		    function (isAvailable) {
@@ -781,6 +870,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		    }
 		);
 	}// 각각의 타입별로 안내메세지를 다르게 표시.
+
 	$scope.check_Sano = function(){
 		if($rootScope.userType == "SCM" || $rootScope.userType == "Normal" ){
 			console.log('sano', $scope.userData.G_Sano.substring($scope.userData.G_Sano.lastIndexOf('-') + 1));
@@ -811,11 +901,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 	}
 })
-// 필요없는 컨트롤러인듯..
-.controller('configCtrl', function($scope, $rootScope) {
-	if($rootScope.loginState == 'E'){
-	}
-})
+
 // 아래부터 설정 화면에 있는 컨트롤러들..
 // 프로그램정보 컨트롤러
 .controller('configCtrl_Info', function($scope, $rootScope) {
@@ -1143,18 +1229,36 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     }
 })
 
-.controller('CsCtrl', function($rootScope, $scope, $ionicModal, $timeout, $stateParams, $location, $http, csInfoService, TestService){
+.controller('CsCtrl', function($rootScope, $scope, $ionicModal, $ionicPopup, $timeout, $stateParams, $location, $http, csInfoService, TestService){
 	console.log("CsCtrl");
-	$scope.csData = {};
-
-	var ChkinterestTopic = [];
-	$scope.interestTopic1 = "";
-	$scope.interestTopic2 = "";
-	$scope.interestTopic3 = "";
+	$scope.csData = {
+		interestTopic1 : 'no',
+		interestTopic2 : 'no',
+		interestTopic3 : 'no',
+		sectors: 'no',
+		inflowRoute: 'no'
+	};
+	$scope.cscustomagree = false;
 
 	var csResigtData = [];
-	$scope.interestTopicRemoveYN = "";
 
+	$ionicModal.fromTemplateUrl('erpia_cs/csagreement.html', {
+	    	scope: $scope
+	    }).then(function(modal) {
+	    	$scope.csagreeModal = modal;
+	    });
+
+    $scope.csagree=function(){
+    	if($scope.cscustomagree == false) $scope.cscustomagree =true;
+    	else $scope.cscustomagree = false;
+    	console.log($scope.cscustomagree);
+    }
+    $scope.csagreemodalopen=function(){
+    	$scope.csagreeModal.show();
+     }
+    $scope.csagreemodalclose=function(){
+     	$scope.csagreeModal.hide();
+     }
     $scope.dialNumber = function(number) {
         window.open('tel:' + number, '_system');
     }
@@ -1182,20 +1286,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	    { id: 10, value: "발주관리" },
 	    { id: 11, value: "그룹사관리" }
   	];
-	
-	var updated = 0;
-	$scope.$watch('csData.interestTopic', function(newValue, oldValue, oldValue2) {
-		if (newValue === oldValue || newValue === oldValue2 || oldValue === oldValue2) {
-				return;
-		}
-		switch(updated){
-			case 0: ChkinterestTopic[0] = $scope.csData.interestTopic; updated++; $scope.interestTopic1 = ChkinterestTopic[0]; $scope.interestTopicRemoveYN = "Y"; break;
-			case 1: ChkinterestTopic[1] = $scope.csData.interestTopic; updated++; $scope.interestTopic2 = ' /' + ChkinterestTopic[1]; break;
-			case 2: ChkinterestTopic[2] = $scope.csData.interestTopic; updated = 0; $scope.interestTopic3 = ' /' + ChkinterestTopic[2]; break;
-		}
-		console.log(ChkinterestTopic);
-		},true
-	);
 		
   	$scope.inflowRoutelist = [
 	    { id: 1, value: "검색엔진" },
@@ -1209,15 +1299,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	
   	$scope.csRegist = function() {
   		console.log($scope.csData);
+  		console.log($scope.cscustomagree);
   		var errMsg = "";
+  		if($scope.csData.interestTopic1 != 'no' && $scope.csData.interestTopic2 == 'no' && $scope.cscustomagree != false){
+  			$scope.csData.interestTopic2 = '';
+  		}
+  		if($scope.csData.interestTopic1 != 'no' && $scope.csData.interestTopic3 == 'no' && $scope.cscustomagree != false){
+  			$scope.csData.interestTopic3 = '';
+  		}
   		csResigtData[0] = $scope.csData.comName;
 	  	csResigtData[1] = $scope.csData.writer;
 	  	csResigtData[2] = $scope.csData.subject;
 	  	csResigtData[3] = $scope.csData.tel;
 	  	csResigtData[4] = $scope.csData.sectors;
-	  	csResigtData[5] = $scope.interestTopic1;
-	  	csResigtData[6] = $scope.interestTopic2;
-	  	csResigtData[7] = $scope.interestTopic3;
+	  	csResigtData[5] = $scope.csData.interestTopic1;
+	  	csResigtData[6] = $scope.csData.interestTopic2;
+	  	csResigtData[7] = $scope.csData.interestTopic3;
 	  	csResigtData[8] = $scope.csData.inflowRoute;
 	  	csResigtData[9] = $scope.csData.contents;
 
@@ -1230,13 +1327,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	  	if(!$scope.csData.tel != ''){
 	  		errMsg += "/연락처";
 	  	}
-	  	if(!$scope.csData.sectors != ''){
+	  	if($scope.csData.sectors == 'no'){
 	  		errMsg += "/업종"
 	  	}
-	  	if(!csResigtData[5] != ''){
+	  	if(csResigtData[5] == 'no'){
 	  		errMsg += "/관심항목";
 	  	}
-	  	if(!$scope.csData.inflowRoute != ''){
+	  	if($scope.csData.inflowRoute == 'no'){
 	  		errMsg += "/유입경로";
 	  	}
 	  	if(!$scope.csData.contents != ''){
@@ -1247,16 +1344,27 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	  		if(errMsg.substring(0, 1) == "/"){
 	  			errMsg = errMsg.replace("/", "");
 	  		}
-	  		alert(errMsg + " 은(는) 필수 입력 항목입니다.")
+	  		$ionicPopup.alert({
+			        title: '<b>경고</b>',
+			        subTitle: '',
+			        template: errMsg + ' 은(는)<br> 필수 입력 항목입니다.'
+	    		})
+	  	}else if($scope.cscustomagree == false){
+	  		$ionicPopup.alert({
+			        title: '<b>경고</b>',
+			        subTitle: '',
+			        template: '개인정보이용 및 활용동의(필수)를 해주시기 바랍니다.'
+	    		})
 	  	}else{
-			// Admin_Code, UserId, kind, chkAdmin, comName, writer, subject, tel, sectors, interestTopic1,interestTopic2, interestTopic3, inflowRoute, contents
 			csInfoService.csInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_CS_Save', $rootScope.loginState, escape(csResigtData[0]),
 								 escape(csResigtData[1]), escape(csResigtData[2]), escape(csResigtData[3]), escape(csResigtData[4]), escape(csResigtData[5]),
 								 escape(csResigtData[6]), escape(csResigtData[7]), escape(csResigtData[8]), escape(csResigtData[9]))
 		    .then(function(csInfo){
-		    	alert('등록 성공');
+		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 성공하였습니다.', 'long', 'center');
+			else alert('IndexService Error');
 		    },function(){
-				alert('등록 실패')	
+		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 실패하였습니다.', 'long', 'center');
+			else alert('IndexService Error');
 			});
 		};
 	};
@@ -1265,7 +1373,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.interestTopic1 = "";
 		$scope.interestTopic2 = "";
 		$scope.interestTopic3 = "";
-		$scope.interestTopicRemoveYN = "N";
+		// $scope.interestTopicRemoveYN = "N";
 		updated = 0;
 	}
 })
@@ -2349,10 +2457,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									$scope.chit_lists.push(data.list[m]);
 									if($rootScope.distinction == 'meaip'){
 										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
-										console.log('오냐?',$scope.money.meaipchulsum);
-										console.log('?',data.list[m].Meaip_Amt);
 									}else{
-										console.log('오냐?',$scope.money.meaipchulsum);
 										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
 									}
 								}
@@ -3118,26 +3223,48 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		/*전표 상세조회 -- 날짜 paydate(입출일), todate(지급일)*/ 
 		MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.u_no)
 		.then(function(data){
+			$scope.datas.remk = data.list[0].Remk;
 			if($rootScope.distinction == 'meaip'){
-				$scope.date.todate1 = new Date(data.list[0].Meaip_Date);
-				$scope.date.todate = data.list[0].Meaip_Date;
+				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+					$scope.date.todate1 = new Date(data.list[0].Meaip_Date);
+					$scope.date.todate = data.list[0].Meaip_Date;
+				}else{
+					$scope.date.todate1 = $scope.date.todate1=new Date($scope.dateMinus(0));
+					$scope.date.todate = $scope.dateMinus(0);
+				} //오늘날짜 스코프
 				$scope.pay.acno = data.list[0].AC_No;
 				$scope.pay.no = data.list[0].iL_No;
 				$scope.pay.goods_seq_end = data.list[data.list.length-1].Seq;
 
 				if(data.list[0].IpJi_Date.length > 0){
-					$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
-					$scope.date.payday = data.list[0].IpJi_Date;
+					if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+						$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
+						$scope.date.payday = data.list[0].IpJi_Date;
+					}else{
+						$scope.date.payday1=new Date($scope.date.payday);
+						$scope.date.payday=$scope.dateMinus(0);
+					}
 				} 
 			}else{
-				$scope.date.todate1 = new Date(data.list[0].MeaChul_Date);
-				$scope.date.todate = data.list[0].MeaChul_Date;
+				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+					$scope.date.todate1 = new Date(data.list[0].MeaChul_Date);
+					$scope.date.todate = data.list[0].MeaChul_Date;
+				}else{
+					$scope.date.todate1 = $scope.date.todate1=new Date($scope.dateMinus(0));
+					$scope.date.todate = $scope.dateMinus(0);
+				}
 				$scope.pay.acno = data.list[0].AC_No;
 				$scope.pay.no = data.list[0].Sl_No;
 				$scope.pay.goods_seq_end = data.list[data.list.length-1].Seq;
 				if(data.list[0].IpJi_Date.length > 0){
-					$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
-					$scope.date.payday = data.list[0].IpJi_Date;
+					if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+						$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
+						$scope.date.payday = data.list[0].IpJi_Date;
+					}else{
+						$scope.date.payday1=new Date($scope.date.payday);
+						$scope.date.payday=$scope.dateMinus(0);
+					}
+
 				} 
 			} 
 
@@ -3173,7 +3300,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			/*지급구분*/
 			if(data.list[0].IpJi_Gubun.length > 0){
 				$scope.pay.use = false;
-				$scope.pay.delete=false;
+				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' )  $scope.pay.delete=false;
+				else  $scope.pay.delete=true;
 				$scope.pay.payprice = parseInt(data.list[0].IpJi_Amt);
 				switch(parseInt(data.list[0].IpJi_Gubun)){
 					case 701 : $scope.payment[0].checked = true; $scope.pay.gubun = 0; break;
@@ -3194,11 +3322,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.Payments_division(3);
 					$scope.pay.paycardbank = data.list[0].Card_Code + ',' + data.list[0].Card_Name + ',' + data.list[0].Card_Num;
 					$scope.pay.codenum = data.list[0].Card_Code;
-
+					console.log(">>>pay.paycardbank",$scope.pay.paycardbank, data.list);
 				}else if(data.list[0].IpJi_Gubun == 702 || data.list[0].IpJi_Gubun == 722){
 					$scope.Payments_division(1);
 					$scope.pay.paycardbank = data.list[0].Bank_Code + ',' + data.list[0].Bank_Name + ',' + data.list[0].Bank_Account;
 					$scope.pay.codenum = data.list[0].Bank_Code;
+					console.log(">>>pay.paycardbank",$scope.pay.paycardbank, data.list);
 				}else{
 					for(var i=0; i<2; i++){
 						$scope.paylist.push({
@@ -3422,6 +3551,27 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	      }
 	    };
     //---------------------------상품정보 디테일 조회--------------------------------
+    function commaChange(Num)
+	{
+		fl="" 
+		Num = new String(Num) 
+		temp="" 
+		co=3 
+		num_len=Num.length 
+		while (num_len>0)
+		{ 
+			num_len=num_len-co 
+			if(num_len<0)
+			{
+				co=num_len+co;
+				num_len=0
+			} 
+			temp=","+Num.substr(num_len,co)+temp 
+		} 
+		rResult =  fl+temp.substr(1);
+		return rResult;
+	}
+
    $scope.goodsDetail=function(indexnum){
    		$scope.G_NameS =  $scope.goodslists[indexnum].G_Name;
    		$scope.G_OnCodeS = $scope.goodslists[indexnum].G_OnCode;
@@ -3431,7 +3581,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$ionicPopup.alert({
 		         title: '<b>상품 정보</b>',
 		         subTitle: '',
-		         template: '<table width="100%"><tr><td width="40%" style="border-right:1px solid black;">상품명</td><td width="55%" style="padding-left:5px">'+$scope.G_NameS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">규격</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Stand+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">로케이션</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Location+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">자체코드</td><td width="55%" style="padding-left:5px">'+$scope.G_OnCodeS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">매입가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn1+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">도매가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn2+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">인터넷가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn3+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">소매가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn4+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">권장소비자가</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Dn5+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">입수량</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Box_In_Qty+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">재고</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Jego+'</td></tr></table>'
+		         template: '<table width="100%"><tr><td width="40%" style="border-right:1px solid black;">상품명</td><td width="55%" style="padding-left:5px">'+$scope.G_NameS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">규격</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Stand+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">로케이션</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Location+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">자체코드</td><td width="55%" style="padding-left:5px">'+$scope.G_OnCodeS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">매입가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn1)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">도매가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn2)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">인터넷가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn3)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">소매가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn4)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">권장소비자가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn5)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">입수량</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Box_In_Qty+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">재고</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Jego+'</td></tr></table>'
 		  })
  	};
 
@@ -3453,7 +3603,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     /*선택된 상품들을 등록리스트에 저장 --> 이중 $scope*/
     $scope.checkdataSave=function(){
     	console.log($scope.goodsaddlists);
-    	console.log('짜증나=>',$scope.checkedDatas);
 		if($scope.goodsaddlists.length > 0){
 			var check = 'N';
 			for(var j=0; j < $scope.goodsaddlists.length; j++){
@@ -3818,7 +3967,7 @@ $scope.goods_seqlist = [];
 			.then(function(data){
 				if(index == 1){
 					$scope.payname = '지급은행';
-					$scope.pay.paycardbank = 'no';
+					if($scope.pay.paycardbank.length<3) $scope.pay.paycardbank = 'no'; 
 					for(var i=0; i < data.list.length; i++){
 						$scope.paycardbank.push({
 							num : data.list[i].Bank_Account,
@@ -3828,7 +3977,7 @@ $scope.goods_seqlist = [];
 					}
 				}else{
 					$scope.payname = '지급카드';
-					$scope.pay.paycardbank = 'no';
+					if($scope.pay.paycardbank.length<3) $scope.pay.paycardbank = 'no';
 					for(var i=0; i < data.list.length; i++){
 						$scope.paycardbank.push({
 							num : data.list[i].Card_Num,
@@ -3843,6 +3992,7 @@ $scope.goods_seqlist = [];
   		}else{
   			$scope.pay.gubun = 0;
   			$scope.paytype = false;
+  			$scope.pay.paycardbank = 'no';
   			for(var i=0; i<2; i++){
 				$scope.paylist.push({
 	    			code : '',

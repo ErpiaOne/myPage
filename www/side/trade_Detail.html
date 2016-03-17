@@ -5,7 +5,7 @@
 			<button class="button button-clear" ng-click="close()">
 				닫기
 			</button>
-			<a id="btn-Convert-Html3Image"  ng-click='html3image(detail_items)' href="#">Download</a>
+			<a id="btn-Convert-Html3Image"  ng-click='html3image(detail_items)' href="{{ERPiaAPI.gurl}}">Download</a>
 		</div>
 	</ion-header-bar>
 	<ion-view view-title="거래명세서">
@@ -26,7 +26,7 @@
 						        <td name='td_Sl_No_Time' width=300 align=right>No.{{detail.Publish_No}}</td>
 						    </tr>
 						</table>
-						<table class='blueTable' border=1 cellspacing=0 cellpadding=0 width=1080>
+						<table class='blueTable' width=1080>
 						    <tr class='trH'>
 						        <td class='blueFont' width=25 rowspan=4>공<br/>급<br/>자</td>
 						        <td class='blueFont' style='line-height:15px;' width=45>등 록<br/>번 호</td>
@@ -81,7 +81,7 @@
 						        <td class='blueFont' colspan=2>인 수 자</td>
 						        <td name='td_Receiver' class='tdText markTd2'>{{detail.Boss}}</td>
 						        <td class='markTd'>(인)</td>
-						        <td name='td_Receiver_Mark' class='tdText blueFont' colspan=4>아래의 금액을     합니다.</td>
+						        <td name='td_Receiver_Mark' class='tdText blueFont' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td>
 						    </tr>
 						</table>
 						<table class='blueTable' border=0 cellspacing=0 cellpadding=0 width=1080 style='margin-top:10px; border:transparent'>
@@ -97,79 +97,79 @@
 						        <td class='tdNumber tdList'>{{((detail.G_ea1)?detail.G_ea1:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_price1)?detail.G_price1:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_Gong1)?detail.G_Gong1:'-') | number:0}}</td>
-						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						        <td class='tdNumber tdList tdRightSolid'>{{detail.tax1}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name2)?detail.G_name2:'-')}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_ea2)?detail.G_ea2:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_price2)?detail.G_price2:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_Gong2)?detail.G_Gong2:'-') | number:0}}</td>
-						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						        <td class='tdNumber tdList tdRightSolid'>{{detail.tax2}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name3)?detail.G_name3:'-')}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_ea3)?detail.G_ea3:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_price3)?detail.G_price3:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_Gong3)?detail.G_Gong3:'-') | number:0}}</td>
-						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						        <td class='tdNumber tdList tdRightSolid'>{{detail.tax3}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name4)?detail.G_name4:'-')}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_ea4)?detail.G_ea4:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_price4)?detail.G_price4:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_Gong4)?detail.G_Gong4:'-') | number:0}}</td>
-						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						        <td class='tdNumber tdList tdRightSolid'>{{detail.tax4}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name5)?detail.G_name5:'-')}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_ea5)?detail.G_ea5:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_price5)?detail.G_price5:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_Gong5)?detail.G_Gong5:'-') | number:0}}</td>
-						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						        <td class='tdNumber tdList tdRightSolid'>{{detail.tax5}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name6)?detail.G_name6:'-')}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_ea6)?detail.G_ea6:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_price6)?detail.G_price6:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_Gong6)?detail.G_Gong6:'-') | number:0}}</td>
-						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						        <td class='tdNumber tdList tdRightSolid'>{{detail.tax6}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name7)?detail.G_name7:'-')}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_ea7)?detail.G_ea7:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_price7)?detail.G_price7:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_Gong7)?detail.G_Gong7:'-') | number:0}}</td>
-						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						        <td class='tdNumber tdList tdRightSolid'>{{detail.tax7}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name8)?detail.G_name8:'-')}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_ea8)?detail.G_ea8:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_price8)?detail.G_price8:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_Gong8)?detail.G_Gong8:'-') | number:0}}</td>
-						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						        <td class='tdNumber tdList tdRightSolid'>{{detail.tax8}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText tdList tdLeftSolid' colspan=3>{{((detail.G_name9)?detail.G_name9:'-')}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_ea9)?detail.G_ea9:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_price9)?detail.G_price9:'-') | number:0}}</td>
 						        <td class='tdNumber tdList'>{{((detail.G_Gong9)?detail.G_Gong9:'-') | number:0}}</td>
-						        <td class='tdNumber tdList tdRightSolid'>.</td>
+						        <td class='tdNumber tdList tdRightSolid'>{{detail.tax9}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText tdListEnd tdLeftSolid tdBottomSolid' colspan=3>{{((detail.G_name10)?detail.G_name10:'-')}}</td>
 						        <td class='tdNumber tdListEnd tdBottomSolid'>{{((detail.G_ea10)?detail.G_ea10:'-') | number:0}}</td>
 						        <td class='tdNumber tdListEnd tdBottomSolid'>{{((detail.G_price10)?detail.G_price10:'-') | number:0}}</td>
 						        <td class='tdNumber tdListEnd tdBottomSolid'>{{((detail.G_Gong10)?detail.G_Gong10:'-') | number:0}}</td>
-						        <td class='tdNumber tdListEnd tdRightSolid tdBottomSolid'>.</td>
+						        <td class='tdNumber tdListEnd tdRightSolid tdBottomSolid'>{{detail.tax10}}</td>
 						    </tr>
 						    <tr height=30>
 						        <td class='tdList tdListEnd tdLeftSolid tdBottomSolid' rowspan=2 width=45>비 고<br/><br/>사 항</td>
 						        <td class='tdListEnd' width=450 style='border-bottom:0px;'>.</td>
 						        <td class='tdText tdListEnd tdBottomSolid'>합계</td>
-						        <td class='tdNumber tdListEnd tdBottomSolid'>{{detail.G_tot_Ea | number:0}}</td>
-						        <td class='tdNumber tdListEnd tdBottomSolid'>{{(detail.Hap / detail.G_tot_Ea) | number:0}}</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid'>{{detail.numhap}}</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid'>{{detail.pricehap | number:0}}</td>
 						        <td class='tdNumber tdListEnd tdBottomSolid'>{{detail.Hap | number:0}}</td>
-						        <td class='tdNumber tdListEnd tdBottomSolid tdRightSolid'>.</td>
+						        <td class='tdNumber tdListEnd tdBottomSolid tdRightSolid'>{{detail.taxhap | number:0}}</td>
 						    </tr>
 						    <tr><td class='tdListEnd tdRightSolid tdBottomSolid' colspan=6 style='height:45px;'>.</td></tr>
 						</table>
@@ -237,7 +237,7 @@
 						        <td class='redFont' colspan=2>인 수 자</td>
 						        <td name='td_Receiver' class='tdText_red markTd2'>{{detail.Boss}}</td>
 						        <td class='markTd_Red'>(인)</td>
-						        <td name='td_Receiver_Mark' class='tdText_red redFont' colspan=4>아래의 금액을     합니다.</td>
+						        <td name='td_Receiver_Mark' class='tdText_red redFont' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td>
 						    </tr>
 						</table>
 						<table class='redTable' border=0 cellspacing=0 cellpadding=0 width=1080 style='margin-top:10px; border:transparent'>
@@ -253,79 +253,79 @@
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea1)?detail.G_ea1:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_price1)?detail.G_price1:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong1)?detail.G_Gong1:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>{{detail.tax1}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name2)?detail.G_name2:'-')}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea2)?detail.G_ea2:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_price2)?detail.G_price2:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong2)?detail.G_Gong2:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>{{detail.tax2}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name3)?detail.G_name3:'-')}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea3)?detail.G_ea3:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_price3)?detail.G_price3:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong3)?detail.G_Gong3:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>{{detail.tax3}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name4)?detail.G_name4:'-')}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea4)?detail.G_ea4:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_price4)?detail.G_price4:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong4)?detail.G_Gong4:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>{{detail.tax4}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name4)?detail.G_name4:'-')}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea4)?detail.G_ea4:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_price4)?detail.G_price4:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong4)?detail.G_Gong4:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>{{detail.tax5}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name6)?detail.G_name6:'-')}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea6)?detail.G_ea6:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_price6)?detail.G_price6:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong6)?detail.G_Gong6:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>{{detail.tax6}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name7)?detail.G_name7:'-')}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea7)?detail.G_ea7:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_price7)?detail.G_price7:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong7)?detail.G_Gong7:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>{{detail.tax7}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name8)?detail.G_name8:'-')}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea8)?detail.G_ea8:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_price8)?detail.G_price8:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong8)?detail.G_Gong8:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>{{detail.tax8}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText_red tdList_red tdLeftSolid_red' colspan=3>{{((detail.G_name9)?detail.G_name9:'-')}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_ea9)?detail.G_ea9:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_price9)?detail.G_price9:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdList_red'>{{((detail.G_Gong9)?detail.G_Gong9:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdList_red tdRightSolid_red'>.</td>
+						        <td class='tdNumber_red tdList_red tdRightSolid_red'>{{detail.tax9}}</td>
 						    </tr>
 						    <tr>
 						        <td class='tdText_red tdListEnd_red tdLeftSolid_red tdBottomSolid_red' colspan=3>{{((detail.G_name10)?detail.G_name10:'-')}}</td>
 						        <td class='tdNumber_red tdListEnd_red tdBottomSolid_red'>{{((detail.G_ea10)?detail.G_ea10:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdListEnd_red tdBottomSolid_red'>{{((detail.G_price10)?detail.G_price10:'-') | number:0}}</td>
 						        <td class='tdNumber_red tdListEnd_red tdBottomSolid_red'>{{((detail.G_Gong10)?detail.G_Gong10:'-') | number:0}}</td>
-						        <td class='tdNumber_red tdListEnd_red tdRightSolid_red tdBottomSolid_red'>.</td>
+						        <td class='tdNumber_red tdListEnd_red tdRightSolid_red tdBottomSolid_red'>{{detail.tax10}}</td>
 						    </tr>
 						    <tr height=30>
 						        <td class='tdList_red tdListEnd_red tdLeftSolid_red tdBottomSolid_red' rowspan=2 width=45>비 고<br/><br/>사 항</td>
 						        <td class='tdListEnd_red' width=450 style='border-bottom:0px;'>.</td>
 						        <td class='tdListEnd_red tdBottomSolid_red tdText_red'>합계</td>
-						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{detail.G_tot_Ea | number:0}}</td>
-						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{(detail.Hap / detail.G_tot_Ea) | number:0}}</td>
+						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{detail.numhap}}</td>
+						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{detail.pricehap | number:0}}</td>
 						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{detail.Hap | number:0}}</td>
-						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red tdRightSolid_red'>.</td>
+						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red tdRightSolid_red'>{{detail.taxhap | number:0}}</td>
 						    </tr>
 						    <tr><td class='tdListEnd_red tdRightSolid_red tdBottomSolid_red' colspan=6 style='height:45px;'>.</td></tr>
 						</table>

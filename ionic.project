@@ -9,6 +9,10 @@
     {
       "path": "/erpia_update/img",
       "proxyUrl": "http://erpia2.godohosting.com/erpia_update/img"
+    },
+    {
+      "path": "/168.126.146.37/20132354/final/",
+      "proxyUrl": "http://168.126.146.37/20132354/final/"
     }
   ]
 }
