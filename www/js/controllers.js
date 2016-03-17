@@ -20,7 +20,7 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI){
+	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage){
 
 
 	$scope.html2image = function(){
@@ -55,7 +55,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.loginData = {};
 	$scope.userData = {};  
 	$scope.SMSData = {};
-
+	$scope.loginData.chkAutoLogin=$localstorage.get('chkAutoLogin');
+	console.log('', $scope.loginData.chkAutoLogin);
 	// 로그인 모달창
 	$ionicModal.fromTemplateUrl('erpia_login/login.html', {
 		scope : $scope
@@ -220,9 +221,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						// $scope.loginData.Pwd = 'scmtest';
 					break;
 					case 'ERPia':
-						$scope.loginData.Admin_Code = 'hj0712';
-						$scope.loginData.UserId = 'hj0712';
-						$scope.loginData.Pwd = '1234';
+						$scope.loginData.Admin_Code = 'onz';
+						$scope.loginData.UserId = 'test1234';
+						$scope.loginData.Pwd = 'test1234!';
+						// $scope.loginData.Admin_Code = 'hj0712';
+						// $scope.loginData.UserId = 'hj0712';
+						// $scope.loginData.Pwd = '1234';
 					break;
 				}
 			}
@@ -246,6 +250,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.loginData.isLogin = 'Y';
 
 					if($scope.loginData.chkAutoLogin == true){
+						$localstorage.set('chkAutoLogin', true);
+						console.log($localstorage.get('chkAutoLogin'));
 						if(ERPiaAPI.toast == 'Y'){
 							uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 							$scope.loginData.autologin_YN = 'Y';
@@ -253,6 +259,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 						}
 					}else{
+						$localstorage.set('chkAutoLogin', false);
+						 console.log($localstorage.get('chkAutoLogin'));
 						if(ERPiaAPI.toast == 'Y'){
 							uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
 							$scope.loginData.autologin_YN = 'N';
@@ -378,6 +386,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						})
 
 						if($scope.loginData.chkAutoLogin == true){
+							$localstorage.set('chkAutoLogin', true);
+							  console.log($localstorage.get('chkAutoLogin'));
+
+							  var post = $localstorage.getObject('post');
+							  console.log(post);
 							if(ERPiaAPI.toast == 'Y'){
 								uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 								$scope.loginData.autologin_YN = 'Y';
@@ -385,6 +398,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 							}
 						}else{
+							  $localstorage.set('chkAutoLogin', false);
+							  console.log($localstorage.get('chkAutoLogin'));
 							if(ERPiaAPI.toast == 'Y'){
 								uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
 								$scope.loginData.autologin_YN = 'N';
@@ -431,6 +446,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.loginData.isLogin = 'Y';
 
 					if($scope.loginData.chkAutoLogin == true){
+						$localstorage.set('chkAutoLogin', true);
+						console.log($localstorage.get('chkAutoLogin'));
 						if(ERPiaAPI.toast == 'Y'){
 							uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 							$scope.loginData.autologin_YN = 'Y';
@@ -438,6 +455,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 						}
 					}else{
+						$localstorage.set('chkAutoLogin', false);
+						console.log($localstorage.get('chkAutoLogin'));						
 						if(ERPiaAPI.toast == 'Y'){
 							uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
 							$scope.loginData.autologin_YN = 'N';
@@ -739,10 +758,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	// 	  KakaoLinkPlugin.call("kakaotalk share...");
 	// }
 
-	$scope.shareAnywhere = function(url) {
-		url = 'http://erpia.net';
-	        $cordovaSocialSharing.share("[Erpia 거래명세표] "+url);
-	    }
 	// $scope.sendEmail = function (message, subject) {
 	// 	message="테스트입니당.";
 	// 	subject="[이알피아모바일]세금계산서"
@@ -867,9 +882,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 	$scope.fnAlarm('loadAlarm');
 })//로그인 설정 컨트롤러
-.controller('configCtrl_login', function($scope, $rootScope, uuidService){
-	if($scope.loginData.autologin_YN == 'Y') $scope.autoLogin = true;
+.controller('configCtrl_login', function($scope, $rootScope, uuidService, $localstorage){
+	if($scope.loginData.autologin_YN == 'Y'){
+		$scope.autoLogin = true;
+		$localstorage.set('chkAutoLogin', true);
+  		console.log($localstorage.get('chkAutoLogin'));
+	}
 	else $scope.autoLogin = false;
+	$localstorage.set('chkAutoLogin', false);
+  	console.log($localstorage.get('chkAutoLogin'));
 	$scope.autoLogin_YN = function(check){
 		if(check) uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y')
 		else uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N')
@@ -1234,11 +1255,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	};
 })
 
-.controller('BoardMainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, ERPiaAPI, BoardService){
+.controller('BoardMainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, $cordovaToast, ERPiaAPI, BoardService){
 	console.log("BoardMainCtrl");
-
+	$scope.moreloading=0; 
+    	$scope.pageCnt=1;
+    	$scope.maxover=0;
 	$rootScope.useBoardCtrl = "Y";
 	var idx = $rootScope.boardIndex;
+
 	
 	$scope.tabs2 = [{
 		"text" : "공지사항"
@@ -1251,27 +1275,181 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}];
 
 	switch(idx){
-			case 0: 
-				$scope.BoardUrl1 =	BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice')
-								.then(function(data){
+			case 0: 	$scope.maxover=0;
+				$scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1)
+				.then(function(data){
+						$scope.maxover=0;
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->'){
+							    		$scope.maxover=0;
 									$scope.items = data.list;
-									console.log(data);
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
 								}
-							); 
-							break;
-			case 1: $scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup').then(function(data){$scope.items = data.list;}); break;
-			case 2: $scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ').then(function(data){$scope.items = data.list;}); break;
-			case 3: $scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request').then(function(data){$scope.items = data.list;}); break;
+				       			$scope.moreloading=0; 
+				         
+				      		}, 1000); 
+				}); break;
+			case 1: $scope.maxover=0;
+				$scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup',1)
+				.then(function(data){
+						$scope.maxover=0;
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->'){
+							    		$scope.maxover=0;
+									$scope.items = data.list;
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         
+				      		}, 1000); 
+				}); break;
+			case 2: $scope.maxover=0;
+				$scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ',1)
+				.then(function(data){
+						$scope.maxover=0;
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->'){
+							    		$scope.maxover=0;
+									$scope.items = data.list;
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         
+				      		}, 1000); 
+				}); break;
+			case 3: $scope.maxover=0;
+				$scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request',1)
+				.then(function(data){
+						$scope.maxover=0;
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->'){
+							    		$scope.maxover=0;
+									$scope.items = data.list;
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         
+				      		}, 1000); 
+				}); break;
+
 		}
-	$scope.onSlideMove = function(data) {	 	
+	console.log(">>>>페이지cnt",$scope.pageCnt)
+	$scope.onSlideMove = function(data) {
+		$scope.moreloading=0; 
+	    	$scope.pageCnt=1;
+	    	$scope.maxover=0;
 		switch(data.index){
-			case 0: $scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice').then(function(data){$scope.items = data.list;}); break;
-			case 1: $scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup').then(function(data){$scope.items = data.list;}); break;
-			case 2: $scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ').then(function(data){$scope.items = data.list;}); break;
-			case 3: $scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request').then(function(data){$scope.items = data.list;}); break;
+			case 0: 	$scope.maxover=0;	 	
+				$scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1).then(function(data){$scope.items = data.list;}); break;
+			case 1: $scope.maxover=0;
+				$scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup',1).then(function(data){$scope.items = data.list;}); break;
+			case 2: $scope.maxover=0;
+				$scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ',1).then(function(data){$scope.items = data.list;}); break;
+			case 3: $scope.maxover=0;
+				$scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request',1).then(function(data){$scope.items = data.list;}); break;
 		}
 		$rootScope.useBoardCtrl = "N";
 	};
+    /* 더보기 버튼 클릭시 */
+	$scope.boards_more = function() {
+	  		if($scope.items.length>0){
+	  		console.log($scope.items.length);
+	  		
+
+	  		if($scope.maxover==0){
+		        	$scope.pageCnt+=1;
+
+		      	$scope.moreloading=1; 
+
+			      	switch(idx){
+				      	case 0: $scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',$scope.pageCnt).then(function(data){		$scope.maxCnt=0;
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->'){
+							    		$scope.maxover=0;
+									for(var i=0; i<data.list.length; i++){
+										$scope.items.push(data.list[i]);
+									}	
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         
+				      		}, 1000); 
+				      		}); break;
+					case 1: $scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup',$scope.pageCnt).then(function(data){		$scope.maxCnt=0;
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->'){
+									for(var i=0; i<data.list.length; i++){
+										$scope.maxover=0;
+										$scope.items.push(data.list[i]);
+									}	
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         
+				      		}, 1000); 
+				      		}); break;
+					case 2: $scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ',$scope.pageCnt).then(function(data){		$scope.maxCnt=0;
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->'){
+									for(var i=0; i<data.list.length; i++){
+										$scope.maxover=0;
+										$scope.items.push(data.list[i]);
+									}	
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 									
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         
+				      		}, 1000); 
+				      		}); break;
+					case 3: $scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request',$scope.pageCnt).then(function(data){	  $scope.maxCnt=0;
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->'){
+									for(var i=0; i<data.list.length; i++){
+										$scope.maxover=0;
+										$scope.items.push(data.list[i]);
+									}	
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 									
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         
+				      		}, 1000); 
+				      		}); break;
+					}
+			}
+	      }
+	    };
 })
 
 .controller('PushCtrl', function($rootScope, $scope, $state, PushSelectService){
@@ -2049,34 +2227,33 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 
 	$scope.mydate1=function(sdate1){
-
 	    var nday = new Date(sdate1);  //선택1 날짜..  
 	    var yy = nday.getFullYear();
 	    var mm = nday.getMonth()+1;
 	    var dd = nday.getDate();
-
 	    if( mm<10) mm="0"+mm;
-
 	    if( dd<10) dd="0"+dd;
 	    $scope.reqparams.sDate = yy + "-" + mm + "-" + dd;
-	    $scope.date.sDate1=new Date(sdate1);
-
-	    if($scope.date.sDate1>$scope.date.eDate1){
-		    $scope.reqparams.eDate = yy + "-" + mm + "-" + dd;
-		    $scope.date.eDate1=new Date(sdate1);
-		}
-	};
-
-	$scope.mydate2=function(edate1){
-		if(edate1 < $scope.date.sDate1){
-		    var nday = new Date(edate1);  //선택2 날짜
+	    if($scope.reqparams.sDate =="1970-01-01"){
+	    	    var nday = new Date();//오늘 날짜..  
 		    var yy = nday.getFullYear();
 		    var mm = nday.getMonth()+1;
 		    var dd = nday.getDate();
-			$scope.reqparams.sDate = yy + "-" + mm + "-" + dd;
-			$scope.date.sDate1=new Date(edate1);
-			edate1 = new Date($scope.date.sDate1);
-		}
+		    if( mm<10) mm="0"+mm;
+		    if( dd<10) dd="0"+dd;
+		    $scope.reqparams.sDate = yy + "-" + mm + "-" + dd;
+	    }
+	    $scope.date.sDate1=new Date($scope.reqparams.sDate);
+
+	    if($scope.date.sDate1>$scope.date.eDate1){
+		    $scope.reqparams.eDate = yy + "-" + mm + "-" + dd;
+		    $scope.date.eDate1=new Date($scope.date.sDate1);
+	    }
+
+
+	};
+
+	$scope.mydate2=function(edate1){
 		    var nday = new Date(edate1);  //선택2 날짜
 		    var yy = nday.getFullYear();
 		    var mm = nday.getMonth()+1;
@@ -2086,7 +2263,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		    if( dd<10) dd="0"+dd;
 
 		    $scope.reqparams.eDate = yy + "-" + mm + "-" + dd;
-		    $scope.date.eDate1=new Date(edate1);
+		    if($scope.reqparams.eDate =="1970-01-01"){
+		    	    var nday = new Date();//오늘 날짜..  
+			    var yy = nday.getFullYear();
+			    var mm = nday.getMonth()+1;
+			    var dd = nday.getDate();
+			    if( mm<10) mm="0"+mm;
+			    if( dd<10) dd="0"+dd;
+			    $scope.reqparams.eDate = yy + "-" + mm + "-" + dd;
+		    }
+		    $scope.date.eDate1=new Date($scope.reqparams.eDate);
+
+		    if($scope.date.eDate1 < $scope.date.sDate1){
+		    	$scope.reqparams.sDate = yy + "-" + mm + "-" + dd;
+		    	$scope.date.sDate1=new Date($scope.date.eDate1);
+		    }
+		    
 	};
 
 	$scope.mydate1($scope.date.sDate1);
@@ -2861,8 +3053,30 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	    
 
 	    switch(num){
-	    	case 1 : $scope.date.todate = yy + "-" + mm + "-" + dd; $scope.date.todate1=new Date($scope.date.todate); break;
-	    	case 2 : $scope.date.payday = yy + "-" + mm + "-" + dd; $scope.date.payday1 = new Date($scope.date.payday); break;
+	    	case 1 : $scope.date.todate = yy + "-" + mm + "-" + dd;
+	    		 if($scope.date.todate =="1970-01-01"){
+			    	    var nday = new Date();//오늘 날짜..  
+				    var yy = nday.getFullYear();
+				    var mm = nday.getMonth()+1;
+				    var dd = nday.getDate();
+				    if( mm<10) mm="0"+mm;
+				    if( dd<10) dd="0"+dd;
+				    $scope.date.todate = yy + "-" + mm + "-" + dd;
+			  }
+	    		 $scope.date.todate1=new Date($scope.date.todate);
+	    		 break;
+	    	case 2 : $scope.date.payday = yy + "-" + mm + "-" + dd;
+	    		if($scope.date.payday =="1970-01-01"){
+			    	    var nday = new Date();//오늘 날짜..  
+				    var yy = nday.getFullYear();
+				    var mm = nday.getMonth()+1;
+				    var dd = nday.getDate();
+				    if( mm<10) mm="0"+mm;
+				    if( dd<10) dd="0"+dd;
+				    $scope.date.payday = yy + "-" + mm + "-" + dd;
+			  }
+	    		$scope.date.payday1 = new Date($scope.date.payday);
+	    		break;
 	    }
 
 	};

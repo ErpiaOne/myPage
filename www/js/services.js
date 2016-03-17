@@ -1,5 +1,22 @@
 angular.module('starter.services', [])
 
+.factory('$localstorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    }
+  }
+}])
+
 //InnerHtml을 사용하기 위한 compiler
 .directive('compileData', function ( $compile ) {
 	return {
@@ -478,14 +495,46 @@ angular.module('starter.services', [])
 		}
 	}
 })
+.factory('QnAService', function($http, $q, ERPiaAPI){
+	return{
+		//http://erpia2.godohosting.com/erpia_update/img
+		getList: function(Admin_Code, UserId, kind, pageCnt){
+		console.log("QnAService IN getList");
+		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
+		var data = 'kind='+kind+'&Admin_Code='+Admin_Code+'&pageCnt=1&pageRow=1';
+		console.log(url+'?'+data);
+		return $http.get(url + '?' + data)
+			.then(function(response){
+				if(typeof response.data == 'object'){
+					console.log("QnAService IN getList object");
+					for(var i=0; i<response.data.list.length; i++){
+						oldContent = response.data.list[i].content;
+						response.data.list[i].content = oldContent
+							.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
+							.replace(/&quot;/g,'')
+							.replace(/<img src=/g, '<img width=100% src=');
+					}
+					return response.data;
+				}else{
+					console.log("QnAService IN getList object else");
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				console.log("QnAService IN getList object fail");
+				console.log( response.statusText);
+				return response.statusText;
+			})
+		}
+	};
+})
 .factory('BoardService', function($http, $q, ERPiaAPI){
 	// return{
 		//http://erpia2.godohosting.com/erpia_update/img
 		// getList: function(){
-	var BoardInfo = function(Admin_Code, UserId, kind){
-		var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-		var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code;
-
+	var BoardInfo = function(Admin_Code, UserId, kind, pageCnt){
+		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
+		var data = 'kind='+kind+'&Admin_Code='+Admin_Code+'&pageCnt='+pageCnt+'&pageRow=10';
+//		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
 		console.log(url + '?' + data)
 		return $http.get(url + '?' + data)
 			.then(function(response){
