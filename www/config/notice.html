@@ -5,9 +5,10 @@
 			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
 		</ion-nav-buttons>
 	</ion-nav-bar>
-	<ion-content class="padding2">
+	<ion-content class="padding2" overflow-scroll="false">
 		<body ng-app="ngAnimate">
-			<ion-list>
+			<br>
+			<ion-list on-swipe-up="boards_more()">
 				<ion-item ng-repeat="item in items" style="padding:0px;">
 					<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 						<li class="item">
@@ -15,7 +16,13 @@
 						</li>
 					</ui>
 					<pre class="lhkNoticeContent" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
+					<ui class="list" ng-if="moreloading==1&&$last" align="center">
+						<li class="item">
+							 <ion-spinner icon="spiral" ></ion-spinner>
+						</li>
+					</ui>
 				</ion-item>
+			           	<br><br><br><br> 
 			</ion-list>
 		</body>
 	</ion-content>

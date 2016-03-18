@@ -20,6 +20,23 @@ angular.module('starter.services', [])
 	};
 })
 
+.factory('$localstorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    }
+  }
+}])
+
 .factory('loginService', function($http, $q, $cordovaToast, ERPiaAPI){
 	var comInfo = function(kind, Admin_Code, G_id, G_Pass){
 		if(kind == 'scm_login'){
@@ -520,10 +537,10 @@ angular.module('starter.services', [])
 	// return{
 		//http://erpia2.godohosting.com/erpia_update/img
 		// getList: function(){
-	var BoardInfo = function(Admin_Code, UserId, kind){
-		var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-		var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code;
-
+	var BoardInfo = function(Admin_Code, UserId, kind, pageCnt){
+		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
+		var data = 'kind='+kind+'&Admin_Code='+Admin_Code+'&pageCnt='+pageCnt+'&pageRow=10';
+//		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
 		console.log(url + '?' + data)
 		return $http.get(url + '?' + data)
 			.then(function(response){

@@ -6,21 +6,21 @@
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
 	, 'starter.services'])
 
- .constant('ERPiaAPI',{
- 	  url:'http://localhost:8100/include'
- 	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	, gurl:'http://localhost:8100/168.126.146.37/20132354/final/'
- 	, toast:'N'
- })
+ // .constant('ERPiaAPI',{
+ // 	  url:'http://localhost:8100/include'
+ // 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ // 	, gurl:'http://168.126.146.37/20132354'
+ // 	, toast:'N'
+ // })
 
 //실제 사용시
-// .constant('ERPiaAPI',{
-// 	url:'http://www.erpia.net/include'
-// 	, imgUrl:'http://erpia2.godohosting.com/erpia_update/img'
-// 	, toast:'Y'
-// })
+.constant('ERPiaAPI',{
+	url:'http://www.erpia.net/include'
+	, imgUrl:'http://erpia2.godohosting.com/erpia_update/img'
+	, toast:'Y'
+})
 
-.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup) {
+.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -28,7 +28,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		if(window.cordova && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
-		
         if(window.StatusBar) {
 			StatusBar.styleDefault();
 		}
@@ -40,7 +39,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			user.user_id = $ionicUser.generateGUID();
 			$rootScope.UserKey = user.user_id
 		};
-
 		// Metadata
 		angular.extend(user, {
 			name: 'ERPiaUser',
@@ -48,6 +46,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		});
 //----------------뒤로가기 마지막페이지일때 ....----
 		$ionicPlatform.registerBackButtonAction(function(e){
+										
 		    if ($location.url()=='/app/main' ||  $location.url()=='/app/slidingtab'  || $location.url() == '/app/scmhome'  || $location.url() == '/app/sample/Main') { //현재 페이지 url이 메인일 때,
 		      $ionicPopup.show({
 				title: '경고',
@@ -171,6 +170,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		    e.preventDefault();
 		    return false;
 		  },101);
+		  $rootScope.appCheck='Y';
+		 console.log("$rootScope.appCheck", $rootScope.appCheck);
 		// Identify your user with the Ionic User Service
 		$ionicUser.identify(user).then(function(){
 			//$scope.identified = true;

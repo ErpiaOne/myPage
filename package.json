@@ -26,7 +26,11 @@
     },
     "cordova-plugin-contacts",
     "cordova-plugin-whitelist",
-    "cordova-plugin-canvas2image"
+    "cordova-plugin-canvas2image",
+    {
+      "locator": "https://github.com/gokce/phonegap-ios-plugin-ftpupload.git",
+      "id": "com.github.gokce.phonegap-ios-plugin-ftpupload"
+    }
   ],
   "cordovaPlatforms": [
     "ios"
