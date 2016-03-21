@@ -20,43 +20,53 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage){
+	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform){
+	   var browseroptions = {
+	      location: 'yes',
+	      clearcache: 'yes',
+	      toolbar: 'yes'
+	   };
+	$rootScope.version={
+   		Android_version : '0.0.8',
+   		IOS_version : '0.0.8'
+   	}
 
+	// $scope.html2image = function(){
+	// 		console.log('image test');
+	// 		var element = $("#html-content-holder"); // global variable
+	// 		var getCanvas; // global variable
 
-	$scope.html2image = function(){
-			console.log('image test');
-			var element = $("#html-content-holder"); // global variable
-			var getCanvas; // global variable
+	// 			html2canvas(element, {
+	// 				onrendered: function (canvas) {
+	// 					$("#previewImage").append(canvas);
+	// 					getCanvas = canvas;
+	// 					console.log(getCanvas);
+	// 					var imgageData = getCanvas.toDataURL("image/png");
+	// 					// Now browser starts downloading it instead of just showing it
+	// 					var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+	// 					$("#btn-Convert-Html2Image").attr("download", "your_pic_name.png").attr("href", newData);
+	// 					console.log('data=',newData);
+	// 				}
+	// 			});
 
-				html2canvas(element, {
-					onrendered: function (canvas) {
-						$("#previewImage").append(canvas);
-						getCanvas = canvas;
-						console.log(getCanvas);
-						var imgageData = getCanvas.toDataURL("image/png");
-						// Now browser starts downloading it instead of just showing it
-						var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-						$("#btn-Convert-Html2Image").attr("download", "your_pic_name.png").attr("href", newData);
-						console.log('data=',newData);
-					}
-				});
-
-			console.log(element);
-			// $("#btn-Preview-Image").on('click', function () {
+	// 		console.log(element);
+	// 		// $("#btn-Preview-Image").on('click', function () {
 			
 
-		}
+	// 	}
 
 
 	$rootScope.loginState = "R"; //R: READY, E: ERPIA LOGIN TRUE, S: SCM LOGIN TRUE
 	$rootScope.deviceInfo = {};  // Device 정보를 담아두는 변수
 	$scope.ion_login = "ion-power active";  // 로그인/로그아웃 시 변경되는 CSS
 	// 각각의 변수를 담아두는 공간. 초기화를 쉽게 하기 위해 만들었음.
-	$scope.loginData = {};
+	$rootScope.loginData = {};
 	$scope.userData = {};  
 	$scope.SMSData = {};
-	$scope.loginData.chkAutoLogin=$localstorage.get('chkAutoLogin');
-	console.log('', $scope.loginData.chkAutoLogin);
+
+	$ionicPlatform.ready();
+
+
 	// 로그인 모달창
 	$ionicModal.fromTemplateUrl('erpia_login/login.html', {
 		scope : $scope
@@ -83,6 +93,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}).then(function(modal){
 		$scope.check_sano_Modal = modal;
 	});
+
 	//초기화 함수
 	$scope.init = function(loginType){
 		if(loginType == 'logout') {
@@ -165,6 +176,19 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.pushUserCheck();
 	};
 
+
+	   $scope.gohomepage = function() {
+	      $cordovaInAppBrowser.open('http://www.erpia.net', '_blank', browseroptions)
+			
+	      .then(function(event) {
+	         // success
+	      })
+			
+	      .catch(function(event) {
+	         // error
+	      });
+	   }
+
 	$rootScope.loginMenu = "selectUser";	//사용자 선택화면
 	$scope.selectType = function(userType){
 		switch(userType){
@@ -224,9 +248,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						$scope.loginData.Admin_Code = 'onz';
 						$scope.loginData.UserId = 'test1234';
 						$scope.loginData.Pwd = 'test1234!';
-						// $scope.loginData.Admin_Code = 'hj0712';
-						// $scope.loginData.UserId = 'hj0712';
-						// $scope.loginData.Pwd = '1234';
 					break;
 				}
 			}
@@ -250,8 +271,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.loginData.isLogin = 'Y';
 
 					if($scope.loginData.chkAutoLogin == true){
-						$localstorage.set('chkAutoLogin', true);
-						console.log($localstorage.get('chkAutoLogin'));
 						if(ERPiaAPI.toast == 'Y'){
 							uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 							$scope.loginData.autologin_YN = 'Y';
@@ -259,8 +278,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 						}
 					}else{
-						$localstorage.set('chkAutoLogin', false);
-						 console.log($localstorage.get('chkAutoLogin'));
 						if(ERPiaAPI.toast == 'Y'){
 							uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
 							$scope.loginData.autologin_YN = 'N';
@@ -340,7 +357,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									G_Expire_Days = '무제한';
 									G_Expire_Date = '무제한';
 								}else{
-									if (Last_Pay_YM == '' )	//당월결재미존재, 이전결재내역미존재
+									if (Last_Pay_YM == '')	//당월결재미존재, 이전결재내역미존재
 									{
 										G_Expire_Days = "0";
 										G_Expire_Date = "기간만료";
@@ -386,11 +403,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						})
 
 						if($scope.loginData.chkAutoLogin == true){
-							$localstorage.set('chkAutoLogin', true);
-							  console.log($localstorage.get('chkAutoLogin'));
-
-							  var post = $localstorage.getObject('post');
-							  console.log(post);
 							if(ERPiaAPI.toast == 'Y'){
 								uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 								$scope.loginData.autologin_YN = 'Y';
@@ -398,8 +410,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 							}
 						}else{
-							  $localstorage.set('chkAutoLogin', false);
-							  console.log($localstorage.get('chkAutoLogin'));
 							if(ERPiaAPI.toast == 'Y'){
 								uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
 								$scope.loginData.autologin_YN = 'N';
@@ -446,8 +456,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.loginData.isLogin = 'Y';
 
 					if($scope.loginData.chkAutoLogin == true){
-						$localstorage.set('chkAutoLogin', true);
-						console.log($localstorage.get('chkAutoLogin'));
 						if(ERPiaAPI.toast == 'Y'){
 							uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 							$scope.loginData.autologin_YN = 'Y';
@@ -455,8 +463,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
 						}
 					}else{
-						$localstorage.set('chkAutoLogin', false);
-						console.log($localstorage.get('chkAutoLogin'));						
 						if(ERPiaAPI.toast == 'Y'){
 							uuidService.saveUUID($cordovaDevice.getUUID(), $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
 							$scope.loginData.autologin_YN = 'N';
@@ -551,10 +557,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.init('logout');
 	}
 
-
-
 	// 단말기로 접속시 UUID의 정보를 불러와서 자동로그인 여부를 체크한 후 자동 로그인 시켜준다. 
-	document.addEventListener("deviceready", function () {
+	 document.addEventListener("deviceready", function () {
 		$rootScope.deviceInfo.device = $cordovaDevice.getDevice();
 		$rootScope.deviceInfo.cordova = $cordovaDevice.getCordova();
 		$rootScope.deviceInfo.model = $cordovaDevice.getModel();
@@ -565,45 +569,231 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		uuidService.getUUID($rootScope.deviceInfo.uuid)
 		.then(function(response){
 			if(response.list[0].result == '1'){
-				$scope.loginData.Admin_Code = response.list[0].admin_code;
-				$scope.loginData.loginType = response.list[0].loginType;
-				$scope.loginData.User_Id = response.list[0].ID;
-				$scope.loginData.Pwd = response.list[0].pwd;
-				$scope.loginData.autologin_YN = response.list[0].autoLogin_YN;
-
+				$rootScope.loginData.Admin_Code = response.list[0].admin_code;
+				$rootScope.loginData.loginType = response.list[0].loginType;
+				$rootScope.loginData.User_Id = response.list[0].ID;
+				$rootScope.loginData.Pwd = response.list[0].pwd;
+				$rootScope.loginData.autologin_YN = response.list[0].autoLogin_YN;
+				$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+			}
+			if($scope.loginData.autologin_YN=='Y'){
+				$scope.autoLogin = true;
 				$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
+			}else{
+				$scope.autoLogin = false;
 			}
 		})
-	}, false);
-	 
+
+		console.log('autoLogin_YN' ,$localstorage.get("autoLoginYN"));
+	 }, false);
+		console.log('앱갔다왔니?');
+	console.log('autoLogin_YN' ,$localstorage.get("autoLoginYN"));
+
+	if($localstorage.get("autoLoginYN")=='Y'){	
+		uuidService.getUUID($rootScope.deviceInfo.uuid)
+		.then(function(response){
+		if(response.list[0].result == '1'){
+			$rootScope.loginData.Admin_Code = response.list[0].admin_code;
+			$rootScope.loginData.loginType = response.list[0].loginType;
+			$rootScope.loginData.User_Id = response.list[0].ID;
+			$rootScope.loginData.Pwd = response.list[0].pwd;
+			$rootScope.loginData.autologin_YN = response.list[0].autoLogin_YN;
+		}
+		if($scope.loginData.autologin_YN=='Y'){
+			$scope.autoLogin = true;
+			$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
+		}else{
+			$scope.autoLogin = false;
+		}
+		})
+	}
+
 })
 // 거래명세표 컨트롤러
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
-	, tradeDetailService, ERPiaAPI){
+	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer){
 
-	$scope.htmlimage = function(){
-		console.log('image test');
-		var element = $("#divTradeDetail_Print_Area"); // global variable
-		var getCanvas; // global variable
+	function commaChange(Num)
+	{
+		fl="" 
+		Num = new String(Num) 
+		temp="" 
+		co=3 
+		num_len=Num.length 
+		while (num_len>0)
+		{ 
+			num_len=num_len-co 
+			if(num_len<0)
+			{
+				co=num_len+co;
+				num_len=0
+			} 
+			temp=","+Num.substr(num_len,co)+temp 
+		} 
+		rResult =  fl+temp.substr(1);
+		return rResult;
+	}
 
-			html2canvas(element, {
-				onrendered: function (canvas) {
-					$("#viewImage").append(canvas);
-					alert(canvas);
-					getCanvas = canvas;
-					console.log(getCanvas);
-					var imgageData = getCanvas.toDataURL("image/png");
-					// Now browser starts downloading it instead of just showing it
-					var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-					$("#btn-Convert-HtmlImage").attr("download", "your_pic_name.png").attr("href", newData);
-				}
-			});
+	function checklist(obj){
+		if(obj == null || obj == undefined){
+			obj = '';
+		}
+		return obj;
+	}
 
-		console.log(element);
-		// $("#btn-Preview-Image").on('click', function () {
+	function checklist2(obj){
+		if(obj == null || obj == undefined){
+			obj = '';
+			return obj;
+		}else{
+			return commaChange(obj);
+		}
+		
+	}
+
+
+
+	$scope.html3image = function(detaillist){
+		var detail = detaillist[0];
+
+		var html_start =  "<html><body>";
+		var html_view1 = "<table width=1080 ><tr><td name='td_User_Date' width=300 align=left>"+ detail.MeaChul_Date + '('+$scope.loginData.UserId+')'  + "</td><td width=420 align=center style='color:blue;'><u style='font-size:30px;'>거래명세표</u> (공급받는자용)</td><td name='td_Sl_No_Time' style='color:blue;' width=300 align=right>No."+ detail.Publish_No +"</td></tr></table>";
+		var html_view2 = "<table width=1080 cellspacing=0 cellpadding=0 ><tr><td style='color:blue; border-left: solid #0100FF; border-right: solid #0100FF; border-top: solid #0100FF; border-bottom: solid #0100FF;' width=25 rowspan=4 align=center>공<br/>급<br/>자</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF; border-top: solid #0100FF;' width=45>등 록<br/>번 호</td><td name='td_SaNo1' style='border-bottom: solid #0100FF; border-top: solid #0100FF;' colspan=6>" + detail.R_Sano + "</td><td style='color:blue; border-top: solid #0100FF; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;'  width=25 rowspan=5 align=center>공<br/>급<br/>받<br/>는<br/>자</td><td style='color:blue; border-bottom: solid #0100FF; border-top: solid #0100FF; border-right: solid #0100FF;'  width=45>등 록<br/>번 호</td><td name='td_SaNo2' style='border-bottom: solid #0100FF; border-top: solid #0100FF; border-right: solid #0100FF;'  colspan=6>" + detail.Sano + "</td></tr>";
+		var html_view3 = "<tr><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>상 호</td><td name='td_GerName1' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>" + detail.R_Snm +"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=10 colspan=2>성 명</td><td name='td_userName1' style='border-bottom: solid #0100FF;'>" + detail.R_Boss + "</td><td style='color:blue; border-bottom: solid #0100FF; border-right: solid #0100FF;' align=right>(인)</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;''>상 호</td><td name='td_GerName2' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=3>" + detail.Snm + "</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=45>성 명</td><td name='td_userName2' style='border-bottom: solid #0100FF;'>" + detail.Boss + "</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' align=right>(인)</td></tr>";
+		var html_view4 = "<tr><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>주 소</td><td name='td_Addr1' style='border-bottom: solid #0100FF;'colspan=6>"+detail.R_Addr+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>주 소</td><td name='td_Addr2' style='border-bottom: solid #0100FF; border-right: solid #0100FF;' colspan=6>"+detail.Addr+"</td> </tr>";
+		var html_view5 = "<tr><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>업 태</td><td name='td_UpType1' style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+ detail.R_up +"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=45>종 목</td><td name='td_Category1' style='border-bottom: solid #0100FF;' colspan=4>"+detail.R_jong+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;''>업 태</td><td name='td_UpType2' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>"+detail.Up+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=45>종 목</td><td name='td_Category2'style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=3>"+detail.Jong+"</td></tr>";			        
+		var html_view6 = "<tr><td style='color:blue; border-left: solid #0100FF; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>합계금액</td><td name='td_TotAmt' style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+commaChange(detail.Hap)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>전잔액</td><td name='td_PreJanAmt' style='border-bottom: solid #0100FF;' colspan=3>"+commaChange(detail.Pre_Jan_Amt)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>담 당</td><td name='td_DamDang' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>"+detail.G_GDamdang+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>전 화</td><td name='td_Tel' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=3>"+detail.G_GDamdangTel+"</td></tr>";			        
+		var html_view7 = "<tr><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+commaChange(detail.In_Amt)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #0100FF;' colspan=3>" + commaChange(detail.Cur_Jan_Amt )+ "</td><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #0100FF; '>"+detail.Boss+"</td><td style='color: blue; border-bottom: solid #0100FF; border-right: solid #0100FF;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";		        
+		
+		//두번째 테이블
+		var html_view8 = "<table bordercolor='#0100FF' border=3 width=1080 style='margin-top:10px;' cellspacing=0 cellpadding=0><thead style='color:blue; border-bottom: solid #0100FF;'><th width=550 style='border-right:2px solid #0100FF;'' colspan=3>품목 및 규격</th><th style='border-right:2px solid #0100FF;'' width=97>수 량</th><th style='border-right:2px solid #0100FF;'' width=140>단 가</th><th style='border-right:2px solid #0100FF;'' width=140>공 급 가 액</th><th width=140>세 액</th></thead>";
+		var html_view9 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name1)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea1)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price1)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong1)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
+		var html_view10 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name2)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea2)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price2)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong2)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
+		var html_view11 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name3)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea3)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price3)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong3)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
+		var html_view12 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name4)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea4)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price4)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong4)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
+		var html_view13 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name5)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea5)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price5)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong5)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
+		var html_view14 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name6)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea6)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price6)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong6)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
+		var html_view15 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name7)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea7)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price7)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong7)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
+		var html_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
+		var html_view17 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name9)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea9)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price9)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong9)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
+		var html_view18 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;'>"+ checklist(detail.G_name10)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.G_ea10)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.G_price10)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.G_Gong10)+"</td><td width=140 style='border-bottom: solid #0100FF;' align=right>.</td></tr>";
+		var html_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #0100FF;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #0100FF; border-bottom: solid #0100FF; border-left:2px solid #0100FF;'>합계</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #0100FF;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6 ></td></tr></table><br>"
+
 		
 
+		var html2_view1 = "<table width=1080 ><tr><td name='td_User_Date' width=300 align=left>"+ detail.MeaChul_Date + '('+$scope.loginData.UserId+')'  +"</td><td width=420 align=center style='color:red;'><u style='font-size:30px;'>거래명세표</u> (공급자용)</td><td name='td_Sl_No_Time' style='color:red' width=300 align=right>No."+ detail.Publish_No +"</td></tr></table>";
+		var html2_view2 = "<table width=1080 cellspacing=0 cellpadding=0 ><tr><td style='color:red; border-left: solid #FF0000; border-right: solid #FF0000; border-top: solid #FF0000; border-bottom: solid #FF0000;' width=25 rowspan=4 align=center>공<br/>급<br/>자</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000; border-top: solid #FF0000;' width=45>등 록<br/>번 호</td><td name='td_SaNo1' style='border-bottom: solid #FF0000; border-top: solid #FF0000;' colspan=6>" + detail.R_Sano + "</td><td style='color:red; border-top: solid #FF0000; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;'  width=25 rowspan=5 align=center>공<br/>급<br/>받<br/>는<br/>자</td><td style='color:red; border-bottom: solid #FF0000; border-top: solid #FF0000; border-right: solid #FF0000;'  width=45>등 록<br/>번 호</td><td name='td_SaNo2' style='border-bottom: solid #FF0000; border-top: solid #FF0000; border-right: solid #FF0000;'  colspan=6>" + detail.Sano + "</td></tr>";
+		var html2_view3 = "<tr><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>상 호</td><td name='td_GerName1' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>" + detail.R_Snm +"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=10 colspan=2>성 명</td><td name='td_userName1' style='border-bottom: solid #FF0000;'>" + detail.R_Boss + "</td><td style='color:red; border-bottom: solid #FF0000; border-right: solid #FF0000;' align=right>(인)</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;''>상 호</td><td name='td_GerName2' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=3>" + detail.Snm + "</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=45>성 명</td><td name='td_userName2' style='border-bottom: solid #FF0000;'>" + detail.Boss + "</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' align=right>(인)</td></tr>";
+		var html2_view4 = "<tr><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>주 소</td><td name='td_Addr1' style='border-bottom: solid #FF0000;'colspan=6>"+detail.R_Addr+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>주 소</td><td name='td_Addr2' style='border-bottom: solid #FF0000; border-right: solid #FF0000;' colspan=6>"+detail.Addr+"</td> </tr>";
+		var html2_view5 = "<tr><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>업 태</td><td name='td_UpType1' style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+ detail.R_up +"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=45>종 목</td><td name='td_Category1' style='border-bottom: solid #FF0000;' colspan=4>"+detail.R_jong+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;''>업 태</td><td name='td_UpType2' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>"+detail.Up+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=45>종 목</td><td name='td_Category2'style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=3>"+detail.Jong+"</td></tr>";			        
+		var html2_view6 = "<tr><td style='color:red; border-left: solid #FF0000; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>합계금액</td><td name='td_TotAmt' style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+commaChange(detail.Hap)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>전잔액</td><td name='td_PreJanAmt' style='border-bottom: solid #FF0000;' colspan=3>"+commaChange(detail.Pre_Jan_Amt)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>담 당</td><td name='td_DamDang' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>"+detail.G_GDamdang+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>전 화</td><td name='td_Tel' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=3>"+detail.G_GDamdangTel+"</td></tr>";			        
+		var html2_view7 = "<tr><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+commaChange(detail.In_Amt)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #FF0000;' colspan=3>" + commaChange(detail.Cur_Jan_Amt) + "</td><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #FF0000;'>"+detail.Boss+"</td><td style='color: red; border-bottom: solid #FF0000; border-right: solid #FF0000;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";		        
+		
+
+		//두번째 테이블
+		
+		var html2_view8 = "<table bordercolor='#FF0000' border=3 width=1080 style='margin-top:10px;' cellspacing=0 cellpadding=0><thead style='color:red; border-bottom: solid #FF0000;'><th width=550 style='border-right:2px solid #FF0000;'' colspan=3>품목 및 규격</th><th style='border-right:2px solid #FF0000;'' width=97>수 량</th><th style='border-right:2px solid #FF0000;'' width=140>단 가</th><th style='border-right:2px solid #FF0000;'' width=140>공 급 가 액</th><th width=140>세 액</th></thead>";
+		var html2_view9 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name1)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea1)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price1)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong1)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
+		var html2_view10 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name2)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea2)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price2)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong2)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
+		var html2_view11 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name3)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea3)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price3)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong3)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
+		var html2_view12 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name4)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea4)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price4)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong4)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
+		var html2_view13 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name5)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea5)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price5)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong5)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
+		var html2_view14 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name6)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea6)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price6)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong6)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
+		var html2_view15 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name7)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea7)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price7)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong7)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
+		var html2_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
+		var html2_view17 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name9)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea9)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price9)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong9)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
+		var html2_view18 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;'>"+ checklist(detail.G_name10)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.G_ea10)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.G_price10)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.G_Gong10)+"</td><td width=140 style='border-bottom: solid #FF0000;' align=right>.</td></tr>";
+		var html2_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #FF0000;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #FF0000; border-bottom: solid #FF0000; border-left:2px solid #FF0000;'>합계</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #FF0000;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6 ></td></tr></table><br>"
+
+
+		var html_end =  "</body></html>" ; 
+
+		var html_string = html_start + html_view1 + html_view2 + html_view3 + html_view4 + html_view5 + html_view6 + html_view7 + html_view8 + html_view9  + html_view10 + html_view11 + html_view12 + html_view13 + html_view14 + html_view15 + html_view16 + html_view17 + html_view18 + html_view19;
+		var html_string2 = html_string + html2_view1 + html2_view2 + html2_view3 + html2_view4 + html2_view5 + html2_view6 + html2_view7 + html2_view8 + html2_view9 + html2_view10 + html2_view11 + html2_view12 + html2_view13 + html2_view14 + html2_view15 + html2_view16 + html2_view17 + html2_view18 + html2_view19 + html_end;
+		
+		var iframe = document . createElement ( 'iframe' ); 
+		document . body . appendChild ( iframe ); 
+
+		var iframedoc = iframe . contentDocument || iframe . contentWindow . document ; 
+		    iframedoc.body.innerHTML = html_string2 ; 
+		    html2canvas ( iframedoc.body ,  { 
+		        onrendered :  function ( canvas )  { 
+		            document . body . appendChild ( canvas ); 
+		            // document . body . removeChild ( iframe ); 
+		            var imgageData = canvas.toDataURL("image/jpg");
+		            var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream"); //파일 
+		 		// $("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
+		 		// Canvas2Image.saveAsPNG(canvas);
+		 		
+		 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			        // var myImg = newData;
+			        // console.log('???');
+			        // var options = new FileUploadOptions();
+			        // options.fileKey="post";
+			        // options.chunkedMode = false;
+			        // var params = {
+			        // 	value1: "20132354",
+			        // 	value2: "2410724"
+			        // };
+			        // // params.user_token = localStorage.getItem('auth_token');
+			        // // params.user_email = localStorage.getItem('email');
+			        // options.params = params;
+			        // var ft = new FileTransfer();
+			        // ft.upload(myImg, encodeURI(ERPiaAPI.gurl), onUploadSuccess, onUploadFail, options);
+
+
+		 		var canvasData = canvas.toDataURL("image/png");
+				var ajax = new XMLHttpRequest();
+				ajax.open("POST",ERPiaAPI.gurl,true);
+				ajax.setRequestHeader('Content-Type', 'application/upload');
+				console.log('!!!!!!!!!!!');
+				ajax.send(canvasData );
+				console.log('??????');
+				 //  var options = {
+				 //    fileKey: "divTradeDetail_Print_Area",
+				 //    fileName: "test.png",
+				 //    chunkedMode: false,
+				 //    mimeType: "image/png",
+				 //    params: {
+				 //      value1: "topclass",
+				 //      value2: "khs239k1"
+				 //    }
+				 //  }
+				 //  console.log(options);
+					// $cordovaFileTransfer.upload("ftp://topclass.dothome.co.kr/test/", imgageData, options).then(function(result) {
+					// 	console.log('???????????');
+				 //                      console.log("SUCCESS: " + JSON.stringify(result.response));
+				 //                    }, function(err) {
+				 //                      console.log("ERROR: " + JSON.stringify(err));
+				 //                    }, function (progress) {
+				 //                      // constant progress updates
+				 //                    });
+			    
+				 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		        } 
+		    }); 
+
 	}
+
+
+	// $scope.shareAnywhere = function(url) {
+	// 	url = 'http://erpia.net';
+	// 	file = newData;
+	//         $cordovaSocialSharing
+	//         	.share("[Erpia 거래명세표] "+url, file);
+	//     }
+
+
+	//     $cordovaSocialSharing
+	// 	    .share(message, subject, file, link) // Share via native share sheet
+	// 	    .then(function(result) {
+	// 	      // Success!
+	// 	    }, function(err) {
+	// 	      // An error occured. Show a message to the user
+	// 	    });
+
+
+
 
 	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
 		scope : $scope
@@ -630,7 +820,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				console.log('haveList', $scope.haveList);
 			})
 	}else if($rootScope.userType == 'ERPia'){
-		console.log('여기를 찾아라!', $scope.loginData.Pwd);
 		$scope.tradeList.Title = '매출거래처 발송 내역';
 		$scope.tradeList.MeaipMeachul = '매입일';
 		$scope.tradeList.Publisher = '발송처';
@@ -646,28 +835,87 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				console.log('haveList', $scope.haveList);
 			})
 	}
-	// 거래명세표 보기 
+
+	/*거래명세표 보기 */
 	$scope.readTradeDetail = function(dataParam){
 		var Sl_No = dataParam.substring(0, dataParam.indexOf('^'));
 		var detail_title = dataParam.substring(dataParam.indexOf('^') + 1);
 		tradeDetailService.readDetail($scope.loginData.Admin_Code, Sl_No)
 			.then(function(response){
 				console.log('readDetail', response);
+				
+				var numhap = 0; // 수량합계
+				var num = 1;
+				switch( num ){
+					case 1:  response.list[0].numhap = response.list[0].G_ea1;
+							 response.list[0].taxhap = response.list[0].tax1;
+							 response.list[0].pricehap = response.list[0].G_price1;
+							 if(response.list[0].G_ea2 == null) break;
+
+					case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2); 
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2); 
+							 if(response.list[0].G_ea3 == null) break;
+
+					case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3); 
+							 if(response.list[0].G_ea4 == null) break;
+
+					case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4); 
+							 if(response.list[0].G_ea5 == null) break;
+
+					case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5); 
+							 if(response.list[0].G_ea6 == null) break;
+
+					case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6); 
+							 if(response.list[0].G_ea7 == null) break;
+
+					case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7); 
+							 if(response.list[0].G_ea8 == null) break;
+
+					case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8); 
+							 if(response.list[0].G_ea9 == null) break;
+
+					case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9); 
+							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9); 
+							 if(response.list[0].G_ea10 == null) break;
+
+					case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10); 
+							   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10); 
+							   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10); 
+							   break;
+					default : console.log('여기올일 없을껄....');
+				}
+
 				$scope.detail_items = response.list;
 				$scope.trade_Detail_Modal.show();
 			})
 		if($rootScope.userType!='ERPia') tradeDetailService.chkRead($scope.loginData.Admin_Code, Sl_No, $scope.loginData.User_Id)
-	} //거래명세표 사업자 번호 입력 모달 닫기
+	}
+	 /*거래명세표 사업자 번호 입력 모달 닫기*/
 	$scope.close_sano = function(){
 		$scope.check_sano_Modal.hide();
-	} //거래명세표 닫기
+	} 
+	/*거래명세표 닫기*/
 	$scope.close = function(){
 		$scope.trade_Detail_Modal.hide();
 	}
 	// $scope.backToList = function(){
 	// 	$ionicSlideBoxDelegate.previous();
 	// }
-	// 프린트 (거래명세표 화면에서 프린트 버튼의 주석을 해제해야 기능을 사용할 수 있음.. 블루투스 연결까지는 확인했으나 프린트 잉크가 없어서 테스트 못함.)
+	/*프린트 (거래명세표 화면에서 프린트 버튼의 주석을 해제해야 기능을 사용할 수 있음.. 블루투스 연결까지는 확인했으나 프린트 잉크가 없어서 테스트 못함.)*/
 	$scope.print = function(){
 		cordova.plugins.printer.isAvailable(
 		    function (isAvailable) {
@@ -680,6 +928,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		    }
 		);
 	}// 각각의 타입별로 안내메세지를 다르게 표시.
+
 	$scope.check_Sano = function(){
 		if($rootScope.userType == "SCM" || $rootScope.userType == "Normal" ){
 			console.log('sano', $scope.userData.G_Sano.substring($scope.userData.G_Sano.lastIndexOf('-') + 1));
@@ -695,6 +944,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				else alert('사업자 번호와 일치하지 않습니다.');
 			}
 		}else if($rootScope.userType == "ERPia"){
+			// alert($scope.loginData.Pwd);
+			$scope.userData.Sano = $scope.loginData.Pwd; // =========================== 지워야되.
 			if($scope.loginData.Pwd == $scope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
@@ -708,39 +959,73 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 	}
 })
-// 필요없는 컨트롤러인듯..
 .controller('configCtrl', function($scope, $rootScope) {
-	if($rootScope.loginState == 'E'){
-	}
-})
+	})
+
 // 아래부터 설정 화면에 있는 컨트롤러들..
 // 프로그램정보 컨트롤러
-.controller('configCtrl_Info', function($scope, $rootScope, $cordovaAppVersion) {
+.controller('configCtrl_Info', function($scope, $rootScope, $ionicPlatform, $timeout, VersionCKService, $ionicScrollDelegate) {
 	// 기본정보를 디폴트 값으로 넣었다.
-	$scope.AppInfo = {currentVer:"1.0.0"};
-	// console.log(cordovaAppVersion.getVersionNumber(), cordovaAppVersion.getVersionCode(), cordovaAppVersion.getVersionNumber());
-	
-	var deviceInformation = ionic.Platform.device();
-	$scope.AppInfo = parseInt(ionic.Platform.version());
-	$scope.deviceInfo = { 
-	 	cordova : "cordova버전 : "+ ionic.Platform.device().cordova,
-	 	manufacturer : "제조사 : "+ ionic.Platform.device().manufacturer,
-	 	model : "모델명 : "+ionic.Platform.device().model,
-	 	platform : "플랫폼 : "+ ionic.Platform.device().platform,
-	 	uuid : "uuid : " + ionic.Platform.device().uuid,
-		version : "디바이스버전 : " + ionic.Platform.device().version
-	 };
-	
-	console.log('>>>>>',$scope.AppInfo, '<<<<<<<<<', $scope.deviceInfo)
-	// 여기서 정보를 가져와야하는데 안가져와짐.. 해결해주길...
-	
-		// $scope.AppInfo.currentVer = '0.0.8';
+	$scope.ckversion={};
+   	$scope.thisversioncurrent='Y';
+   	$scope.thisversion='';
+   	$scope.currentversion='';
+	VersionCKService.currentVersion()
+	.then(function(data){
+		$timeout(function(){
+			if(data != '<!--Parameter Check-->'){
+				$rootScope.ckversion = data;
+				console.log("currentVersionService", $rootScope.ckversion);
+			if(ionic.Platform.isAndroid()==true){
+					console.log('android');
+					var version = $scope.version.Android_version.split('.');
+					version = version[0]+'.'+version[1]+version[2];
+				     	version = parseFloat(version);
+				     	console.log("version", version);
+					var ckversion = $rootScope.ckversion.Android_version.split('.');
+					ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
+					ckversion = parseFloat(ckversion);
+					console.log("ckversion", ckversion);
+					$scope.thisversion=$rootScope.version.Android_version;
+					$scope.currentversion=$rootScope.ckversion.Android_version;
+				if (version<ckversion) $scope.thisversioncurrent='N';
+				else $scope.thisversioncurrent='Y';
+			}else{
+				console.log('ios');
+				var version = $scope.version.IOS_version.split('.');
+				version = version[0]+'.'+version[1]+version[2];
+			     	version = parseFloat(version);
+			     	console.log("version", version);
+				var ckversion = $rootScope.ckversion.IOS_version.split('.');
+				ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
+				ckversion = parseFloat(ckversion);
+				console.log("ckversion", ckversion);
+				$scope.thisversion=$rootScope.version.IOS_version;
+				$scope.currentversion=$rootScope.ckversion.IOS_version;
+				if (version<ckversion) $scope.thisversioncurrent='N';
+				else $scope.thisversioncurrent='Y';
+			}
+		}else{
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회실패. 데이터접속을 확인해주세요.', 'short', 'center');
+			else alert('조회실패. 데이터접속을 확인해주세요.'); 
+		}	         
+	      		}, 1000); 
+			console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
+	}); 
+	console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
+		$scope.updatebtn=function(){
+			if($cordovaDevice.getDevice() == "Android") location.href='';
+			else location.href='';
+		}
 
-		// $scope.AppInfo.deviceInfo = '0.0.8';	
-	
-
+	/* 최상단으로 */
+	$scope.scrollTop = function() {
+    	$ionicScrollDelegate.scrollTop();
+    };
+	 
 })// 공지사항 컨트롤러
-.controller('configCtrl_Notice', function($scope, $ionicPopup, $ionicHistory, NoticeService, $cordovaSocialSharing) {
+.controller('configCtrl_Notice', function($scope, $ionicPopup, $ionicHistory, BoardService, $timeout, $cordovaToast, $ionicScrollDelegate) {
+	$scope.items=[];
 	$scope.myGoBack = function() {
 		$ionicHistory.goBack();
 		$ionicHistory.clearCache();
@@ -749,11 +1034,64 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	};
 	
 	$scope.toggle = false;
-	NoticeService.getList()
-		.then(function(data){
-			$scope.items = data.list;
-		})
+	$scope.moreloading=0; 
+    	$scope.pageCnt=1;
+    	$scope.maxover=0;
 
+	BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1)
+	.then(function(data){
+			$scope.maxover=0;
+				$timeout(function(){
+					if(data != '<!--Parameter Check-->'){
+				    		$scope.maxover=0;
+						$scope.items = data.list;
+					}else{
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+						else alert('조회된 데이터가 없습니다.'); 
+						$scope.moreloading=0; 
+						$scope.maxover = 1;
+					}
+	       			$scope.moreloading=0; 
+	         
+	      		}, 1000); 
+	}); 
+
+	    /* 더보기 버튼 클릭시 */
+	$scope.boards_more = function() {
+	  		if($scope.items.length>0){
+	  		console.log($scope.items.length);
+
+	  		if($scope.maxover==0){
+		        	$scope.pageCnt+=1;
+
+		      	$scope.moreloading=1; 
+
+			      	
+		      	BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',$scope.pageCnt).then(function(data){
+	      	 		$scope.maxCnt=0;
+				$timeout(function(){
+					if(data != '<!--Parameter Check-->'){
+				    		$scope.maxover=0;
+						for(var i=0; i<data.list.length; i++){
+							$scope.items.push(data.list[i]);
+						}	
+					}else{
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+						else alert('조회된 데이터가 없습니다.'); 
+						$scope.moreloading=0; 
+						$scope.maxover = 1;
+					}
+	       			$scope.moreloading=0; 
+		         
+		      		}, 1000); 
+		      		});	
+			}
+	      }
+	    };
+	   /* 최상단으로 */
+	$scope.scrollTop = function() {
+    		$ionicScrollDelegate.scrollTop();
+    	};
 	// $scope.sendSMS = function (message) {
 	// 	  KakaoLinkPlugin.call("kakaotalk share...");
 	// }
@@ -764,7 +1102,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	// 	fromemail="khs239@erpia.net"
 	//     $cordovaSocialSharing.shareViaEmail(message, subject, null, fromemail, null);
 	// }
-})// 통계리포트 설정 컨트롤러
+})
+// 통계리포트 설정 컨트롤러
 .controller('configCtrl_statistics', function($scope, $rootScope, statisticService, publicFunction){
 	statisticService.all('myPage_Config_Stat', 'select_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
 		.then(function(data){
@@ -885,18 +1224,19 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 .controller('configCtrl_login', function($scope, $rootScope, uuidService, $localstorage){
 	if($scope.loginData.autologin_YN == 'Y'){
 		$scope.autoLogin = true;
-		$localstorage.set('chkAutoLogin', true);
-  		console.log($localstorage.get('chkAutoLogin'));
 	}
 	else $scope.autoLogin = false;
-	$localstorage.set('chkAutoLogin', false);
-  	console.log($localstorage.get('chkAutoLogin'));
 	$scope.autoLogin_YN = function(check){
-		if(check) uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y')
-		else uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N')
+		if(check){
+			uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y')
+			$scope.autoLogin = true;
+		}else{
+			uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N')
+			$scope.autoLogin = false;
+		}
 	}
 })
-// 설정 화면 컨트롤러 끝 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 설정 화면 컨트롤러 끝 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SCM 메인 화면 컨트롤러
 .controller('ScmUser_HomeCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, scmInfoService, AmChart_Service){
 	$scope.ScmBaseData = function() {
@@ -1074,16 +1414,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 .controller('CsCtrl', function($rootScope, $scope, $ionicModal, $ionicPopup, $timeout, $stateParams, $location, $http, csInfoService, TestService){
 	console.log("CsCtrl");
-	$scope.csData = {};
+	$scope.csData = {
+		interestTopic1 : 'no',
+		interestTopic2 : 'no',
+		interestTopic3 : 'no',
+		sectors: 'no',
+		inflowRoute: 'no'
+	};
 	$scope.cscustomagree = false;
 
-	var ChkinterestTopic = [];
-	$scope.interestTopic1 = "";
-	$scope.interestTopic2 = "";
-	$scope.interestTopic3 = "";
-
 	var csResigtData = [];
-	$scope.interestTopicRemoveYN = "";
 
 	$ionicModal.fromTemplateUrl('erpia_cs/csagreement.html', {
 	    	scope: $scope
@@ -1129,20 +1469,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	    { id: 10, value: "발주관리" },
 	    { id: 11, value: "그룹사관리" }
   	];
-	
-	var updated = 0;
-	$scope.$watch('csData.interestTopic', function(newValue, oldValue, oldValue2) {
-		if (newValue === oldValue || newValue === oldValue2 || oldValue === oldValue2) {
-				return;
-		}
-		switch(updated){
-			case 0: ChkinterestTopic[0] = $scope.csData.interestTopic; updated++; $scope.interestTopic1 = ChkinterestTopic[0]; $scope.interestTopicRemoveYN = "Y"; break;
-			case 1: ChkinterestTopic[1] = $scope.csData.interestTopic; updated++; $scope.interestTopic2 = ' /' + ChkinterestTopic[1]; break;
-			case 2: ChkinterestTopic[2] = $scope.csData.interestTopic; updated = 0; $scope.interestTopic3 = ' /' + ChkinterestTopic[2]; break;
-		}
-		console.log(ChkinterestTopic);
-		},true
-	);
 		
   	$scope.inflowRoutelist = [
 	    { id: 1, value: "검색엔진" },
@@ -1156,15 +1482,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	
   	$scope.csRegist = function() {
   		console.log($scope.csData);
+  		console.log($scope.cscustomagree);
   		var errMsg = "";
+  		if($scope.csData.interestTopic1 != 'no' && $scope.csData.interestTopic2 == 'no' && $scope.cscustomagree != false){
+  			$scope.csData.interestTopic2 = '';
+  		}
+  		if($scope.csData.interestTopic1 != 'no' && $scope.csData.interestTopic3 == 'no' && $scope.cscustomagree != false){
+  			$scope.csData.interestTopic3 = '';
+  		}
   		csResigtData[0] = $scope.csData.comName;
 	  	csResigtData[1] = $scope.csData.writer;
 	  	csResigtData[2] = $scope.csData.subject;
 	  	csResigtData[3] = $scope.csData.tel;
 	  	csResigtData[4] = $scope.csData.sectors;
-	  	csResigtData[5] = $scope.interestTopic1;
-	  	csResigtData[6] = $scope.interestTopic2;
-	  	csResigtData[7] = $scope.interestTopic3;
+	  	csResigtData[5] = $scope.csData.interestTopic1;
+	  	csResigtData[6] = $scope.csData.interestTopic2;
+	  	csResigtData[7] = $scope.csData.interestTopic3;
 	  	csResigtData[8] = $scope.csData.inflowRoute;
 	  	csResigtData[9] = $scope.csData.contents;
 
@@ -1177,13 +1510,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	  	if(!$scope.csData.tel != ''){
 	  		errMsg += "/연락처";
 	  	}
-	  	if(!$scope.csData.sectors != ''){
+	  	if($scope.csData.sectors == 'no'){
 	  		errMsg += "/업종"
 	  	}
-	  	if(!csResigtData[5] != ''){
+	  	if(csResigtData[5] == 'no'){
 	  		errMsg += "/관심항목";
 	  	}
-	  	if(!$scope.csData.inflowRoute != ''){
+	  	if($scope.csData.inflowRoute == 'no'){
 	  		errMsg += "/유입경로";
 	  	}
 	  	if(!$scope.csData.contents != ''){
@@ -1199,15 +1532,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			        subTitle: '',
 			        template: errMsg + ' 은(는)<br> 필수 입력 항목입니다.'
 	    		})
-	  	if($scope.cscustomagree == false){
+	  	}else if($scope.cscustomagree == false){
 	  		$ionicPopup.alert({
 			        title: '<b>경고</b>',
 			        subTitle: '',
 			        template: '개인정보이용 및 활용동의(필수)를 해주시기 바랍니다.'
 	    		})
-	  	}
 	  	}else{
-			// Admin_Code, UserId, kind, chkAdmin, comName, writer, subject, tel, sectors, interestTopic1,interestTopic2, interestTopic3, inflowRoute, contents
 			csInfoService.csInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_CS_Save', $rootScope.loginState, escape(csResigtData[0]),
 								 escape(csResigtData[1]), escape(csResigtData[2]), escape(csResigtData[3]), escape(csResigtData[4]), escape(csResigtData[5]),
 								 escape(csResigtData[6]), escape(csResigtData[7]), escape(csResigtData[8]), escape(csResigtData[9]))
@@ -1225,7 +1556,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.interestTopic1 = "";
 		$scope.interestTopic2 = "";
 		$scope.interestTopic3 = "";
-		$scope.interestTopicRemoveYN = "N";
+		// $scope.interestTopicRemoveYN = "N";
 		updated = 0;
 	}
 })
@@ -1255,14 +1586,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	};
 })
 
-.controller('BoardMainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, $cordovaToast, ERPiaAPI, BoardService){
+.controller('BoardMainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, $cordovaToast, ERPiaAPI, BoardService, $ionicScrollDelegate){
 	console.log("BoardMainCtrl");
 	$scope.moreloading=0; 
     	$scope.pageCnt=1;
     	$scope.maxover=0;
 	$rootScope.useBoardCtrl = "Y";
 	var idx = $rootScope.boardIndex;
-
+	console.log(idx);
 	
 	$scope.tabs2 = [{
 		"text" : "공지사항"
@@ -1274,8 +1605,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		"text" : "업체문의 Q&A"
 	}];
 
-	switch(idx){
-			case 0: 	$scope.maxover=0;
+	$scope.searchck = '';
+	$scope.searchckclick=function(){
+		console.log($scope.searchck);
+	}
+
+	switch($rootScope.boardIndex){
+			case 0: $scope.maxover=0;
 				$scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1)
 				.then(function(data){
 						$scope.maxover=0;
@@ -1350,19 +1686,36 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		}
 	console.log(">>>>페이지cnt",$scope.pageCnt)
+
+	$scope.searchClick=function(){	 
+		BoardService.Board_sear($scope.loginData.Admin_Code, $rootScope.boardIndex, 1).then(function(data){$scope.items = data.list;}); 
+	};
+	/* 최상단으로 */
+	$scope.scrollTop = function() {
+    		$ionicScrollDelegate.scrollTop();
+    	};
+
 	$scope.onSlideMove = function(data) {
 		$scope.moreloading=0; 
 	    	$scope.pageCnt=1;
 	    	$scope.maxover=0;
 		switch(data.index){
 			case 0: 	$scope.maxover=0;	 	
-				$scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1).then(function(data){$scope.items = data.list;}); break;
+				$scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1).then(function(data){$scope.items = data.list;}); 
+				$rootScope.boardIndex = 0;
+				break;
 			case 1: $scope.maxover=0;
-				$scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup',1).then(function(data){$scope.items = data.list;}); break;
+				$scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup',1).then(function(data){$scope.items = data.list;}); 
+				$rootScope.boardIndex = 1;
+				break;
 			case 2: $scope.maxover=0;
-				$scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ',1).then(function(data){$scope.items = data.list;}); break;
+				$scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ',1).then(function(data){$scope.items = data.list;}); 
+				$rootScope.boardIndex = 2;
+				break;
 			case 3: $scope.maxover=0;
-				$scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request',1).then(function(data){$scope.items = data.list;}); break;
+				$scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request',1).then(function(data){$scope.items = data.list;}); 
+				$rootScope.boardIndex = 3;				
+				break;
 		}
 		$rootScope.useBoardCtrl = "N";
 	};
@@ -1370,14 +1723,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.boards_more = function() {
 	  		if($scope.items.length>0){
 	  		console.log($scope.items.length);
-	  		
+	  		console.log($rootScope.boardIndex);
 
 	  		if($scope.maxover==0){
 		        	$scope.pageCnt+=1;
 
 		      	$scope.moreloading=1; 
 
-			      	switch(idx){
+			      	switch($rootScope.boardIndex){
 				      	case 0: $scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',$scope.pageCnt).then(function(data){		$scope.maxCnt=0;
 							$timeout(function(){
 								if(data != '<!--Parameter Check-->'){
@@ -2281,6 +2634,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		    
 	};
 
+
 	$scope.mydate1($scope.date.sDate1);
 	$scope.mydate2($scope.date.eDate1);
 
@@ -2480,10 +2834,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									$scope.chit_lists.push(data.list[m]);
 									if($rootScope.distinction == 'meaip'){
 										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
-										console.log('오냐?',$scope.money.meaipchulsum);
-										console.log('?',data.list[m].Meaip_Amt);
 									}else{
-										console.log('오냐?',$scope.money.meaipchulsum);
 										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
 									}
 								}
@@ -3271,6 +3622,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		/*전표 상세조회 -- 날짜 paydate(입출일), todate(지급일)*/ 
 		MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.u_no)
 		.then(function(data){
+			$scope.datas.remk = data.list[0].Remk;
 			if($rootScope.distinction == 'meaip'){
 				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
 					$scope.date.todate1 = new Date(data.list[0].Meaip_Date);
@@ -3541,7 +3893,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.goodslists = data.list;
 	})
 		if($scope.checkedDatas.length != 0){
-			$scope.checkedDatas = '';
+			$scope.checkedDatas.splice(0,$scope.checkedDatas.length);
 		}
     	$scope.goodsmodal.show();
     }
@@ -3649,6 +4001,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
     /*선택된 상품들을 등록리스트에 저장 --> 이중 $scope*/
     $scope.checkdataSave=function(){
+    	console.log($scope.goodsaddlists);
 		if($scope.goodsaddlists.length > 0){
 			var check = 'N';
 			for(var j=0; j < $scope.goodsaddlists.length; j++){
@@ -3695,7 +4048,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 			}else{
 				switch(d){
-				case '0': console.log('거래처별 단가'); var price = $scope.checkedDatas[i].G_Dn3; break;
+					case '0': console.log('거래처별 단가'); var price = $scope.checkedDatas[i].G_Dn3; break;
 		    		case '1': console.log('매입가&매출가'); var price = $scope.checkedDatas[i].G_Dn1; break;
 		    		case '2': console.log('도매가'); var price = $scope.checkedDatas[i].G_Dn2; break;
 		    		case '3': console.log('인터넷가'); var price = $scope.checkedDatas[i].G_Dn3; break;
@@ -3905,7 +4258,7 @@ $scope.goods_seqlist = [];
     		if($scope.datas.GerCode == 0){
     			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('거래처를 선택해주세요.', 'short', 'center');
 				else alert('거래처를 선택해주세요.');
-    				$scope.basictype=true;
+    			$scope.basictype=true;
 				$scope.basic2type=false;
 				$scope.basic3type=false;
 				$scope.upAnddown="ion-arrow-down-b";
@@ -3915,7 +4268,7 @@ $scope.goods_seqlist = [];
     		}else if($scope.datas.subulkind == 0){
     			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('수불구분을 지정하지 않었습니다.', 'short', 'center');
 				else alert('수불구분을 지정하지 않었습니다.');
-    				$scope.basictype=true;
+    			$scope.basictype=true;
 				$scope.basic2type=false;
 				$scope.basic3type=false;
 				$scope.upAnddown="ion-arrow-down-b";
@@ -3925,7 +4278,7 @@ $scope.goods_seqlist = [];
     		}else{
     			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상품정보가 존재하지 않습니다. 한번더 확인하세요.', 'short', 'center');
 				else alert('상품정보가 존재하지 않습니다. 한번더 확인하세요.');
-    				$scope.basictype=false;
+    			$scope.basictype=false;
 				$scope.basic2type=true;
 				$scope.basic3type=false;
 				$scope.upAnddown="ion-arrow-up-b";
@@ -3941,7 +4294,7 @@ $scope.goods_seqlist = [];
 	    		if($scope.goodsaddlists[i].num == 0){
 	    			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('0개의 상품은 등록할 수 없습니다.', 'short', 'center');
 					else alert('0개의 상품은 등록할 수 없습니다.');
-	    				$scope.basictype=false;
+	    			$scope.basictype=false;
 					$scope.basic2type=true;
 					$scope.basic3type=false;
 					$scope.upAnddown="ion-arrow-up-b";
@@ -3951,7 +4304,7 @@ $scope.goods_seqlist = [];
 	    		}else if(isNaN($scope.datas.totalsumprices) || $scope.goodsaddlists[i].num == null || $scope.goodsaddlists[i].num == undefined){ //상품가격이 제대로 입력되지 않았을시. -->isNaN == NaN걸러주는거
 	    			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상품정보를 바르게 적어주세요.', 'short', 'center');
 					else alert('상품정보를 바르게 적어주세요.');
-	    				$scope.basictype=false;
+	    			$scope.basictype=false;
 					$scope.basic2type=true;
 					$scope.basic3type=false;
 					$scope.upAnddown="ion-arrow-up-b";

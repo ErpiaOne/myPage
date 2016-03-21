@@ -16,21 +16,17 @@
 			<a class="item item-icon-left">
 				<i class="icon ion-information-circled"></i>
 				현재버전
-				<font style="margin-left:20%;">{{AppInfo}}</font>
+				<font style="margin-left:20%;">{{thisversion}}</font>
 			</a>
 
 			<a class="item item-icon-left">
 				<i class="icon ion-iphone"></i>
-				  기기정보<br>
-				  <font style="margin-left:20%;">{{deviceInfo.cordova}}</font><br>
-				  <font style="margin-left:20%;">{{deviceInfo.manufacturer}}</font><br>
-				  <font style="margin-left:20%;">{{deviceInfo.model}}</font><br>
-				  <font style="margin-left:20%;">{{deviceInfo.platform}}</font><br>
-				  <font style="margin-left:20%;">{{deviceInfo.uuid}}</font><br>
-				  <font style="margin-left:20%;">{{deviceInfo.version}}</font>
+				최신버전
+				<font style="margin-left:20%;">{{currentversion}}</font>
 			</a>
-
-
+			<button class="button button-full button-positive" ng-if="thisversioncurrent=='N'" ng-click="updatebtn()">
+				최신버전업데이트
+			</button>
 			<!-- <a class="item item-icon-left">
 			<i class="icon ion-wifi"></i>
 			Enter wireless password

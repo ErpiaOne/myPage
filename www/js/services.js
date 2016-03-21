@@ -1,22 +1,5 @@
 angular.module('starter.services', [])
 
-.factory('$localstorage', ['$window', function($window) {
-  return {
-    set: function(key, value) {
-      $window.localStorage[key] = value;
-    },
-    get: function(key, defaultValue) {
-      return $window.localStorage[key] || defaultValue;
-    },
-    setObject: function(key, value) {
-      $window.localStorage[key] = JSON.stringify(value);
-    },
-    getObject: function(key) {
-      return JSON.parse($window.localStorage[key] || '{}');
-    }
-  }
-}])
-
 //InnerHtml을 사용하기 위한 compiler
 .directive('compileData', function ( $compile ) {
 	return {
@@ -36,6 +19,23 @@ angular.module('starter.services', [])
 		}
 	};
 })
+
+.factory('$localstorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    }
+  }
+}])
 
 .factory('loginService', function($http, $q, $cordovaToast, ERPiaAPI){
 	var comInfo = function(kind, Admin_Code, G_id, G_Pass){
@@ -216,20 +216,58 @@ angular.module('starter.services', [])
 				.then(function(response){
 					console.log('readDetail_Service : ', response.data.list[0].G_ea1);
 					if(typeof response.data == 'object'){
-						var tot_Ea = 0;
-						for(var i=0; i<response.data.length; i++){
-							tot_Ea += Number(((response.data.list[i].G_ea1)?response.data.list[0].G_ea1:0));
-							tot_Ea += Number(((response.data.list[i].G_ea2)?response.data.list[0].G_ea2:0));
-							tot_Ea += Number(((response.data.list[i].G_ea3)?response.data.list[0].G_ea3:0));
-							tot_Ea += Number(((response.data.list[i].G_ea4)?response.data.list[0].G_ea4:0));
-							tot_Ea += Number(((response.data.list[i].G_ea5)?response.data.list[0].G_ea5:0));
-							tot_Ea += Number(((response.data.list[i].G_ea6)?response.data.list[0].G_ea6:0));
-							tot_Ea += Number(((response.data.list[i].G_ea7)?response.data.list[0].G_ea7:0));
-							tot_Ea += Number(((response.data.list[i].G_ea8)?response.data.list[0].G_ea8:0));
-							tot_Ea += Number(((response.data.list[i].G_ea9)?response.data.list[0].G_ea9:0));
-							tot_Ea += Number(((response.data.list[i].G_ea10)?response.data.list[0].G_ea10:0));
-							response.data.list[i].tot_Ea = tot_Ea;
+
+						if(response.data.list[0].G_name1 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea1) * parseInt(response.data.list[0].G_price1) - parseInt(response.data.list[0].G_Gong1);
+							response.data.list[0].tax1 = tax;
 						}
+						if(response.data.list[0].G_name2 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea2) * parseInt(response.data.list[0].G_price2) - parseInt(response.data.list[0].G_Gong2);
+							response.data.list[0].tax2 = tax;
+						}
+						if(response.data.list[0].G_name3 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea3) * parseInt(response.data.list[0].G_price3) - parseInt(response.data.list[0].G_Gong3);
+							response.data.list[0].tax3 = tax;
+						}
+						if(response.data.list[0].G_name4 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea4) * parseInt(response.data.list[0].G_price4) - parseInt(response.data.list[0].G_Gong4);
+							response.data.list[0].tax4 = tax;
+						}
+						if(response.data.list[0].G_name5 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea5) * parseInt(response.data.list[0].G_price5) - parseInt(response.data.list[0].G_Gong5);
+							response.data.list[0].tax5 = tax;
+						}
+						if(response.data.list[0].G_name6 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea6) * parseInt(response.data.list[0].G_price6) - parseInt(response.data.list[0].G_Gong6);
+							response.data.list[0].tax6 = tax;
+						}
+						if(response.data.list[0].G_name7 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea7) * parseInt(response.data.list[0].G_price7) - parseInt(response.data.list[0].G_Gong7);
+							response.data.list[0].tax7 = tax;
+						}
+						if(response.data.list[0].G_name8 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea8) * parseInt(response.data.list[0].G_price8) - parseInt(response.data.list[0].G_Gong8);
+							response.data.list[0].tax8 = tax;
+						}
+						if(response.data.list[0].G_name9 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea9) * parseInt(response.data.list[0].G_price9) - parseInt(response.data.list[0].G_Gong9);
+							response.data.list[0].tax9 = tax;
+						}
+						if(response.data.list[0].G_name10 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[0].G_ea10) * parseInt(response.data.list[0].G_price10) - parseInt(response.data.list[0].G_Gong10);
+							response.data.list[0].tax10 = tax;
+						}
+
 						return response.data;
 					}else{
 						return $q.reject(response.data);
@@ -495,38 +533,6 @@ angular.module('starter.services', [])
 		}
 	}
 })
-.factory('QnAService', function($http, $q, ERPiaAPI){
-	return{
-		//http://erpia2.godohosting.com/erpia_update/img
-		getList: function(Admin_Code, UserId, kind, pageCnt){
-		console.log("QnAService IN getList");
-		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
-		var data = 'kind='+kind+'&Admin_Code='+Admin_Code+'&pageCnt=1&pageRow=1';
-		console.log(url+'?'+data);
-		return $http.get(url + '?' + data)
-			.then(function(response){
-				if(typeof response.data == 'object'){
-					console.log("QnAService IN getList object");
-					for(var i=0; i<response.data.list.length; i++){
-						oldContent = response.data.list[i].content;
-						response.data.list[i].content = oldContent
-							.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
-							.replace(/&quot;/g,'')
-							.replace(/<img src=/g, '<img width=100% src=');
-					}
-					return response.data;
-				}else{
-					console.log("QnAService IN getList object else");
-					return $q.reject(response.data);
-				}
-			}, function(response){
-				console.log("QnAService IN getList object fail");
-				console.log( response.statusText);
-				return response.statusText;
-			})
-		}
-	};
-})
 .factory('BoardService', function($http, $q, ERPiaAPI){
 	// return{
 		//http://erpia2.godohosting.com/erpia_update/img
@@ -545,6 +551,15 @@ angular.module('starter.services', [])
 							.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
 							.replace(/&quot;/g,'')
 							.replace(/<img src=/g, '<img width=100% src=');	
+						// if(response.data.list[i].subject.indexOf('[답변]')==0 || response.data.list[i].subject.indexOf('[검토]')==0 || response.data.list[i].subject.indexOf('[완료]')==0){
+						// 	response.data.list[i].subject = response.data.list[i].subject;
+						// 	response.data.list[i].subject= '<b style="color:blue">'+response.data.list[i].subject+'</b>';
+						// 	console.log(response.data.list[i].subject);
+						// 	response.data.list[i].subject.replace(response.data.list[i].subject.slice(0,1));
+						// 	response.data.list[i].subject.replace(response.data.list[i].subject.slice(response.data.list[i].subject.length-1,1));
+						// 	// oldSContent.indexOf(0,1).replace = '';
+						// }
+						console.log(response.data.list[i].subject);
 					}
 					return response.data;
 				}else{
@@ -557,6 +572,47 @@ angular.module('starter.services', [])
 		return{
 			BoardInfo: BoardInfo
 		}
+
+	var Board_sear = function(Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt){
+	var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
+	if(SeachKind == 0) var kind = 'Notice';
+	if(SeachKind == 1) var kind = 'Erpup';
+	if(SeachKind == 2) var kind = 'FAQ';
+	if(SeachKind == 3) var kind = 'Request';
+	var data = 'kind=ERPia_Mypage_Board_Request_Search&Mode=search&SearchKind=' + kind+ '&SearchMode='+SearchMode+'&SearchValue='+ escape(SearchValue)+'&pageCnt='+pageCnt+'&pageRow=10'
+//		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
+	console.log(url + '?' + data)
+	return $http.get(url + '?' + data)
+		.then(function(response){
+			if(typeof response.data == 'object'){
+				for(var i=0; i<response.data.list.length; i++){
+					oldContent = response.data.list[i].content;
+					response.data.list[i].content = oldContent
+						.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
+						.replace(/&quot;/g,'')
+						.replace(/<img src=/g, '<img width=100% src=');	
+					// if(response.data.list[i].subject.indexOf('[답변]')==0 || response.data.list[i].subject.indexOf('[검토]')==0 || response.data.list[i].subject.indexOf('[완료]')==0){
+					// 	response.data.list[i].subject = response.data.list[i].subject;
+					// 	response.data.list[i].subject= '<b style="color:blue">'+response.data.list[i].subject+'</b>';
+					// 	console.log(response.data.list[i].subject);
+					// 	response.data.list[i].subject.replace(response.data.list[i].subject.slice(0,1));
+					// 	response.data.list[i].subject.replace(response.data.list[i].subject.slice(response.data.list[i].subject.length-1,1));
+					// 	// oldSContent.indexOf(0,1).replace = '';
+					// }
+					console.log(response.data.list[i].subject);
+				}
+				return response.data;
+			}else{
+				return $q.reject(response.data);
+			}
+		}, function(response){
+			return $q.reject(response.data);
+		})
+	}
+	return{
+		Board_sear: Board_sear
+	}
+
 	// };
 })
 .factory('PushSelectService', function($http, $q, ERPiaAPI){
@@ -1615,6 +1671,26 @@ return{
 
 		
 	};
-})
 
+})
+.factory('VersionCKService', function($http, ERPiaAPI, $q, $cordovaToast, $rootScope){
+return{
+	currentVersion: function(){
+				var url = ERPiaAPI.url2 +'/mobile/Mypage_ApkVer.asp';
+				return $http.get(url)
+					.then(function(response){
+						if(typeof response == 'object'){
+							return response.data;
+						}else{
+							return $q.reject(response.data);
+						}
+						console.log('버전정보: ', response.data);
+					}, function(response){
+						return $q.reject(response.data);
+					})
+					console.log('버전정보: ', resopnse.data);
+	
+	}
+	};
+});
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
