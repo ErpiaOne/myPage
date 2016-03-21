@@ -31,6 +31,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
    		android : '',
    		ios : ''
    	}
+
+       /* 로딩화면 */
+	$rootScope.loadingani=function(){
+		     $ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+	         $timeout(function(){
+	         $ionicLoading.hide(); 
+	      }, 500); 
+	}
 	// $scope.html2image = function(){
 	// 		console.log('image test');
 	// 		var element = $("#html-content-holder"); // global variable
@@ -556,7 +564,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 	// 단말기로 접속시 UUID의 정보를 불러와서 자동로그인 여부를 체크한 후 자동 로그인 시켜준다. 
 	document.addEventListener("deviceready", function () {
-		console.log('들으왔다!');
 		$rootScope.deviceInfo.device = $cordovaDevice.getDevice();
 		$rootScope.deviceInfo.cordova = $cordovaDevice.getCordova();
 		$rootScope.deviceInfo.model = $cordovaDevice.getModel();
@@ -580,10 +587,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.autoLogin = false;
 			}
 		})
-		console.log('autoLogin_YN' ,$rootScope.loginData.autologin_YN);
 	}, false);
-		console.log('앱갔다왔니?' ,$rootScope.loginData.autologin_YN);
-		 console.log("$rootScope.appCheck", $rootScope.appCheck);
 	if($rootScope.appCheck=='Y'){	
 		uuidService.getUUID($rootScope.deviceInfo.uuid)
 		.then(function(response){
@@ -606,7 +610,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 })
 // 거래명세표 컨트롤러
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
-	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer){
+	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer, $ionicLoading){
 
 	function commaChange(Num)
 	{
@@ -717,54 +721,30 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		            // document . body . removeChild ( iframe ); 
 		            var imgageData = canvas.toDataURL("image/jpg");
 		            var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream"); //파일 
-		 		// $("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
-		 		// Canvas2Image.saveAsPNG(canvas);
-		 		
-		 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			        // var myImg = newData;
-			        // console.log('???');
-			        // var options = new FileUploadOptions();
-			        // options.fileKey="post";
-			        // options.chunkedMode = false;
-			        // var params = {
-			        // 	value1: "20132354",
-			        // 	value2: "2410724"
-			        // };
-			        // // params.user_token = localStorage.getItem('auth_token');
-			        // // params.user_email = localStorage.getItem('email');
-			        // options.params = params;
-			        // var ft = new FileTransfer();
-			        // ft.upload(myImg, encodeURI(ERPiaAPI.gurl), onUploadSuccess, onUploadFail, options);
+		            // $("#preview").append(canvas);
+		             // $("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
 
-
-		 		var canvasData = canvas.toDataURL("image/png");
-				var ajax = new XMLHttpRequest();
-				ajax.open("POST",ERPiaAPI.gurl,true);
-				ajax.setRequestHeader('Content-Type', 'application/upload');
-				console.log('!!!!!!!!!!!');
-				ajax.send(canvasData );
-				console.log('??????');
-				 //  var options = {
-				 //    fileKey: "divTradeDetail_Print_Area",
-				 //    fileName: "test.png",
-				 //    chunkedMode: false,
-				 //    mimeType: "image/png",
-				 //    params: {
-				 //      value1: "topclass",
-				 //      value2: "khs239k1"
-				 //    }
-				 //  }
-				 //  console.log(options);
-					// $cordovaFileTransfer.upload("ftp://topclass.dothome.co.kr/test/", imgageData, options).then(function(result) {
-					// 	console.log('???????????');
-				 //                      console.log("SUCCESS: " + JSON.stringify(result.response));
-				 //                    }, function(err) {
-				 //                      console.log("ERROR: " + JSON.stringify(err));
-				 //                    }, function (progress) {
-				 //                      // constant progress updates
-				 //                    });
-			    
-				 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	     var url = "http://topclass.dothome.co.kr/test/upload.php";
+                document.getElementById('hidden_data').value = imgageData;
+                var fd = new FormData(document.forms["form1"]);
+ 		  console.log('여기여기', ERPiaAPI.gurl);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', ERPiaAPI.gurl+'/upload.php', true);
+ 
+                xhr.upload.onprogress = function(e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = (e.loaded / e.total) * 100;
+                        console.log(percentComplete + '% uploaded');
+                        alert('Succesfully uploaded');
+                    }
+                };
+ 
+                xhr.onload = function() {
+ 
+                };
+                xhr.send(fd);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		        } 
 		    }); 
 
@@ -1830,6 +1810,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		IndexService.dashBoard('erpia_dashBoard', $scope.loginData.Admin_Code, aWeekAgo, nowday)
 		.then(function(processInfo){
 			console.log('erpia_dashBoard', processInfo);
+			$scope.loadingani();
 			$scope.dashBoard.E_NewOrder = processInfo.data.list[0].CNT_JuMun_New;
 			$scope.dashBoard.E_BsComplete = processInfo.data.list[0].CNT_BS_NO;
 			$scope.dashBoard.E_InputMno = processInfo.data.list[0].CNT_BS_No_M_No;
@@ -2126,9 +2107,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.tabs = data;
 	})
 	$scope.kind= '', $scope.htmlCode= '';
-
 	// 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함. 
 	$scope.onSlideMove = function(data) {
+			$scope.loadingani();
 		console.log('selectedIdx', $scope.userData.selectedIdx);
 		console.log("You have selected " + data.index + " tab");
 		var titles =  [{Idx:0, title:"홈"}
@@ -2178,12 +2159,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.htmlCode = '<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat">'+
 								'<div class="box-header">'+
-									'<button name="btnW" class="btn btn-default btn-sm dropdown-toggle" data-toggle="" onclick="javascript:refresh(\'' + $scope.kind +'\',\'' + $scope.gu + '\',\'' + $scope.loginData.Admin_Code + '\',\'' + ERPiaAPI.url + '\');"><i class="fa fa-refresh"></i></button>&nbsp;&nbsp;&nbsp;'+
-									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>&nbsp;&nbsp;&nbsp;&nbsp;'+
+									'<i class="fa fa-refresh" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"></i>'+
+									// '<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>&nbsp;&nbsp;&nbsp;&nbsp;'+
 									'<div class="pull-right">'+
-									'<button name="btnGrid" class="btn btn-box-tool" ><i class="fa fa-bars"></i></button>'+
+										'<button name="btnGrid" class="btn btn-box-tool" ><i class="fa fa-bars"></i></button>'+
 									'</div>'+
-									'<div name="loading">로딩중...</div>'+
+									// '<div name="loading">로딩중...</div>'+
 									'<div name="loading2"></div>'+
 								'</div>'+
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -2206,15 +2187,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.htmlCode = '<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat">'+
 								'<div class="box-header">'+
-									'<button class="btn btn-default btn-sm dropdown-toggle" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"><i class="fa fa-refresh"></i></button>&nbsp;&nbsp;&nbsp;'+
-									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>&nbsp;&nbsp;&nbsp;&nbsp;'+
+									'<i class="fa fa-refresh" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"></i>'+
+									// '<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>&nbsp;&nbsp;&nbsp;&nbsp;'+
 									'<div class="pull-right">'+
 									'<button name="btnW" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
 									'<button name="btnM" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
 									'<button name="btnY" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
 									'<button name="btnGrid" class="btn btn-box-tool"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
-									'<div name="loading">로딩중...</div>'+
+									// '<div name="loading">로딩중...</div>'+
 									'<div name="loading2"></div>'+
 								'</div>'+
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -2475,13 +2456,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.balance = false;
 	$rootScope.m_no ='';
 
-	/* 로딩화면 */
-	$rootScope.loadingani=function(){
-		     $ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-	         $timeout(function(){
-	         $ionicLoading.hide(); 
-	      }, 500); 
-	}
+	// /* 로딩화면 */
+	// $rootScope.loadingani=function(){
+	// 	     $ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+	//          $timeout(function(){
+	//          $ionicLoading.hide(); 
+	//       }, 500); 
+	// }
 
 	/* 최상단으로 */
 	$scope.scrollTop = function() {
@@ -3838,6 +3819,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			})
     	}
     }
+    /*상품최근검색 목록 초기화*/
+    $scope.clear_goods = function(){
+    	$scope.goodlately_slists = '';
+    	$scope.user.userGoodsName = '';
+    }
 
     $scope.goods_lately_serarch = function(name){
     	$scope.user.userGoodsName = name;
@@ -4090,6 +4076,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 		
 	    $scope.bar = 'N';
+	    $scope.user.userGoodsName = '';
 	    $scope.goodsmodal.hide(); //goods_seq : data.list[i].Seq
 	}
 

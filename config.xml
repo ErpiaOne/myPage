@@ -11,17 +11,17 @@
     <access origin="*" />
     <access origin="http://www.erpia.net" />
     <access origin="http://erpia2.godohosting.com/" />
-    <access origin="ftp://168.126.146.37/20132354" />
+    <access origin="http://topclass.dothome.co.kr/" />
     <access launch-external="yes" origin="tel:*" />
     <allow-intent href="tel:*" />
     <allow-intent href="*://*www.erpia.net/*" />
     <allow-intent href="*://*erpia2.godohosting.com/*" />
     <allow-intent href="https://code.ionicframework.com/*" />
+    <allow-intent href="http://topclass.dothome.co.kr/*" />
     <allow-navigation href="*" />
     <allow-navigation href="http://*/*" />
     <allow-navigation href="https://*/*" />
     <allow-navigation href="data:*" />
-    <allow-navigation href="ftp://*" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />

@@ -73,11 +73,16 @@
 				<td><i class="ion-ios-barcode" style="font-size:30px" ng-click="scanBarcode()"></i></td>
 			  </tr>
 			  <tr>
-				<td><input type="text" placeholder="상품정보를 입력하세요" size="30" style="border:1px solid #eee;" ng-model="user.userGoodsName"></td>
-				<td><i class="ion-search" style="font-size:30px" ng-click="goods_searchM()"></i></td>
+				<td><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" size="20" ng-model="user.userGoodsName"></td>
+				<td>
+					<i class='ion-close-circled' style='margin-left:-38px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size:25px'  ng-if="sbu == false"ng-click='clear_goods()'></i>
+					<i class="ion-search" style="width: 100%; height: 30px; font-size:20px;" ng-click="goods_searchM(1)"></i>
+				</td>
 			  </tr>
 			</table>
-
+			<div>
+				<li class="item" ng-repeat="x in goodlately_slists"  ng-click="goods_lately_serarch(x.Search_Goods_Name)">{{x.Search_Goods_Name}}</li>
+			</div>
 			<table width="100%" style="text-align:center;">
 			  <tr bgcolor="#EAEAEA">
 				<td width="10%" style="font-size:12px">번호</td>

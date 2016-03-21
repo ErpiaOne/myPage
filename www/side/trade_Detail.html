@@ -5,14 +5,18 @@
 			<button class="button button-clear" ng-click="close()">
 				닫기
 			</button>
-			<a id="btn-Convert-Html3Image"  ng-click='html3image(detail_items)' href="{{ERPiaAPI.gurl}}">Download</a>
-			<a ng-click='testtest()'>화이팅!!</a>
+			<a id="btn-Convert-Html3Image"  ng-click='html3image(detail_items)' href="#">Download</a>
+			<button class="button button-full button-positive" ng-click="testFileUpload()">Test File Download</button>
 		</div>
 	</ion-header-bar>
 	<ion-view view-title="거래명세서">
 		<ion-content class="padding2">
 		<body>
-		<div id="previewImage3">
+		<div id="preview">
+					<form method="post" accept-charset="utf-8" name="form1">
+			            <input name="hidden_data" id='hidden_data' type="hidden"/>
+			            <input name="name" id='name' type="hidden" value='gggggg'/>
+			        </form> 
     		</div>
     		</ion-scroll>
 			<ion-scroll zooming="true" direction="xy" style="width:100%; height:100%;">

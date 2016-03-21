@@ -833,8 +833,8 @@ angular.module('starter.services', [])
 							};
 							return data;
 						}else{ //조회된 환경설정이 없을경우.
-							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되어있는 초기값이 없습니다.', 'short', 'center');
-							else console.log('저장되어있는 초기값이 없습니다.');
+							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('매입매출 설정 초기값이 없습니다.', 'short', 'center');
+							else console.log('매입매출 설정 초기값이 없습니다.');
 								var data = {
 									state : 1,
 									basic_Place_Code : '000',
@@ -1222,8 +1222,8 @@ return{
 								if(response.data != '<!--Parameter Check-->'){
 									return response.data;
 								}else{
-									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되어있는 초기값이 없습니다.', 'long', 'center');
-									else console.log('저장되어있는 초기값이 없습니다.');
+									// if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되어있는 초기값이 없습니다.', 'long', 'center');
+									// else console.log('저장되어있는 초기값이 없습니다.');
 										var data = {
 											G_Code : '업체정보가없습니다.',
 											G_Name : '',
@@ -1234,8 +1234,6 @@ return{
 											Recent_purchase_date : '',
 											Recent_sales_date : ''
 									};
-										
-										console.log('확인=>', data);
 										return data;
 								}
 
