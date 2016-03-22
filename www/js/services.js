@@ -534,10 +534,11 @@ angular.module('starter.services', [])
 	}
 })
 .factory('BoardService', function($http, $q, ERPiaAPI){
+	return{
 	// return{
 		//http://erpia2.godohosting.com/erpia_update/img
 		// getList: function(){
-	var BoardInfo = function(Admin_Code, UserId, kind, pageCnt){
+	 BoardInfo : function(Admin_Code, UserId, kind, pageCnt){
 		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
 		var data = 'kind='+kind+'&Admin_Code='+Admin_Code+'&pageCnt='+pageCnt+'&pageRow=10';
 //		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
@@ -551,15 +552,6 @@ angular.module('starter.services', [])
 							.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
 							.replace(/&quot;/g,'')
 							.replace(/<img src=/g, '<img width=100% src=');	
-						// if(response.data.list[i].subject.indexOf('[답변]')==0 || response.data.list[i].subject.indexOf('[검토]')==0 || response.data.list[i].subject.indexOf('[완료]')==0){
-						// 	response.data.list[i].subject = response.data.list[i].subject;
-						// 	response.data.list[i].subject= '<b style="color:blue">'+response.data.list[i].subject+'</b>';
-						// 	console.log(response.data.list[i].subject);
-						// 	response.data.list[i].subject.replace(response.data.list[i].subject.slice(0,1));
-						// 	response.data.list[i].subject.replace(response.data.list[i].subject.slice(response.data.list[i].subject.length-1,1));
-						// 	// oldSContent.indexOf(0,1).replace = '';
-						// }
-						console.log(response.data.list[i].subject);
 					}
 					return response.data;
 				}else{
@@ -568,50 +560,59 @@ angular.module('starter.services', [])
 			}, function(response){
 				return $q.reject(response.data);
 			})
-		}
-		return{
-			BoardInfo: BoardInfo
+		}, Board_sear : function(Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt){
+		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
+		var data = 'Admin_Code='+Admin_Code+'&kind=ERPia_Mypage_Board_Request_Search&Mode=search&SearchKind=' + SearchKind+ '&SearchMode='+SearchMode+'&SearchValue='+ escape(SearchValue)+'&pageCnt='+pageCnt+'&pageRow=10'
+	//		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
+		console.log(url + '?' + data)
+		return $http.get(url + '?' + data)
+			.then(function(response){
+				if(typeof response.data == 'object'){
+					if(response.data.list.length>0){
+					for(var i=0; i<response.data.list.length; i++){
+						console.log(response.data.list[i]);
+						oldContent = response.data.list[i].content;
+						response.data.list[i].content = oldContent
+							.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
+							.replace(/&quot;/g,'')
+							.replace(/<img src=/g, '<img width=100% src=');
+					}
+					}
+					console.log(response.data);
+					return response.data;					
+				}else{
+					console.log(response.data);
+					return $q.reject(response.data);					
+				}
+			}, function(response){
+				console.log(response.data);
+				return $q.reject(response.data);
+			})
+
+
+
+		}, QnAinsert : function(Admin_Code, UserId, Subject, Content, pwd){
+		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
+		var data = 'Admin_Code='+Admin_Code+'&UserId=' + UserId + '&Kind=ERPia_Mypage_Board_Request_insert&Mode=insert&bSubject='+ escape(Subject)+'&bContent='+escape(Content)+'&bPwd='+pwd;
+	//		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
+		console.log(url + '?' + data)
+		return $http.get(url + '?' + data)
+			.then(function(response){
+				if(typeof response.data == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})
+
+
+
 		}
 
-	var Board_sear = function(Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt){
-	var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
-	if(SeachKind == 0) var kind = 'Notice';
-	if(SeachKind == 1) var kind = 'Erpup';
-	if(SeachKind == 2) var kind = 'FAQ';
-	if(SeachKind == 3) var kind = 'Request';
-	var data = 'kind=ERPia_Mypage_Board_Request_Search&Mode=search&SearchKind=' + kind+ '&SearchMode='+SearchMode+'&SearchValue='+ escape(SearchValue)+'&pageCnt='+pageCnt+'&pageRow=10'
-//		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
-	console.log(url + '?' + data)
-	return $http.get(url + '?' + data)
-		.then(function(response){
-			if(typeof response.data == 'object'){
-				for(var i=0; i<response.data.list.length; i++){
-					oldContent = response.data.list[i].content;
-					response.data.list[i].content = oldContent
-						.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
-						.replace(/&quot;/g,'')
-						.replace(/<img src=/g, '<img width=100% src=');	
-					// if(response.data.list[i].subject.indexOf('[답변]')==0 || response.data.list[i].subject.indexOf('[검토]')==0 || response.data.list[i].subject.indexOf('[완료]')==0){
-					// 	response.data.list[i].subject = response.data.list[i].subject;
-					// 	response.data.list[i].subject= '<b style="color:blue">'+response.data.list[i].subject+'</b>';
-					// 	console.log(response.data.list[i].subject);
-					// 	response.data.list[i].subject.replace(response.data.list[i].subject.slice(0,1));
-					// 	response.data.list[i].subject.replace(response.data.list[i].subject.slice(response.data.list[i].subject.length-1,1));
-					// 	// oldSContent.indexOf(0,1).replace = '';
-					// }
-					console.log(response.data.list[i].subject);
-				}
-				return response.data;
-			}else{
-				return $q.reject(response.data);
-			}
-		}, function(response){
-			return $q.reject(response.data);
-		})
 	}
-	return{
-		Board_sear: Board_sear
-	}
+	
 
 	// };
 })

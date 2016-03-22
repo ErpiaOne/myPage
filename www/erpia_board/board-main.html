@@ -1,6 +1,6 @@
 <ion-view view-title="고객센터">
 	<ion-nav-bar>
-		<ion-nav-back-button ng-click="goBack_with_clearHistory()">Back</ion-nav-back-button>
+		<ion-nav-back-button ng-click="backbtn()">Back</ion-nav-back-button>
 	</ion-nav-bar>
 	<ion-content scroll="false">
 		<tab-slide-box>
@@ -13,18 +13,21 @@
 			</div>
 				<div class="list">
 				  <div class="item item-divider" style="height:30%">
-				      <input type="radio" ng-model='searchck' ng-click='searchckclick()' ng-value='Subject'/>
-				      <label for="bbssubject">제목</label> 
-				      <input type="radio"  ng-model='searchck' ng-click='searchckclick()' ng-value='Content'/>
-				      <label for="bbscontent">내용</label> 
-				      <input type="radio"  ng-model='searchck' ng-click='searchckclick()' ng-value='Writer'/>
-				      <label for="bbscompany">업체명</label>
+				      <label>
+				      <input type="radio" ng-model="searchck.mode" value="Subject" ng-click="searchckclick()" checked/>
+				      제목</label> 
+				      <label>
+				      <input type="radio"  ng-model="searchck.mode" value="Content" ng-click="searchckclick()"/>
+				      내용</label>
+				      <label ng-if="boardIndex==3">
+				      <input type="radio"  ng-model="searchck.mode" value="Writer" ng-click="searchckclick()"/>
+				      업체명</label>
 				   </div>
 				    <div class="item item-divider item-input-inset">
 				    <label class="item-input-wrapper">
-				      <input type="text" placeholder="검색어">
+				      <input type="text" placeholder="검색어" ng-model='searchck.SearchValue'>
 				    </label>
-				    <button class="button button-small">
+				    <button class="button button-small" ng-click='bbsSearch()'>
 				      검색
 				    </button>
 				  </div>
@@ -37,7 +40,7 @@
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item">
-											<font>{{item.inDate}}</font><br/>{{item.subject}}
+											<font>{{item.inDate}}</font><br/><b>{{item.subject}}</b>
 										</li>
 									</ui>
 									<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
@@ -64,7 +67,7 @@
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item">
-											<font>{{item.inDate}}</font><br/>{{item.subject}}
+											<font>{{item.inDate}}</font><br/><b>{{item.subject}}</b>
 										</li>
 									</ui>
 									<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
@@ -91,7 +94,7 @@
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item">
-											<font>{{item.inDate}}</font><br/>{{item.subject}}
+											<font>{{item.inDate}}</font><br/><b>{{item.subject}}</b>
 										</li>
 									</ui>
 									<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
@@ -119,7 +122,10 @@
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item">
-											<font>{{item.inDate}}</font><br/>{{item.subject}}
+											<font>{{item.inDate}}</font><br/>
+											<font ng-if="item.writer=='ERPia'" style="font: italic bold; background-color: #2F9D27; color:white">답변</font> 
+											<b>{{item.subject}}</b><br/>
+											글쓴이: {{item.writer}}
 										</li>
 									</ui>
 									<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
@@ -143,7 +149,7 @@
 		</tab-slide-box>
 	</ion-content>
 		<div style="margin-top:140%" align="right">
-		   <i class='ion-compose' style="position:relative; z-index:1000;font-size:50px; color:gray" ng-if="boardIndex==3"></i>&nbsp;&nbsp;
+		   <i class='ion-compose' style="position:relative; z-index:1000;font-size:50px; color:gray" ng-if="boardIndex==3" ng-click='qnawrite_openModal()'></i>&nbsp;&nbsp;
 		   <i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:50px; color:gray" ng-click='scrollTop()'></i>&nbsp;&nbsp;
 		</div>
 </ion-view>

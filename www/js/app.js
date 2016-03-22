@@ -6,36 +6,34 @@
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
 	, 'starter.services'])
 
- .constant('ERPiaAPI',{
- 	  url:'http://localhost:8100/include'
- 	, url2:'http://localhost:8100'
- 	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	, gurl:'http://168.126.146.37/20132354'
- 	, toast:'N'
- })
+ // .constant('ERPiaAPI',{
+ // 	  url:'http://localhost:8100/include'
+ // 	, url2:'http://localhost:8100'
+ // 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ // 	, gurl:'http://168.126.146.37/20132354'
+ // 	, toast:'N'
+ // })
 
 //실제 사용시
-// .constant('ERPiaAPI',{
-// 	url:'http://www.erpia.net/include',
-// 	url2: 'http://www.erpia.net',
-// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-// 	toast:'Y'
-// })
+.constant('ERPiaAPI',{
+	url:'http://www.erpia.net/include',
+	url2: 'http://www.erpia.net',
+	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+	toast:'Y'
+})
 
-.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService) {
+.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork) {
 	$ionicPlatform.ready(function() {
-		console.log("11111111")
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
 		// ionic.Platform.fullScreen();
 		if(window.cordova && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
-				console.log("222222222")
-        if(window.StatusBar) {
+			    // Check for network connection
+        		if(window.StatusBar) {
 			StatusBar.styleDefault();
 		}
-						console.log("33333333")
 		// //★push regist
 		console.log('Ionic Push: Registering user');
 		var user = $ionicUser.get();
@@ -44,15 +42,12 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			user.user_id = $ionicUser.generateGUID();
 			$rootScope.UserKey = user.user_id
 		};
-						console.log("44444444444")
 		// Metadata
 		angular.extend(user, {
 			name: 'ERPiaUser',
 			bio: 'ERPiaPush'
 		});
-								console.log("나와라 ")
 //----------------뒤로가기 마지막페이지일때 ....----
-								console.log("나와라 2")
 		$ionicPlatform.registerBackButtonAction(function(e){
 										
 		    if ($location.url()=='/app/main' ||  $location.url()=='/app/slidingtab'  || $location.url() == '/app/scmhome'  || $location.url() == '/app/sample/Main') { //현재 페이지 url이 메인일 때,
@@ -178,6 +173,26 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		    e.preventDefault();
 		    return false;
 		  },101);
+		if(window.Connection) {
+		    if(navigator.connection.type == Connection.NONE) {
+		    		$ionicPopup.show({
+		                        title: "데이터접속을 확인해주세요.",
+		                        content: "인터넷에 연결되어있지 않습니다.<br>자동으로 종료됩니다.",
+		                        buttons: [
+					{	text: '확인',
+						type: 'button-positive',
+						onTap: function(e) {
+						 ionic.Platform.exitApp();
+						}
+					}
+				]
+		                    });
+		    }else{
+		        
+		    }
+		}else{
+
+		}
 		// Identify your user with the Ionic User Service
 		$ionicUser.identify(user).then(function(){
 			//$scope.identified = true;
