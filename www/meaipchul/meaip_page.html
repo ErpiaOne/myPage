@@ -83,6 +83,9 @@ div.col4{width:30%; color: #fff;}
               <td colspan="2" class="resulttd2-1" align="left">{{x.G_Name}}<br></td>
             </tr>
           </tbody>
+            <tr ng-if="moreloading==0&&maxover==0&&$last">
+              <td colspan="4" align="center"><b>더보기를 하시려면 위로 쓸어올려주세요.</b></td>
+            </tr>
             <tr ng-if="moreloading==1&&$last">
               <td colspan="4" align="center"><ion-spinner icon="spiral" ></ion-spinner></td>
             </tr> 

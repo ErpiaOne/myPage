@@ -12,7 +12,7 @@
     },
     {
       "path": "/upload",
-      "proxyUrl": "http://topclass.dothome.co.kr/test"
+      "proxyUrl": "ftp://erpia2:one1zero0@erpia2.godohosting.com/data/tran"
     }
   ]
 }

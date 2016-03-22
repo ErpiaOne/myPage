@@ -6,22 +6,25 @@
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
 	, 'starter.services'])
 
- .constant('ERPiaAPI',{
- 	  url:'http://localhost:8100/include'
- 	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	,gurl:'/upload'
- 	, toast:'N'
- })
+ // .constant('ERPiaAPI',{
+ // 	  url:'http://localhost:8100/include'
+ //   , url2:'http://localhost:8100'
+ // 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ // 	,gurl:'/upload'
+ // 	, toast:'N'
+ // })
 
 //실제 사용시
-// .constant('ERPiaAPI',{
-// 	url:'http://www.erpia.net/include'
-// 	, imgUrl:'http://erpia2.godohosting.com/erpia_update/img'
-// 	,gurl: 'http://topclass.dothome.co.kr/test/upload.php'
-// 	, toast:'Y'
-// })
+.constant('ERPiaAPI',{
+	url:'http://www.erpia.net/include'
+	, url2: 'http://www.erpia.net'
+	, imgUrl:'http://erpia2.godohosting.com/erpia_update/img'
+	// ,gurl: 'ftp://erpia2:one1zero0@erpia2.godohosting.com/data/tran'
+	, gurl: 'http://image.erpia.net'
+	, toast:'Y'
+})
 
-.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService) {
+.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -29,7 +32,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		if(window.cordova && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
-        if(window.StatusBar) {
+			    // Check for network connection
+        		if(window.StatusBar) {
 			StatusBar.styleDefault();
 		}
 		// //★push regist
@@ -171,8 +175,26 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		    e.preventDefault();
 		    return false;
 		  },101);
-		  $rootScope.appCheck='Y';
-		 console.log("$rootScope.appCheck", $rootScope.appCheck);
+		if(window.Connection) {
+		    if(navigator.connection.type == Connection.NONE) {
+		    		$ionicPopup.show({
+		                        title: "데이터접속을 확인해주세요.",
+		                        content: "인터넷에 연결되어있지 않습니다.<br>자동으로 종료됩니다.",
+		                        buttons: [
+					{	text: '확인',
+						type: 'button-positive',
+						onTap: function(e) {
+						 ionic.Platform.exitApp();
+						}
+					}
+				]
+		                    });
+		    }else{
+		        
+		    }
+		}else{
+
+		}
 		// Identify your user with the Ionic User Service
 		$ionicUser.identify(user).then(function(){
 			//$scope.identified = true;

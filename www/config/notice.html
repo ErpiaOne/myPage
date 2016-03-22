@@ -16,6 +16,11 @@
 						</li>
 					</ui>
 					<pre class="lhkNoticeContent" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
+					<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" >
+						<li class="item">
+						<b>더보기를 하시려면 위로 쓸어올려주세요.</b>
+						</li>
+					</ui>
 					<ui class="list" ng-if="moreloading==1&&$last" align="center">
 						<li class="item">
 							 <ion-spinner icon="spiral" ></ion-spinner>
@@ -26,4 +31,7 @@
 			</ion-list>
 		</body>
 	</ion-content>
+	  <div style="margin-top:140%" align="right">
+		    <i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:50px; color:gray" ng-click='scrollTop()'></i>&nbsp;&nbsp;
+	  </div>
 </ion-view>

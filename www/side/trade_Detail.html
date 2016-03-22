@@ -1,23 +1,20 @@
 <ion-modal-view class="psm_login_body">
 	<ion-header-bar class="bar-dark">
-		<h1 class="title ">{{detail_title}}</h1>
+		<h1 class="title ">거래명세표</h1>
 		<div class="buttons">
 			<button class="button button-clear" ng-click="close()">
 				닫기
 			</button>
-			<a id="btn-Convert-Html3Image"  ng-click='html3image(detail_items)' href="#">Download</a>
-			<button class="button button-full button-positive" ng-click="testFileUpload()">Test File Download</button>
+			<a id='btn-Convert-Html3Image' name ='btn-Convert-Html3Image' >여기를 클릭해주세요!</a>
 		</div>
 	</ion-header-bar>
-	<ion-view view-title="거래명세서">
 		<ion-content class="padding2">
-		<body>
-		<div id="preview">
-					<form method="post" accept-charset="utf-8" name="form1">
-			            <input name="hidden_data" id='hidden_data' type="hidden"/>
-			            <input name="name" id='name' type="hidden" value='gggggg'/>
-			        </form> 
-    		</div>
+
+		<form method="post" accept-charset="utf-8" name="form1">
+	            <input name="hidden_data" id='hidden_data' type="hidden"/>
+	            <input name="name" id='name' type="hidden" />
+	            <input name="folder" id='folder' type="hidden" />
+		</form> 			
     		</ion-scroll>
 			<ion-scroll zooming="true" direction="xy" style="width:100%; height:100%;">
 				<div  style="width: 1110px; height: 850px;">
@@ -340,7 +337,6 @@
 </div>
 				</div>
 			</ion-scroll>
-			</body>
+
 		</ion-content>
-	</ion-view>
 </ion-modal-view>

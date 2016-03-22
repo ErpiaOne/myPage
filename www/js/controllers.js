@@ -20,49 +20,24 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser){
-   var browseroptions = {
-      location: 'yes',
-      clearcache: 'yes',
-      toolbar: 'yes'
-   };
-   	$rootScope.appCheck='N';
-   	$rootScope.version={
-   		android : '',
-   		ios : ''
+	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform){
+	   var browseroptions = {
+	      location: 'yes',
+	      clearcache: 'yes',
+	      toolbar: 'yes'
+	   };
+	$rootScope.version={
+   		Android_version : '0.0.9', //업데이트시 필수로 변경!!
+   		IOS_version : '0.0.9'	//업데이트시 필수로 변경!!
    	}
 
-       /* 로딩화면 */
+   	/* 로딩화면 */
 	$rootScope.loadingani=function(){
-		     $ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 	         $timeout(function(){
 	         $ionicLoading.hide(); 
 	      }, 500); 
 	}
-	// $scope.html2image = function(){
-	// 		console.log('image test');
-	// 		var element = $("#html-content-holder"); // global variable
-	// 		var getCanvas; // global variable
-
-	// 			html2canvas(element, {
-	// 				onrendered: function (canvas) {
-	// 					$("#previewImage").append(canvas);
-	// 					getCanvas = canvas;
-	// 					console.log(getCanvas);
-	// 					var imgageData = getCanvas.toDataURL("image/png");
-	// 					// Now browser starts downloading it instead of just showing it
-	// 					var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-	// 					$("#btn-Convert-Html2Image").attr("download", "your_pic_name.png").attr("href", newData);
-	// 					console.log('data=',newData);
-	// 				}
-	// 			});
-
-	// 		console.log(element);
-	// 		// $("#btn-Preview-Image").on('click', function () {
-			
-
-	// 	}
-
 
 	$rootScope.loginState = "R"; //R: READY, E: ERPIA LOGIN TRUE, S: SCM LOGIN TRUE
 	$rootScope.deviceInfo = {};  // Device 정보를 담아두는 변수
@@ -71,6 +46,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$rootScope.loginData = {};
 	$scope.userData = {};  
 	$scope.SMSData = {};
+
+	$ionicPlatform.ready();
 
 	// 로그인 모달창
 	$ionicModal.fromTemplateUrl('erpia_login/login.html', {
@@ -563,7 +540,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.init('logout');
 	}
 	// 단말기로 접속시 UUID의 정보를 불러와서 자동로그인 여부를 체크한 후 자동 로그인 시켜준다. 
-	document.addEventListener("deviceready", function () {
+	 document.addEventListener("deviceready", function () {
 		$rootScope.deviceInfo.device = $cordovaDevice.getDevice();
 		$rootScope.deviceInfo.cordova = $cordovaDevice.getCordova();
 		$rootScope.deviceInfo.model = $cordovaDevice.getModel();
@@ -579,6 +556,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.loginData.User_Id = response.list[0].ID;
 				$rootScope.loginData.Pwd = response.list[0].pwd;
 				$rootScope.loginData.autologin_YN = response.list[0].autoLogin_YN;
+				$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 			}
 			if($scope.loginData.autologin_YN=='Y'){
 				$scope.autoLogin = true;
@@ -587,8 +565,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.autoLogin = false;
 			}
 		})
-	}, false);
-	if($rootScope.appCheck=='Y'){	
+
+	 }, false);
+
+	if($localstorage.get("autoLoginYN")=='Y'){	
 		uuidService.getUUID($rootScope.deviceInfo.uuid)
 		.then(function(response){
 		if(response.list[0].result == '1'){
@@ -606,11 +586,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 		})
 	}
-	 
+
 })
 // 거래명세표 컨트롤러
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
-	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer, $ionicLoading){
+	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer){
 
 	function commaChange(Num)
 	{
@@ -714,42 +694,49 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		document . body . appendChild ( iframe ); 
 
 		var iframedoc = iframe . contentDocument || iframe . contentWindow . document ; 
-		    iframedoc.body.innerHTML = html_string2 ; 
-		    html2canvas ( iframedoc.body ,  { 
-		        onrendered :  function ( canvas )  { 
-		            document . body . appendChild ( canvas ); 
-		            // document . body . removeChild ( iframe ); 
-		            var imgageData = canvas.toDataURL("image/jpg");
-		            var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream"); //파일 
-		            // $("#preview").append(canvas);
-		             // $("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
+		    	iframedoc.body.innerHTML = html_string2 ; 
+		    	html2canvas ( iframedoc.body ,  { 
+		       	onrendered :  function ( canvas )  { 
+			             document . body . appendChild ( canvas ); 
+			             document . body . removeChild ( iframe ); 
+			             var imgageData = canvas.toDataURL("image/png");
+			             var newData = imgageData.replace('data:image/png;base64,',''); //파일 
+			             // $("#preview").append(canvas);
+			             // $("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	     var url = "http://topclass.dothome.co.kr/test/upload.php";
-                document.getElementById('hidden_data').value = imgageData;
-                var fd = new FormData(document.forms["form1"]);
- 		  console.log('여기여기', ERPiaAPI.gurl);
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', ERPiaAPI.gurl+'/upload.php', true);
- 
-                xhr.upload.onprogress = function(e) {
-                    if (e.lengthComputable) {
-                        var percentComplete = (e.loaded / e.total) * 100;
-                        console.log(percentComplete + '% uploaded');
-                        alert('Succesfully uploaded');
-                    }
-                };
- 
-                xhr.onload = function() {
- 
-                };
-                xhr.send(fd);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		        } 
-		    }); 
 
-	}
 
+					/*서버로 업로드 하는 부분*/
+					// var url = "http://topclass.dothome.co.kr/test/upload.php";
+				// 	document.getElementById('hidden_data').value = newData;
+				// 	document.getElementById('name').value = detail.Publish_No;
+				// 	document.getElementById('folder').value = detail.Admin_Code;
+				// 	var fd = new FormData(document.forms["form1"]);
+				// 	var xhr = new XMLHttpRequest();
+				// 	xhr.open('POST', ERPiaAPI.gurl + '/fn_save_card_data_image.asp', true);
+
+				// 	xhr.upload.onprogress = function(e) {
+				// 		if (e.lengthComputable) {
+				// 			var percentComplete = (e.loaded / e.total) * 100;
+				// 			console.log(percentComplete + '% uploaded');
+				// 			alert('Succesfully uploaded');
+				// 		}
+				// 	};
+				// xhr.send(fd);
+				$.ajax({
+				  url: ERPiaAPI.gurl + "/fn_save_card_data_image.asp",
+				  method: "POST",
+				  data: { "imgData" : newData }, //QueryString 방식이면, 이상하게 안됨
+				  success: function(data){
+				    console.log('data --> ' + data);
+
+				    }
+				  });
+					///////////////////////////////////////////////////
+				} 
+			}); 
+
+}
 
 	// $scope.shareAnywhere = function(url) {
 	// 	url = 'http://erpia.net';
@@ -766,9 +753,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	// 	    }, function(err) {
 	// 	      // An error occured. Show a message to the user
 	// 	    });
-
-
-
 
 	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
 		scope : $scope
@@ -939,17 +923,67 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 // 아래부터 설정 화면에 있는 컨트롤러들..
 // 프로그램정보 컨트롤러
-.controller('configCtrl_Info', function($scope, $rootScope) {
+.controller('configCtrl_Info', function($scope, $rootScope, $ionicPlatform, $timeout, VersionCKService, $ionicScrollDelegate) {
 	// 기본정보를 디폴트 값으로 넣었다.
-	$scope.AppInfo = {currentVer:"1.0.0", deviceInfo:"webView"};
-	console.log(ionic.Platform);
-	// 여기서 정보를 가져와야하는데 안가져와짐.. 해결해주길...
-	if(ionic.Platform.length > 0){
-		$scope.AppInfo.currentVer = ionic.Platform.version();
-		$scope.AppInfo.deviceInfo = ionic.Platform.device();	
-	}
+	$scope.ckversion={};
+   	$scope.thisversioncurrent='Y';
+   	$scope.thisversion='';
+   	$scope.currentversion='';
+	VersionCKService.currentVersion()
+	.then(function(data){
+		$timeout(function(){
+			if(data != '<!--Parameter Check-->'){
+				$rootScope.ckversion = data;
+				console.log("currentVersionService", $rootScope.ckversion);
+			if(ionic.Platform.isAndroid()==true){
+					console.log('android');
+					var version = $scope.version.Android_version.split('.');
+					version = version[0]+'.'+version[1]+version[2];
+				     	version = parseFloat(version);
+				     	console.log("version", version);
+					var ckversion = $rootScope.ckversion.Android_version.split('.');
+					ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
+					ckversion = parseFloat(ckversion);
+					console.log("ckversion", ckversion);
+					$scope.thisversion=$rootScope.version.Android_version;
+					$scope.currentversion=$rootScope.ckversion.Android_version;
+				if (version<ckversion) $scope.thisversioncurrent='N';
+				else $scope.thisversioncurrent='Y';
+			}else{
+				console.log('ios');
+				var version = $scope.version.IOS_version.split('.');
+				version = version[0]+'.'+version[1]+version[2];
+			     	version = parseFloat(version);
+			     	console.log("version", version);
+				var ckversion = $rootScope.ckversion.IOS_version.split('.');
+				ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
+				ckversion = parseFloat(ckversion);
+				console.log("ckversion", ckversion);
+				$scope.thisversion=$rootScope.version.IOS_version;
+				$scope.currentversion=$rootScope.ckversion.IOS_version;
+				if (version<ckversion) $scope.thisversioncurrent='N';
+				else $scope.thisversioncurrent='Y';
+			}
+		}else{
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회실패. 데이터접속을 확인해주세요.', 'short', 'center');
+			else alert('조회실패. 데이터접속을 확인해주세요.'); 
+		}	         
+	      		}, 1000); 
+			console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
+	}); 
+	console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
+		$scope.updatebtn=function(){
+			if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_blank', 'location=yes,closebuttoncaption=Done');
+			else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_blank', 'location=yes,closebuttoncaption=Done');
+		}
+
+	/* 최상단으로 */
+	$scope.scrollTop = function() {
+    	$ionicScrollDelegate.scrollTop();
+    };
+	 
 })// 공지사항 컨트롤러
-.controller('configCtrl_Notice', function($scope, $ionicPopup, $ionicHistory, BoardService, $timeout, $cordovaToast) {
+.controller('configCtrl_Notice', function($scope, $ionicPopup, $ionicHistory, BoardService, $timeout, $cordovaToast, $ionicScrollDelegate, $ionicLoading) {
 	$scope.items=[];
 	$scope.myGoBack = function() {
 		$ionicHistory.goBack();
@@ -966,6 +1000,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1)
 	.then(function(data){
 			$scope.maxover=0;
+			$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 				$timeout(function(){
 					if(data != '<!--Parameter Check-->'){
 				    		$scope.maxover=0;
@@ -977,10 +1012,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						$scope.maxover = 1;
 					}
 	       			$scope.moreloading=0; 
-	         
+	         			$ionicLoading.hide(); 
 	      		}, 1000); 
 	}); 
-
 	    /* 더보기 버튼 클릭시 */
 	$scope.boards_more = function() {
 	  		if($scope.items.length>0){
@@ -1007,12 +1041,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						$scope.maxover = 1;
 					}
 	       			$scope.moreloading=0; 
-		         
+		         		$ionicLoading.hide();
 		      		}, 1000); 
 		      		});	
 			}
 	      }
 	    };
+	    /* 최상단으로 */
+	$scope.scrollTop = function() {
+    		$ionicScrollDelegate.scrollTop();
+    	};
 	// $scope.sendSMS = function (message) {
 	// 	  KakaoLinkPlugin.call("kakaotalk share...");
 	// }
@@ -1488,34 +1526,34 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.BoardSelect1 = function() {	 
 		$rootScope.boardIndex = 0;
 		$state.go("app.erpia_board-Main");
-		console.log($rootScope.boardIndex);
 	};
 	$scope.BoardSelect2 = function() {	 
 		$rootScope.boardIndex = 1;
 		$state.go("app.erpia_board-Main");
-		console.log($rootScope.boardIndex);
 	};
 	$scope.BoardSelect3 = function() {	 
 		$rootScope.boardIndex = 2;
 		$state.go("app.erpia_board-Main");
-		console.log($rootScope.boardIndex);
 	};
 	$scope.BoardSelect4 = function() {	 
 		$rootScope.boardIndex = 3;
 		$state.go("app.erpia_board-Main");
-		console.log($rootScope.boardIndex);
 	};
+
 })
 
-.controller('BoardMainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, $cordovaToast, ERPiaAPI, BoardService){
+.controller('BoardMainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, $cordovaToast, ERPiaAPI, BoardService, $ionicScrollDelegate, $ionicLoading, $ionicHistory){
 	console.log("BoardMainCtrl");
 	$scope.moreloading=0; 
     	$scope.pageCnt=1;
     	$scope.maxover=0;
 	$rootScope.useBoardCtrl = "Y";
 	var idx = $rootScope.boardIndex;
-	console.log(idx);
+	console.log("idx", $rootScope.boardIndex);
 	
+	$scope.backbtn = function(){
+		$ionicHistory.goBack(); 
+	}
 	$scope.tabs2 = [{
 		"text" : "공지사항"
 	}, {
@@ -1526,11 +1564,71 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		"text" : "업체문의 Q&A"
 	}];
 
+	$scope.searchck={
+		mode: 'Subject',
+		SearchValue: '',
+		mode1 : '',
+		SearchValue1: ''
+	};
+
+	$scope.qnareqdata={
+		subject: '',
+		content: '',
+		pwd: ''
+	};
+
+	 /*qna글쓰기모달*/
+	$ionicModal.fromTemplateUrl('erpia_board/qnawriteModal.html', {
+    		scope: $scope
+	}).then(function(modal) {
+	    	$scope.qnawriteModal = modal;
+	});
+	$scope.qnawrite_openModal = function() {
+		$scope.qnareqdata.subject='';
+		$scope.qnareqdata.content='';
+		$scope.qnareqdata.pwd='';
+	          $scope.qnawriteModal.show();
+	};
+	$scope.qnawrite_closeModal = function() {
+	          $scope.qnawriteModal.hide();
+	          $scope.defaultSearch();
+	};
+
+	$scope.qnawriteSubmit=function(){
+		if($scope.qnareqdata.subject == '') alert('제목을 입력하세요.');
+		else if($scope.qnareqdata.content == '') alert('내용을 입력하세요.');
+		else if($scope.qnareqdata.pwd == '') alert('비밀번호를 입력하세요.');
+		else{
+			//Admin_Code, UserId, Subject, Content, pwd
+		BoardService.QnAinsert($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.qnareqdata.subject, $scope.qnareqdata.content, $scope.qnareqdata.pwd).then(function(data){
+			if(data.list[0].rslt == 'Y'){
+				alert('게시글 등록 완료!');
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('게시글 등록에 성공하였습니다.', 'short', 'center');
+				else alert('게시글 등록 완료');
+				$scope.qnawrite_closeModal();
+			}else{
+				alert('등록에 성공하지 못하였습니다');
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록실패. 다시시도해주세요.', 'short', 'center');
+				else alert('등록실패');
+			}
+		}); 
+		}
+
+	};
+
+
+	$scope.defaultSearch=function(){
+	$scope.pageCnt=1;
 	switch($rootScope.boardIndex){
-			case 0: 	$scope.maxover=0;
+			case 0: 	$scope.searchck.SearchValue='';
+				$scope.searchck.SearchValue1='';
+				$scope.searchck.mode='Subject';
+				$scope.searchck.mode1='';
+				$scope.maxover=0;
 				$scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1)
 				.then(function(data){
 						$scope.maxover=0;
+						$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 							$timeout(function(){
 								if(data != '<!--Parameter Check-->'){
 							    		$scope.maxover=0;
@@ -1542,13 +1640,19 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									$scope.maxover = 1;
 								}
 				       			$scope.moreloading=0; 
-				         
+				       			$ionicLoading.hide();
 				      		}, 1000); 
+				      		
 				}); break;
-			case 1: $scope.maxover=0;
+			case 1: 	$scope.searchck.SearchValue='';
+				$scope.searchck.SearchValue1='';
+				$scope.searchck.mode='Subject';
+				$scope.searchck.mode1='';
+				$scope.maxover=0;
 				$scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup',1)
 				.then(function(data){
 						$scope.maxover=0;
+						$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 							$timeout(function(){
 								if(data != '<!--Parameter Check-->'){
 							    		$scope.maxover=0;
@@ -1560,14 +1664,19 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									$scope.maxover = 1;
 								}
 				       			$scope.moreloading=0; 
-				         
+				       			$ionicLoading.hide();
 				      		}, 1000); 
 				}); break;
-			case 2: $scope.maxover=0;
+			case 2: 	$scope.searchck.SearchValue='';
+				$scope.searchck.SearchValue1='';
+				$scope.searchck.mode='Subject';
+				$scope.searchck.mode1='';
+				$scope.maxover=0;
 				$scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ',1)
 				.then(function(data){
 						$scope.maxover=0;
-							$timeout(function(){
+						$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+							$timeout(function(){								
 								if(data != '<!--Parameter Check-->'){
 							    		$scope.maxover=0;
 									$scope.items = data.list;
@@ -1577,14 +1686,19 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									$scope.moreloading=0; 
 									$scope.maxover = 1;
 								}
+							$ionicLoading.hide();
 				       			$scope.moreloading=0; 
-				         
 				      		}, 1000); 
 				}); break;
-			case 3: $scope.maxover=0;
+			case 3: 	$scope.searchck.SearchValue='';
+				$scope.searchck.SearchValue1='';
+				$scope.searchck.mode='Subject';
+				$scope.searchck.mode1='';
+				$scope.maxover=0;
 				$scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request',1)
 				.then(function(data){
 						$scope.maxover=0;
+						$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 							$timeout(function(){
 								if(data != '<!--Parameter Check-->'){
 							    		$scope.maxover=0;
@@ -1596,32 +1710,132 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									$scope.maxover = 1;
 								}
 				       			$scope.moreloading=0; 
-				         
+				       			$ionicLoading.hide();
 				      		}, 1000); 
 				}); break;
 
 		}
-	console.log(">>>>페이지cnt",$scope.pageCnt)
+
+	console.log(">>>>페이지cnt", $scope.searchck.SearchValue)
+	};
+
+
+	$scope.bbsSearch = function(){
+		$scope.pageCnt=1;
+		$scope.searchck.SearchValue1=$scope.searchck.SearchValue;
+		$scope.searchck.mode1 = $scope.searchck.mode;
+		if($scope.searchck.SearchValue1 == ''){
+			$scope.defaultSearch();
+		}else{
+		switch($rootScope.boardIndex){
+			case 0 : $scope.maxover=0; //Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt
+				$scope.BoardUrl1 = BoardService.Board_sear($scope.loginData.Admin_Code, 'Notice', $scope.searchck.mode1, $scope.searchck.SearchValue1, 1)
+				.then(function(data){
+						$scope.maxover=0;
+						$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->' && data.list.length>0){
+							    		$scope.maxover=0;
+									$scope.items = data.list;
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         			$ionicLoading.hide();
+				      		}, 1000); 
+				}); break;
+			case 1 : $scope.maxover=0; //Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt
+				$scope.BoardUrl2 = BoardService.Board_sear($scope.loginData.Admin_Code, 'Erpup', $scope.searchck.mode1, $scope.searchck.SearchValue1, 1)
+				.then(function(data){
+						$scope.maxover=0;
+						$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->' && data.list.length>0){
+							    		$scope.maxover=0;
+									$scope.items = data.list;
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         			$ionicLoading.hide();
+				      		}, 1000); 
+				}); break;
+			case 2 : $scope.maxover=0; //Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt
+				$scope.BoardUrl3 = BoardService.Board_sear($scope.loginData.Admin_Code, 'FAQ', $scope.searchck.mode1, $scope.searchck.SearchValue1, 1)
+				.then(function(data){
+						$scope.maxover=0;
+						$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+							$timeout(function(){								
+								if(data != '<!--Parameter Check-->' && data.list.length>0){
+							    		$scope.maxover=0;
+									$scope.items = data.list;
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         			$ionicLoading.hide();
+				      		}, 1000); 
+				}); break;
+			case 3 : $scope.maxover=0; //Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt
+				$scope.BoardUrl4 = BoardService.Board_sear($scope.loginData.Admin_Code, 'Request', $scope.searchck.mode1, $scope.searchck.SearchValue1, 1)
+				.then(function(data){
+						$scope.maxover=0;
+						$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+							$timeout(function(){
+								if(data != '<!--Parameter Check-->' && data.list.length>0){
+							    		$scope.maxover=0;
+									$scope.items = data.list;
+								}else{
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.'); 
+									$scope.moreloading=0; 
+									$scope.maxover = 1;
+								}
+				       			$scope.moreloading=0; 
+				         			$ionicLoading.hide();
+				      		}, 1000); 
+				}); break;
+			}
+		}
+	}
+
+	$scope.defaultSearch();
+
+
+	$scope.searchClick=function(){	 
+		BoardService.Board_sear($scope.loginData.Admin_Code, $rootScope.boardIndex, 1).then(function(data){$scope.items = data.list;}); 
+	};
+	/* 최상단으로 */
+	$scope.scrollTop = function() {
+    		$ionicScrollDelegate.scrollTop();
+    	};
+
 	$scope.onSlideMove = function(data) {
-		$scope.moreloading=0; 
-	    	$scope.pageCnt=1;
-	    	$scope.maxover=0;
 		switch(data.index){
-			case 0: 	$scope.maxover=0;	 	
-				$scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1).then(function(data){$scope.items = data.list;}); 
-				$rootScope.boardIndex = 0;
+			case 0: 	$rootScope.boardIndex = data.index;
+				$scope.items=[];
+				$scope.defaultSearch();
 				break;
-			case 1: $scope.maxover=0;
-				$scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup',1).then(function(data){$scope.items = data.list;}); 
-				$rootScope.boardIndex = 1;
+			case 1: $rootScope.boardIndex = data.index;
+				$scope.items=[];
+				$scope.defaultSearch();
 				break;
-			case 2: $scope.maxover=0;
-				$scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ',1).then(function(data){$scope.items = data.list;}); 
-				$rootScope.boardIndex = 2;
+			case 2: $rootScope.boardIndex = data.index;
+				$scope.items=[];
+				$scope.defaultSearch();
 				break;
-			case 3: $scope.maxover=0;
-				$scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request',1).then(function(data){$scope.items = data.list;}); 
-				$rootScope.boardIndex = 3;				
+			case 3: $rootScope.boardIndex = data.index;
+				$scope.items=[];
+				$scope.defaultSearch();			
 				break;
 		}
 		$rootScope.useBoardCtrl = "N";
@@ -1636,12 +1850,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		        	$scope.pageCnt+=1;
 
 		      	$scope.moreloading=1; 
-
+		      		if($scope.searchck.SearchValue1 == '' || $scope.searchck.SearchValue1 == undefined){
 			      	switch($rootScope.boardIndex){
 				      	case 0: $scope.BoardUrl1 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',$scope.pageCnt).then(function(data){		$scope.maxCnt=0;
 							$timeout(function(){
-								if(data != '<!--Parameter Check-->'){
+								if(data != '<!--Parameter Check-->' && data.list.length>0){
 							    		$scope.maxover=0;
+							    		console.log('data.list', data.list)
 									for(var i=0; i<data.list.length; i++){
 										$scope.items.push(data.list[i]);
 									}	
@@ -1657,7 +1872,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				      		}); break;
 					case 1: $scope.BoardUrl2 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_erpup',$scope.pageCnt).then(function(data){		$scope.maxCnt=0;
 							$timeout(function(){
-								if(data != '<!--Parameter Check-->'){
+								if(data != '<!--Parameter Check-->' && data.list.length>0){
 									for(var i=0; i<data.list.length; i++){
 										$scope.maxover=0;
 										$scope.items.push(data.list[i]);
@@ -1674,7 +1889,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				      		}); break;
 					case 2: $scope.BoardUrl3 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_FAQ',$scope.pageCnt).then(function(data){		$scope.maxCnt=0;
 							$timeout(function(){
-								if(data != '<!--Parameter Check-->'){
+								if(data != '<!--Parameter Check-->' && data.list.length>0){
 									for(var i=0; i<data.list.length; i++){
 										$scope.maxover=0;
 										$scope.items.push(data.list[i]);
@@ -1691,7 +1906,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				      		}); break;
 					case 3: $scope.BoardUrl4 = BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_Request',$scope.pageCnt).then(function(data){	  $scope.maxCnt=0;
 							$timeout(function(){
-								if(data != '<!--Parameter Check-->'){
+								if(data != '<!--Parameter Check-->' && data.list.length>0){
 									for(var i=0; i<data.list.length; i++){
 										$scope.maxover=0;
 										$scope.items.push(data.list[i]);
@@ -1706,10 +1921,95 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				         
 				      		}, 1000); 
 				      		}); break;
+						}
+					}else{
+					console.log('else가 돕니다' , $rootScope.boardIndex)
+					switch($rootScope.boardIndex){
+						case 0 : $scope.maxover=0; //Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt
+							$scope.BoardUrl1 = BoardService.Board_sear($scope.loginData.Admin_Code, 'Notice', $scope.searchck.mode1, $scope.searchck.SearchValue1, $scope.pageCnt)
+							.then(function(data){	$scope.maxCnt=0;
+										$timeout(function(){
+											if(data != '<!--Parameter Check-->' && data.list.length>0){
+												for(var i=0; i<data.list.length; i++){
+													$scope.maxover=0;
+													$scope.items.push(data.list[i]);
+												}
+											}else{
+												if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+												else alert('조회된 데이터가 없습니다.'); 
+												$scope.moreloading=0; 
+												$scope.maxover = 1;
+											}
+							       			$scope.moreloading=0; 
+							         
+							      		}, 1000); 
+							}); break;
+						case 1 : $scope.maxover=0; //Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt
+							$scope.BoardUrl2 = BoardService.Board_sear($scope.loginData.Admin_Code, 'Erpup', $scope.searchck.mode1, $scope.searchck.SearchValue1, $scope.pageCnt)
+							.then(function(data){
+									$scope.maxover=0;
+										$timeout(function(){
+											if(data != '<!--Parameter Check-->' && data.list.length>0){
+												for(var i=0; i<data.list.length; i++){
+													$scope.maxover=0;
+													$scope.items.push(data.list[i]);
+												}
+											}else{
+												if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+												else alert('조회된 데이터가 없습니다.'); 
+												$scope.moreloading=0; 
+												$scope.maxover = 1;
+											}
+							       			$scope.moreloading=0; 
+							         
+							      		}, 1000); 
+							}); break;
+						case 2 : $scope.maxover=0; //Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt
+							$scope.BoardUrl3 = BoardService.Board_sear($scope.loginData.Admin_Code, 'FAQ', $scope.searchck.mode1, $scope.searchck.SearchValue1, $scope.pageCnt)
+							.then(function(data){	$scope.maxCnt=0;
+										$timeout(function(){
+											if(data != '<!--Parameter Check-->' && data.list.length>0){
+												for(var i=0; i<data.list.length; i++){
+													console.log('data.list', data.list)
+													$scope.maxover=0;
+													$scope.items.push(data.list[i]);
+												}
+											}else{
+												if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+												else alert('조회된 데이터가 없습니다.'); 
+												console.log('data.list', data.list)
+												$scope.moreloading=0; 
+												$scope.maxover = 1;
+											}
+							       			$scope.moreloading=0; 
+							         
+							      		}, 1000); 
+							}); break;
+						case 3 : $scope.maxover=0; //Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt
+							$scope.BoardUrl4 = BoardService.Board_sear($scope.loginData.Admin_Code, 'Request', $scope.searchck.mode1, $scope.searchck.SearchValue1, $scope.pageCnt)
+							.then(function(data){	$scope.maxCnt=0;
+										$timeout(function(){
+											if(data != '<!--Parameter Check-->' && data.list.length>0){
+												for(var i=0; i<data.list.length; i++){
+													$scope.maxover=0;
+													$scope.items.push(data.list[i]);
+												}
+											}else{
+												if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+												else alert('조회된 데이터가 없습니다.'); 
+												$scope.moreloading=0; 
+												$scope.maxover = 1;
+											}
+							       			$scope.moreloading=0; 
+							         
+							      		}, 1000); 
+							}); break;
+						}
 					}
 			}
 	      }
 	    };
+
 })
 
 .controller('PushCtrl', function($rootScope, $scope, $state, PushSelectService){
@@ -1804,24 +2104,40 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	var wMonth = w.getMonth() + 1;
 	var wDay = w.getDate();
 
+	var nowTime = (d.getHours() < 10 ? '0':'') + d.getHours() + ":"
+	nowTime += (d.getMinutes() < 10 ? '0':'') + d.getMinutes() + ":";
+	nowTime += (d.getSeconds() < 10 ? '0':'') + d.getSeconds();
 	var nowday = d.getFullYear() + '-' + (month<10 ? '0':'') + month + '-' + (day<10 ? '0' : '') + day;
 	var aWeekAgo = w.getFullYear() + '-' + (wMonth<10 ? '0':'') + wMonth + '-' + (wDay<10 ? '0' : '') + wDay;
+	$rootScope.nowTime = '최근 조회 시간 :' + nowday + ' ' + nowTime;
 	$scope.ERPiaBaseData = function(){
+		$scope.loadingani();
 		IndexService.dashBoard('erpia_dashBoard', $scope.loginData.Admin_Code, aWeekAgo, nowday)
 		.then(function(processInfo){
 			console.log('erpia_dashBoard', processInfo);
-			$scope.loadingani();
+
 			$scope.dashBoard.E_NewOrder = processInfo.data.list[0].CNT_JuMun_New;
 			$scope.dashBoard.E_BsComplete = processInfo.data.list[0].CNT_BS_NO;
 			$scope.dashBoard.E_InputMno = processInfo.data.list[0].CNT_BS_No_M_No;
 			$scope.dashBoard.E_CgComplete = processInfo.data.list[0].CNT_BS_Before_ChulGo;
 			$scope.dashBoard.E_RegistMno = processInfo.data.list[0].CNT_BS_After_ChulGo_No_Upload;
+
+			// 날짜
+			var d= new Date();
+			var month = d.getMonth() + 1;
+			var day = d.getDate();
+			var nowTime = (d.getHours() < 10 ? '0':'') + d.getHours() + ":"
+			nowTime += (d.getMinutes() < 10 ? '0':'') + d.getMinutes() + ":";
+			nowTime += (d.getSeconds() < 10 ? '0':'') + d.getSeconds();
+			var nowday = d.getFullYear() + '-' + (month<10 ? '0':'') + month + '-' + (day<10 ? '0' : '') + day;
+			$rootScope.nowTime = '최근 조회 시간 :' + nowday + ' ' + nowTime;
 		},
 		function(){
 			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('IndexService Error', 'long', 'center');
 			else alert('IndexService Error');
 		});
 	}
+
 	$scope.ERPiaBaseData();
 
 	var request = null;
@@ -2456,14 +2772,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.balance = false;
 	$rootScope.m_no ='';
 
-	// /* 로딩화면 */
-	// $rootScope.loadingani=function(){
-	// 	     $ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-	//          $timeout(function(){
-	//          $ionicLoading.hide(); 
-	//       }, 500); 
-	// }
-
 	/* 최상단으로 */
 	$scope.scrollTop = function() {
     	$ionicScrollDelegate.scrollTop();
@@ -2480,12 +2788,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	    if( mm<10) mm="0"+mm;
 	    if( dd<10) dd="0"+dd;
 	    return yy + "-" + mm + "-" + dd;
-
 	}
 
 	$scope.todate=$scope.dateMinus(0); // 오늘날짜
-
-
 
 	$scope.mydate1=function(sdate1){
 	    var nday = new Date(sdate1);  //선택1 날짜..  
@@ -2610,15 +2915,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.company.code=gcode;
 		$scope.company.dam=gdam;
        }
-
-	/*---------로딩화면-----------*/
-	$rootScope.loadingani=function(){
-	    $ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-        $timeout(function(){
-        	$ionicLoading.hide();
-
-    	}, 500); 
-	}
 
 	/* 거래처명 + 기간검색 & 기간검색 */
 	$scope.searches = function(){
@@ -4248,6 +4544,7 @@ $scope.goods_seqlist = [];
 		       type: 'button-positive',
 		       onTap: function(e) {
 				$scope.pay.gubun = 4;
+				$scope.pay.paycardbank = 'no';
 			    	for(var i = 0; i<4; i++){
 			    		$scope.payment[i].checked = false;
 			    	}
