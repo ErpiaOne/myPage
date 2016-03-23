@@ -8,7 +8,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 
  // .constant('ERPiaAPI',{
  // 	  url:'http://localhost:8100/include'
- //   , url2:'http://localhost:8100'
+ //       , url2:'http://localhost:8100'
  // 	, imgUrl:'http://localhost:8100/erpia_update/img'
  // 	,gurl:'/upload'
  // 	, toast:'N'

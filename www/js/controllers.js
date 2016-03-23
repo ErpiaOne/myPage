@@ -704,7 +704,24 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			             // $("#preview").append(canvas);
 			             // $("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
 
+			            // var image = new Image();
+			            // image.src = canvas.toDataURL("image/png");
+			            // console.log('??????',  document.getElementById("myImg").src);
+			   //          var ft = new FileTransfer(),
+						// ftOptions = new FileUploadOptions();
 
+						// ftOptions.fileKey = 'file';
+						// ftOptions.fileName = PATH.substr(params.lastIndexOf('/') + 1); // extract file name from PATH
+						// ftOptions.mimeType = 'image/png';
+						// ftOptions.httpMethod = 'POST';
+
+						// ft.upload(PATH, ERPiaAPI.gurl, function (res) {
+						//   //upload success
+						//   console.log('suc');
+						// }, function () {
+						// 	console.log('fail');
+						//   //upload failed
+						// }, ftOptions);
 
 					/*서버로 업로드 하는 부분*/
 					// var url = "http://topclass.dothome.co.kr/test/upload.php";
@@ -723,14 +740,21 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				// 		}
 				// 	};
 				// xhr.send(fd);
+				var imgname = detail.Publish_No; // 저장될 이미지의 이름
+				var admincode = detail.Admin_Code; // 저장될 파일명
+				console.log('check1=>>', imgname);
+				console.log('check2=>>', admincode);
 				$.ajax({
-				  url: ERPiaAPI.gurl + "/fn_save_card_data_image.asp",
+				  url: "http://image.erpia.net/fn_save_card_data_image.asp",
 				  method: "POST",
-				  data: { "imgData" : newData }, //QueryString 방식이면, 이상하게 안됨
-				  success: function(data){
-				    console.log('data --> ' + data);
-
-				    }
+				  data: { "imgData" : newData, "imgName" : imgname, "imgfolder" : admincode},//QueryString 방식이면, 이상하게 안됨
+				  success: function(data){    
+				    alert("저장되었습니다.");
+				    },
+				   error : function (data) {
+				    alert('죄송합니다. 잠시 후 다시 시도해주세요.');
+				    return false;
+				   }  
 				  });
 					///////////////////////////////////////////////////
 				} 

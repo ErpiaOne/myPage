@@ -12,7 +12,7 @@
     },
     {
       "path": "/upload",
-      "proxyUrl": "ftp://erpia2:one1zero0@erpia2.godohosting.com/data/tran"
+      "proxyUrl": "http://image.erpia.net"
     }
   ]
 }
