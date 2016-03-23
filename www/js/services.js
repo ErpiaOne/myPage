@@ -540,7 +540,7 @@ angular.module('starter.services', [])
 		// getList: function(){
 	 BoardInfo : function(Admin_Code, UserId, kind, pageCnt){
 		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
-		var data = 'kind='+kind+'&Admin_Code='+Admin_Code+'&pageCnt='+pageCnt+'&pageRow=10';
+		var data = 'kind='+kind+'&Admin_Code='+Admin_Code+'&pageCnt='+pageCnt+'&pageRow=5';
 //		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
 		console.log(url + '?' + data)
 		return $http.get(url + '?' + data)
@@ -562,7 +562,7 @@ angular.module('starter.services', [])
 			})
 		}, Board_sear : function(Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt){
 		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
-		var data = 'Admin_Code='+Admin_Code+'&kind=ERPia_Mypage_Board_Request_Search&Mode=search&SearchKind=' + SearchKind+ '&SearchMode='+SearchMode+'&SearchValue='+ escape(SearchValue)+'&pageCnt='+pageCnt+'&pageRow=10'
+		var data = 'Admin_Code='+Admin_Code+'&kind=ERPia_Mypage_Board_Request_Search&Mode=search&SearchKind=' + SearchKind+ '&SearchMode='+SearchMode+'&SearchValue='+ escape(SearchValue)+'&pageCnt='+pageCnt+'&pageRow=5'
 	//		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
 		console.log(url + '?' + data)
 		return $http.get(url + '?' + data)

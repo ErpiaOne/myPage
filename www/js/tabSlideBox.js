@@ -135,8 +135,8 @@ function($timeout, $window, $ionicSlideBoxDelegate, $ionicScrollDelegate, $rootS
 						//If scrollable tabs
 						var wrapWidth = wrap.offsetWidth;
 						var currentX = Math.abs(getX(scrollDiv.style.webkitTransform));
-						var leftOffset = 100;
-						var elementOffset = 40;
+						var leftOffset = 1000;
+						var elementOffset = 400;
 						//If tabs are reaching right end or left end
 						if (((currentX + wrapWidth) < (curElLeft + curElWidth + elementOffset)) || (currentX > (curElLeft - leftOffset))) {
 							if (leftStr > 0) {
