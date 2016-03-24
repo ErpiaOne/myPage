@@ -633,8 +633,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 
 	$scope.html3image = function(detaillist){
-		var detail = detaillist[0];
-
+		for(var i = 0; i < detaillist.length; i++){
+		var detail = detaillist[i];
 		var html_start =  "<html><body>";
 		var html_view1 = "<table width=1080 ><tr><td name='td_User_Date' width=300 align=left>"+ detail.MeaChul_Date + '('+$scope.loginData.UserId+')'  + "</td><td width=420 align=center style='color:blue;'><u style='font-size:30px;'>거래명세표</u> (공급받는자용)</td><td name='td_Sl_No_Time' style='color:blue;' width=300 align=right>No."+ detail.Publish_No +"</td></tr></table>";
 		var html_view2 = "<table width=1080 cellspacing=0 cellpadding=0 ><tr><td style='color:blue; border-left: solid #0100FF; border-right: solid #0100FF; border-top: solid #0100FF; border-bottom: solid #0100FF;' width=25 rowspan=4 align=center>공<br/>급<br/>자</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF; border-top: solid #0100FF;' width=45>등 록<br/>번 호</td><td name='td_SaNo1' style='border-bottom: solid #0100FF; border-top: solid #0100FF;' colspan=6>" + detail.R_Sano + "</td><td style='color:blue; border-top: solid #0100FF; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;'  width=25 rowspan=5 align=center>공<br/>급<br/>받<br/>는<br/>자</td><td style='color:blue; border-bottom: solid #0100FF; border-top: solid #0100FF; border-right: solid #0100FF;'  width=45>등 록<br/>번 호</td><td name='td_SaNo2' style='border-bottom: solid #0100FF; border-top: solid #0100FF; border-right: solid #0100FF;'  colspan=6>" + detail.Sano + "</td></tr>";
@@ -690,47 +690,48 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		var html_string = html_start + html_view1 + html_view2 + html_view3 + html_view4 + html_view5 + html_view6 + html_view7 + html_view8 + html_view9  + html_view10 + html_view11 + html_view12 + html_view13 + html_view14 + html_view15 + html_view16 + html_view17 + html_view18 + html_view19;
 		var html_string2 = html_string + html2_view1 + html2_view2 + html2_view3 + html2_view4 + html2_view5 + html2_view6 + html2_view7 + html2_view8 + html2_view9 + html2_view10 + html2_view11 + html2_view12 + html2_view13 + html2_view14 + html2_view15 + html2_view16 + html2_view17 + html2_view18 + html2_view19 + html_end;
 		
-		var iframe = document . createElement ( 'iframe' ); 
-		document . body . appendChild ( iframe ); 
+		var name =  detail.Publish_No;
+		var admincode = detail.Admin_Code; // 저장될 파일명
+		console.log(admincode);
+		console.log('for문 안 =>' ,i);
+		// 저장될 이미지의 이름
+				
+			$scope.test(i,html_string,html_string2,name,admincode);
+		}
+		
+		    	// var login_kind = '';
+		    	// var url = "http://www.erpia.net/mobile/GereaView_Certify.asp?admin_code=" + detail.Admin_Code + "&user_id=" + $scope.loginData.UserId + "&login_kind=" + login_kind + "&sl_no=" + detail.Publish_No;
+		    	// 	$scope.shareAnywhere(url);
+	
+}
 
-		var iframedoc = iframe . contentDocument || iframe . contentWindow . document ; 
+	$scope.test = function(i,html_string,html_string2, name,admincode){
+			console.log('nn->',admincode);
+			var iframe = document . createElement ( 'iframe' ); 
+			document . body . appendChild ( iframe ); 
+			var iframedoc = iframe . contentDocument || iframe . contentWindow . document ; 
 		    	iframedoc.body.innerHTML = html_string2 ; 
 		    	html2canvas ( iframedoc.body ,  { 
 		       	onrendered :  function ( canvas )  { 
 			             document . body . appendChild ( canvas ); 
 			             document . body . removeChild ( iframe ); 
 			             var imgageData = canvas.toDataURL("image/png");
-			             var newData = imgageData.replace('data:image/png;base64,',''); //파일 
-			             // $("#preview").append(canvas);
-			             // $("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
+			             var newData = imgageData.replace('data:image/png;base64,',''); //파일
+			            //  var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+    				       // $("#btn-Convert-Html3Image").attr("download", "your_pic_name.png").attr("href", newData);
+    				      
 
-			            // var image = new Image();
-			            // image.src = canvas.toDataURL("image/png");
-			            // console.log('??????',  document.getElementById("myImg").src);
-			   //          var ft = new FileTransfer(),
-						// ftOptions = new FileUploadOptions();
+    				 var imgname = name + "(" + i  + ")";
+				console.log('check1=>>', imgname);
+				console.log('check2=>>', admincode);
 
-						// ftOptions.fileKey = 'file';
-						// ftOptions.fileName = PATH.substr(params.lastIndexOf('/') + 1); // extract file name from PATH
-						// ftOptions.mimeType = 'image/png';
-						// ftOptions.httpMethod = 'POST';
-
-						// ft.upload(PATH, ERPiaAPI.gurl, function (res) {
-						//   //upload success
-						//   console.log('suc');
-						// }, function () {
-						// 	console.log('fail');
-						//   //upload failed
-						// }, ftOptions);
-
-					/*서버로 업로드 하는 부분*/
-					// var url = "http://topclass.dothome.co.kr/test/upload.php";
+    				// var url = "http://topclass.dothome.co.kr/test/upload.php";
 				// 	document.getElementById('hidden_data').value = newData;
-				// 	document.getElementById('name').value = detail.Publish_No;
-				// 	document.getElementById('folder').value = detail.Admin_Code;
+				// 	document.getElementById('name').value = name;
+				// 	document.getElementById('folder').value = admincode;
 				// 	var fd = new FormData(document.forms["form1"]);
 				// 	var xhr = new XMLHttpRequest();
-				// 	xhr.open('POST', ERPiaAPI.gurl + '/fn_save_card_data_image.asp', true);
+				// 	xhr.open('POST', 'http://image.erpia.net/fn_save_card_data_image.asp', true);
 
 				// 	xhr.upload.onprogress = function(e) {
 				// 		if (e.lengthComputable) {
@@ -740,10 +741,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				// 		}
 				// 	};
 				// xhr.send(fd);
-				var imgname = detail.Publish_No; // 저장될 이미지의 이름
-				var admincode = detail.Admin_Code; // 저장될 파일명
-				console.log('check1=>>', imgname);
-				console.log('check2=>>', admincode);
+
+
 				$.ajax({
 				  url: "http://image.erpia.net/fn_save_card_data_image.asp",
 				  method: "POST",
@@ -756,27 +755,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				    return false;
 				   }  
 				  });
-					///////////////////////////////////////////////////
 				} 
 			}); 
+	}
 
-}
-
-	// $scope.shareAnywhere = function(url) {
-	// 	url = 'http://erpia.net';
-	// 	file = newData;
-	//         $cordovaSocialSharing
-	//         	.share("[Erpia 거래명세표] "+url, file);
-	//     }
-
-
-	//     $cordovaSocialSharing
-	// 	    .share(message, subject, file, link) // Share via native share sheet
-	// 	    .then(function(result) {
-	// 	      // Success!
-	// 	    }, function(err) {
-	// 	      // An error occured. Show a message to the user
-	// 	    });
+	$scope.shareAnywhere = function(url) {
+	        $cordovaSocialSharing
+	        	.share("[Erpia 거래명세표] "+url);
+	    }
 
 	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
 		scope : $scope
