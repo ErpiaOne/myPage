@@ -5,20 +5,20 @@
 			<button class="button button-clear" ng-click="close()">
 				닫기
 			</button>
-			<a id='btn-Convert-Html3Image' name ='btn-Convert-Html3Image' >여기를 클릭해주세요!</a>
+			<!-- <a id='btn-Convert-Html3Image' name ='btn-Convert-Html3Image' >여기를 클릭해주세요!</a> -->
 		</div>
 	</ion-header-bar>
 		<ion-content class="padding2">
-
+<!-- 
 		<form method="post" accept-charset="utf-8" name="form1" action="http://image.erpia.net/fn_save_card_data_image.asp">
 	            <input name="hidden_data" id='hidden_data' type="hidden"/>
 	            <input name="name" id='name' type="hidden" />
 	            <input name="folder" id='folder' type="hidden" />
 	            <input type="submit" />
-		</form> 			
+		</form> 	 -->		
 			<ion-scroll zooming="true" direction="xy" style="width:100%; height:100%;">
 				<div  style="width: 1110px; height: 850px;">
-<div  id="divTradeDetail_Print_Area" ng-click='html3image(detail_items)'>
+<div  id="divTradeDetail_Print_Area">
 					<link href="css/lhkTradeDetail.css" rel="stylesheet">
 					<ion-item ng-repeat="detail in detail_items">
 						<table width=1080>
@@ -331,12 +331,19 @@
 						    </tr>
 						    <tr><td class='tdListEnd_red tdRightSolid_red tdBottomSolid_red' colspan=6 style='height:45px;'>.</td></tr>
 						</table>
-						<!-- <button class='button button-block psm_login_ink' ng-click='print()'>출력하기</button>
-						<button class='button button-block psm_login_ink' ng-click='createPDF()'>PDF</button> -->
+						<!-- <button class='button button-block psm_login_ink' ng-click='print()'>출력하기</button> -->
+						<!-- <button class='button button-block psm_login_ink' ng-click='createPDF()'>PDF</button> -->
+						<!-- <button class='button button-block psm_login_ink' ng-click='html3image(detail_items)'>공유하기</button> -->
 					</ion-item>
 </div>
 				</div>
 			</ion-scroll>
 
 		</ion-content>
+
+		   <ion-footer-bar align-title="left" class="bar-assertive">
+		    <div class="buttons"><button class='button button-block psm_login_ink' ng-click='print()'>출력하기</button></div>
+		    <div class="buttons"><button class='button button-block psm_login_ink' ng-click='html3image(detail_items)'>공유하기</button></div>
+		  </ion-footer-bar>
+
 </ion-modal-view>

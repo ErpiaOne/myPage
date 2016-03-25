@@ -8,33 +8,37 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 
  // .constant('ERPiaAPI',{
  // 	  url:'http://localhost:8100/include'
- //       , url2:'http://localhost:8100'
+ // 	, url2:'http://localhost:8100'
  // 	, imgUrl:'http://localhost:8100/erpia_update/img'
- // 	,gurl:'/upload'
+ // 	, gurl:'http://168.126.146.37/20132354'
  // 	, toast:'N'
  // })
 
 //실제 사용시
 .constant('ERPiaAPI',{
-	url:'http://www.erpia.net/include'
-	, url2: 'http://www.erpia.net'
-	, imgUrl:'http://erpia2.godohosting.com/erpia_update/img'
-	// ,gurl: 'ftp://erpia2:one1zero0@erpia2.godohosting.com/data/tran'
-	, gurl: 'http://image.erpia.net'
-	, toast:'Y'
+	url:'http://www.erpia.net/include',
+	url2: 'http://www.erpia.net',
+	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+	toast:'Y'
 })
 
-.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork) {
+.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
-		// ionic.Platform.fullScreen();
+
+
 		if(window.cordova && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
 			    // Check for network connection
         		if(window.StatusBar) {
-			StatusBar.styleDefault();
+	        		if (ionic.Platform.isIOS()){
+				ionic.Platform.fullScreen();
+				StatusBar.hide();
+			}else{
+			 StatusBar.styleDefault();
+			}
 		}
 		// //★push regist
 		console.log('Ionic Push: Registering user');
@@ -42,16 +46,17 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		if(!user.user_id) {
 			// Set your user_id here, or generate a random one.
 			user.user_id = $ionicUser.generateGUID();
-			$rootScope.UserKey = user.user_id
+			$rootScope.UserKey = user.user_id;
 		};
 		// Metadata
 		angular.extend(user, {
 			name: 'ERPiaUser',
 			bio: 'ERPiaPush'
 		});
+		console.log('this is app');
 //----------------뒤로가기 마지막페이지일때 ....----
 		$ionicPlatform.registerBackButtonAction(function(e){
-										
+		$ionicSideMenuDelegate.canDragContent(true);
 		    if ($location.url()=='/app/main' ||  $location.url()=='/app/slidingtab'  || $location.url() == '/app/scmhome'  || $location.url() == '/app/sample/Main') { //현재 페이지 url이 메인일 때,
 		      $ionicPopup.show({
 				title: '경고',
@@ -96,11 +101,11 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				             type: 'button-positive',
 				             onTap: function(e) {
 				                if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
-								    $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+								$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 		    						location.href = '#/app/meaip_page';
 								}else{ /* 매출일 경우 */
-									$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-								    location.href = '#/app/meachul_page';
+								$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+								location.href = '#/app/meachul_page';
 								}
 
 				             }
@@ -148,14 +153,14 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				        })
 		    	}else{$ionicHistory.goBack();}
 		      		$rootScope.backButtonPressedOnceToExit = false;	
-		    }else { // 현재페이지가 메인이 아니면서 더이상 뒤로갈 곳이 없을 때
+		    }else{ // 현재페이지가 메인이 아니면서 더이상 뒤로갈 곳이 없을 때
 		      $rootScope.backButtonPressedOnceToExit = false;
 			   
 		      window.plugins.toast.showShortCenter(
 		        "메인으로 이동합니다.",function(a){},function(b){}
 		      );
 		      // $state.go('app.meaip_page', {}, {location:'replace'});
-		     $ionicHistory.clearCache();
+		     	$ionicHistory.clearCache();
 			 $ionicHistory.clearHistory();
 			 $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 		     
@@ -176,6 +181,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		    return false;
 		  },101);
 		if(window.Connection) {
+			console.log('navigator.connection.type', navigator.connection.type);
 		    if(navigator.connection.type == Connection.NONE) {
 		    		$ionicPopup.show({
 		                        title: "데이터접속을 확인해주세요.",
@@ -187,7 +193,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 						 ionic.Platform.exitApp();
 						}
 					}
-				]
+				      ]
 		                    });
 		    }else{
 		        
@@ -238,6 +244,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		    $rootScope.token = data.token;
 		    //디바이스 토큰 값 받는곳
 		});
+
+		
 	});
 	$rootScope.goHome = function(userType){
 		$ionicHistory.clearCache();
@@ -295,7 +303,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	$ionicAppProvider.identify({
       	app_id: 'b94db7cd', //app id
       	// api_key:'eaed7668bef9fb66df87641b2b8e100084454e528d5f3150',		// public key 개발테스트시 
-      	api_key:'7a751bc2857d64eeecdd7c9858dd2e0edb0315f621497ecc', 	// private key 실적용시
+      	// api_key:'7a751bc2857d64eeecdd7c9858dd2e0edb0315f621497ecc', 	// private key 실적용시
+      	api_key:'7b8c938db644b36f10e1d586718b3529d5cbd9f3',			// ios
 		// dev_push: true // 개발테스트시
 		dev_push: false // 실적용시
 	});
