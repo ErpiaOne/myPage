@@ -7,14 +7,14 @@
 			<div class="tsb-icons">
 				<div class="tsb-ic-wrp">
 					<ion-scroll direction="x" class="tsb-hscroll">
-						<a ng-href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.title}}</a>
+						<a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.title}}</a>
 					</ion-scroll>
 				</div>
 			</div>
 
 			<ion-slide-box does-continue="true" show-pager="false" on-slide-changed="slideHasChanged($index)">
 				<ion-slide>
-					<ion-content overf low-scroll="false">
+					<ion-content overflow-scroll="false">
 					<p ng-bind-html="login_alert"></p>
 						<div style="height:100%">
 							<!-- <iframe src="#/erpia_erpiahome/erpiahome" frameborder=0 marginwidth=0 marginheight=0 scrolling=no align="left" ng-style="myStyle"></iframe> -->

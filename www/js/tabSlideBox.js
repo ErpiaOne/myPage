@@ -135,8 +135,8 @@ function($timeout, $window, $ionicSlideBoxDelegate, $ionicScrollDelegate, $rootS
 						//If scrollable tabs
 						var wrapWidth = wrap.offsetWidth;
 						var currentX = Math.abs(getX(scrollDiv.style.webkitTransform));
-						var leftOffset = 1000;
-						var elementOffset = 400;
+						var leftOffset = 100;
+						var elementOffset = 40;
 						//If tabs are reaching right end or left end
 						if (((currentX + wrapWidth) < (curElLeft + curElWidth + elementOffset)) || (currentX > (curElLeft - leftOffset))) {
 							if (leftStr > 0) {
@@ -168,6 +168,7 @@ function($timeout, $window, $ionicSlideBoxDelegate, $ionicScrollDelegate, $rootS
 			$scope.events = new SimplePubSub();
 
 			$scope.slideHasChanged = function(index) {
+
 				$scope.events.trigger("slideChange", {
 					"index" : index
 				});
@@ -177,6 +178,7 @@ function($timeout, $window, $ionicSlideBoxDelegate, $ionicScrollDelegate, $rootS
 							"index" : eval(index)
 						});
 				}, 100);
+				
 			};
 
 			$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {

@@ -124,7 +124,7 @@
   <ion-footer-bar align-title="left"  style="background: #795e81;">
     <div align="center" class="footerdiv">
       <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
-        <button class="button button-icon button-clear {{ionstar}} starbtn" menu-close ng-click="m_quick(x.iL_No,ionstar)"  style="font-size:50px;align:left; color: #fff;"></button>
+        <i class="button button-icon button-clear {{ionstar}} starbtn" menu-close ng-click="m_quick(x.iL_No,ionstar)"  style="font-size:50px;align:left; color: #fff;"></i>
         </any>
         <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
         <button class="button button-psm03" ng-click="chitDeleteF(x.iL_No)">삭제</button>

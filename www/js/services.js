@@ -508,6 +508,7 @@ angular.module('starter.services', [])
 			var data = 'Kind=getUUID&uuid=' + uuid;
 			return $http.get(url + '?' + data)
 			.then(function(response){
+				console.log('getUUID: ', response.data);
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
@@ -522,6 +523,7 @@ angular.module('starter.services', [])
 			data += '&id=' + id + '&pwd=' + pwd + '&autoLogin_YN=' + autoLogin_YN;
 			return $http.get(url + '?' + data)
 			.then(function(response){
+				console.log('saveUUID: ', response.data);
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
@@ -552,6 +554,13 @@ angular.module('starter.services', [])
 							.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
 							.replace(/&quot;/g,'')
 							.replace(/<img src=/g, '<img width=100% src=');	
+					}
+					if(kind='board_Request'){
+						for(var g=0; g<response.data.list.length; g++){
+							oldContent = response.data.list[g].content;
+							response.data.list[g].content = oldContent
+							.replace('.', '.<br>');
+						}
 					}
 					return response.data;
 				}else{

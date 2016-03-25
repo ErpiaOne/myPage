@@ -11,7 +11,7 @@
     <div class="list list-inset">
       <label class="item item-input">
         <span class="input-label psm_sang_01">&nbsp;&nbsp;<any ng-if="distinction == 'meaip'">매입액</any><any ng-if="distinction == 'meachul'">매출액</any></span>
-        <input type="text" style="text-align:right" readonly value='총 {{totalnum}}개 / {{datas.totalsumprices}}원'><br>
+        <input type="text" style="text-align:right" readonly value='총 {{totalnum}}개 / {{datas.totalsumprices | number:0}}원'><br>
       </label><br>
     </div>
 

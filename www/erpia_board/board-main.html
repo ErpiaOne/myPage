@@ -19,9 +19,9 @@
 				      <label>
 				      <input type="radio"  ng-model="searchck.mode" value="Content" ng-click="searchckclick()"/>
 				      내용</label>
-				      <label ng-if="boardIndex==3">
+<!-- 				      <label ng-if="boardIndex==3">
 				      <input type="radio"  ng-model="searchck.mode" value="Writer" ng-click="searchckclick()"/>
-				      업체명</label>
+				      업체명</label> -->
 				   </div>
 				    <div class="item item-divider item-input-inset">
 				    <label class="item-input-wrapper">
@@ -32,12 +32,12 @@
 				    </button>
 				  </div>
 				</div>
-			<ion-slide-box does-continue="true" show-pager="true" on-slide-changed="slideHasChanged($index)">
+			<ion-slide-box does-continue="true" show-pager="true" on-slide-changed="slideHasChanged($index)" style="text-align: center;">
 				<ion-slide>
-					<ion-content overflow-scroll="false">
-						<div style="height: 100%;">
+					<ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()">
+						<div style="height: 100%; text-align:left;" >
 							<ion-list on-swipe-up="boards_more()">
-								<ion-item ng-repeat="item in items" style="padding:0px;">
+								<ion-item ng-repeat="item in items" style="padding:0px">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item">
 											<font>{{item.inDate}}</font><br/><b>{{item.subject}}</b>
@@ -49,7 +49,7 @@
 										<b>더보기를 하시려면 위로 쓸어올려주세요.</b>
 										</li>
 									</ui>
-									<ui class="list" ng-if="moreloading==1&&$last" >
+									<ui class="list" ng-if="moreloading==1&&$last" align="center" >
 										<li class="item">
 											 <ion-spinner icon="spiral" ></ion-spinner>
 										</li>
@@ -61,8 +61,8 @@
 					</ion-content>
 				</ion-slide>
 				<ion-slide>
-					<ion-content overflow-scroll="false">
-						<div style="height: 100%;">
+					<ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()">
+						<div style="height: 100%; text-align:left;">
 							<ion-list on-swipe-up="boards_more()">
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
@@ -76,7 +76,7 @@
 										<b>더보기를 하시려면 위로 쓸어올려주세요.</b>
 										</li>
 									</ui>
-									<ui class="list" ng-if="moreloading==1&&$last" >
+									<ui class="list" ng-if="moreloading==1&&$last" align="center">
 										<li class="item">
 											 <ion-spinner icon="spiral" ></ion-spinner>
 										</li>
@@ -88,8 +88,8 @@
 					</ion-content>
 				</ion-slide>
 				<ion-slide>
-					<ion-content overflow-scroll="false">
-						<div style="height: 100%;">
+					<ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()">
+						<div style="height: 100%; text-align:left;">
 							<ion-list on-swipe-up="boards_more()">
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
@@ -103,7 +103,7 @@
 										<b>더보기를 하시려면 위로 쓸어올려주세요.</b>
 										</li>
 									</ui>
-									<ui class="list" ng-if="moreloading==1&&$last" >
+									<ui class="list" ng-if="moreloading==1&&$last" align="center">
 										<li class="item">
 											 <ion-spinner icon="spiral" ></ion-spinner>
 										</li>
@@ -116,8 +116,8 @@
 				</ion-slide>
 
 				<ion-slide>
-					<ion-content overflow-scroll="false">
-						<div style="height: 100%;">
+					<ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()">
+						<div style="height: 100%; text-align:left;">
 							<ion-list on-swipe-up="boards_more()">
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
@@ -129,12 +129,12 @@
 										</li>
 									</ui>
 									<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
-									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" >
+									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" align="center">
 										<li class="item">
 											<b>더보기를 하시려면 위로 쓸어올려주세요.</b>
 										</li>
 									</ui>
-									<ui class="list" ng-if="moreloading==1&&$last" >
+									<ui class="list" ng-if="moreloading==1&&$last" align="center">
 										<li class="item">
 											 <ion-spinner icon="spiral" ></ion-spinner>
 										</li>
@@ -149,7 +149,7 @@
 		</tab-slide-box>
 	</ion-content>
 		<div style="margin-top:140%" align="right">
-		   <button class='ion-compose' style="position:relative; z-index:1000;font-size:50px; color:gray; background-color: #ffffff;" ng-if="boardIndex==3" ng-click='qnawrite_openModal()'></button>&nbsp;&nbsp;
-		   <button class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:50px; color:gray; background-color: #ffffff;" ng-click='scrollTop()'></button>&nbsp;&nbsp;
+		   <i class='ion-compose' style="position:relative; z-index:1000;font-size:50px; color:gray" ng-if="boardIndex==3" ng-click='qnawrite_openModal()'></i>&nbsp;&nbsp;
+		   <i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:50px; color:gray" ng-click='scrollTop()'></i>&nbsp;&nbsp;
 		</div>
 </ion-view>
