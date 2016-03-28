@@ -537,9 +537,6 @@ angular.module('starter.services', [])
 })
 .factory('BoardService', function($http, $q, ERPiaAPI){
 	return{
-	// return{
-		//http://erpia2.godohosting.com/erpia_update/img
-		// getList: function(){
 	 BoardInfo : function(Admin_Code, UserId, kind, pageCnt){
 		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
 		var data = 'kind='+kind+'&Admin_Code='+Admin_Code+'&pageCnt='+pageCnt+'&pageRow=5';
@@ -554,13 +551,6 @@ angular.module('starter.services', [])
 							.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
 							.replace(/&quot;/g,'')
 							.replace(/<img src=/g, '<img width=100% src=');	
-					}
-					if(kind='board_Request'){
-						for(var g=0; g<response.data.list.length; g++){
-							oldContent = response.data.list[g].content;
-							response.data.list[g].content = oldContent
-							.replace('.', '.<br>');
-						}
 					}
 					return response.data;
 				}else{
@@ -870,7 +860,7 @@ angular.module('starter.services', [])
 
 //////////////////////////////////////////////////////////////매입 & 매출 통합 다시 ///////////////////////////////////////////////////////////////////////////////////
 /* 환경설정 */
-.factory('MconfigService', function($http, ERPiaAPI, $q, $cordovaToast){
+.factory('MconfigService', function($http, ERPiaAPI, $q, $cordovaToast, $rootScope){
 	return{
 		basicSetup: function(admin_code, userid){ //환경설정
 			console.log("MconfigService and basicSetup");
@@ -945,6 +935,7 @@ angular.module('starter.services', [])
 					})
 		}, configIU: function(admin_code, userid, configdata, mode){
 				console.log("mconfigService and configIU");
+				console.log($rootScope.basicSetup);
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				if(mode == 'insert'){
 					var data = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode='+ mode +'&basic_Ch_Code='+ configdata.basic_Ch_Code +'&basic_Place_Code='+ configdata.basic_Place_Code +'&basic_Dn_Meaip='+ configdata.basic_Dn_Meaip +'&basic_Dn_Sale='+ configdata.basic_Dn_Sale +'&basic_Subul_Sale='+  configdata.basic_Subul_Sale +'&basic_Subul_Sale_Before=N&basic_Subul_Meaip='+ configdata.basic_Subul_Meaip +'&basic_Subul_Meaip_Before=N';
@@ -1310,16 +1301,32 @@ return{
 			else var kind = 'ERPia_Sale_Select_Goods';
 
 			switch (mode) {
-			    case 'Select_GoodsName' : console.log('Select_GoodsName'); mode = 'Select_Hangul';  var dataDetail = '&GoodsName='+goods_name; break;
-			    case 'Select_G_OnCode' : console.log('Select_G_OnCode'); var dataDetail = '&G_OnCode='+goods_name; break;
-			    case 'Select_G_Code' : console.log('Select_G_Code'); var dataDetail = '&GoodsCode='+goods_name; break;
-			    case 'Select_GI_Code' : console.log('Select_GI_Code'); var dataDetail = '&GI_Code='+goods_name; break;
+			    case 'Select_GoodsName' : 
+			    console.log('Select_GoodsName'); mode = 'Select_Hangul'; 
+			    var dataDetail = '&GoodsName='+goods_name;
+			    var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind + '&Mode=' + mode + dataDetail + '&Changgo_Code=' + Ccode + '&pageCnt=' +pageCnt+ '&pageRow=10';
+			    break;
+			    case 'Select_G_OnCode' : 
+			    console.log('Select_G_OnCode'); 
+			    var dataDetail = '&G_OnCode='+goods_name;
+			    var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind + '&Mode=' + mode + dataDetail + '&Changgo_Code=' + Ccode;
+			    break;
+			    case 'Select_G_Code' : 
+			    console.log('Select_G_Code'); 
+			    var dataDetail = '&GoodsCode='+goods_name; 
+			    var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind + '&Mode=' + mode + dataDetail + '&Changgo_Code=' + Ccode;
+			    break;
+			    case 'Select_GI_Code' : 
+			    console.log('Select_GI_Code'); 
+			    var dataDetail = '&GI_Code='+goods_name; 
+			    var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind + '&Mode=' + mode + dataDetail + '&Changgo_Code=' + Ccode;
+			    break;
 
 			    default : console.log('셀렉트 된 것이 없습니다.'); break;
 			}
 			
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-			var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind + '&Mode=' + mode + dataDetail + '&Changgo_Code=' + Ccode + '&pageCnt=' +pageCnt+ '&pageRow=10';
+			
 			console.log(data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
@@ -1364,13 +1371,13 @@ return{
 						}
 						return response.data;
 					}else{
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('일치하는 정보가 없습니다.', 'short', 'center');
-						else alert('일치하는 정보가 없습니다.2');
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
+						else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 						return $q.reject(response);
 					}
 				}, function(response){
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('일치하는 정보가 없습니다.', 'short', 'center');
-						else alert('일치하는 정보가 없습니다.3');
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요.', 'short', 'center');
+						else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 						return $q.reject(response);
 				})
 

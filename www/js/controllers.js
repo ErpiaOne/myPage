@@ -1462,8 +1462,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
   	];
 	
   	$scope.csRegist = function() {
-  		console.log($scope.csData);
-  		console.log($scope.cscustomagree);
   		var errMsg = "";
   		if($scope.csData.interestTopic1 != 'no' && $scope.csData.interestTopic2 == 'no' && $scope.cscustomagree != false){
   			$scope.csData.interestTopic2 = '';
@@ -1518,6 +1516,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			        title: '<b>경고</b>',
 			        subTitle: '',
 			        template: '개인정보이용 및 활용동의(필수)를 해주시기 바랍니다.'
+	    		})
+	  	}else if($scope.csData.interestTopic1 == $scope.csData.interestTopic2 || $scope.csData.interestTopic1 == $scope.csData.interestTopic3 || $scope.csData.interestTopic2 == $scope.csData.interestTopic3){
+	  		$ionicPopup.alert({
+			        title: '<b>경고</b>',
+			        subTitle: '',
+			        template: '관심항목을 다르게 선택해주세요.'
 	    		})
 	  	}else{
 			csInfoService.csInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_CS_Save', $rootScope.loginState, escape(csResigtData[0]),
@@ -1972,7 +1976,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				      		}); break;
 						}
 					}else{
-					console.log('else가 돕니다' , $rootScope.boardIndex)
 					switch($rootScope.boardIndex){
 						case 0 : $scope.maxover=0; //Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt
 							$scope.BoardUrl1 = BoardService.Board_sear($scope.loginData.Admin_Code, 'Notice', $scope.searchck.mode1, $scope.searchck.SearchValue1, $scope.pageCnt)
@@ -2159,7 +2162,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	var nowday = d.getFullYear() + '-' + (month<10 ? '0':'') + month + '-' + (day<10 ? '0' : '') + day;
 	var aWeekAgo = w.getFullYear() + '-' + (wMonth<10 ? '0':'') + wMonth + '-' + (wDay<10 ? '0' : '') + wDay;
 	$rootScope.nowTime = '최근 조회 시간 :' + nowday + ' ' + nowTime;
-
 	$scope.ERPiaBaseData = function(){
 		$scope.loadingani();
 		IndexService.dashBoard('erpia_dashBoard', $scope.loginData.Admin_Code, aWeekAgo, nowday)
@@ -2422,10 +2424,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		// create the request
 		if (window.XMLHttpRequest) {
 		// IE7+, Firefox, Chrome, Opera, Safari
-		var request = new XMLHttpRequest();
+			var request = new XMLHttpRequest();
 		} else {
 		// code for IE6, IE5
-		var request = new ActiveXObject('Microsoft.XMLHTTP');
+			var request = new ActiveXObject('Microsoft.XMLHTTP');
 		}
 
 		request.onreadystatechange = callback;
@@ -2434,15 +2436,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		request.send();
 		var tmpAlert = "최근갱신일 : ";
 		if (load_kind == "refresh")
-		{
+		{	$scope.loadingani();
 			response = eval(request.responseText);	  
 			$.each(response[0], function(index, jsonData){
 						tmpAlert += jsonData;
 			});
 			$("h3[name=refresh_date]").html(tmpAlert);
 		}
+		/*상세 표 보기!*/
 		if (load_kind == "gridInfo")
-		{
+		{	
 			response = eval(request.responseText);
 			$.each(response[0], function(index, jsonData){
 				tmpAlert += jsonData;
@@ -2454,17 +2457,26 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		function callback()
 		{
-			if(request.readyState == 1 || request.readyState == 2 || request.readyState == 3)
-			{
-				$("#loading").css("display","block");
-			}
-			else if(request.readyState == 4)
-			{
-				 if (request.status == 200)
+			console.log('???????????',request.response);
+			if(request.response.length < 5){
+				// $("#loading2").css("display","block");
+				$('div[name=loading2]').css('display','block');
+			}else{
+				// $("#loading2").css("display","none");
+				$('div[name=loading2]').css('display','none');
+				if(request.readyState == 1 || request.readyState == 2 || request.readyState == 3)
 				{
-					$("#loading").css("display","none");
+					$("#loading").css("display","block");
+				}
+				else if(request.readyState == 4)
+				{
+					 if (request.status == 200)
+					{
+						$("#loading").css("display","none");
+					}
 				}
 			}
+			
 		};
 	};
 	// ERPia 차트화면에서 위에 차트 이름을 보여주는 부분. (차트 이름을 변경시켜야 하므로 서버에 저장하고 이를 불러옴.)
@@ -2473,11 +2485,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.tabs = data;
 	})
 	$scope.kind= '', $scope.htmlCode= '';
+
 	// 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함. 
 	$scope.onSlideMove = function(data) {
-			$scope.loadingani();
 		console.log('selectedIdx', $scope.userData.selectedIdx);
 		console.log("You have selected " + data.index + " tab");
+		$scope.loadingani();
 		var titles =  [{Idx:0, title:"홈"}
 			, {Idx:1, title:"meaip_jem"}
 			, {Idx:2, title:"meachul_jem"}
@@ -2522,7 +2535,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
 				if($scope.kind === "meachul_onoff"){
-					$scope.htmlCode = '<input type="hidden" name="gu_hidden">' +
+					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat">'+
 								'<div class="box-header">'+
 									'<i class="fa fa-refresh" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"></i>'+
@@ -2531,7 +2544,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										'<button name="btnGrid" class="btn btn-box-tool" ><i class="fa fa-bars"></i></button>'+
 									'</div>'+
 									// '<div name="loading">로딩중...</div>'+
-									'<div name="loading2"></div>'+
+									'<div align = "center" id = "loading" xstyle = "position:absolute;">'+
 								'</div>'+
 								'<div class="box-body" style="padding:10px 0px;">'+
 									'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 300px;"></div>'+
@@ -2548,9 +2561,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>';
+							'</div>' + '</ion-content>';
 				}else{
-					$scope.htmlCode = '<input type="hidden" name="gu_hidden">' +
+					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat">'+
 								'<div class="box-header">'+
 									'<i class="fa fa-refresh" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"></i>'+
@@ -2562,8 +2575,28 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									'<button name="btnGrid" class="btn btn-box-tool"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
 									// '<div name="loading">로딩중...</div>'+
-									'<div name="loading2"></div>'+
+
+									// '<div align = "center" name = "loading" xstyle = "position:absolute;">'+
+									// 	' <table border = "0" width = "100%" height="450" cellspacing = "0">'+
+									// 	 '<tr>'+
+									// 		 '<td align = "absmiddle">'+
+									// 		 '<center>로딩중이미지가뜰것. </center>'+
+									// 		 '</td>'+
+									// 	'</tr>'  +
+									// 	'</table>'+
+									// '</div>'+
+
+									'<div name="loading2" class="ontop"> '  +
+										'<table border="0" id="popup"> '+
+											'<tr> '+
+												'<td>' +
+													'<center>정보없음</center>'+
+												'</td> '+
+											'</tr> '+
+										'</table> '+
+									'</div>'+
 								'</div>'+
+
 								'<div class="box-body" style="padding:10px 0px;">'+
 									'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 300px;"></div>'+
 									'<div name="gridBody" height: 320px; ">'+
@@ -2579,7 +2612,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>';
+							'</div>'+ '</ion-content>';
 				}
 				renewalDay($scope.kind,$scope.gu,$scope.loginData.Admin_Code,ERPiaAPI.url);
 				// makeCharts($scope.kind,$scope.gu,$scope.loginData.Admin_Code,ERPiaAPI.url);
@@ -2603,7 +2636,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					case 17: $('#s17').html($scope.htmlCode); $('button[name=btnW]').click(); break;
 				}
 				// $('div[name=gridBody]').hide();
+
 				$("button[name=btnGrid]").click(function() {
+
 					if ($('div[name=gridBody]').css('display') == 'none') {
 						$('div[name=gridBody]').css('display','block');
 						$('#' + $scope.kind).css('display', 'none');
@@ -2725,8 +2760,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		MconfigService.basicC($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.setupData.basic_Place_Code)
 		.then(function(data){
 			$scope.changolists = data.list;
-			if($scope.setupData.basic_Place_Code == 000){ //매장미지정을 선택할 경우 본사창고 디폴트
-				$scope.setupData.basic_Ch_Code = 101;	
+			if($scope.setupData.basic_Place_Code == '000'){ //매장미지정을 선택할 경우 본사창고 디폴트
+				$scope.setupData.basic_Ch_Code = '101';	
 			}else{
 				$scope.setupData.basic_Ch_Code = '000';				
 			}
@@ -3185,8 +3220,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	 	MLookupService.quickReg($scope.loginData.Admin_Code, $scope.loginData.UserId, mode, no)
 		.then(function(data){
 			if(data == '<!--Parameter Check-->'){
-				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록된 빠른등록이 없습니다.', 'short', 'center');
-				else alert('등록된 빠른등록이 없습니다.');
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록된" 빠른등록" 템플렛이 없습니다. 자주거래되는 매입/매출전표를 빠른등록으로 등록하여 보다 빠르게 등록해보세요. (기등록된 전표 상세보기에서 ★를 눌러주세요.)', 'short', 'center');
+				else alert('등록된" 빠른등록" 템플렛이 없습니다. 자주거래되는 매입/매출전표를 빠른등록으로 등록하여 보다 빠르게 등록해보세요. (기등록된 전표 상세보기에서 ★를 눌러주세요.)');
 			}else{
 				for(var i =0; i < data.list.length; i++){
 					if($rootScope.distinction == 'meaip') var no = data.list[i].iL_No;
@@ -3201,8 +3236,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					});
 				}
 			}
+			$scope.quickregM.show();
 		})
-	 	$scope.quickregM.show();
+	 	
 	}
 
 	$scope.quickcheck = function(index){
