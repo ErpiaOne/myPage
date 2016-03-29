@@ -181,7 +181,9 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				           },
 				         ]
 				        })
-		    	}else{$ionicHistory.goBack();}
+		    	}else{
+		    		$ionicHistory.goBack();
+		    	}
 		      		$rootScope.backButtonPressedOnceToExit = false;	
 		    }else{ // 현재페이지가 메인이 아니면서 더이상 뒤로갈 곳이 없을 때
 		      $rootScope.backButtonPressedOnceToExit = false;

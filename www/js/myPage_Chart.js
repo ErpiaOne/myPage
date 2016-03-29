@@ -8,13 +8,17 @@ function refresh(kind, gu, admin_code, ERPiaApi_url)
 
 // 처음 로딩 할때
 function renewalDay(kind, gu, admin_code, ERPiaApi_url)  
-{
-	$("#loading").css("display","block");
+{console.log('mypage_chat.JS = renewalDay');
+	$("div[name=loading]").css("display","none");
+	$("div[name=gridBody]").css("display","block");
 	AmCharts.loadJSON(ERPiaApi_url + "/renewalDay.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh"); //최근갱신일 로딩		
+	makeCharts(kind, gu, admin_code,ERPiaApi_url);
 }
 
 
-function makeCharts(kind, gu, admin_code, ERPiaApi_url){
+function makeCharts(kind, gu, admin_code, ERPiaApi_url, gubun){
+	console.log('mypage_chat.JS = makeCharts', gu, kind);
+	console.log('되라아아아아아아 =>', gubun);
 	//javascript로 parameter 읽어오기
 	// 날짜
 	var d= new Date();
@@ -52,6 +56,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	$('div[name=' + kind + ']').show();
 
 	if (gu == 1) {
+		console.log('너여기 오니???');
 		$("button[name=btnW]").removeClass();
 		$("button[name=btnW]").addClass("btn btn-warning btn-xs");
 		$("input[name=gu_hidden]").val(1);
@@ -101,32 +106,32 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	switch (kind)
 	{
 		case "meaip_jem" :			//거래처별 매입 점유율
-
+		console.log('거래처별 매입 점유율');
 			var chart = AmCharts.makeChart("meaip_jem", {
-				type: "pie",
- 			    balloonText: "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
-				minRadius: 100,
-				maxLabelWidth:100,
-				titleField: "name",
-				valueField: "value",
-				fontSize: 12,
-				theme: "dark",
-			    labelsEnabled: true,
-			    legend: {
-			      	enabled: false,
-				  	truncateLabels: 10 // custom parameter
+				"type": "pie",
+ 			    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"minRadius": 100,
+				"maxLabelWidth":100,
+				"titleField": "name",
+				"valueField": "value",
+				"fontSize": 12,
+				"theme": "dark",
+			    "labelsEnabled": true,
+			    "legend": {
+			      "enabled": false,
+				  "truncateLabels": 10 // custom parameter
 			    },
-				allLabels: [
+				"allLabels": [
 					{
-						id: "Label-1",
-						text: temp + sDate + " ~ " + eDate,
-						x: 6,
-						y: 280
+						"id": "Label-1",
+						"text": temp + sDate + " ~ " + eDate,
+						"x": 6,
+						"y": 300
 					}
 				],
-				balloon: {},
-				labelRadius: 1,
-				dataProvider: AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_jem&value_kind=meaip_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
+				"balloon": {},
+				"labelRadius": 1,
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_jem&value_kind=meaip_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
 			});
 
 			break;
@@ -162,6 +167,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			break;
 
 		case "brand_top5" :			//브랜드별 매출 Top 5
+
 			var chart = AmCharts.makeChart("brand_top5", {
 				"type": "serial",
 				 "theme": "dark",
@@ -272,6 +278,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			break;
 
 		case "meachul_top5" :			//상품별 매출 TOP5
+		console.log('??????????????????????????????????????????????');
 			var chart = AmCharts.makeChart("meachul_top5", {
 				"type": "serial",
 				 "theme": "dark",
@@ -1425,7 +1432,11 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	
 	}
 	if (!chart.dataProvider[0])
-	{
-		$("div[name=loading2]").html("정보없음");
+	{	console.log('??????????????????????????');
+		// $("div[name=loading2]").html("정보없음");
+		$("#div[name=loading2]").css("display","block"); 
+	}else{
+		console.log('dkkkkkkkkkkkkkkkkkkkkkkkk');
+		$("#div[name=loading2]").css("display","none"); 
 	}
 }
