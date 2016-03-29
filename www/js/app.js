@@ -22,7 +22,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	toast:'Y'
 })
 
-.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate) {
+.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -54,6 +54,35 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			bio: 'ERPiaPush'
 		});
 		console.log('this is app');
+
+		// Listen for offline event
+		$rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+		if ($location.url()=='/app/main') { 
+		         $ionicPopup.show({
+
+		            title: "휴대폰의 데이터를 켜주시기바랍니다.",
+
+		            content: "앱을 종료합니다.",
+
+			   buttons: [
+				{
+					text: '확인',
+					type: 'button-positive',
+					onTap: function(e) {
+					 ionic.Platform.exitApp();
+					}
+				}
+			]
+		})
+		}else{
+		  	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경 불안정합니다. 데이터접속을 확인해주세요.', 'short', 'center');
+			else alert('네트워크환경 불안정합니다. 데이터접속을 확인해주세요.');
+		}
+		})
+
+		$rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+		  // Show your offline message
+		})
 //----------------뒤로가기 마지막페이지일때 ....----
 		$ionicPlatform.registerBackButtonAction(function(e){
 		$ionicSideMenuDelegate.canDragContent(true);
@@ -127,14 +156,14 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				             text: 'Yes',
 				             type: 'button-positive',
 				             onTap: function(e) {
-				             	if($scope.setupData.basic_Ch_Code == '000'){//창고가 선택되지 않았을때.
+				             	if($rootScope.setupData.basic_Ch_Code == '000'){//창고가 선택되지 않았을때.
 				             		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('창고를 선택해주세요.', 'long', 'center');
 									else alert('창고를 선택해주세요.');
 				             	}else {
-				             		if($scope.setupData.state == 0) var mode = 'update';
+				             		if($rootScope.setupData.state == 0) var mode = 'update';
 				             		else var mode = 'insert';
 
-				             		MconfigService.configIU($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.setupData, mode)
+				             		MconfigService.configIU($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData, mode)
 										.then(function(data){
 											console.log('Y?',data.list[0].rslt);
 											if(data.list[0].rslt == 'Y'){
@@ -147,6 +176,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 											
 										})
 				             	}
+
 				             }
 				           },
 				         ]
@@ -180,27 +210,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		    e.preventDefault();
 		    return false;
 		  },101);
-		if(window.Connection) {
-			console.log('navigator.connection.type', navigator.connection.type);
-		    if(navigator.connection.type == Connection.NONE) {
-		    		$ionicPopup.show({
-		                        title: "데이터접속을 확인해주세요.",
-		                        content: "인터넷에 연결되어있지 않습니다.<br>자동으로 종료됩니다.",
-		                        buttons: [
-					{	text: '확인',
-						type: 'button-positive',
-						onTap: function(e) {
-						 ionic.Platform.exitApp();
-						}
-					}
-				      ]
-		                    });
-		    }else{
-		        
-		    }
-		}else{
-
-		}
+	
 		// Identify your user with the Ionic User Service
 		$ionicUser.identify(user).then(function(){
 			//$scope.identified = true;

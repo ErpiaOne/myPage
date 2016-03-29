@@ -1,0 +1,38 @@
+[0323/140239:ERROR:process_info.cc(608)] range at 0xfffde000, size 0x230 fully unreadable
+[0323/140239:ERROR:process_info.cc(608)] range at 0x0, size 0x24 fully unreadable
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x0 of 36 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:ERROR:process_snapshot_win.cc(279)] ReadMemory PEB_LDR_DATA
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x0 of 784 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:ERROR:process_snapshot_win.cc(302)] ReadMemory RTL_USER_PROCESS_PARAMETERS
+[0323/140239:ERROR:process_reader_win.cc(141)] SuspendThread: 액세스가 거부되었습니다. (0x5)
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x56630000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Program Files (x86)\Google\Chrome\Application\49.0.2623.87\chrome_elf.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72330000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\webio.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72380000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WINHTTP.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x73a00000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WINMM.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72470000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\profapi.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72480000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\USERENV.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x724a0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WTSAPI32.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x71e40000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WINSPOOL.DRV
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x71510000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7600.16385_none_421189da2b7fabfc\COMCTL32.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x723e0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WINNSI.DLL
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x723f0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\IPHLPAPI.DLL
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x730c0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\Secur32.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x51820000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Program Files (x86)\Google\Chrome\Application\49.0.2623.87\chrome_child.dll
+[0323/140239:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72720000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0323/140239:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\dwrite.dll
+[0323/140239:ERROR:exception_snapshot_win.cc(56)] thread ID 0 not found in process
+[0323/140239:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::InitializeException failed
+[0323/140239:ERROR:scoped_process_suspend.cc(38)] NtResumeProcess, ntstatus=-1073741558

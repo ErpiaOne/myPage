@@ -13,6 +13,7 @@
 	  <label class="item item-input">
 		<span class="input-label psm_sang_01"><i class="ion-record">&nbsp;&nbsp;기본창고 지정</i></span>
 		<select ng-model="setupData.basic_Ch_Code" ng-change='Changosave()'>
+		  <option value='000' ng-selected = "setupData.basic_Ch_Code == 000">창고를 선택해주세요.</option>
 		  <option ng-repeat="x in changolists" value="{{x.Code}}" ng-selected="setupData.basic_Ch_Code == {{x.Code}}">{{x.Name}}</option>
 		</select><br>
 	  </label>

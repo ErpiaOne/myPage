@@ -168,7 +168,6 @@ function($timeout, $window, $ionicSlideBoxDelegate, $ionicScrollDelegate, $rootS
 			$scope.events = new SimplePubSub();
 
 			$scope.slideHasChanged = function(index) {
-
 				$scope.events.trigger("slideChange", {
 					"index" : index
 				});
@@ -178,7 +177,6 @@ function($timeout, $window, $ionicSlideBoxDelegate, $ionicScrollDelegate, $rootS
 							"index" : eval(index)
 						});
 				}, 100);
-				
 			};
 
 			$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
