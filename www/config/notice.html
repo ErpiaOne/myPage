@@ -11,14 +11,12 @@
 				<ion-item ng-repeat="item in items" style="padding:0px;">
 					<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 						<li class="item">
-							{{item.idx}}. 
+							{{item.idx}}.
 							<font ng-if="item.gubun == '1'">[공지]</font>
 							<font ng-if="item.gubun == '2'">[필독]</font>
 							<font ng-if="item.gubun == '3'">[긴급]</font>
-							<font ng-if="item.gubun == '4'">[기타]</font>
-							{{item.subject}}<br>
- 							작성일 : {{item.in_date}}<br>
-							작성자 : {{item.writer}}
+							<font ng-if="item.gubun == '4'">[기타]</font> {{item.subject}}<br>
+							{{item.in_date}}
 						</li>
 					</ui>
 					<pre class="lhkNoticeContent" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.contents"></pre>

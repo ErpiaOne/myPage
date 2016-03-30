@@ -386,6 +386,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 						tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'Y')
 						.then(function(response){
+							console.log('??????????????????????', response); 
 							$scope.userData.cntNotRead = response.list[0].cntNotRead;
 						})
 
@@ -717,7 +718,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			var login_kind = 'comp';
 		} 
 		
-		    	var url = "http://www.erpia.net/mobile/GereaView_Certify.asp?admin_code=" + detail.Admin_Code + "&user_id=" + $scope.loginData.UserId + "&login_kind=" + login_kind + "&sl_no=" + detail.Publish_No;
+		    	var url = "http://www.erpia.net/mobile/GereaView_Certify.asp?admin_code=" + detail.Admin_Code + "&user_id=" + $scope.loginData.UserId + "&login_kind=" + login_kind + "&sl_no=" + detail.Publish_No + '_01';
 		    	$scope.shareAnywhere(url);
 	
 }
@@ -2574,7 +2575,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
 				if($scope.kind === "meachul_onoff"){
-					$scope.htmlCode = '<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; background: #b572a0; clear: both;"><ion-content>'	+'<input type="hidden" name="gu_hidden">' +
+					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat">'+
 								'<div class="box-header">'+
 									'<button class="fa fa-refresh" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"></button>'+
@@ -2610,7 +2611,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>' + '</ion-content></ion-scroll>';
+							'</div>' + '</ion-content>';
 				}else{
 					$scope.htmlCode = '<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; background: #b572a0; clear: both;"><ion-content>'	+'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat">'+

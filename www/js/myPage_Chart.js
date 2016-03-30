@@ -380,8 +380,8 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "scm" :		//scm
 			var chart = AmCharts.makeChart("scm", {
-			   "theme": "dark",
 				"type": "serial",
+				"theme": "dark",
 				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?Kind=scm&Value_Kind=scm&admin_code=" + admin_code + "&swm_gu=" + gu),
 				"startDuration": 1,
 				"prefixesOfBigNumbers": [

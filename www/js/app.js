@@ -6,26 +6,39 @@
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
 	, 'starter.services'])
 
- .constant('ERPiaAPI',{
- 	  url:'http://localhost:8100/include'
- 	, url2:'http://localhost:8100'
- 	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	, gurl:'http://168.126.146.37/20132354'
- 	, toast:'N'
- })
+ // .constant('ERPiaAPI',{
+ // 	  url:'http://localhost:8100/include'
+ // 	, url2:'http://localhost:8100'
+ // 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ // 	, gurl:'http://168.126.146.37/20132354'
+ // 	, toast:'N'
+ // })
 
 //실제 사용시
-// .constant('ERPiaAPI',{
-// 	url:'http://www.erpia.net/include',
-// 	url2: 'http://www.erpia.net',
-// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-// 	toast:'Y'
-// })
+.constant('ERPiaAPI',{
+	url:'http://www.erpia.net/include',
+	url2: 'http://www.erpia.net',
+	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+	toast:'Y'
+})
 
 .run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
+
+		 var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+
+	    // Should be called once the device is registered successfully with Apple or Google servers
+	    Pushbots.on("registered", function(token){
+	      console.log("registered" + token);
+	      // alert("registered" + token);
+	    });
+
+	    Pushbots.getRegistrationId(function(token){
+	        // alert("Registration Id:" + token);
+	        console.log("Registration Id:" + token);
+	    });
 
 
 		if(window.cordova && window.cordova.plugins.Keyboard) {
