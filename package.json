@@ -30,7 +30,8 @@
     {
       "locator": "https://github.com/gokce/phonegap-ios-plugin-ftpupload.git",
       "id": "com.github.gokce.phonegap-ios-plugin-ftpupload"
-    }
+    },
+    "pushbots-cordova-plugin"
   ],
   "cordovaPlatforms": [
     "ios"

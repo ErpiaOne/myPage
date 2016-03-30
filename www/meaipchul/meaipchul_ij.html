@@ -1,60 +1,66 @@
 <!-- 매입 + 매출 지급 정보 모달 -->
 <ion-modal-view>
-  <ion-header-bar>
+  <ion-header-bar style="background: #8f6384;">
     <div class="buttons">
-      <button class="button button-clear" ng-click="ijmodalCancel()">이전</button>
+      <button class="button button-clear" ng-click="ijmodalCancel()" style="color: #fff;">이전</button>
     </div>
-    <h1 class="title"><any ng-if="distinction == 'meaip'">매입</any><any ng-if="distinction == 'meachul'">매출</any> {{mode}}</h1>
+    <h1 class="title" style="color: #fff;"><any ng-if="distinction == 'meaip'">매입</any><any ng-if="distinction == 'meachul'">매출</any> {{mode}}</h1>
   </ion-header-bar>
 
-  <ion-content>
+  <ion-content style="background: #dce0e1">
     <div class="list list-inset">
       <label class="item item-input">
-        <span class="input-label psm_sang_01">&nbsp;&nbsp;<any ng-if="distinction == 'meaip'">매입액</any><any ng-if="distinction == 'meachul'">매출액</any></span>
-        <input type="text" style="text-align:right" readonly value='총 {{totalnum}}개 / {{datas.totalsumprices}}원'><br>
-      </label><br>
+        <span class="input-label psm_sang_04"><any ng-if="distinction == 'meaip'">매입액</any><any ng-if="distinction == 'meachul'">매출액</any></span>
+        <span style="padding-right: 5px; text-align: right;"><input type="text" style="text-align:right" readonly value='총 {{totalnum}}개 / {{datas.totalsumprices | number:0}}원'></span>
+      </label>
     </div>
 
-    <div class="list list-inset">
-      &nbsp;<b><any ng-if="distinction == 'meaip'">지급정보</any><any ng-if="distinction == 'meachul'">입금정보</any></b>
-      <span ng-if='pay.delete == false'><button ng-click='paydelete()'>삭제</button></span>
-      <label class="item item-input">
-        <span class="input-label psm_sang_01">&nbsp;&nbsp;<any ng-if="distinction == 'meaip'">지급일</any><any ng-if="distinction == 'meachul'">입금일</any></span>&nbsp;&nbsp;
-        <input type="date" style="text-align:right;" ng-disabled="tax_u" ng-model='date.payday1' ng-change="datechange(date.payday1,2)"><br>
+    <div class="list list-inset" style="background: #dce0e1">
+      <div style="padding-bottom: 7px; font-weight: bold; width: 100%;">
+        <table style="width: 100%;">
+          <tr>
+            <td style="width: 50%;"><any ng-if="distinction == 'meaip'">지급정보</any><any ng-if="distinction == 'meachul'">입금정보</any></td>
+            <td style="width: 50%; text-align: right; padding-right: 1px;"><span ng-if='pay.delete == false'><button ng-click='paydelete()' style="background: #dd8369; border: 0; padding: 5px; color: #fff;">삭제</button></span></td>
+          </tr>
+        </table>
+      </div>
+      <label class="item item-input" style="padding-right: 15px;">
+        <span class="input-label psm_sang_04"><any ng-if="distinction == 'meaip'">지급일</any><any ng-if="distinction == 'meachul'">입금일</any></span>&nbsp;&nbsp;
+        <input type="date" style="text-align:right; border-bottom: 1px solid #e0e0e0;" ng-disabled="tax_u" ng-model='date.payday1' ng-change="datechange(date.payday1,2)"><br>
       </label>
       <label class="item">
-        <span class="input-label psm_sang_01"><any ng-if="distinction == 'meaip'">지급구분</any><any ng-if="distinction == 'meachul'">입금구분</any></span>
-        <table>
+        <span class="input-label psm_sang_04"><any ng-if="distinction == 'meaip'">지급구분</any><any ng-if="distinction == 'meachul'">입금구분</any></span>
+        <table style="width: 100%;">
           <tr>
-            <td><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(0)' ng-model='payment[0].checked'>현금결제</ion-checkbox></td>
-            <td><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(1)' ng-model='payment[1].checked'>통장결제</ion-checkbox></td>
+            <td style="width: 50%"><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(0)' ng-model='payment[0].checked'>현금결제</ion-checkbox></td>
+            <td style="width: 50%"><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(1)' ng-model='payment[1].checked'>통장결제</ion-checkbox></td>
           </tr>
           <tr>
-            <td><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(2)' ng-model='payment[2].checked'>어음결제</ion-checkbox></td>
-            <td><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(3)' ng-model='payment[3].checked'>카드결제</ion-checkbox></td>
-          </tr>   
+            <td style="width: 50%"><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(2)' ng-model='payment[2].checked'>어음결제</ion-checkbox></td>
+            <td style="width: 50%"><ion-checkbox style="font-size:12px;" ng-disabled="tax_u" ng-click='Payments_division(3)' ng-model='payment[3].checked'>카드결제</ion-checkbox></td>
+          </tr>
         </table>
-      </label><br>
+      </label>
     </div>
 
     <div class="list list-inset">
       <label class="item item-input" ng-if="paytype">
-        <span class="input-label psm_sang_01">&nbsp;&nbsp;{{payname}}</span>
-        <select ng-if="paytype"  ng-disabled="tax_u" ng-model="pay.paycardbank" ng-change='payinsert()'>
+        <span class="input-label psm_sang_04">&nbsp;&nbsp;{{payname}}</span>
+        <select ng-if="paytype"  ng-disabled="tax_u" ng-model="pay.paycardbank" ng-change='payinsert()' style="width: 62%; height: 30px;">
           <option value='no' ng-selected="pay.paycardbank == no">======================</option>
           <option ng-repeat='x in paycardbank' value='{{x.code}},{{x.name}},{{x.num}}' ng-selected="pay.codenum == {{x.code}}">{{x.name}}</option>
-        </select><br>
-      </label><br>
+        </select>
+      </label>
 
       <label class="item item-input">
-        <span class="input-label psm_sang_01">&nbsp;&nbsp;<any ng-if="distinction == 'meaip'">지급액</any><any ng-if="distinction == 'meachul'">입금액</any></span>
+        <span class="input-label psm_sang_04">&nbsp;&nbsp;<any ng-if="distinction == 'meaip'">지급액</any><any ng-if="distinction == 'meachul'">입금액</any></span>
         <input type="tel" ng-disabled="pay.use" style="text-align:right" min='0' value='0' ng-model='pay.payprice' fcsa-number="{ preventInvalidInput: true }" pattern="\d*">
-        <span class="input-label psm_sang_01" >원</span><br>
-      </label><br>
+        <span class="input-label psm_sang_04" >원</span><br>
+      </label>
     </div>
   </ion-content>
 
-  <ion-footer-bar align-title="left" class="bar-assertive" ng-click="insertGoodsF()">
+  <ion-footer-bar align-title="left" class="bar-assertive" ng-click="insertGoodsF()" style="background: #52bcae; border: 0;">
     <div class="buttons"></div>
     <h1 class="title">등록</h1>
     <div class="buttons"></div>

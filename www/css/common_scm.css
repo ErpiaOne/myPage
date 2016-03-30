@@ -1,6 +1,6 @@
-@charset "utf-8"; 
+@charset "utf-8";
 
- 
+
 
 
 /* 전체
@@ -24,14 +24,14 @@
 #menuChange {margin: 0; text-align: left; padding-top: 35px; }
 
 .all_top_in02 p.mp1, .all_top_in02 p.mp2, .all_top_in02 p.mp3, .all_top_in02 p.mp4, .all_top_in02 p.mp5, .all_top_in02 p.mp6 {
-		width: 9.5%; max-width: 140px; height: 30px; color: #fff; font-weight: bold; font-size: 13px; text-align: center; padding-top: 10px; margin-right: 1px; background: #757575; cursor:pointer; float: left; 
+		width: 9.5%; max-width: 140px; height: 30px; color: #fff; font-weight: bold; font-size: 13px; text-align: center; padding-top: 10px; margin-right: 1px; background: #757575; cursor:pointer; float: left;
 		-o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s;
-		border-top-left-radius: 3px; border-top-right-radius: 3px; 
-		-moz-border-top-left-radius: 3px; -moz-border-top-right-radius: 3px; 
-		-webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px; 
-		-o-border-top-left-radius: 3px; -o-border-top-right-radius: 3px; 
+		border-top-left-radius: 3px; border-top-right-radius: 3px;
+		-moz-border-top-left-radius: 3px; -moz-border-top-right-radius: 3px;
+		-webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px;
+		-o-border-top-left-radius: 3px; -o-border-top-right-radius: 3px;
 		-ms-border-top-left-radius: 3px; -ms-border-top-right-radius: 3px;
-		-khtml-border-top-left-radius: 3px; -khtml-border-top-right-radius: 3px; 
+		-khtml-border-top-left-radius: 3px; -khtml-border-top-right-radius: 3px;
 }
 
 .all_top_in02 p.mp1:hover, .all_top_in02 p.mp2:hover, .all_top_in02 p.mp3:hover, .all_top_in02 p.mp4:hover, .all_top_in02 p.mp5:hover, .all_top_in02 p.mp6:hover {background: #55c9a6;}
@@ -83,7 +83,7 @@
 
 .all_con div.comcon {
 		min-height: 400px; background: #fff; margin-top:35px; padding:20px; clear:both;
-		border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; -o-border-radius: 2px; -ms-border-radius: 2px; -khtml-border-radius: 2px; 
+		border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; -o-border-radius: 2px; -ms-border-radius: 2px; -khtml-border-radius: 2px;
 }
 
 .psm_enter { width:100%; border-top:1px solid #e5e5e5; border-left:1px solid #e5e5e5; border-right:1px solid #e5e5e5;  background:#fff;}
@@ -230,20 +230,20 @@ input[type=button] {line-height: normal; -o-transition:.3s; -ms-transition:.3s; 
 .con_chats .psm_chatext {width:100%; font-size:0px; padding-top:3px;}
 .con_chats .psm_chatext span {font-size:12px; display:inline-block; text-align:left; overflow:hidden; white-space: pre; padding:0; margin:0; border:0;}
 .con_chats .psm_chatext span font {font-size:12px; text-align:left; white-space:pre; color:#666666; font-weight:normal; padding:0; margin:0; border:0; padding-left:5px;}
- 
+
 
 /* 메인 현황판 */
 .con_hyun { margin-bottom:30px;}
 .con_hyun > table {width:100%; text-align:left;}
 .con_hyun > table tr td.psm_bin {width:0.7%;}
-.con_hyun > table tr td table  {width:100%; border-bottom:3px solid #757575; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; -o-border-radius: 2px; -ms-border-radius: 2px; -khtml-border-radius: 2px; }
+.con_hyun > table tr td table  {width:100%; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; -o-border-radius: 2px; -ms-border-radius: 2px; -khtml-border-radius: 2px; }
 .con_hyun > table tr td table tr td.psm_tdov {font-size:14px; padding:20px 0 20px 8%; text-align:left; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; -o-border-radius: 2px; -ms-border-radius: 2px; -khtml-border-radius: 2px; }
-.con_hyun > table tr td.psm_01 table  {background: #aecbcf; }
-.con_hyun > table tr td.psm_01 table tr td.psm_tdov {background: #3b9fae url("../img/icon_bal.png") right 50% no-repeat;}
-.con_hyun > table tr td.psm_02 table {background: #e9d3ac; }
-.con_hyun > table tr td.psm_02 table tr td.psm_tdov {background: #feb836 url("../img/icon_jik.png") right 50% no-repeat;}
-.con_hyun > table tr td.psm_03 table {background: #dcb6ab; }
-.con_hyun > table tr td.psm_03 table tr td.psm_tdov {background: #d6562f url("../img/icon_chi.png") right 50% no-repeat;}
+.con_hyun > table tr td.psm_01 table  {background: #fff; }
+.con_hyun > table tr td.psm_01 table tr td.psm_tdov {background: #5f5055 url("../img/icon_bal.png") right 50% no-repeat;}
+.con_hyun > table tr td.psm_02 table {background: #fff; }
+.con_hyun > table tr td.psm_02 table tr td.psm_tdov {background: #dd8369 url("../img/icon_jik.png") right 50% no-repeat;}
+.con_hyun > table tr td.psm_03 table {background: #fff; }
+.con_hyun > table tr td.psm_03 table tr td.psm_tdov {background: #eec35d url("../img/icon_chi.png") right 50% no-repeat;}
 .con_hyun > table tr td table tr td {width:25%; color: #fff; text-align:center; padding:15px 0;}
 .con_hyun > table tr td table tr td font {font-size:19px; color: #000; font-weight:bold; -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s;}
 .con_hyun > table tr td table tr td a {color: #000; line-height: 22px; display:inline-block;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s;}

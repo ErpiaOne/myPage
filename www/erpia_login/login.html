@@ -8,10 +8,10 @@
 		</div>
 		<h1 class="title ">Login</h1>
 	</ion-header-bar>
-	<ion-content>
+	<ion-content style="background: #d9dfdf">
 		<form ng-submit="doLogin()">
 			<div>
-				<div class="ss"> 
+				<div class="ss">
 					<div class="psm_login_logo"><img src="./img/logo.png" class="logo-image" ng-click='selectType("login")'></div>
 				</div>
 
@@ -29,21 +29,21 @@
 
 
 					<div name='selectUserType' ng-switch-when='User' >
-						<!-- <label class="item item-input psm_login_pci1"> 
+						<!-- <label class="item item-input psm_login_pci1">
 							<span class="input-label psm_login_pci3">업체코드</span>
 							<input type="text" ng-model="loginData.Admin_Code" style="color:#fff; background:#331632; padding:0 10px">
 						</label>
-						<label class="item item-input psm_login_pci2"> 
+						<label class="item item-input psm_login_pci2">
 							<span class="input-label psm_login_pci3">아이디</span>
 							<input type="text" ng-model="loginData.UserId" style="color:#fff; background:#331632; padding:0 10px">
 						</label>
-						<label class="item item-input psm_login_pci2"> 
+						<label class="item item-input psm_login_pci2">
 							<span class="input-label psm_login_pci3">비밀번호</span>
 							<input type="password" ng-model="loginData.Pwd" style="color:#fff; background:#331632; padding:0 10px">
 						</label> -->
-		 
+
 						<!-- <div>
-					    	<label class="checkbox c"> 
+					    	<label class="checkbox c">
 					    		<span class="input-label" style="color:#6f747a;">SCM USER</span>
 								<input type="checkbox" ng-model="loginData.SCM_Use_YN" style="color:#fff; background:#22242c">
 							</label>
@@ -62,24 +62,24 @@
 					     </label>
 						</div> -->
 						<div class="list list-inset" style="margin:0px 10% 0px 10%; background-color:transparent">
-							<label class="item item-input">
-								<input style="font-size:100%" type="text" ng-model="loginData.Admin_Code" placeholder="업체코드">
+							<label class="item item-input" style="padding: 0;"><span class="psm_login1 ion-ios-paper-outline"></span>
+								<input style="font-size:100%; padding-left: 15px;" type="text" ng-model="loginData.Admin_Code" placeholder="업체코드">
 							</label>
-							<label class="item item-input">
-								<input style="font-size:100%" type="text" ng-model="loginData.UserId" placeholder="아이디">
+							<label class="item item-input" style="padding: 0;"><span class="psm_login2 ion-ios-grid-view-outline"></span>
+								<input style="font-size:100%; padding-left: 15px;" type="text" ng-model="loginData.UserId" placeholder="아이디">
 							</label>
-							<label class="item item-input">
-								<input style="font-size:100%" type="password" ng-model="loginData.Pwd" placeholder="비밀번호">
+							<label class="item item-input" style="padding: 0;"><span class="psm_login3 ion-ios-locked-outline"></span>
+								<input style="font-size:100%; padding-left: 15px;" type="password" ng-model="loginData.Pwd" placeholder="비밀번호">
 							</label>
-							<div class="item item-text-wrap" style="padding:4%">
+							<div class="item item-text-wrap" style="padding:4%;">
 								<input type="checkbox" id="loginData.chkAutoLogin" class="checkbox-style" ng-model='loginData.chkAutoLogin'/>
 								<label for="loginData.chkAutoLogin" style="font-size:100%;">자동로그인</label>
 							</div>
-							<button class="button button-block button-balanced" type="submit">Log in</button>
+							<button class="button button-block button-balanced" type="submit" style="border: 0; background: #6c5e72">Log in</button>
 						</div>
 
 						<!-- <label class="item psm_login_pci4">
-							<button class="button button-block psm_login_ink" type="submit">Log in</button> 
+							<button class="button button-block psm_login_ink" type="submit">Log in</button>
 						</label> -->
 					</div>
 				</div>

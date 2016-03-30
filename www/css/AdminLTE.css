@@ -116,7 +116,7 @@ body {
     -ms-transform: translate(230px, 0);
     -o-transform: translate(230px, 0);
     transform: translate(230px, 0);
-	
+
 	filter:alpha(opacity=50);
     opacity: 0.5;
     -moz-opacity:0.5;
@@ -191,7 +191,7 @@ a:active,
 a:focus {
   outline: none;
   text-decoration: none;
-  color: #72afd2;
+  color: #db856f;
 }
 /* Page Header */
 .page-header {

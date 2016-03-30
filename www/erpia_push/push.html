@@ -9,17 +9,17 @@
 			<a href="#" class="item item-icon-left"><i class="icon ion-wifi"></i>PUSH CONTENTS</a>
 		</div>
 	</ion-content> -->
-	<ion-content overflow-scroll="false">
+	<ion-content overflow-scroll="false" style="padding: 10px; ">
 		<div style="height: 100%;">
 			<ion-list show-delete="data.showDelete">
-				<ion-item ng-if="items==undefined">새로운소식이 없습니다.</ion-item>
-				<ion-item  ng-if="items!==undefined"	ng-repeat="item in items" 
-							style="padding:0px;"
+				<ion-item ng-if="items==undefined" style="background: #f3eff4">새로운소식이 없습니다.</ion-item>
+				<ion-item  ng-if="items!==undefined"	ng-repeat="item in items"
+							style="padding:0px; background: #background: #f3eff4"
 							item="item"
 							class="item-remove-animate item-icon-right"
 							>
-							<!-- href="#/item/{{item.Seq}}" --> 
-							
+							<!-- href="#/item/{{item.Seq}}" -->
+
 					<!-- <ui class="list" ng-click="toggle_{{item.idx}} = !toggle_{{item.idx}}">
 						<li class="item"> -->
 						<p>
@@ -37,4 +37,4 @@
 			</ion-list>
 		</div>
 	</ion-content>
-</ion-view> 
+</ion-view>

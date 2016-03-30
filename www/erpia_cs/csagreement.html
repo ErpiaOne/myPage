@@ -1,6 +1,6 @@
 <ion-modal-view class="psm_login_body" style="height:100%; padding-top:40px;">
-	<div class="bar bar-header bar-balanced">
-		<h1 class="title">이용약관</h1>
+	<div class="bar bar-header" style="background: #8f6384;">
+		<h1 class="title" style="color: #fff">이용약관</h1>
 	</div>
 	<div class="card" style="height:80%">
 		<div class="item item-divider">
@@ -37,6 +37,7 @@
 고객은 개인정보 수집/이용에 대하여 거부할 수 있는 권리가 있습니다. 단, 이에 대한 동의를 거부할 경우에는 서비스이용이 불가합니다.<br>
 <br>
 		</div>
+
 		<div class="item item-divider" style="height:20%">
 			<input type="checkbox" id="agree_2" class="checkbox-style" ng-model='cscustomagree' ng-click='csagree()'/><label for="agree_2">동의합니다</label>
 		</div>
@@ -44,7 +45,7 @@
 	<table style="width:100%;">
 		<tr>
 			<td width="10%"></td>
-			<td width="40%" align="center"><button style="margin-right:5px; width:90px;" class="button button-balanced" type="submit" ng-click='csagreemodalclose()'>확인</button></td>
+			<td width="40%" align="center"><button style="margin-right:5px; width:90px;" class="button psm_login_ink" type="submit" ng-click='csagreemodalclose()'>확인</button></td>
 
 			<td width="10%"></td>
 		</tr>

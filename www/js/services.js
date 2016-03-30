@@ -280,6 +280,7 @@ angular.module('starter.services', [])
 			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead;
 			return $http.get(url + '?' + data)
 				.then(function(response){
+					console.log(response.data);
 					if(typeof response.data == 'object'){
 						return response.data;
 					}else{
@@ -992,8 +993,8 @@ return{
 							}else{
 								for(var i=0; i<response.data.list.length; i++){
 									if(response.data.list[i].G_Name.length>=10||response.data.list[i].GerName.length>=7){
-										response.data.list[i].G_Name=response.data.list[i].G_Name.substr(0,9)+'...';
-										response.data.list[i].GerName=response.data.list[i].GerName.substr(0,9)+'...';
+										response.data.list[i].G_Name=response.data.list[i].G_Name.substr(0,14)+'...';
+										response.data.list[i].GerName=response.data.list[i].GerName.substr(0,10)+'...';
 									}
 								}
 							}	

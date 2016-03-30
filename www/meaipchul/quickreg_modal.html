@@ -1,23 +1,24 @@
 <!-- 빠른등록 리스트 모달 -->
-<ion-modal-view title="">
-  <ion-header-bar>
-    <div class="buttons"><button class="button" ng-click='quickMcancle()'>취소</button></div>
-    <h1 class="title">빠른등록리스트</h1>
-  </ion-header-bar>
+<ion-modal-view title="" >
+	<ion-header-bar style="background: #8f6384;">
+		<div class="buttons"><button class="button" ng-click='quickMcancle()'>취소</button></div>
+		<h1 class="title" style="color: #fff">빠른등록리스트</h1>
+	</ion-header-bar>
 
-  <ion-content>
-    <ion-checkbox ng-repeat='x in quicklists' ng-model="x.checked"  ng-click='quickcheck($index)'>
-      {{x.GerName}}<br>
-      <any ng-if='x.Subul_kind == 111'>매입입고</any><any ng-if='x.Subul_kind == 122'>매입반품</any>/ {{x.GoodsName}}
-      <any ng-if='x.Subul_kind == 212'>매출출고</any><any ng-if='x.Subul_kind == 224'>매출반품</any>/ {{x.GoodsName}}
-    </ion-checkbox>
-  </ion-content>
-  
-    <ion-footer-bar align-title="left" class="bar-assertive">
-      <div class="buttons" ng-click="closemodesear()"><button class="button" ng-click="quickde()">삭제</button></div>
-      <h1 class="title"></h1>
-      <div class="buttons"><button class="button" ng-click="quick_i()">확인</button></div>
-    </ion-footer-bar>
+	<ion-content style="padding:10px; background: #dce0e1;">
+		<ion-checkbox ng-repeat='x in quicklists' ng-model="x.checked"  ng-click='quickcheck($index)' style="background: #fff; font-size: 0.9em;">
+			{{x.GerName}}<br>
+			<any ng-if='x.Subul_kind == 111'>매입입고</any><any ng-if='x.Subul_kind == 122'>매입반품</any>/ {{x.GoodsName}}
+			<any ng-if='x.Subul_kind == 212'>매출출고</any><any ng-if='x.Subul_kind == 224'>매출반품</any>/ {{x.GoodsName}}
+		</ion-checkbox>
+		<div style="height: 23px;"></div>
+	</ion-content>
+
+	<ion-footer-bar align-title="left" class="bar-assertive" style="background: #988e9a; border: 0;">
+		<div class="buttons" ng-click="closemodesear()"><button class="button button-psm02" ng-click="quickde()">삭제</button></div>
+		<h1 class="title"></h1>
+		<div class="buttons"><button class="button  button-psm01" ng-click="quick_i()">확인</button></div>
+	</ion-footer-bar>
 </ion-modal-view>
 
 
