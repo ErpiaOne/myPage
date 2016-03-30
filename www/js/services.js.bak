@@ -280,6 +280,7 @@ angular.module('starter.services', [])
 			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead;
 			return $http.get(url + '?' + data)
 				.then(function(response){
+					console.log('확인 =>', response.data);
 					if(typeof response.data == 'object'){
 						return response.data;
 					}else{

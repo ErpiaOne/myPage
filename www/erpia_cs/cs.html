@@ -3,35 +3,35 @@
 	<ion-nav-buttons side="right" ng-show="false">
 		<button class="button button-icon button-clear {{icon_home}}" menu-close ng-click="goHome()"></button>
 	</ion-nav-buttons>
-	<ion-content class="padding2">
+	<ion-content>
 		<!-- <a href="tel:070-7012-3071" class="button button-positive"> call me</a> -->
 
-		<div class="list list-inset">
-			<img src="./img/img_junhwa.jpg" width="100%; margin-top:-10px;" ng-click="dialNumber(' 07070123071')">
-			<label class="item item-input">
+		<div class="list list-inset" style="margin-top:10px; padding-bottom: 10px;">
+			<img src="./img/img_junhwa.jpg" width="100%; margin-bottom:-10px;" ng-click="dialNumber(' 07070123071')">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*회사명 : </span>
 				<input type="text" placeholder="회사명" ng-model="csData.comName"><br>
 			</label>
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*작성자 : </span>
 				<input type="text" placeholder="작성자" ng-model="csData.writer"><br>
 			</label>
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*제목 : </span>
 				<input type="text" placeholder="제목" ng-model="csData.subject"><br>
 			</label>
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*연락처 : </span>
 				<input type="tel" placeholder="-제외 입력하세요" ng-model="csData.tel"><br>
 			</label>
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*업종 : </span>
 				<select ng-model="csData.sectors" class="psm_sang_02">
 					<option ng-if='csData.sectors == "no"' value='no' ng-selected="csData.sectors == no">필수사항입니다.</option>
 					<option ng-repeat="item in sectorslist" ng-value="item.value">{{item.value}}</option>
 				</select>
 			</label>
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*관심항목1 : </span>
 				<select ng-model="csData.interestTopic1" class="psm_sang_02">
 					<option ng-if='csData.interestTopic1 == "no"' value='no' ng-selected="csData.interestTopic1 == no">필수사항입니다.</option>
@@ -39,7 +39,7 @@
 				</select>
 				<br>
 			</label>
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*관심항목2 : </span>
 				<select ng-model="csData.interestTopic2" class="psm_sang_02">
 					<option value='no' ng-selected="csData.interestTopic2 == no">선택안함</option>
@@ -47,7 +47,7 @@
 				</select>
 				<br>
 			</label>
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*관심항목3 : </span>
 				<select ng-model="csData.interestTopic3" class="psm_sang_02">
 					<option value='no' ng-selected="csData.interestTopic3 == no">선택안함</option>
@@ -55,27 +55,26 @@
 				</select>
 				<br>
 			</label>
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*유입경로 : </span>
 				<select ng-model="csData.inflowRoute" class="psm_sang_02">
 					<option ng-if='csData.inflowRoute == "no"' value='no' ng-selected="csData.inflowRoute == no">필수사항입니다.</option>
 					<option ng-repeat="item in inflowRoutelist" ng-value="item.value">{{item.value}}</option>
 				</select>
 			</label>
-			<label class="item item-input">
-				<span class="input-label psm_sang_01">*문의사항 : </span>
+			<label class="item item-input" style="padding: 0;">
+				<span class="input-label psm_sang_01" style="margin-right: 0; height: 150px; padding-top: 60px;">*문의사항 : </span>
 				<textarea placeholder="내용을 입력하세요" class="psm_sang_03" ng-model="csData.contents"></textarea>
 			</label>
 			<div class="item item-divider" style="height:30%">
 			  <input type="checkbox" id="agree_2" class="checkbox-style" ng-model='cscustomagree' ng-click='csagree()'/>
-			  <label for="agree_2">개인정보 이용 및 활용동의</label> 
+			  <label for="agree_2">개인정보 이용 및 활용동의</label>
 			  <button ng-click='csagreemodalopen()'>전문보기</button>
 			</div>
 			<form ng-submit="csRegist()">
 				<button class="button button-block psm_login_ink" type="submit">등록</button>
 			</form>
 		</div>
-		<br><br><br><br><br><br>
 
-	</ion-content> 
-</ion-view> 
+	</ion-content>
+</ion-view>

@@ -280,7 +280,6 @@ angular.module('starter.services', [])
 			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead;
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('확인 =>', response.data);
 					if(typeof response.data == 'object'){
 						return response.data;
 					}else{
@@ -308,19 +307,22 @@ angular.module('starter.services', [])
 .factory('NoticeService', function($http, $q, ERPiaAPI){
 	return{
 		//http://erpia2.godohosting.com/erpia_update/img
-		getList: function(){
+		getList: function(){ //http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=myPage_Notice
 		var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-		var data = 'Kind=myPage_Notice&Value_Kind=encode&cntRow=10';
+		var data = 'kind=myPage_Notice';
 		return $http.get(url + '?' + data)
 			.then(function(response){
 				if(typeof response.data == 'object'){
-					for(var i=0; i<response.data.list.length; i++){
-						oldContent = response.data.list[i].content;
-						response.data.list[i].content = oldContent
-							.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
-							.replace(/&quot;/g,'')
-							.replace(/<img src=/g, '<img width=100% src=');
-					}
+					// for(var i=0; i<response.data.list.length; i++){
+					// 	if(response.data.list[i].stts == 9){
+					// 		response.data.list.splice(response.data.list.indexOf(i),1);
+					// 	}
+						// oldContent = response.data.list[i].content;
+						// response.data.list[i].content = oldContent
+						// 	.replace(/http:\/\/erpia2.godohosting.com\/erpia_update\/img\/notice\/phj/g, ERPiaAPI.imgUrl + '/notice/phj')
+						// 	.replace(/&quot;/g,'')
+						// 	.replace(/<img src=/g, '<img width=100% src=');
+					// }
 					return response.data;
 				}else{
 					return $q.reject(response.data);
@@ -536,7 +538,7 @@ angular.module('starter.services', [])
 		}
 	}
 })
-.factory('BoardService', function($http, $q, ERPiaAPI){
+.factory('BoardService', function($http, $q, ERPiaAPI, $cordovaToast){
 	return{
 	 BoardInfo : function(Admin_Code, UserId, kind, pageCnt){
 		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
@@ -555,9 +557,13 @@ angular.module('starter.services', [])
 					}
 					return response.data;
 				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
+					else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 					return $q.reject(response.data);
 				}
 			}, function(response){
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
+				else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 				return $q.reject(response.data);
 			})
 		}, Board_sear : function(Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt){
@@ -582,10 +588,14 @@ angular.module('starter.services', [])
 					return response.data;					
 				}else{
 					console.log(response.data);
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
+					else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 					return $q.reject(response.data);					
 				}
 			}, function(response){
 				console.log(response.data);
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
+				else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 				return $q.reject(response.data);
 			})
 
@@ -601,9 +611,13 @@ angular.module('starter.services', [])
 				if(typeof response.data == 'object'){
 					return response.data;
 				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
+					else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 					return $q.reject(response.data);
 				}
 			}, function(response){
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
+				else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 				return $q.reject(response.data);
 			})
 
@@ -1095,7 +1109,7 @@ return{
 				console.log("MLookupService and detailSet", ger);
 				if(todate == date.eDate) date.eDate = 'today';
 				if(todate == date.sDate) date.sDate = 'today';
-
+				console.log("ger.dam: ", ger.dam);
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
 				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
 

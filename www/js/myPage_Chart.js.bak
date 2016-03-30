@@ -1427,9 +1427,11 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	
 	}
 	if (!chart.dataProvider[0])
-	{	
+	{	console.log('??????????????????????????');
+		// $("div[name=loading2]").html("정보없음");
 		$("#div[name=loading2]").css("display","block"); 
 	}else{
+		console.log('dkkkkkkkkkkkkkkkkkkkkkkkk');
 		$("#div[name=loading2]").css("display","none"); 
 	}
 }

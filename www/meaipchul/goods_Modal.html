@@ -1,23 +1,26 @@
 <!-- 매입/매출 상품조회 모달 -->
 <ion-modal-view title="">
-  <ion-header-bar class="bar bar-header" style="background: #474747; border:0;">
+  <ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
     <h1 class="title" style="color: #fff;">상품 검색</h1>
   </ion-header-bar>
 
-  <ion-header-bar class="bar bar-subheader">
-    <table width="100%">
+  <ion-header-bar class="bar bar-subheader" style="width: 100%; background: #fff; padding-bottom: 10px;">
+    <table width="100%" style="background: #fff;">
       <tr>
-        <td style="text-align:center">상품정보</td>
-        <td><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" size="20" ng-model="user.userGoodsName"></td>
-        <td><i class="ion-search" style="font-size:30px" ng-click="goods_searchM(1)"></i></td>
+        <td style="text-align:center; width: 27%; vertical-align: middle;">상품정보</td>
+        <td style="width: 46%"><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; border: 1px solid #e0e0e0; padding: 0 7px;"></td>
+        <td style="width: 27%;">
+            <i class='ion-close-circled' style='margin-left: 20px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size: 2em'  ng-if="sbu == false"ng-click='clear_goods()'></i>
+            <i class="ion-search" style="font-size: 2em;  margin-top:8px; vertical-align: middle;" ng-click="goods_searchM(1)"></i>
+        </td>
       </tr>
     </table>
   </ion-header-bar>
 
-  <ion-content>
+  <ion-content style="background: #dce0e1">
       <li class="item" ng-repeat="x in goodlately_slists"  ng-click="goods_lately_serarch(x.Search_Goods_Name)">{{x.Search_Goods_Name}}</li>
-    <div class="list list-inset" style="align:center;" >
-      <table width="100%" style="text-align:center">
+    <div class="list list-inset" style="align:center; background: #dce0e1" >
+      <table width="100%" style="text-align:center; background: #dce0e1">
         <tr>
           <td width="10%"></td>
           <td width="40%" style="text-align:center">상품코드</td>
@@ -25,26 +28,26 @@
           <td width="10%"></td>
         </tr>
       </table>
-      <table width="100%" style="text-align:center">
+      <table width="100%" style="text-align:center; background: #dce0e1">
         <tr>
-          <td colspan="4"><hr></td> 
+          <td colspan="4"><hr></td>
         </tr>
       </table>
       <any ng-repeat="x in goodslists">
-        <table on-swipe-up="goods_more()" width='90%'>
+        <table on-swipe-up="goods_more()" style="width:  100%; background: #dce0e1">
           <tr>
-            <td width='80%'>
+            <td style="width:  90%; background: #fff; font-size: 0.9em;">
               <ion-checkbox ng-click='goodsCheck(x)'>
                 {{x.G_Code}}<br>
-                <b ng-bind-html='goodslists[$index].G_Name1'></b><br>
-                가용재고: <font color="red" ng-if="x.Jego<=0">{{x.Jego}}</font>
+                <span ng-bind-html='goodslists[$index].G_Name' style="font-size: 0.9em; display: inline-block; width: 95%; white-space: normal;"></span><br>
+                <font style="font-size: 0.9em;">가용재고: </font><font color="red" ng-if="x.Jego<=0">{{x.Jego}}</font>
                 <font color="blue" ng-if="x.Jego>0">{{x.Jego}}</font>
               </ion-checkbox>
             </td>
-            <td width='20%'>&nbsp;&nbsp;&nbsp;<i class="ion-help-circled" style="font-size:60px;vertical-align:middle;" ng-click='goodsDetail($index)'></i></td>
+            <td style='width:10%; padding-left:9px; vertical-align: middle; background: #dce0e1'><i class="ion-help-circled" style="font-size:2.5em;vertical-align:middle;" ng-click='goodsDetail($index)'></i></td>
           </tr>
           <tr ng-if="moreloading==1&&$last">
-            <td colspan="2" align="center" style="width:90%"><ion-spinner icon="spiral"></ion-spinner></td>
+            <td colspan="2" align="center" style="width:100%"><ion-spinner icon="spiral"></ion-spinner></td>
           </tr>
         </table>
       </any>
@@ -52,10 +55,10 @@
   <br><br>
   </ion-content>
 
-  <ion-footer-bar align-title="left" class="bar-assertive">
-    <div class="buttons" ng-click="goods_searchM_close()"><button class="button">취소</button></div>
+  <ion-footer-bar align-title="left" class="bar-assertive" style="background: #988e9a; border: 0;">
+    <div class="buttons" ng-click="goods_searchM_close()"><button class="button button-psm02">취소</button></div>
     <h1 class="title"></h1>
-    <div class="buttons" ng-click="checkdataSave()"><button class="button">확인</button></div>
+    <div class="buttons" ng-click="checkdataSave()"><button class="button button-psm01">확인</button></div>
   </ion-footer-bar>
 </ion-modal-view>
 

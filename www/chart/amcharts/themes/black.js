@@ -3,8 +3,7 @@ AmCharts.themes.black = {
 	themeName: "black",
 
 	AmChart: {
-		color: "#e7e7e7",
-		backgroundColor: "#222222"
+		color: "#e7e7e7", backgroundColor: "#222222"
 	},
 
 	AmCoordinateChart: {
@@ -24,7 +23,7 @@ AmCharts.themes.black = {
 	},
 
 	AmRectangularChart: {
-		zoomOutButtonColor: "#FFFFFF",
+		zoomOutButtonColor: '#FFFFFF',
 		zoomOutButtonRollOverAlpha: 0.15,
 		zoomOutButtonImage: "lensWhite.png"
 	},
@@ -83,7 +82,7 @@ AmCharts.themes.black = {
 		tickLength: 15,
 		minorTickLength: 8,
 		axisThickness: 3,
-		axisColor: "#FFFFFF",
+		axisColor: '#FFFFFF',
 		axisAlpha: 1,
 		bandAlpha: 0.8
 	},
@@ -96,23 +95,23 @@ AmCharts.themes.black = {
 	// ammap
 	AreasSettings: {
 		alpha: 0.8,
-		color: "#666666",
+		color: "#FFFFFF",
 		colorSolid: "#000000",
 		unlistedAreasAlpha: 0.4,
-		unlistedAreasColor: "#555555",
+		unlistedAreasColor: "#FFFFFF",
 		outlineColor: "#000000",
 		outlineAlpha: 0.5,
 		outlineThickness: 0.5,
-		rollOverBrightness: 30,
-		slectedBrightness: 50,
+		rollOverColor: "#3c5bdc",
 		rollOverOutlineColor: "#000000",
 		selectedOutlineColor: "#000000",
+		selectedColor: "#f15135",
 		unlistedAreasOutlineColor: "#000000",
 		unlistedAreasOutlineAlpha: 0.5
 	},
 
 	LinesSettings: {
-		color: "#555555",
+		color: "#FFFFFF",
 		alpha: 0.8
 	},
 
@@ -124,15 +123,26 @@ AmCharts.themes.black = {
 	},
 
 	ZoomControl: {
-		buttonFillAlpha: 0.4
+		buttonRollOverColor: "#3c5bdc",
+		buttonFillColor: "#738f58",
+		buttonBorderColor: "#738f58",
+		buttonFillAlpha: 0.8,
+		gridBackgroundColor: "#FFFFFF",
+		buttonBorderAlpha:0,
+		buttonCornerRadius:2,
+		gridAlpha:0.5,
+		gridBackgroundColor:"#FFFFFF",
+		homeIconFile:"homeIconWhite.gif",
+		buttonIconAlpha:0.6,
+		gridAlpha: 0.2,
+		buttonSize:20
 	},
 
 	SmallMap: {
-		mapColor: "#444444",
-		rectangleColor: "#666666",
+		mapColor: "#FFFFFF",
+		rectangleColor: "#FFFFFF",
 		backgroundColor: "#000000",
-		backgroundAlpha: 0.5,
-		borderColor:"#555555",
+		backgroundAlpha: 0.7,
 		borderThickness: 1,
 		borderAlpha: 0.8
 	},
