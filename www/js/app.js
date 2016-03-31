@@ -88,13 +88,14 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			]
 		})
 		}else{
-		  	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경 불안정합니다. 데이터접속을 확인해주세요.', 'short', 'center');
+		  	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경 불안정합니다. 데이터/와이파이접속을 확인해주세요.', 'short', 'center');
 			else alert('네트워크환경 불안정합니다. 데이터접속을 확인해주세요.');
 		}
 		})
 
 		$rootScope.$on('$cordovaNetwork:online', function(event, networkState){
-		  // Show your offline message
+		 	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('데이터접속이 정상입니다.', 'short', 'center');
+			else alert('네트워크가 정상으로 돌아왔습니다.');
 		})
 //----------------뒤로가기 마지막페이지일때 ....----
 		$ionicPlatform.registerBackButtonAction(function(e){
@@ -294,11 +295,15 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		else if(goto_Href == '#app/meaip_page'){
 			if($rootScope.distinction == 'meaip') var no = 'N';
 			else $rootScope.distinction = 'meaip';
-		} 
+		}else if(goto_Href=='#app/config'){
+			if($rootScope.distinction == 'config') var no = 'N';
+			else $rootScope.distinction = 'config';
+		}
 		// 
 		if(no == 'N'){
 			if($rootScope.distinction == 'meaip') $state.go('app.meaip_page', {}, {reload: true});
-			else $state.go('app.meachul_page', {}, {reload: true});
+			else if($rootScope.distinction == 'meachul') $state.go('app.meachul_page', {}, {reload: true});
+			else $state.go('app.config', {}, {reload: true});
 		}else{
 			location.href = goto_Href;
 		}

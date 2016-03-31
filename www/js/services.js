@@ -194,7 +194,7 @@ angular.module('starter.services', [])
 		check: check
 	}
 })
-.factory('tradeDetailService', function($http, $q, ERPiaAPI) {
+.factory('tradeDetailService', function($http, $q, ERPiaAPI, $rootScope) {
 	return{
 		tradeList: function(Admin_Code, GerCode){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
@@ -211,7 +211,10 @@ angular.module('starter.services', [])
 				})
 		}, readDetail: function(Admin_Code, Sl_No){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Kind=select_Trade_Detail' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
+
+			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Meaip&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
+			else var data = 'Kind=select_Trade_Detail' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
+
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					console.log('readDetail_Service : ', response.data.list[0].G_ea1);
@@ -343,15 +346,15 @@ angular.module('starter.services', [])
 				, {Idx:5, title:"매출이익증감율"}
 				, {Idx:6, title:"매출 실적 추이"}
 				, {Idx:7, title:"매입 현황"}
-				, {Idx:8, title:"재고 회전율 TOP5"}
+				, {Idx:8, title:"금일 출고 현황"}
 				, {Idx:9, title:"택배사별 구분 건수 통계"}
 				, {Idx:10, title:"온오프라인 비교 매출"}
 				, {Idx:11, title:"매출반품현황"}
 				, {Idx:12, title:"상품별 매출 반품 건수/반품액 TOP5"}
 				, {Idx:13, title:"CS 컴플레인 현황"}
 				, {Idx:14, title:"상품별 매입건수/매입액 TOP5"}
-				, {Idx:15, title:"최근배송현황"}
-				, {Idx:16, title:"배송현황"}];
+				, {Idx:15, title:"재고회전율top5"}
+				, {Idx:16, title:"출고현황"}];
 	return{
 		all : function(kind, mode, Admin_Code, loginType, G_Id) {
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';

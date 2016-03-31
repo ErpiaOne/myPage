@@ -343,7 +343,9 @@
 
 		   <ion-footer-bar align-title="left" class="bar-assertive">
 		    <div class="buttons"><button class='button button-block psm_login_ink' ng-click='print()'>출력하기</button></div>
-		    <div class="buttons"><button class='button button-block psm_login_ink' ng-click='html3image(detail_items)'>공유하기</button></div>
+		    <div class="buttons"><button class='button button-block psm_login_ink' ng-click='html3image(detail_items, "kakao")'>카카오톡 공유</button></div>
+		    <div class="buttons"><button class='button button-block psm_login_ink' ng-click='html3image(detail_items, "sms")'>SMS 공유</button></div>
+		    <div class="buttons"><button class='button button-block psm_login_ink' ng-click='html3image(detail_items, "email")'>email 공유</button></div>
 		  </ion-footer-bar>
 
 </ion-modal-view>
