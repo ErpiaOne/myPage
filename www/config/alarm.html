@@ -1,3 +1,8 @@
+<style type="text/css">
+  on-toggle {background: #fff}
+
+</style>
+
 <ion-view view-title="알림 설정" style="background: #dce0e1; color: #fff">
 	<ion-nav-bar>
 		<ion-nav-back-button ng-click="goBack_with_clearHistory()">설정</ion-nav-back-button>
@@ -5,12 +10,10 @@
 			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
 		</ion-nav-buttons>
 	</ion-nav-bar>
-	<ion-content class="padding2">
-		<ion-toggle ng-model="selectedAll" ng-change='check_alarm(selectedAll)'>
-          	푸시알림
-        </ion-toggle>
-		<ion-toggle ng-repeat="item in settingsList" ng-model="item.checked" ng-checked="item.checked" ng-change='check_change(item)'>
+	<!-- <ion-content class="padding2" style="padding: 15px;">
+		<ion-toggle ng-model="selectedAll" ng-change='check_alarm(selectedAll)' style="margin-bottom: 15px;">전체알림</ion-toggle>
+		<ion-toggle ng-repeat="item in settingsList" ng-model="item.checked" ng-checked="item.checked" ng-change='check_change(item)' style="background: #ebebeb">
           	{{ item.name }}
         </ion-toggle>
-	</ion-content>
+	</ion-content> -->
 </ion-view>

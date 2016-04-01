@@ -6,41 +6,48 @@
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
 	, 'starter.services'])
 
- // .constant('ERPiaAPI',{
- // 	  url:'http://localhost:8100/include'
- // 	, url2:'http://localhost:8100'
- // 	, imgUrl:'http://localhost:8100/erpia_update/img'
- // 	, gurl:'http://168.126.146.37/20132354'
- // 	, toast:'N'
- // })
+ .constant('ERPiaAPI',{
+ 	  url:'http://localhost:8100/include'
+ 	, url2:'http://localhost:8100'
+ 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ 	, gurl:'http://168.126.146.37/20132354'
+ 	, toast:'N'
+ })
 
-//실제 사용시
-.constant('ERPiaAPI',{
-	url:'http://www.erpia.net/include',
-	url2: 'http://www.erpia.net',
-	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-	toast:'Y'
-})
+//실제 사용
+// 	url:'http://www.erpia.net/include',
+// 	url2: 'http://www.erpia.net',
+// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+// 	toast:'Y'
+// })
 
 .run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
 
-		 var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+	  var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 
 	    // Should be called once the device is registered successfully with Apple or Google servers
-	    Pushbots.on("registered", function(token){
+	   Pushbots.on("registered", function(token){
 	      console.log("registered" + token);
 	      // alert("registered" + token);
+	      $rootScope.token = token;
 	    });
-
-	    Pushbots.getRegistrationId(function(token){
+	   Pushbots.getRegistrationId(function(token){
 	        // alert("Registration Id:" + token);
 	        console.log("Registration Id:" + token);
+	        $rootScope.token = token;
 	    });
 
 
+	    Pushbots.on("notification:received", function(data){
+	    	$rootScope.PushData = {};
+		console.log("received:" + JSON.stringify(data));
+		$rootScope.PushData = data;
+	    });
+
+	
 		if(window.cordova && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
@@ -235,41 +242,44 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 
 
 		// Register with the Ionic Push service.  All parameters are optional.
-		$ionicPush.register({
-			canShowAlert: true, //Can pushes show an alert on your screen?
-			canSetBadge: true, //Can pushes update app icon badges?
-			canPlaySound: true, //Can notifications play a sound?
-			canRunActionsOnWake: true, //Can run actions outside the app,
+		// $ionicPush.register({
+		// 	canShowAlert: true, //Can pushes show an alert on your screen?
+		// 	canSetBadge: true, //Can pushes update app icon badges?
+		// 	canPlaySound: true, //Can notifications play a sound?
+		// 	canRunActionsOnWake: true, //Can run actions outside the app,
 			
-			onNotification: function(notification) {
-				// Handle new push notifications here
-				console.log(notification);
-				//notification.message;  푸시 알람 내용
-				if(notification.payload){	
-					//notification.payload.payload.$state 푸시에서 명시한 로드될 화면
-					if(notification.payload.payload.$state === "app.erpia_board-Main"){
-						// alert("tab.chats");
-						//$rootScope.boardIndex = $rootScope.BoardParam
-						//$state.go("app.erpia_board-Main")
-						if(notification.payload.payload.$BoardParam === "0"){
-							$rootScope.boardIndex = notification.payload.payload.$BoardParam
-						}else if(notification.payload.payload.$BoardParam === "1"){
-							$rootScope.boardIndex = notification.payload.payload.$BoardParam
-						}else if(notification.payload.payload.$BoardParam === "2"){
-							$rootScope.boardIndex = notification.payload.payload.$BoardParam
-						}else if(notification.payload.payload.$BoardParam === "4"){
-							$rootScope.boardIndex = notification.payload.payload.$BoardParam
-						}							
-					}
-				}
-			}
-		});
-		$rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
-		    // alert("Successfully registered token " + data.token);
-		    console.log('Ionic Push: Got token ', data.token, data.platform);
-		    $rootScope.token = data.token;
-		    //디바이스 토큰 값 받는곳
-		});
+		// 	onNotification: function(notification) {
+		// 		// Handle new push notifications here
+		// 		console.log(notification);
+		// 		//notification.message;  푸시 알람 내용
+		// 		if(notification.payload){	
+		// 			//notification.payload.payload.$state 푸시에서 명시한 로드될 화면
+		// 			if(notification.payload.payload.$state === "app.erpia_board-Main"){
+		// 				// alert("tab.chats");
+		// 				//$rootScope.boardIndex = $rootScope.BoardParam
+		// 				//$state.go("app.erpia_board-Main")
+		// 				if(notification.payload.payload.$BoardParam === "0"){
+		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
+		// 				}else if(notification.payload.payload.$BoardParam === "1"){
+		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
+		// 				}else if(notification.payload.payload.$BoardParam === "2"){
+		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
+		// 				}else if(notification.payload.payload.$BoardParam === "4"){
+		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
+		// 				}							
+		// 			}
+		// 		}
+		// 	}
+		// });
+		// $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
+		//     // alert("Successfully registered token " + data.token);
+		//     Pushbots.getRegistrationId(function(token){
+		//         // alert("Registration Id:" + token);
+		//         console.log("Registration Id:" + token);
+		//         $rootScope.token = token;
+		//     });
+		//     //디바이스 토큰 값 받는곳
+		// });
 
 		
 	});

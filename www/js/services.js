@@ -42,9 +42,11 @@ angular.module('starter.services', [])
 		if(kind == 'scm_login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
 			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass;
+			console.log('????????????????????????????????????????????????',url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
+						console.log('데이터 확인 =>', response);
 						return response;
 					}else{
 						return $q.reject(response);
@@ -198,9 +200,11 @@ angular.module('starter.services', [])
 	return{
 		tradeList: function(Admin_Code, GerCode){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Kind=select_Trade' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode;
+			var data = 'Kind=select_Trade' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode + '&gu=' + 'E';
+			console.log('tradeList', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
+					console.log('tradeList=>',response.data);
 					if(typeof response.data == 'object'){
 						return response.data;
 					}else{
@@ -214,10 +218,10 @@ angular.module('starter.services', [])
 
 			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Meaip&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
 			else var data = 'Kind=select_Trade_Detail' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
-
+			console.log('readDetail ', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('readDetail_Service : ', response.data.list[0].G_ea1);
+					console.log('readDetail_Service : ', response.data);
 					if(typeof response.data == 'object'){
 
 						if(response.data.list[0].G_name1 != null){
@@ -281,9 +285,10 @@ angular.module('starter.services', [])
 		}, getCntNotRead: function(Admin_Code, checkNotRead){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead;
+			console.log('getCntNotRead ', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log(response.data);
+					console.log('getCntNotRead=>',response.data);
 					if(typeof response.data == 'object'){
 						return response.data;
 					}else{
@@ -295,9 +300,11 @@ angular.module('starter.services', [])
 		}, chkRead: function(Admin_Code, Sl_No, user_id){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=read_Trade_Detail&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No + '&user_id=' + user_id;
+			console.log('chkRead ', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
+						console.log('chkRead=>',response.data);
 						return response.data;
 					}else{
 						return $q.reject(response.data);

@@ -7,10 +7,11 @@ function refresh(kind, gu, admin_code, ERPiaApi_url)
 
 
 // 처음 로딩 할때
-function renewalDay(kind, gu, admin_code, ERPiaApi_url)  
+function renewalDay(kind, gu, admin_code, ERPiaApi_url)
 {
 	$("#loading").css("display","block");
-	AmCharts.loadJSON(ERPiaApi_url + "/renewalDay.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh"); //최근갱신일 로딩		
+	AmCharts.loadJSON(ERPiaApi_url + "/renewalDay.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh"); //최근갱신일 로딩
+	makeCharts(kind, gu, admin_code,ERPiaApi_url);
 }
 
 
@@ -25,7 +26,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	var wMonth = w.getMonth() + 1;
 	var wDay = w.getDate();
 	//30일전
-	var m = new Date(Date.parse(d) -30 * 1000 * 60 * 60 * 24) 
+	var m = new Date(Date.parse(d) -30 * 1000 * 60 * 60 * 24)
 	var mMonth = m.getMonth() + 1;
 	var mDay = m.getDate();
 	//1년 전
@@ -37,7 +38,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	var aWeekAgo = w.getFullYear() + '-' + (wMonth<10 ? '0':'') + wMonth + '-' + (wDay<10 ? '0' : '') + wDay;
 	var aMonthAgo = m.getFullYear() + '-' + (mMonth<10 ? '0':'') + mMonth + '-' + (mDay<10 ? '0' : '') + mDay;
 	var aYearAgo = tm.getFullYear() + '-' + (tmMonth<10 ? '0':'') + tmMonth + '-' + (tmDay<10 ? '0' : '') + tmDay;
-	
+
 	$("input[name=gu_hidden]").val(gu);
 
 	$("button[name=btnW]").removeClass();
@@ -78,24 +79,24 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	{
 		AmCharts.addInitHandler(function(kind) {
 		  if (kind.legend === undefined || kind.legend.truncateLabels === undefined)
-			return;			  
+			return;
 
 		 var titleField =""
 		 var legendTitleField=""
 		  // init fields
 		  titleField = kind.titleField;
-		  legendTitleField = kind.titleField+"Legend";			  
+		  legendTitleField = kind.titleField+"Legend";
 		  // iterate through the data and create truncated label properties
 		  for(var i = 0; i < kind.dataProvider.length; i++) {
 			var label = kind.dataProvider[i][kind.titleField];
 			if (label.length > kind.legend.truncateLabels)
 			  label = label.substr(0, kind.legend.truncateLabels-1)+'...'
 			  kind.dataProvider[i][legendTitleField] = label;
-		  }			  
+		  }
 		  // replace chart.titleField to show our own truncated field
-		  kind.titleField = legendTitleField;			  
+		  kind.titleField = legendTitleField;
 		  // make the balloonText use full title instead
-		  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");			  
+		  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
 		}, ["pie"]);
 	}
 	switch (kind)
@@ -120,7 +121,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					{
 						"id": "Label-1",
 						"text": temp + sDate + " ~ " + eDate,
-						"x": 6,
+						"x": 10,
 						"y": 300
 					}
 				],
@@ -152,7 +153,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"id": "Label-1",
 						"text": temp + sDate + " ~ " + eDate,
 						"x": 6,
-						"y": 350 //280
+						"y": 300
 					}
 				],
 				"balloon": {},
@@ -201,7 +202,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"bulletBorderAlpha": 1,
 					"bulletBorderThickness": 1,
 					"bulletSize": 16,
-					// "id": "AmGraph-2", 
+					// "id": "AmGraph-2",
 					"valueAxis": "ValueAxis-2",
 					"lineThickness": 3,
 					"title": "수량",
@@ -548,8 +549,8 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"columnWidth":0.5,
 					"valueAxis": "ValueAxis-1",
 					"valueField": "value2",
-					"highField": "value1",		
-					"lowField": "value1",		
+					"highField": "value1",
+					"lowField": "value1",
 					"position" : "left"
 				}, {
 					"id": "graph3",
@@ -598,7 +599,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				},
 				"export": {
 					"enabled": true
-				 },				 
+				 },
                 "legend": {
 					"enabled": true,
 					"autoMargins": false,
@@ -854,7 +855,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			break;
 
-		case "beasong_gu" :			//택배사별 구분건수 통계 
+		case "beasong_gu" :			//택배사별 구분건수 통계
 		console.log('택배사별 구분건수 통계');
 			var chart = AmCharts.makeChart("beasong_gu", {
 					"type": "serial",
@@ -947,7 +948,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"id": "Label-1",
 						"text": temp + sDate + " ~ " + eDate,
 						"x": 6,
-						"y": 350
+						"y": 300
 					}
 				],
 				"balloon": {},
@@ -1199,7 +1200,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"id": "Label-1",
 						"text": temp + sDate + " ~ " + eDate,
 						"x": 6,
-						"y": 350//280
+						"y": 300
 					}
 				],
 				"balloon": {},
@@ -1431,7 +1432,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"size": 12,
 						"x": 20,
 						"y": 0
-					}			
+					}
 				],
 				  "startDuration": 1,
 				  "graphs": [{
@@ -1460,12 +1461,12 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		default :
 			break;
-	
+
 	}
 	if (!chart.dataProvider[0])
-	{	
-		$("#div[name=loading2]").css("display","block"); 
+	{
+		$("#div[name=loading2]").css("display","block");
 	}else{
-		$("#div[name=loading2]").css("display","none"); 
+		$("#div[name=loading2]").css("display","none");
 	}
 }

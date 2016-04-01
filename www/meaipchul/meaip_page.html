@@ -60,17 +60,17 @@ div.col4{width:30%; color: #fff;}
 		</div>
 
 		<div class="padding">
-			<table style="border-top: 1px solid #e0e0e0; background: #fff">
+			<table style="border-top: 1px solid #e0e0e0; background: #fff; font-size: 0.9em;">
 				<thead>
 					<th style="width:10%; padding-top:6px; padding-bottom:5px;" align="center">No</th>
 					<th style="width:30%; padding-top:6px; padding-bottom:5px;" align="center">매입일</th>
 					<th style="width:30%; padding-top:6px; padding-bottom:5px;" align="center">업체명</th>
-					<th style="width:30%; padding-top:6px; padding-bottom:5px;" align="center">금액</th>
+					<th style="width:30%; padding-top:6px; padding-bottom:5px; padding-right: 17px;" align="right">금액</th>
 				</thead>
 			</table>
 
 			<any ng-repeat="x in chit_lists" >
-				<table on-swipe-up="search_more(searchmode)" style="border-top: 1px solid #e0e0e0; font-size:12px; background: #fff">
+				<table on-swipe-up="search_more(searchmode)" style="border-top: 1px solid #e0e0e0; font-size: 0.93em; background: #fff">
 					<tbody ng-click="chit_de(x.iL_No)">
 						<tr>
 							<td class="resulttd1-1" rowspan="2" align="center" style="padding-top: 8px;">{{$index+1}}.</td>
@@ -83,7 +83,7 @@ div.col4{width:30%; color: #fff;}
 						</tr>
 					</tbody>
 						<tr ng-if="moreloading==0&&maxover==0&&$last">
-							<td colspan="4" align="center" style="padding: 5px 0; background: #ded1d1"><b>더보기를 하시려면 위로 쓸어올려주세요.</b></td>
+							<td colspan="4" align="center" style="padding: 5px 0; background: #ded1d1; font-size: 0.85em;"><b>더 보기를 하시려면 위로 쓸어올려주세요.</b></td>
 						</tr>
 						<tr ng-if="moreloading==1&&$last">
 							<td colspan="4" align="center"><ion-spinner icon="spiral" ></ion-spinner></td>
@@ -93,7 +93,7 @@ div.col4{width:30%; color: #fff;}
 		</div>
 	</ion-content>
 
-	<div style="margin-top:140%" align="right">
+	<div style="position: fixed; right: 10px; bottom: 100px;">
 		<i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='quickReg()'></i>&nbsp;&nbsp;
 		<i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:3em; color: #6c5e72;" ng-click='scrollTop()'></i>&nbsp;&nbsp;
 	</div>
