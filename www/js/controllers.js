@@ -18,9 +18,10 @@ var g_playlists = [{
 	id : 6
 }];
 
+
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform){
+	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup){
 	   var browseroptions = {
 	      location: 'yes',
 	      clearcache: 'yes',
@@ -29,7 +30,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$rootScope.version={
    		Android_version : '0.1.0', //업데이트시 필수로 변경!!
    		IOS_version : '0.1.0'	//업데이트시 필수로 변경!!
-   	}
+   	};
 
    	/* 로딩화면 */
 	$rootScope.loadingani=function(){
@@ -75,21 +76,76 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}).then(function(modal){
 		$scope.check_sano_Modal = modal;
 	});
+	
+$scope.pushYNcheck=function(){
+		var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+		var cntList = 6;
+		alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
+			.then(function(data){
+				if(data != '<!--Parameter Check-->'){
+				// cntList = data.list.length;
+					for(var i=0; i<cntList; i++){
+						switch(data.list[i].idx){
+							case 1: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '공지사항';
+								break;
+							case 2: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '업데이트 현황';
+								break;
+							case 3: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '지식 나눔방';
+								break;
+							case 4: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '업체문의 Q&A(답변)';
+								break;
+							case 5: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '거래명세서 도착';
+								break;
+							case 6: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '기타 이벤트';
+								break;
+						}
+					}
+					if(data.list[0].alarm == 'F'){
+						$scope.selectedAll = false;
+						$scope.settingsList = [];
+						Pushbots.untag("all");
+						Pushbots.tag("no");
 
+					}
+					else{
+						$scope.selectedAll = true;
+						$scope.settingsList = data.list;
+						Pushbots.untag("no");
+						Pushbots.tag("all");
+					}
+				}else{
+					var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
+					var results = rsltList.match(/\^T\^/g); 
+					alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList);
+					$scope.fnAlarm('checkAll');
+					Pushbots.tag("all");
+				}
+			});
+	}
 
-	//초기화 함수
+//초기화 함수
 	$scope.init = function(loginType){
+		var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 		if(loginType == 'logout') {
+			Pushbots.untag("all");
+			Pushbots.tag("no");
 			$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 			$rootScope.loginState = "R";
 			$scope.loginHTML = "로그인";
 			$scope.ion_login = "ion-power active";
 			$scope.icon_home = "";
 			$rootScope.userType = "";
+			$rootScope.autoLoginYN = "N";
+			$localstorage.set("autoLoginYN", $rootScope.autoLoginYN);
 		}else{
 			$scope.icon_home = "ion-home";
 		}
-
 		$timeout(function(){
 			$ionicLoading.hide();
 			$rootScope.loginData = {};
@@ -114,6 +170,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		        $state.go("app.erpia_scmhome");
 			}else if($rootScope.loginState == "E"){
 				//$state.go("app.erpia_main");
+				// $scope.onSlideMove
 		        $state.go("app.slidingtab");
 			}else if($rootScope.loginState == 'N'){
 				$state.go("app.erpia_main");
@@ -229,9 +286,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						// $scope.loginData.Pwd = 'scmtest';
 					break;
 					case 'ERPia':
-						// $scope.loginData.Admin_Code = 'hj0712';
-						// $scope.loginData.UserId = 'hj0712';
-						// $scope.loginData.Pwd = '1234';
+						// $scope.loginData.Admin_Code = 'demopro';
+						// $scope.loginData.UserId = 'demopro';
+						// $scope.loginData.Pwd = 'demopro';
 						$scope.loginData.Admin_Code = 'onz';
 						$scope.loginData.UserId = 'test1234';
 						$scope.loginData.Pwd = 'test1234!';
@@ -276,6 +333,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$timeout(function() {
 						$ionicLoading.hide();
 						$scope.closeLogin();
+						$scope.pushYNcheck();
 					}, 1000);
 				}else{
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show(comInfo.data.list[0].ResultMsg, 'long', 'center');
@@ -386,7 +444,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 						tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'Y')
 						.then(function(response){
-							console.log('??????????????????????', response); 
 							$scope.userData.cntNotRead = response.list[0].cntNotRead;
 						})
 
@@ -409,6 +466,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						$timeout(function() {
 							$ionicLoading.hide();
 							$scope.closeLogin();
+							$scope.pushYNcheck();
 						}, 1000);
 					},
 					function(){
@@ -552,7 +610,70 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$rootScope.deviceInfo.platform = $cordovaDevice.getPlatform();
 		$rootScope.deviceInfo.uuid = $cordovaDevice.getUUID();
 		$rootScope.deviceInfo.version = $cordovaDevice.getVersion();
-		
+		$scope.ckversion={};
+	   	$scope.thisversioncurrent='Y';
+	   	$scope.thisversion='';
+	   	$scope.currentversion='';
+		VersionCKService.currentVersion()
+		.then(function(data){
+			$timeout(function(){
+				if(data != '<!--Parameter Check-->'){
+					$rootScope.ckversion = data;
+					console.log("currentVersionService", $rootScope.ckversion);
+				if(ionic.Platform.isAndroid()==true){
+						console.log('android');
+						var version = $scope.version.Android_version.split('.');
+						version = version[0]+'.'+version[1]+version[2];
+					     	version = parseFloat(version);
+					     	console.log("version", version);
+						var ckversion = $rootScope.ckversion.Android_version.split('.');
+						ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
+						ckversion = parseFloat(ckversion);
+						console.log("ckversion", ckversion);
+						$scope.thisversion=$rootScope.version.Android_version;
+						$scope.currentversion=$rootScope.ckversion.Android_version;
+					if (version<ckversion) $scope.updatego();
+					else $scope.thisversioncurrent='Y';
+				}else{
+					console.log('ios');
+					var version = $scope.version.IOS_version.split('.');
+					version = version[0]+'.'+version[1]+version[2];
+				     	version = parseFloat(version);
+				     	console.log("version", version);
+					var ckversion = $rootScope.ckversion.IOS_version.split('.');
+					ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
+					ckversion = parseFloat(ckversion);
+					console.log("ckversion", ckversion);
+					$scope.thisversion=$rootScope.version.IOS_version;
+					$scope.currentversion=$rootScope.ckversion.IOS_version;
+					if (version<ckversion) $scope.updatego();
+					else $scope.thisversioncurrent='Y';
+				}
+			}else{
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회실패. 데이터접속을 확인해주세요.', 'short', 'center');
+				else alert('조회실패. 데이터접속을 확인해주세요.'); 
+			}	         
+		      		}, 1000); 
+				console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
+		}); 
+			
+			$scope.updatego=function(){
+				      $ionicPopup.show({
+				         title: '업데이트알림',
+				         subTitle: '',
+				         content: '버전이 업데이트 되었습니다.  업데이트창으로 이동합니다.',
+				         buttons: [
+				           {
+				             text: '확인',
+				             type: 'button-positive',
+				             onTap: function(e) {
+				             	if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
+						else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
+				             }
+				           },
+				         ]
+				        })
+			}
 		uuidService.getUUID($rootScope.deviceInfo.uuid)
 		.then(function(response){
 			if(response.list[0].result == '1'){
@@ -573,10 +694,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			}
 		})
 
+
 		console.log('autoLogin_YN' ,$localstorage.get("autoLoginYN"));
 	 }, false);
-		console.log('앱갔다왔니?');
-	console.log('autoLogin_YN' ,$localstorage.get("autoLoginYN"));
+
 	if($localstorage.get("autoLoginYN")=='Y'){	
 		uuidService.getUUID($rootScope.deviceInfo.uuid)
 		.then(function(response){
@@ -601,7 +722,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 })
 // 거래명세표 컨트롤러
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
-	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer){
+	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer, $ionicPopup){
 
 	function commaChange(Num)
 	{
@@ -641,9 +762,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		
 	}
 
-
-
-	$scope.html3image = function(detaillist){
+	$scope.html3image = function(detaillist, where){
 		for(var i = 0; i < detaillist.length; i++){
 			var detail = detaillist[i];
 			var html_start =  "<html><body>";
@@ -710,16 +829,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 			
 		console.log('$scope.loginData =>',$scope.loginData.loginType);
+
 		if($scope.loginData.loginType == 'E'){
-			console.log('?');
 			var login_kind = 'erpia';
 		}else{
-			console.log('??????????????');
 			var login_kind = 'comp';
 		} 
 		
 		    	var url = "http://www.erpia.net/mobile/GereaView_Certify.asp?admin_code=" + detail.Admin_Code + "&user_id=" + $scope.loginData.UserId + "&login_kind=" + login_kind + "&sl_no=" + detail.Publish_No + '_01';
-		    	$scope.shareAnywhere(url);
+		    	$scope.shareAnywhere(url, where);
 	
 }
 
@@ -766,11 +884,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				
 			}); 
 	}
-
-	$scope.shareAnywhere = function(url) {
-	        $cordovaSocialSharing
-	        	.share("[Erpia 거래명세표] "+url);
-	    }
+	$scope.email ={
+		toemail : ''
+	};
+	$scope.shareAnywhere = function(url, where) {
+		// console.log('공유할꺼야 =>', $scope.userData.Com_Name);
+		var comname = $scope.userData.Com_Name.split('<br>');
+		var com_name = comname[0] + comname[1];
+	       if(where == 'kakao'){
+	       	$cordovaSocialSharing.shareVia("com.kakao.talk","[Erpia 거래명세표] "+'('+com_name+')'+url);
+	       }else if(where == 'sms'){
+	        	$cordovaSocialSharing.shareViaSMS("[Erpia 거래명세표] "+'('+com_name+')'+url);
+	       }else{
+                   $cordovaSocialSharing.shareViaEmail("[Erpia 거래명세표] "+'('+com_name+')'+url, "[Erpia 거래명세표] "+'('+com_name+')');
+	       }
+	       $scope.toemail ='';
+	}
 
 	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
 		scope : $scope
@@ -779,6 +908,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	});
 	$scope.check = {};
 	$scope.tradeList = {};
+
 	// 각각의 로그인 타입별로 보여지는 화면을 다르게 표시.
 	if($rootScope.userType == 'SCM' || $rootScope.userType == "Normal"){
 		$scope.tradeList.Title = '매출거래처 수신함';
@@ -877,9 +1007,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}
 
 				$scope.detail_items = response.list;
+				console.log('detail_items.length =>', $scope.detail_items.length);
 				$scope.trade_Detail_Modal.show();
 			})
-		tradeDetailService.chkRead($scope.loginData.Admin_Code, Sl_No, $scope.loginData.User_Id) // 읽었으면!
+		if($scope.userType != "ERPia") tradeDetailService.chkRead($scope.loginData.Admin_Code, Sl_No, $scope.loginData.UserId) // 읽었으면!
 	}
 	 /*거래명세표 사업자 번호 입력 모달 닫기*/
 	$scope.close_sano = function(){
@@ -993,8 +1124,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}); 
 	console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
 		$scope.updatebtn=function(){
-			if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_blank', 'location=yes,closebuttoncaption=Done');
-			else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_blank', 'location=yes,closebuttoncaption=Done');
+			if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
+			else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
 		}
 
 	/* 최상단으로 */
@@ -1139,7 +1270,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	};
 }) //알림설정 컨트롤러
 .controller('configCtrl_alarm', function($scope, $rootScope, $location, alarmService){
-	 $scope.settingsList = [];
+	var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+	$scope.settingsList = [];
 	var cntList = 6;
 	$scope.fnAlarm = function(isCheckAll){
 		// 푸쉬알림 체크시 전체 체크 되도록.
@@ -1192,30 +1324,52 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 	// 실제로 알람 설정 내용을 서버에 저장하는 서비스
 	$scope.check_alarm = function(check){
+		// var deviceplatform = 0;
+			// if (ionic.Platform.isIOS()){
+			// 	deviceplatform = 0;
+			// }else{
+			//  	deviceplatform = 1;
+			// }
 		if(check) {
 			rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
+			var results = rsltList.match(/\^T\^/g); 
 			alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList);
 			$scope.fnAlarm('checkAll');
-		}
-		else{
+			Pushbots.untag("no");
+			Pushbots.tag("all");
+		}else{
 			$scope.settingsList = [];
 			rsltList = '0^F^|1^F^|2^F^|3^F^|4^F^|5^F^|6^F^|';
+			var results = rsltList.match(/\^F\^/g); 
 			alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList);
+			Pushbots.untag("all");
+			Pushbots.tag("no");
 		}
 		angular.forEach($scope.settingsList, function(item){
 			item.checked = check; 
 		})
 	}
 	// 알람 내용이 변경될때마다 그 내용을 서버에 저장 
-	$scope.check_change = function(item){
-		var rsltList = '';
-		console.log('settingsList', $scope.settingsList[0]);
-		for(var i=0; i<cntList; i++){
-			rsltList += $scope.settingsList[i].idx + '^';
-			rsltList += ($scope.settingsList[i].checked == true)?'T^|':'F^|';
-		}
-		alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, '0^U|' + rsltList)
-	}
+	// $scope.check_change = function(item){
+	// 	console.log(item);
+	// 	// if(item.checked==true){
+	// 	// 	var tagnum = item.idx.toString();
+	// 	// 	Pushbots.tag(tagnum);
+	// 	// 	console.log("Pushbots.tag",tagnum);
+	// 	// }else{
+	// 	// 	var tagnum = item.idx.toString();
+	// 	// 	Pushbots.untag(tagnum);
+	// 	// 	console.log("Pushbots.untag",tagnum);
+	// 	// }
+	// 	var rsltList = '';
+	// 	console.log('settingsList', $scope.settingsList[0]);
+	// 	for(var i=0; i<cntList; i++){
+	// 		rsltList += $scope.settingsList[i].idx + '^';
+	// 		rsltList += ($scope.settingsList[i].checked == true)?'T^|':'F^|';
+
+	// 	}
+	// 	alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, '0^U|' + rsltList)
+	// }
 	$scope.fnAlarm('loadAlarm');
 })//로그인 설정 컨트롤러
 .controller('configCtrl_login', function($scope, $rootScope, uuidService, $localstorage){
@@ -1336,7 +1490,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	    	var chartData = response;
 	    	console.log('chartData', chartData);
 	    	var chart = AmCharts.makeChart("chart5", {
-			   //theme: "dark",
+			   theme: "dark",
 				type: "serial",
 				dataProvider: chartData,
 				startDuration: 1,
@@ -1492,7 +1646,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
   			$scope.csData.interestTopic2 = '';
   		}
   		if($scope.csData.interestTopic1 != 'no' && $scope.csData.interestTopic3 == 'no' && $scope.cscustomagree != false){
-  			$scope.csData.interestTopic3 = '';
+  			$scope.csData.interestTopic3 = '.';
   		}
   		csResigtData[0] = $scope.csData.comName;
 	  	csResigtData[1] = $scope.csData.writer;
@@ -1554,11 +1708,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								 escape(csResigtData[6]), escape(csResigtData[7]), escape(csResigtData[8]), escape(csResigtData[9]))
 		    .then(function(csInfo){
 		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 성공하였습니다.', 'long', 'center');
-			else alert('IndexService Error');
+			else alert('등록이 성공하였습니다.');
 			$rootScope.goto_with_clearHistory('#/app/main');
 		    },function(){
 		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 실패하였습니다.', 'long', 'center');
-			else alert('IndexService Error');
+			else alert('등록이 성공하였습니다.');
 			});
 		};
 	};
@@ -2192,6 +2346,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	var nowday = d.getFullYear() + '-' + (month<10 ? '0':'') + month + '-' + (day<10 ? '0' : '') + day;
 	var aWeekAgo = w.getFullYear() + '-' + (wMonth<10 ? '0':'') + wMonth + '-' + (wDay<10 ? '0' : '') + wDay;
 	$rootScope.nowTime = '최근 조회 시간 :' + nowday + ' ' + nowTime;
+
 	$scope.ERPiaBaseData = function(){
 		$scope.loadingani();
 		IndexService.dashBoard('erpia_dashBoard', $scope.loginData.Admin_Code, aWeekAgo, nowday)
@@ -2228,21 +2383,21 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/*상세표보기*/
 	function commaChange(Num)
 	{
-		fl="" 
-		Num = new String(Num) 
-		temp="" 
-		co=3 
-		num_len=Num.length 
+		fl=""
+		Num = new String(Num)
+		temp=""
+		co=3
+		num_len=Num.length
 		while (num_len>0)
-		{ 
-			num_len=num_len-co 
+		{
+			num_len=num_len-co
 			if(num_len<0)
 			{
 				co=num_len+co;
 				num_len=0
-			} 
-			temp=","+Num.substr(num_len,co)+temp 
-		} 
+			}
+			temp=","+Num.substr(num_len,co)+temp
+		}
 		rResult =  fl+temp.substr(1);
 		return rResult;
 	}
@@ -2252,7 +2407,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		var strHtml = "";
 		var strSubject = "";
 		var strSubgu="";
-		
+
 		switch($('input[name=gu_hidden]').val()){
 			case "1": strSubgu = " (주간)"; break;
 			case "2": strSubgu = " (월간)"; break;
@@ -2261,72 +2416,72 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		switch (kind)
 		{
 			case "meaip_jem" :
-				strHtml = "<tr><th style='color:white'>순번</th><th style='color:white'>구분</th><th style='color:white'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "거래처별 매입 점유율 TOP 10" + strSubgu;
 				break;
 			case "meachul_jem" :
-				strHtml = "<tr><th style='color:white'>번호</th><th style='color:white'>사이트명</th><th style='color:white'>매출액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>사이트명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>매출액</th></tr>";
 				strSubject = "사이트별 매출 점유율"  + strSubgu ;
 				break;
 			case "brand_top5" :
-				strHtml = "<tr><th style='color:white'>번호</th><th style='color:white'>브랜드명</th><th style='color:white'>수량</th><th style='color:white'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>브랜드명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "브랜드별 매출 TOP 5" + strSubgu;
 				break;
 			case "meachul_top5" :
-				strHtml = "<tr><th style='color:white'>번호</th><th style='color:white'>상품명</th><th style='color:white'>수량</th><th style='color:white'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>상품명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "상품별 매출 TOP 5" + strSubgu;
 				break;
 			case "scm" :
-				strHtml = "<tr><th style='color:white'>번호</th><th style='color:white'>구분</th><th style='color:white'>수량</th><th style='color:white'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "SCM " + strSubgu;
 				break;
 			case "Meachul_ik" :
-				strHtml = "<tr><th style='color:white'>날짜</th><th style='color:white'>공급이익</th><th style='color:white'>매출이익</th><th style='color:white'>공급이익률</th><th style='color:white'>매출이익률</th></tr>";
-				strSubject = "매출 이익 증감률" + strSubgu;
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>공급이익</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>매출이익</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>공급이익률</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>매출이익률</th></tr>";
+				strSubject = "매출 이익율" + strSubgu;
 				break;
 			case "meachul_7" :
-				strHtml = "<tr><th style='color:white'>날짜</th><th style='color:white'>수량</th><th style='color:white'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "매출 실적 추이" + strSubgu;
 				break;
 			case "meaip_7" :
-				strHtml = "<tr><th style='color:white'>날짜</th><th style='color:white'>금액</th><th style='color:white'>수량</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "매입 현황" + strSubgu;
 				break;
 			case "beasonga" :
-				strHtml = "<tr><th style='color:white'>순번</th><th style='color:white'>구분</th><th style='color:white'>건수</th></tr>";
-				strSubject = "최근 배송 현황" + strSubgu;
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>건수</th></tr>";
+				strSubject = "금일 출고 현황" + strSubgu;
 				break;
 			case "beasong_gu" :
-				strHtml = "<tr><th style='color:white'>순번</th><th style='color:white'>구분</th><th style='color:white'>선불</th><th style='color:white'>착불</th><th style='color:white'>신용</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>선불</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>착불</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>신용</th></tr>";
 				strSubject = "택배사별 구분 건수 통계" + strSubgu;
 				break;
 			case "meachul_onoff" :
-				strHtml = "<tr><th style='color:white'>구분</th><th style='color:white'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "온오프라인 비교 매출" + strSubgu;
 				break;
 			case "banpum" :
-				strHtml = "<tr><th style='color:white'>날짜</th><th style='color:white'>수량</th><th style='color:white'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "매출 반품 현황" + strSubgu;
 				break;
 			case "banpum_top5" :
-				strHtml = "<tr><th style='color:white'>번호</th><th style='color:white'>상품명</th><th style='color:white'>수량</th><th style='color:white'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>상품명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "상품별 매출 반품 건수/반품액 TOP5" + strSubgu;
 				break;
 			case "meachul_cs" :
-				strHtml = "<tr><th style='color:white'>번호</th><th style='color:white'>구분</th><th style='color:white'>건수</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>건수</th></tr>";
 				strSubject = "CS 컴플레인 현황" + strSubgu;
 				break;
 			case "meaip_commgoods" :
-				strHtml = "<tr><th style='color:white'>번호</th><th style='color:white'>상품명</th><th style='color:white'>수량</th><th style='color:white'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>상품명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "상품별 매입건수/매입액 TOP5" + strSubgu;
 				break;
 			case "JeGo_TurnOver" :
-				strHtml = "<tr><th style='color:white'>순번</th><th style='color:white'>구분</th><th style='color:white'>선불</th><th style='color:white'>착불</th><th style='color:white'>신용</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>선불</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>착불</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>신용</th></tr>";
 				strSubject = "재고 회전률 TOP5" + strSubgu;
 				break;
 			case "beasongb" :
-				strHtml = "<tr><th style='color:white'>순번</th><th style='color:white'>날짜</th><th style='color:white'>건수</th></tr>";
-				strSubject = "배송 현황" + strSubgu;
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>건수</th></tr>";
+				strSubject = "출고현황" + strSubgu;
 				break;
 		}
 
@@ -2338,110 +2493,110 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			{
 				case  "meaip_jem": case "meachul_jem" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml + commaChange(data[i].value) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case "meachul_top5" : case "brand_top5" : case "banpum_top5" : case "meaip_7" : case "meaip_commgoods" : case "scm" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + commaChange(data[i].su);
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml + commaChange(data[i].value) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case "Meachul_ik" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml +  commaChange(data[i].value1) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml +  commaChange(data[i].value1) + "원";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml + commaChange(data[i].value2) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml + commaChange(data[i].value2) + "원";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + commaChange(data[i].su1) + " %";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + commaChange(data[i].su2) + " %";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case "meachul_cs": case "beasonga": case "beasongb" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml + commaChange(data[i].value) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case "meachul_onoff" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml + commaChange(data[i].value) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case  "meachul_7": case "banpum": case "meaip_7":
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + commaChange(data[i].su);
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml + commaChange(data[i].value) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case  "beasong_gu" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml + commaChange(data[i].value) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml + commaChange(data[i].value1) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml + commaChange(data[i].value1) + "원";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td>";
-					strHtml = strHtml + commaChange(data[i].value2) + " ??";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
+					strHtml = strHtml + commaChange(data[i].value2) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				default :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a'>";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
@@ -2452,7 +2607,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 
 	// AmCharts에서 Json 데이터를 불러오는 함수
-	AmCharts.loadJSON = function(url, load_kind) {	
+	AmCharts.loadJSON = function(url, load_kind) {
 		// create the request
 		if (window.XMLHttpRequest) {
 		// IE7+, Firefox, Chrome, Opera, Safari
@@ -2462,32 +2617,31 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			var request = new ActiveXObject('Microsoft.XMLHTTP');
 		}
 
-		// request.onreadystatechange = callback;
-		
 
 		request.open('POST', url, false);
 		request.send();
-		var tmpAlert = "최근갱신일 : ";
+		var tmpAlert = "최근갱신일 : <br>";
 
-		if (load_kind == "refresh" )
+		if (load_kind == "refresh")
 		{	$scope.loadingani();
-			response = eval(request.responseText);	  
-			console.log('너냐?',response[0].in_date);
+			response = eval(request.responseText);
 			// $rootScope.time_ref = response[0].in_date;
 			$.each(response[0], function(index, jsonData){
+				console.log(jsonData);
 						tmpAlert += jsonData;
 			});
 			$("h3[name=refresh_date]").html(tmpAlert);
 		}
+
 		/*상세 표 보기!*/
 		if (load_kind == "gridInfo")
-		{	
+		{
 			response = eval(request.responseText);
 			$.each(response[0], function(index, jsonData){
 				tmpAlert += jsonData;
 			});
 			//상세보기 그리드 생성
-			insertRow(response, $scope.kind);    
+			insertRow(response, $scope.kind);
 		}
 
 		if(load_kind == undefined){
@@ -2513,10 +2667,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		return eval(request.responseText);
 		// request.onreadystatechange = callback;
 
-		
 
-			
-			
+
+
+
 
 
 	};
@@ -2527,8 +2681,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	})
 	$scope.kind= '', $scope.htmlCode= '';
 
-	// 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함. 
-	$scope.onSlideMove = function(data) { 
+	// 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함.
+	$scope.onSlideMove = function(data) {
 		console.log("You have selected " + data.index + " tab");
 		$scope.loadingani();
 		var titles =  [{Idx:0, title:"홈"}
@@ -2536,18 +2690,19 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			, {Idx:2, title:"meachul_jem"}
 			, {Idx:3, title:"brand_top5"}
 			, {Idx:4, title:"meachul_top5"}
-			, {Idx:5, title:"Meachul_ik"}
-			, {Idx:6, title:"meachul_7"}
-			, {Idx:7, title:"meaip_7"}
-			, {Idx:8, title:"beasonga"}
-			, {Idx:9, title:"beasong_gu"}
-			, {Idx:10, title:"meachul_onoff"}
-			, {Idx:11, title:"banpum"}
-			, {Idx:12, title:"banpum_top5"}
-			, {Idx:13, title:"meachul_cs"}
-			, {Idx:14, title:"meaip_commgoods"}
-			, {Idx:15, title:"JeGo_TurnOver"}
-			, {Idx:16, title:"beasongb"}];
+			// , {Idx:5, title:"scm"}
+			, {Idx:6, title:"Meachul_ik"}
+			, {Idx:7, title:"meachul_7"}
+			, {Idx:8, title:"meaip_7"}
+			, {Idx:9, title:"beasonga"}
+			, {Idx:10, title:"beasong_gu"}
+			, {Idx:11, title:"meachul_onoff"}
+			, {Idx:12, title:"banpum"}
+			, {Idx:13, title:"banpum_top5"}
+			, {Idx:14, title:"meachul_cs"}
+			, {Idx:15, title:"meaip_commgoods"}
+			, {Idx:16, title:"JeGo_TurnOver"}
+			, {Idx:17, title:"beasongb"}];
 				// $rootScope.gubun_chart = $scope.kind;
 		if (data.index > 0){
 			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index)
@@ -2559,49 +2714,40 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					case '2' : $scope.kind = titles[2].title; break;
 					case '3' : $scope.kind = titles[3].title; break;
 					case '4' : $scope.kind = titles[4].title; break;
-					case '5' : $scope.kind = titles[5].title; break;
-					case '6' : $scope.kind = titles[6].title; break;
-					case '7' : $scope.kind = titles[7].title; break;
-					case '8' : $scope.kind = titles[8].title; break;
-					case '9' : $scope.kind = titles[9].title; break;
-					case '10' : $scope.kind = titles[10].title; break;
-					case '11' : $scope.kind = titles[11].title; break;
-					case '12' : $scope.kind = titles[12].title; break;
-					case '13' : $scope.kind = titles[13].title; break;
-					case '14' : $scope.kind = titles[14].title; break;
-					case '15' : $scope.kind = titles[15].title; break;
-					case '16' : $scope.kind = titles[16].title; break;
+					case '6' : $scope.kind = titles[5].title; break;
+					case '7' : $scope.kind = titles[6].title; break;
+					case '8' : $scope.kind = titles[7].title; break;
+					case '9' : $scope.kind = titles[8].title; break;
+					case '10' : $scope.kind = titles[9].title; break;
+					case '11' : $scope.kind = titles[10].title; break;
+					case '12' : $scope.kind = titles[11].title; break;
+					case '13' : $scope.kind = titles[12].title; break;
+					case '14' : $scope.kind = titles[13].title; break;
+					case '15' : $scope.kind = titles[14].title; break;
+					case '16' : $scope.kind = titles[15].title; break;
+					case '17' : $scope.kind = titles[16].title; break;
 				}
-				
+
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
-				if($scope.kind === "meachul_onoff"){
+				if($scope.kind === "beasonga"){
 					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
-							'<div class="direct-chat">'+
-								'<div class="box-header">'+
-									'<button class="fa fa-refresh" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"></button>'+
-									'<div></div>'
-									'<h3 class="box-title" name="refresh_date" style="color:#000"></h3>&nbsp;&nbsp;&nbsp;&nbsp;'+
+							'<div class="direct-chat" style="padding-top:20px;">'+
+								'<div class="box-header" style="text-align: left; padding-left: 20px; vertical-align: top;">'+
+									'<button class="fa fa-refresh" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
+									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>'+
 									'<div class="pull-right">'+
-										'<button name="btnGrid" class="btn btn-box-tool" ><i class="fa fa-bars"></i></button>'+
+										'<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
 									// '<div name="loading">로딩중...</div>'+
-									'<div name="loading2" class="ontop"> '  +
-										'<table border="0" id="popup"> '+
-											'<tr> '+
-												'<td>' +
-													'<center>정보없음</center>'+
-												'</td> '+
-											'</tr> '+
-										'</table> '+
-									'</div>'+
+									'<div name="loading2" style="position: absolute; top: 150px; left:10%; z-index: 50; width:80%; height:100px;  color: #fff; background: #9687a1; text-align: center; padding-top: 40px;">정보없음</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
-									'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 300px;"></div>'+
-									'<div name="gridBody" height: 320px; ">'+
+									'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 320px;"></div>'+
+									'<div name="gridBody" style="background: #ececed; height: 320px;">'+
 										'<ul class="contacts-list">'+
 											'<li>'+
-												'<div name="gridSubject" class="callout callout-info" style="padding:5px; text-align:center;"><font style="color:#000000; font-weight:bold;"></font></div>'+
+												'<div name="gridSubject" style="width: 100%; height: 40px; padding-top:10px; text-align:center; background:#a6b3cb; margin-bottom: 20px;"><font style="font-weight:bold;"></font></div>'+
 												'<table name="tbGrid" class="table table-bordered" style="color:rgb(100, 100, 100); width:100%; font-size:12pt; margin-bottom:10px;">'+
 												'</table>'+
 												'<div style="width:100%; text-align:center;">'+
@@ -2613,35 +2759,27 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								'</div>'+
 							'</div>' + '</ion-content>';
 				}else{
-					$scope.htmlCode = '<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; background: #b572a0; clear: both;"><ion-content>'	+'<input type="hidden" name="gu_hidden">' +
-							'<div class="direct-chat">'+
-								'<div class="box-header">'+
-									'<button class="fa fa-refresh" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"></button>'+
-									'<h3 class="box-title" name="refresh_date" style="color:#000"></h3>&nbsp;&nbsp;&nbsp;&nbsp;'+
+					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
+							'<div class="direct-chat" style="padding-top:20px;">'+
+								'<div class="box-header" style="text-align: left; padding-left: 20px; vertical-align: top;">'+
+									'<button class="fa fa-refresh" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
+									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>'+
 									'<div class="pull-right">'+
-									'<button name="btnW" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
-									'<button name="btnM" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
-									'<button name="btnY" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
-									'<button name="btnGrid" class="btn btn-box-tool"><i class="fa fa-bars"></i></button>'+
+									'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
+									'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
+									'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
+									'<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
 
-									'<div name="loading2" class="ontop"> '  +
-										'<table border="0" id="popup"> '+
-											'<tr> '+
-												'<td>' +
-													'<center>정보없음</center>'+
-												'</td> '+
-											'</tr> '+
-										'</table> '+
-									'</div>'+
+									'<div name="loading2" style="position: absolute; top: 150px; left:10%; z-index: 50; width:80%; height:100px;  color: #fff; background: #9687a1; text-align: center; padding-top: 40px;">정보없음</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
-									'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 300px;"></div>'+
-									'<div name="gridBody" height: 320px; ">'+
+									'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 320px;"></div>'+
+									'<div name="gridBody" style="background: #ececed;">'+
 										'<ul class="contacts-list">'+
 											'<li>'+
-												'<div name="gridSubject" class="callout callout-info" style="padding:5px; text-align:center;"><font style="color:#000000; font-weight:bold;"></font></div>'+
+												'<div name="gridSubject" style="width: 100%; height: 40px; padding-top:10px; text-align:center; background:#a6b3cb; margin-bottom: 20px;"><font style="font-weight:bold;"></font></div>'+
 												'<table name="tbGrid" class="table table-bordered" style="color:rgb(100, 100, 100); width:100%; font-size:12pt; margin-bottom:10px;">'+
 												'</table>'+
 												'<div style="width:100%; text-align:center;">'+
@@ -2654,37 +2792,41 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							'</div>'+ '</ion-content></ion-scroll>';
 				}
 
-				
-				// AmCharts.loadJSON(ERPiaAPI.url+ "/graph_DataUpdate.asp?admin_code="+ $scope.loginData.Admin_Code +"&kind="+ $scope.kind +"&swm_gu="+ $scope.gu, "refresh");
 
-				// renewalDay($scope.kind,$scope.gu,$scope.loginData.Admin_Code,ERPiaAPI.url);
-				// refresh($scope.kind,$scope.gu, $scope.loginData.Admin_Code, ERPiaAPI.url);
-				// $("div[name=loading2]").css('display', 'none'); $("div[name=gridBody]").css('display', 'none'); $('div[name=' + $scope.kind + ']').css('display', 'block'); 
 				console.log(data.index);
 				switch(data.index){
-					case 1: $('#s1').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 2: $('#s2').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 3: $('#s3').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 4: $('#s4').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 5: $('#s5').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 6: $('#s6').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 7: $('#s7').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 8: $('#s8').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 9: $('#s9').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 10: $('#s10').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 11: $('#s11').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 12: $('#s12').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 13: $('#s13').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 14: $('#s14').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 15: $('#s15').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 16: $('#s16').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 17: $('#s17').html($scope.htmlCode); makeCharts($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 1: $('#s1').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 2: $('#s2').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 3: $('#s3').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 4: $('#s4').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 5: $('#s5').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 6: $('#s6').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 7: $('#s7').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 8: $('#s8').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 9: $('#s9').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 10: $('#s10').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 11: $('#s11').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 12: $('#s12').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 13: $('#s13').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 14: $('#s14').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 15: $('#s15').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 16: $('#s16').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
+					case 17: $('#s17').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 				}
 
+				$("button[name=btnW]").click(function() {
+					$scope.loadingani();
+				});
+				$("button[name=btnM]").click(function() {
+					$scope.loadingani();
+				});
+				$("button[name=btnY]").click(function() {
+					$scope.loadingani();
+				});
 
-				
 
 				$("button[name=btnGrid]").click(function() {
+					$scope.loadingani();
 					if ($('div[name=gridBody]').css('display') == 'none') {
 						$('div[name=gridBody]').css('display','block');
 						$('#' + $scope.kind).css('display', 'none');
@@ -2705,11 +2847,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 })
 
 .controller('PushCtrl', function($scope, $rootScope, $ionicUser, $ionicPush) {
-	$rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
-		alert("Successfully registered token " + data.token);
-		console.log('Ionic Push: Got token ', data.token, data.platform);
-		$scope.token = data.token;
-	});
+	// $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
+	// 	alert("Successfully registered token " + data.token);
+	// 	console.log('Ionic Push: Got token ', data.token, data.platform);
+	// 	$scope.token = data.token;
+	// });
 	$scope.identifyUser = function() {
 		var user = $ionicUser.get();
 		if(!user.user_id) {
@@ -2732,18 +2874,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	// Registers a device for push notifications
 	$scope.pushRegister = function() {
 		console.log('Ionic Push: Registering user');
-
-		// Register with the Ionic Push service.  All parameters are optional.
-		$ionicPush.register({
-			canShowAlert: true, //Can pushes show an alert on your screen?
-			canSetBadge: true, //Can pushes update app icon badges?
-			canPlaySound: true, //Can notifications play a sound?
-			canRunActionsOnWake: true, //Can run actions outside the app,
-			onNotification: function(notification) {
-				// Handle new push notifications here
-				return true;
-			}
+		// Should be called once the device is registered successfully with Apple or Google servers
+		Pushbots.on("registered", function(token){
+			console.log(token);
 		});
+
+		Pushbots.getRegistrationId(function(token){
+		    console.log("Registration Id:" + token);
+
+		     $rootScope.token = token;
+		});
+		// Register with the Ionic Push service.  All parameters are optional.
+	     
 	};
 })
 //////////////////////////////////////////////////매입&매출 통합 다시 (앞) /////////////////////////////////////////////////////////////////////
@@ -3702,7 +3844,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.detail_items = response.list;
 				$scope.trade_Detail_Modal.show();
 			})
-		tradeDetailService.chkRead($scope.loginData.Admin_Code, no, $scope.loginData.User_Id)
+		// tradeDetailService.chkRead($scope.loginData.Admin_Code, no, $scope.loginData.User_Id)
 	}
 
 	/*삭제*/
@@ -4345,7 +4487,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		if($scope.checkedDatas.length != 0){
 			$scope.checkedDatas.splice(0,$scope.checkedDatas.length);
 		}
-		$scope.clear_goods();
+		$scope.goodlately_slists = '';
     	$scope.goodsmodal.show();
     }
 

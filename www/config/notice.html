@@ -11,7 +11,7 @@
 				<ion-item ng-repeat="item in items" style="padding:0px;">
 					<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 						<li class="item" style="font-size: 0.95em;">
-							<span style="padding-right: 5px;">{{item.idx}}.</span>
+							<span style="padding-right: 5px;">{{$index+1}}.</span>
 							<font ng-if="item.gubun == '1'" style="background: #3d9fac; color: #fff; padding: 0 4px;">공지</font>
 							<font ng-if="item.gubun == '2'" style="background: #5b4470; color: #fff; padding: 0 4px;">필독</font>
 							<font ng-if="item.gubun == '3'" style="background: #dc3549; color: #fff; padding: 0 4px;">긴급</font>

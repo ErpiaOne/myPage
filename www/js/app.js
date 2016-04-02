@@ -15,6 +15,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
  })
 
 //실제 사용
+// .constant('ERPiaAPI',{
 // 	url:'http://www.erpia.net/include',
 // 	url2: 'http://www.erpia.net',
 // 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
