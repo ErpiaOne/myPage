@@ -200,7 +200,7 @@ angular.module('starter.services', [])
 	return{
 		tradeList: function(Admin_Code, GerCode){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Kind=select_Trade' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode + '&gu=' + 'E';
+			var data = 'Kind=select_Trade' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode;
 			console.log('tradeList', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){

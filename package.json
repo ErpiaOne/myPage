@@ -20,17 +20,9 @@
     "cordova-plugin-console",
     "cordova-plugin-splashscreen",
     "com.ionic.keyboard",
-    {
-      "locator": "https://github.com/phonegap-build/PushPlugin.git",
-      "id": "com.phonegap.plugins.PushPlugin"
-    },
     "cordova-plugin-contacts",
     "cordova-plugin-whitelist",
     "cordova-plugin-canvas2image",
-    {
-      "locator": "https://github.com/gokce/phonegap-ios-plugin-ftpupload.git",
-      "id": "com.github.gokce.phonegap-ios-plugin-ftpupload"
-    },
     "pushbots-cordova-plugin"
   ],
   "cordovaPlatforms": [
