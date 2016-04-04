@@ -1,6 +1,6 @@
 <!-- 업체 문의 글쓰기 -->
 <ion-modal-view title="">
-  <ion-header-bar class="bar bar-header" style="background: #474747; border:0;">
+  <ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
     <div class="buttons">
       <button class="button" ng-click="qnawrite_closeModal()">back</button>
     </div>
@@ -8,17 +8,17 @@
   </ion-header-bar>
   <ion-content>
   			<div class="list list-inset">
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*제목 : </span>
 				<input type="text" placeholder="제목" ng-model="qnareqdata.subject"><br>
 			</label>
-			<label class="item item-input">
+			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*비밀번호 : </span>
 				<input type="password" placeholder="비밀번호" ng-model="qnareqdata.pwd"><br>
 			</label>
-			<label class="item item-input">
-				<span class="input-label psm_sang_01">*문의사항 : </span>
-				<textarea placeholder="내용을 입력하세요" class="psm_sang_03" ng-model="qnareqdata.content"></textarea>
+			<label class="item item-input" style="padding: 0">
+				<span class="input-label psm_sang_01" style="margin-right: 0; height: 300px; padding-top: 140px;">*문의사항 : </span>
+				<textarea placeholder="내용을 입력하세요" class="psm_sang_05" ng-model="qnareqdata.content"></textarea>
 			</label>
 			<form ng-submit="qnawriteSubmit()">
 				<button class="button button-block psm_login_ink" type="submit">등록</button>

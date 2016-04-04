@@ -5,21 +5,22 @@
 			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
 		</ion-nav-buttons>
 	</ion-nav-bar>
-	<ion-content class="padding2" overflow-scroll="false">
+	<ion-content class="padding2" overflow-scroll="false" style="padding: 15px;">
 		<body ng-app="ngAnimate">
 			<ion-list on-swipe-up="boards_more()">
 				<ion-item ng-repeat="item in items" style="padding:0px;">
 					<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
-						<li class="item">
-							{{item.idx}}.
-							<font ng-if="item.gubun == '1'">[공지]</font>
-							<font ng-if="item.gubun == '2'">[필독]</font>
-							<font ng-if="item.gubun == '3'">[긴급]</font>
-							<font ng-if="item.gubun == '4'">[기타]</font> {{item.subject}}<br>
-							{{item.in_date}}
+						<li class="item" style="font-size: 0.95em;">
+							<span style="padding-right: 5px;">{{$index+1}}.</span>
+							<font ng-if="item.gubun == '1'" style="background: #3d9fac; color: #fff; padding: 0 4px;">공지</font>
+							<font ng-if="item.gubun == '2'" style="background: #5b4470; color: #fff; padding: 0 4px;">필독</font>
+							<font ng-if="item.gubun == '3'" style="background: #dc3549; color: #fff; padding: 0 4px;">긴급</font>
+							<font ng-if="item.gubun == '4'" style="background: #73a245; color: #fff; padding: 0 4px;">기타</font>
+							<span style="padding-left: 10px;">{{item.subject}}</span><br>
+							<span style="padding-left: 20px;">{{item.in_date}}</span>
 						</li>
 					</ui>
-					<pre class="lhkNoticeContent" style="font-family: sans-serif;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.contents"></pre>
+					<pre class="lhkNoticeContent" style="font-size: 0.95em;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.contents"></pre>
 					<!-- 공지사항 더보기 추가되면 아래주석 다시 열 예정입니다. -->
 <!-- 				 	<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" >
 						<li class="item">
@@ -32,11 +33,11 @@
 						</li>
 					</ui> -->
 				</ion-item>
-			           	<br><br><br><br> 
+				<br><br><br><br>
 			</ion-list>
 		</body>
 	</ion-content>
-	  <div style="margin-top:140%" align="right">
-		    <i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:50px; color:gray" ng-click='scrollTop()'></i>&nbsp;&nbsp;
-	  </div>
+	<div style="position: fixed; right: 10px; bottom: 60px;">
+	   <i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:50px; color: #6c5e72;" ng-click='scrollTop()'></i>&nbsp;&nbsp;
+	</div>
 </ion-view>

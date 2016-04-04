@@ -20,117 +20,108 @@
 
 <ion-view title="매입전표" style="background: #dce0e1; color: #fff" class="bar-dark" cache-view="false">
 <ion-nav-bar>
-  <ion-nav-back-button ng-click="backControll()">Back</ion-nav-back-button>
+<ion-nav-back-button ng-click="backControll()">Back</ion-nav-back-button>
 </ion-nav-bar>
-  <ion-content>
+<ion-content>
 
-    <div class="list list-inset" style="color: #444444; padding-bottom: 20px;">
-      <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
+<div class="list list-inset" style="color: #444444; padding-bottom: 20px;">
+  <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
 
-        <label class="item item-input" style="padding-right: 10px;">
-          <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;전표번호 : </i></span>
-          <input type="text" readonly value='{{x.iL_No}}' style="padding-left: 20px;"><br>
-        </label>
+  <label class="item item-input" style="padding-right: 10px;">
+  <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;전표번호 : </i></span>
+  <input type="text" readonly value='{{x.iL_No}}' style="padding-left: 20px;"><br>
+  </label>
 
-        <label class="item item-input" style="padding-right: 10px;">
-          <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;일 자 : </i></span>
-          <input type="text" readonly value='{{x.Meaip_Date}}' style="padding-left: 20px;"><br>
-        </label>
+  <label class="item item-input" style="padding-right: 10px;">
+  <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;일 자 : </i></span>
+  <input type="text" readonly value='{{x.Meaip_Date}}' style="padding-left: 20px;"><br>
+  </label>
 
-        <label class="item item-input" style="padding-right: 10px;">
-          <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;구 분 : </i></span>
-          <input type="text" ng-if='x.Subul_kind == 111' readonly value='매입입고' style="padding-left: 20px;">
-          <input type="text" ng-if='x.Subul_kind == 122' readonly value='매입반품' style="padding-left: 20px;"><br>
-        </label>
+  <label class="item item-input" style="padding-right: 10px;">
+  <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;구 분 : </i></span>
+  <input type="text" ng-if='x.Subul_kind == 111' readonly value='매입입고' style="padding-left: 20px;">
+  <input type="text" ng-if='x.Subul_kind == 122' readonly value='매입반품' style="padding-left: 20px;"><br>
+  </label>
 
-        <label class="item item-input" style="padding-right: 10px;">
-          <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;거래처 : </i></span>
-          <input type="text" readonly value='{{x.GerName}}' style="padding-left: 20px;"><br>
-        </label>
+  <label class="item item-input" style="padding-right: 10px;">
+  <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;거래처 : </i></span>
+  <input type="text" readonly value='{{x.GerName}}' style="padding-left: 20px;"><br>
+  </label>
 
-        <label class="item item-input" style="padding-right: 10px;">
-          <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;창고지정 : </i></span>
-          <input type="text" readonly value='{{x.CName}}' style="padding-left: 20px;"><br>
-        </label>
+  <label class="item item-input" style="padding-right: 10px;">
+  <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;창고지정 : </i></span>
+  <input type="text" readonly value='{{x.CName}}' style="padding-left: 20px;"><br>
+  </label>
 
-        <label class="item item-input" style="padding-right: 10px;">
-          <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;매장지정 : </i></span>
-          <input type="text" readonly value='{{x.Sale_Place_Name}}' style="padding-left: 20px;"><br>
-        </label>
-      </any>
+  <label class="item item-input" style="padding-right: 10px;">
+  <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;매장지정 : </i></span>
+  <input type="text" readonly value='{{x.Sale_Place_Name}}' style="padding-left: 20px;"><br>
+  </label>
+  </any>
 
-      <div style="height: 15px; background: #dce0e1;" ></div>
+  <div style="height: 15px; background: #dce0e1;" ></div>
 
+  <div style="padding: 10px 15px;" style="width: 100%;">
+    <table class="table1" style="width: 100%;">
+    <tr>
+      <td class="width-60" style="text-align: center;">상품명</td>
+      <td class="width-20">수량</td>
+      <td class="width-20-r2">단가</td>
+    </tr>
+    <tr>
+      <td colspan="3"><hr></td>
+    </tr>
+    <tr ng-repeat="y in chit_dedata">
+      <td class="width-60" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Name}}</td>
+      <td class="width-20" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Qty}}</td>
+      <td class="width-20-r" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Price | number:0}}</td>
+    </tr>
+    <tr>
+      <td colspan="3" class="td3" style="color: #dd8369; padding:15px 5px 0 0;"><b>총 {{qtysum}}개 / {{pricesum | number:0}}원</b></td>
+    </tr>
+    </table>
+  </div>
 
-      <div style="padding: 10px 15px;" style="width: 100%;">
-        <table class="table1" style="width: 100%;">
-          <tr>
-            <td class="width-60" style="text-align: center;">상품명</td>
-            <td class="width-20">수량</td>
-            <td class="width-20-r2">단가</td>
-          </tr>
-          <tr>
-            <td colspan="3"><hr></td>
-          </tr>
-          <tr ng-repeat="y in chit_dedata">
-            <td class="width-60" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">
-              {{y.G_Name}}
-            </td>
-            <td class="width-20" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">
-              {{y.G_Qty}}
-            </td>
-            <td class="width-20-r" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">
-              {{y.G_Price | number:0}}
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3" class="td3" style="color: #dd8369; padding:15px 5px 0 0;"><b>총 {{qtysum}}개 / {{pricesum | number:0}}원</b></td>
-          </tr>
-        </table>
-      </div>
+  <div style="height: 15px; background: #dce0e1;" ></div>
 
-      <div style="height: 15px; background: #dce0e1;" ></div>
+  <div style="padding-top: 10px;  padding-bottom: 10px;">
 
-      <div style="padding-top: 10px;  padding-bottom: 10px;">
+    <table class="table2" ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
+    <tr>
+      <td colspan="3" style="padding-left: 20px;"><b>지급정보</b></td>
+    </tr>
+    <tr>
+      <td colspan="3"><hr></td>
+    </tr>
+    <tr>
+      <td class="width-30">{{x.IpJi_Date}}</td>
+      <td class="width-30"><any ng-if='x.IpJi_Gubun == 701'>현금입금</any><any ng-if='x.IpJi_Gubun == 702'>통장입금</any><any ng-if='x.IpJi_Gubun == 703'>카드입금</any><any ng-if='x.IpJi_Gubun == 704'>어음입금</any></td>
+      <td class="width-20-r"><b>{{x.IpJi_Amt | number:0}}원</b></td>
+    </tr>
+    </table>
+  </div>
 
-        <table class="table2" ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
-          <tr>
-            <td colspan="3" class="" style="padding-left: 20px;"><b>지급정보</b></td>
-          </tr>
-          <tr>
-            <td colspan="3"><hr></td>
-          </tr>
-          <tr>
-            <td class="width-30">{{x.IpJi_Date}}</td>
-            <td class="width-30"><any ng-if='x.IpJi_Gubun == 701'>현금입금</any><any ng-if='x.IpJi_Gubun == 702'>통장입금</any><any ng-if='x.IpJi_Gubun == 703'>카드입금</any><any ng-if='x.IpJi_Gubun == 704'>어음입금</any></td>
-            <td class="width-20-r"><b>{{x.IpJi_Amt | number:0}}원</b></td>
-          </tr>
-        </table>
-      </div>
+  <div style="height: 15px; background: #dce0e1;" ></div>
 
-      <div style="height: 15px; background: #dce0e1;" ></div>
-
-      <label class="item item-input">
-        <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;관리비고 </i></span>
-        <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
-        {{x.Remk}}
-        </any>
-      </label>
-      <div style="height: 15px; background: #dce0e1;" ></div>
-    </div>
-  </ion-content>
-  <ion-footer-bar align-title="left"  style="background: #736777;">
-    <div align="center" class="footerdiv">
-      <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
-        <i class="button button-icon button-clear {{ionstar}} starbtn" menu-close ng-click="m_quick(x.iL_No,ionstar)"  style="font-size:50px;align:left; color: #fff;"></i>
-        </any>
-        <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
-        <button class="button button-psm03" ng-click="chitDeleteF(x.iL_No)">삭제</button>
-        <button class="button button-psm04" ng-click="meaipchul_u(x.iL_No)">수정</button>
-        <!-- <button class="button button-psm02" >거래명세서</button> -->
-      </any>
-    </div>
-  </ion-footer-bar>
+  <label class="item item-input">
+  <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;관리비고 </i></span>
+  <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">{{x.Remk}}</any>
+  </label>
+  <div style="height: 15px; background: #dce0e1;" ></div>
+</div>
+</ion-content>
+<ion-footer-bar align-title="left"  style="background: #736777;">
+<div align="center" class="footerdiv">
+  <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
+  <i class="button button-icon button-clear {{ionstar}} starbtn" menu-close ng-click="m_quick(x.iL_No,ionstar)"  style="font-size:50px;align:left; color: #fff;"></i>
+  </any>
+  <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
+  <button class="button button-psm03" ng-click="chitDeleteF(x.iL_No)">삭제</button>
+  <button class="button button-psm04" ng-click="meaipchul_u(x.iL_No)">수정</button>
+  <button class="button button-psm02" ng-if='x.Subul_kind == 122' ng-click='traddetail(x.iL_No)'>거래명세서</button>
+  </any>
+</div>
+</ion-footer-bar>
 </ion-view>
 
 

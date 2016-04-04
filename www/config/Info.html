@@ -7,26 +7,26 @@
 	</ion-nav-bar>
 	<ion-content class="padding2">
 		<div class="card">
-			<div class="item item-image" style="background-color:#aaa;">
+			<div class="item item-image" style="background: url(./img/bg_pinpo.jpg); vertical-align: middle;">
 				<img src="img/ERPia_logo2.png" style="width:127px;">
 			</div>
 		</div>
 		<div class="list card">
 
-			<a class="item item-icon-left">
-				<i class="icon ion-information-circled"></i>
+			<a class="item item-icon-left" style="padding-left: 80px; color: #444;">
+				<i class="icon ion-information-circled" style="background: #5d9ea8; width: 52px; padding-left: 10px;  color: #fff;"></i>
 				현재버전
-				<font style="margin-left:20%;">{{thisversion}}</font>
+				<font style="margin-left:80px;">{{thisversion}}</font>
 			</a>
 
-			<a class="item item-icon-left">
-				<i class="icon ion-iphone"></i>
+			<a class="item item-icon-left" style="padding-left: 80px; color: #444;">
+				<i class="icon ion-iphone" style="background: #6c5d7c; width: 52px;  padding-left: 10px; color: #fff;"></i>
 				최신버전
-				<font style="margin-left:20%;">{{currentversion}}</font>
+				<font style="margin-left:80px;">{{currentversion}}</font>
 			</a>
-			<button class="button button-full button-positive" ng-if="thisversioncurrent=='N'" ng-click="updatebtn()">
-				최신버전업데이트
-			</button>
+
+
+			<button class="button button-full button-positive" style="margin-top: 50px;" ng-if="thisversioncurrent=='N'" ng-click="updatebtn()">최신버전업데이트</button>
 			<!-- <a class="item item-icon-left">
 			<i class="icon ion-wifi"></i>
 			Enter wireless password
