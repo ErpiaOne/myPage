@@ -6,43 +6,43 @@
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
 	, 'starter.services'])
 
- .constant('ERPiaAPI',{
- 	  url:'http://localhost:8100/include'
- 	, url2:'http://localhost:8100'
- 	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	, gurl:'http://168.126.146.37/20132354'
- 	, toast:'N'
- })
+ // .constant('ERPiaAPI',{
+ // 	  url:'http://localhost:8100/include'
+ // 	, url2:'http://localhost:8100'
+ // 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ // 	, gurl:'http://168.126.146.37/20132354'
+ // 	, toast:'N'
+ // })
 
 //실제 사용
-// .constant('ERPiaAPI',{
-// 	url:'http://www.erpia.net/include',
-// 	url2: 'http://www.erpia.net',
-// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-// 	toast:'Y'
-// })
+.constant('ERPiaAPI',{
+	url:'http://www.erpia.net/include',
+	url2: 'http://www.erpia.net',
+	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+	toast:'Y'
+})
 
 .run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
 
-	  var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+	  window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 
 	    // Should be called once the device is registered successfully with Apple or Google servers
-	   Pushbots.on("registered", function(token){
+	   window.plugins.PushbotsPlugin.on("registered", function(token){
 	      console.log("registered" + token);
 	      // alert("registered" + token);
 	      $rootScope.token = token;
 	    });
-	   Pushbots.getRegistrationId(function(token){
+	   window.plugins.PushbotsPlugin.getRegistrationId(function(token){
 	        // alert("Registration Id:" + token);
 	        console.log("Registration Id:" + token);
 	        $rootScope.token = token;
 	    });
 
 
-	    Pushbots.on("notification:received", function(data){
+	    window.plugins.PushbotsPlugin.on("notification:received", function(data){
 	    	$rootScope.PushData = {};
 		console.log("received:" + JSON.stringify(data));
 		$rootScope.PushData = data;
@@ -61,20 +61,20 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			 StatusBar.styleDefault();
 			}
 		}
-		// //★push regist
-		console.log('Ionic Push: Registering user');
-		var user = $ionicUser.get();
-		if(!user.user_id) {
-			// Set your user_id here, or generate a random one.
-			user.user_id = $ionicUser.generateGUID();
-			$rootScope.UserKey = user.user_id;
-		};
+		// // //★push regist
+		// console.log('Ionic Push: Registering user');
+		// var user = $ionicUser.get();
+		// if(!user.user_id) {
+		// 	// Set your user_id here, or generate a random one.
+		// 	user.user_id = $ionicUser.generateGUID();
+		// 	$rootScope.UserKey = user.user_id;
+		// };
 		// Metadata
-		angular.extend(user, {
-			name: 'ERPiaUser',
-			bio: 'ERPiaPush'
-		});
-		console.log('this is app');
+		// angular.extend(user, {
+		// 	name: 'ERPiaUser',
+		// 	bio: 'ERPiaPush'
+		// });
+		// console.log('this is app');
 
 		// Listen for offline event
 		$rootScope.$on('$cordovaNetwork:offline', function(event, networkState){

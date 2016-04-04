@@ -78,7 +78,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	});
 	
 $scope.pushYNcheck=function(){
-		var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+		window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 		var cntList = 6;
 		alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
 			.then(function(data){
@@ -109,32 +109,32 @@ $scope.pushYNcheck=function(){
 					if(data.list[0].alarm == 'F'){
 						$scope.selectedAll = false;
 						$scope.settingsList = [];
-						Pushbots.untag("all");
-						Pushbots.tag("no");
+						window.plugins.PushbotsPlugin.untag("all");
+						window.plugins.PushbotsPlugin.tag("no");
 
 					}
 					else{
 						$scope.selectedAll = true;
 						$scope.settingsList = data.list;
-						Pushbots.untag("no");
-						Pushbots.tag("all");
+						window.plugins.PushbotsPlugin.untag("no");
+						window.plugins.PushbotsPlugin.tag("all");
 					}
 				}else{
 					var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
 					var results = rsltList.match(/\^T\^/g); 
 					alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList);
 					$scope.fnAlarm('checkAll');
-					Pushbots.tag("all");
+					window.plugins.PushbotsPlugin.tag("all");
 				}
 			});
 	}
 
 //초기화 함수
 	$scope.init = function(loginType){
-		var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+		window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 		if(loginType == 'logout') {
-			Pushbots.untag("all");
-			Pushbots.tag("no");
+			window.plugins.PushbotsPlugin.untag("all");
+			window.plugins.PushbotsPlugin.tag("no");
 			$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 			$rootScope.loginState = "R";
 			$scope.loginHTML = "로그인";
@@ -765,6 +765,7 @@ $scope.pushYNcheck=function(){
 	$scope.html3image = function(detaillist, where){
 		for(var i = 0; i < detaillist.length; i++){
 			var detail = detaillist[i];
+			var j = i+1;
 			var html_start =  "<html><body>";
 			var html_view1 = "<table width=1080 ><tr><td name='td_User_Date' width=300 align=left>"+ detail.MeaChul_Date + '('+$scope.loginData.UserId+')'  + "</td><td width=420 align=center style='color:blue;'><u style='font-size:30px;'>거래명세표</u> (공급받는자용)</td><td name='td_Sl_No_Time' style='color:blue;' width=300 align=right>No."+ detail.Publish_No +"</td></tr></table>";
 			var html_view2 = "<table width=1080 cellspacing=0 cellpadding=0 ><tr><td style='color:blue; border-left: solid #0100FF; border-right: solid #0100FF; border-top: solid #0100FF; border-bottom: solid #0100FF;' width=25 rowspan=4 align=center>공<br/>급<br/>자</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF; border-top: solid #0100FF;' width=45>등 록<br/>번 호</td><td name='td_SaNo1' style='border-bottom: solid #0100FF; border-top: solid #0100FF;' colspan=6>" + detail.R_Sano + "</td><td style='color:blue; border-top: solid #0100FF; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;'  width=25 rowspan=5 align=center>공<br/>급<br/>받<br/>는<br/>자</td><td style='color:blue; border-bottom: solid #0100FF; border-top: solid #0100FF; border-right: solid #0100FF;'  width=45>등 록<br/>번 호</td><td name='td_SaNo2' style='border-bottom: solid #0100FF; border-top: solid #0100FF; border-right: solid #0100FF;'  colspan=6>" + detail.Sano + "</td></tr>";
@@ -786,7 +787,7 @@ $scope.pushYNcheck=function(){
 			var html_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
 			var html_view17 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name9)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea9)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price9)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong9)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>.</td></tr>";
 			var html_view18 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;'>"+ checklist(detail.G_name10)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.G_ea10)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.G_price10)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.G_Gong10)+"</td><td width=140 style='border-bottom: solid #0100FF;' align=right>.</td></tr>";
-			var html_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #0100FF;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #0100FF; border-bottom: solid #0100FF; border-left:2px solid #0100FF;'>합계</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #0100FF;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6 ></td></tr></table><br>"
+			var html_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #0100FF;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #0100FF; border-bottom: solid #0100FF; border-left:2px solid #0100FF;'>합계</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #0100FF;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6 ></td></tr></table><span align='center'>(" + j + "/" + detaillist.length + ")</span><br>"
 
 			
 
@@ -812,7 +813,7 @@ $scope.pushYNcheck=function(){
 			var html2_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
 			var html2_view17 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name9)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea9)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price9)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong9)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>.</td></tr>";
 			var html2_view18 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;'>"+ checklist(detail.G_name10)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.G_ea10)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.G_price10)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.G_Gong10)+"</td><td width=140 style='border-bottom: solid #FF0000;' align=right>.</td></tr>";
-			var html2_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #FF0000;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #FF0000; border-bottom: solid #FF0000; border-left:2px solid #FF0000;'>합계</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #FF0000;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6 ></td></tr></table><br>"
+			var html2_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #FF0000;'>비 고<br/><br/>사 항</td><td width=450></td><td  style='height:25px; border-right: solid #FF0000; border-bottom: solid #FF0000; border-left:2px solid #FF0000;'>합계</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #FF0000;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6></td></tr></table><span align='center'>(" + j + "/" + detaillist.length + ")</span><br>"
 
 
 			var html_end =  "</body></html>" ; 
@@ -1270,7 +1271,7 @@ $scope.pushYNcheck=function(){
 	};
 }) //알림설정 컨트롤러
 .controller('configCtrl_alarm', function($scope, $rootScope, $location, alarmService){
-	var Pushbots = PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+	window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 	$scope.settingsList = [];
 	var cntList = 6;
 	$scope.fnAlarm = function(isCheckAll){
@@ -1335,15 +1336,15 @@ $scope.pushYNcheck=function(){
 			var results = rsltList.match(/\^T\^/g); 
 			alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList);
 			$scope.fnAlarm('checkAll');
-			Pushbots.untag("no");
-			Pushbots.tag("all");
+			window.plugins.PushbotsPlugin.untag("no");
+			window.plugins.PushbotsPlugin.tag("all");
 		}else{
 			$scope.settingsList = [];
 			rsltList = '0^F^|1^F^|2^F^|3^F^|4^F^|5^F^|6^F^|';
 			var results = rsltList.match(/\^F\^/g); 
 			alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList);
-			Pushbots.untag("all");
-			Pushbots.tag("no");
+			window.plugins.PushbotsPlugin.untag("all");
+			window.plugins.PushbotsPlugin.tag("no");
 		}
 		angular.forEach($scope.settingsList, function(item){
 			item.checked = check; 
@@ -2827,14 +2828,16 @@ $scope.pushYNcheck=function(){
 
 				$("button[name=btnGrid]").click(function() {
 					$scope.loadingani();
-					if ($('div[name=gridBody]').css('display') == 'none') {
-						$('div[name=gridBody]').css('display','block');
-						$('#' + $scope.kind).css('display', 'none');
-						$scope.gu = $("input[name=gu_hidden]").val();
-						AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $scope.userData.GerCode, "gridInfo");
-					} else {
-						$("div[name=gridBody]").css('display', 'none');
-						$('#' + $scope.kind).css('display', 'block');
+					if($('div[name=loading2]').css('display') == 'none'){ // 정보없음이면 실행 X
+						if ($('div[name=gridBody]').css('display') == 'none') {
+							$('div[name=gridBody]').css('display','block');
+							$('#' + $scope.kind).css('display', 'none');
+							$scope.gu = $("input[name=gu_hidden]").val();
+							AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $scope.userData.GerCode, "gridInfo");
+						} else {
+							$("div[name=gridBody]").css('display', 'none');
+							$('#' + $scope.kind).css('display', 'block');
+						}
 					}
 				});
 				$("button[name=btnGridClose]").click(function() {
@@ -2875,11 +2878,11 @@ $scope.pushYNcheck=function(){
 	$scope.pushRegister = function() {
 		console.log('Ionic Push: Registering user');
 		// Should be called once the device is registered successfully with Apple or Google servers
-		Pushbots.on("registered", function(token){
+		window.plugins.PushbotsPlugin.on("registered", function(token){
 			console.log(token);
 		});
 
-		Pushbots.getRegistrationId(function(token){
+		window.plugins.PushbotsPlugin.getRegistrationId(function(token){
 		    console.log("Registration Id:" + token);
 
 		     $rootScope.token = token;
