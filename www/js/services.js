@@ -41,7 +41,7 @@ angular.module('starter.services', [])
 	var comInfo = function(kind, Admin_Code, G_id, G_Pass){
 		if(kind == 'scm_login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass;
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass ;
 			console.log('????????????????????????????????????????????????',url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){

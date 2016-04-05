@@ -36,3 +36,109 @@
 [0323/140239:ERROR:exception_snapshot_win.cc(56)] thread ID 0 not found in process
 [0323/140239:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::InitializeException failed
 [0323/140239:ERROR:scoped_process_suspend.cc(38)] NtResumeProcess, ntstatus=-1073741558
+[0405/130614:ERROR:process_info.cc(608)] range at 0xfffde000, size 0x230 fully unreadable
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0xfffde000 of 560 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:ERROR:process_snapshot_win.cc(271)] ReadMemory PEB
+[0405/130614:ERROR:process_reader_win.cc(98)] process 7256 not found
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0xc70000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x77800000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\SysWOW64\ntdll.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76ce0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\KERNELBASE.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76920000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\kernel32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75560000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\msvcrt.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75360000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\CRYPTBASE.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75370000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\SspiCli.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76730000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\RPCRT4.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x77270000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\SysWOW64\sechost.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x77360000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\ADVAPI32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x53df0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Program Files (x86)\Google\Chrome\Application\49.0.2623.110\chrome_elf.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x71db0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\webio.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x71e00000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WINHTTP.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75080000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\VERSION.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x772c0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\USP10.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75610000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\LPK.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76440000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\GDI32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x77170000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\USER32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x73bb0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WINMM.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72520000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\profapi.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72530000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\USERENV.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72510000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WTSAPI32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x770a0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\MSCTF.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x753d0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\IMM32.DLL
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75090000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\SysWOW64\nvinit.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x752a0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Program Files (x86)\NVIDIA Corporation\CoProcManager\detoured.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x77290000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\CFGMGR32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76b40000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\ole32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x754d0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\OLEAUT32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75450000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\DEVOBJ.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76eb0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\SETUPAPI.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75270000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Program Files (x86)\NVIDIA Corporation\CoProcManager\nvd3d9wrap.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75180000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Program Files (x86)\NVIDIA Corporation\CoProcManager\nvdxgiwrap.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75470000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\SHLWAPI.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75620000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\SHELL32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75440000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\PSAPI.DLL
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x70e60000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WINSPOOL.DRV
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72370000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7600.16385_none_421189da2b7fabfc\COMCTL32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x762a0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\COMDLG32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x75430000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\NSI.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72630000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\WINNSI.DLL
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72640000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\IPHLPAPI.DLL
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76ca0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\WS2_32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76ea0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\MSASN1.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76320000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\CRYPT32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x76e70000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\syswow64\WINTRUST.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x72a00000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\Secur32.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0xfa10000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Program Files (x86)\Google\Chrome\Application\49.0.2623.110\chrome_child.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0x66cd0000 of 64 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:pe_image_reader.cc(280)] could not read dos header from C:\Windows\system32\dwrite.dll
+[0405/130614:ERROR:process_reader_win.cc(232)] ReadMemory at 0xd1c154 of 12 bytes failed: ReadProcessMemory 또는 WriteProcessMemory의 일부 작업만을 마쳤습니다. (0x12B)
+[0405/130614:WARNING:process_snapshot_win.cc(89)] ReadMemory ExceptionInformation failed
+[0405/130614:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::InitializeException failed
+[0405/130614:ERROR:scoped_process_suspend.cc(38)] NtResumeProcess, ntstatus=-1073741558

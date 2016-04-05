@@ -28,8 +28,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	      toolbar: 'yes'
 	   };
 	$rootScope.version={
-   		Android_version : '0.1.0', //업데이트시 필수로 변경!!
-   		IOS_version : '0.1.0'	//업데이트시 필수로 변경!!
+   		Android_version : '0.1.1', //업데이트시 필수로 변경!!
+   		IOS_version : '0.1.1'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 */
@@ -305,8 +305,11 @@ $scope.pushYNcheck=function(){
 					$scope.userData.G_Code = comInfo.data.list[0].G_Code;
 					$scope.userData.G_Sano = comInfo.data.list[0].Sano;
 					$scope.userData.GerCode = comInfo.data.list[0].G_Code;
-					$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
-
+					if(comInfo.data.list[0].cntNotRead == null){
+						$scope.userData.cntNotRead = 0;
+					}else{
+						$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
+					}
 					$scope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
 					$rootScope.loginState = "S";
@@ -444,7 +447,8 @@ $scope.pushYNcheck=function(){
 
 						tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'Y')
 						.then(function(response){
-							$scope.userData.cntNotRead = response.list[0].cntNotRead;
+								$scope.userData.cntNotRead = response.list[0].cntNotRead;
+							
 						})
 
 						if($scope.loginData.chkAutoLogin == true){
@@ -668,7 +672,7 @@ $scope.pushYNcheck=function(){
 				             type: 'button-positive',
 				             onTap: function(e) {
 				             	if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
-						else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
+						else alert("앱스토어에서 확인해주세요.");
 				             }
 				           },
 				         ]
@@ -763,6 +767,7 @@ $scope.pushYNcheck=function(){
 	}
 
 	$scope.html3image = function(detaillist, where){
+
 		for(var i = 0; i < detaillist.length; i++){
 			var detail = detaillist[i];
 			var j = i+1;
@@ -824,25 +829,30 @@ $scope.pushYNcheck=function(){
 			var name =  detail.Publish_No;
 			var admincode = detail.Admin_Code; // 저장될 파일명
 
+			if($scope.luserType == 'ERPia'){
+				var Kind = 'ERPia';
+			}else{
+				var Kind = 'SCM';
+			} 
 
 			// 저장될 이미지의 이름
-			$scope.test(i,html_string,html_string2,name,admincode);
+			$scope.test(i,html_string,html_string2,name,admincode,Kind);
 		}
 			
-		console.log('$scope.loginData =>',$scope.loginData.loginType);
+		console.log('$scope.loginData =>',$scope.userType);
 
-		if($scope.loginData.loginType == 'E'){
+		if($scope.userType == 'ERPia'){
 			var login_kind = 'erpia';
 		}else{
 			var login_kind = 'comp';
 		} 
-		
+			var Mutual = detaillist[0].R_Snm;
 		    	var url = "http://www.erpia.net/mobile/GereaView_Certify.asp?admin_code=" + detail.Admin_Code + "&user_id=" + $scope.loginData.UserId + "&login_kind=" + login_kind + "&sl_no=" + detail.Publish_No + '_01';
-		    	$scope.shareAnywhere(url, where);
+		    	$scope.shareAnywhere(url, where,Mutual);
 	
 }
 
-	$scope.test = function(i,html_string,html_string2, name,admincode){
+	$scope.test = function(i,html_string,html_string2, name,admincode, Kind){
 			var iframe = document . createElement ( 'iframe' ); 
 			document . body . appendChild ( iframe ); 
 			var iframedoc = iframe . contentDocument || iframe . contentWindow . document ; 
@@ -873,7 +883,7 @@ $scope.pushYNcheck=function(){
 				console.log('check2=>>', admincode);
 
 				$.ajax({
-				  url: "http://image.erpia.net/fn_save_card_data_image.asp",
+				  url: "http://image.erpia.net/fn_save_card_data_image.asp?Kind="+Kind,
 				  method: "POST",
 				  data: { "imgData" : newData, "imgName" : imgname, "imgfolder" : admincode},//QueryString 방식이면, 이상하게 안됨
 				   error : function (data) {
@@ -888,16 +898,16 @@ $scope.pushYNcheck=function(){
 	$scope.email ={
 		toemail : ''
 	};
-	$scope.shareAnywhere = function(url, where) {
+	$scope.shareAnywhere = function(url, where, comname) {
 		// console.log('공유할꺼야 =>', $scope.userData.Com_Name);
-		var comname = $scope.userData.Com_Name.split('<br>');
-		var com_name = comname[0] + comname[1];
+		// var comname = $scope.userData.Com_Name.split('<br>');
+		// var com_name = comname[0] + comname[1];
 	       if(where == 'kakao'){
-	       	$cordovaSocialSharing.shareVia("com.kakao.talk","[Erpia 거래명세표] "+'('+com_name+')'+url);
+	       	$cordovaSocialSharing.shareVia("com.kakao.talk","[Erpia 거래명세표] "+'('+comname+')'+url);
 	       }else if(where == 'sms'){
-	        	$cordovaSocialSharing.shareViaSMS("[Erpia 거래명세표] "+'('+com_name+')'+url);
+	        	$cordovaSocialSharing.shareViaSMS("[Erpia 거래명세표] "+'('+comname+')'+url);
 	       }else{
-                   $cordovaSocialSharing.shareViaEmail("[Erpia 거래명세표] "+'('+com_name+')'+url, "[Erpia 거래명세표] "+'('+com_name+')');
+                   $cordovaSocialSharing.shareViaEmail("[Erpia 거래명세표] "+'('+comname+')'+url, "[Erpia 거래명세표] "+'('+comname+')');
 	       }
 	       $scope.toemail ='';
 	}
@@ -1054,7 +1064,7 @@ $scope.pushYNcheck=function(){
 			}
 		}else if($rootScope.userType == "ERPia"){
 			// alert($scope.loginData.Pwd);
-			$scope.userData.Sano = $scope.loginData.Pwd; // =========================== 지워야되.
+			// $scope.userData.Sano = $scope.loginData.Pwd; // =========================== 지워야되.
 			if($scope.loginData.Pwd == $scope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
@@ -1126,7 +1136,8 @@ $scope.pushYNcheck=function(){
 	console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
 		$scope.updatebtn=function(){
 			if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
-			else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
+			else alert("앱스토어에서 확인해주세요.");
+			// else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
 		}
 
 	/* 최상단으로 */
@@ -2325,7 +2336,7 @@ $scope.pushYNcheck=function(){
 	}
 })
 // ERPia 차트 컨트롤러
-.controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, ERPiaAPI, statisticService, IndexService) {
+.controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, $cordovaToast,ERPiaAPI, statisticService, IndexService) {
 	$scope.myStyle = {
 	    "width" : "100%",
 	    "height" : "100%"
@@ -2731,7 +2742,7 @@ $scope.pushYNcheck=function(){
 
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
 				if($scope.kind === "beasonga"){
-					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
+					$scope.htmlCode = '<ion-content><ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">'	+'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat" style="padding-top:20px;">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; vertical-align: top;">'+
 									'<button class="fa fa-refresh" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
@@ -2758,7 +2769,7 @@ $scope.pushYNcheck=function(){
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>' + '</ion-content>';
+							'</div>' + '</ion-scroll></ion-content>';
 				}else{
 					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat" style="padding-top:20px;">'+
@@ -2766,12 +2777,11 @@ $scope.pushYNcheck=function(){
 									'<button class="fa fa-refresh" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
 									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>'+
 									'<div class="pull-right">'+
-									'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
-									'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
-									'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
-									'<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>'+
+										'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
+										'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
+										'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
+										'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
-
 									'<div name="loading2" style="position: absolute; top: 150px; left:10%; z-index: 50; width:80%; height:100px;  color: #fff; background: #9687a1; text-align: center; padding-top: 40px;">정보없음</div>'+
 								'</div>'+
 
@@ -2790,7 +2800,7 @@ $scope.pushYNcheck=function(){
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>'+ '</ion-content></ion-scroll>';
+							'</div>'+ '</ion-content>';
 				}
 
 
@@ -2817,18 +2827,32 @@ $scope.pushYNcheck=function(){
 
 				$("button[name=btnW]").click(function() {
 					$scope.loadingani();
+					$("div[name=gridBody]").css('display', 'none');
+					$('#' + $scope.kind).css('display', 'block');
 				});
 				$("button[name=btnM]").click(function() {
 					$scope.loadingani();
+					$("div[name=gridBody]").css('display', 'none');
+					$('#' + $scope.kind).css('display', 'block');
 				});
 				$("button[name=btnY]").click(function() {
 					$scope.loadingani();
+					$("div[name=gridBody]").css('display', 'none');
+					$('#' + $scope.kind).css('display', 'block');
 				});
+
+				if($('div[name=loading2]').css('display') == 'none'){  // 정보있을때
+					$("button[name=btnGrid").css('background', '#ececed');
+					$("button[name=btnGrid").css('color', '#444');
+				}else{
+					$("button[name=btnGrid").css('background', '#000');
+					$("button[name=btnGrid").css('color', '#fff');
+				}
 
 
 				$("button[name=btnGrid]").click(function() {
 					$scope.loadingani();
-					if($('div[name=loading2]').css('display') == 'none'){ // 정보없음이면 실행 X
+					if($('div[name=loading2]').css('display') == 'none'){ // 정보있을때
 						if ($('div[name=gridBody]').css('display') == 'none') {
 							$('div[name=gridBody]').css('display','block');
 							$('#' + $scope.kind).css('display', 'none');
@@ -2837,6 +2861,7 @@ $scope.pushYNcheck=function(){
 						} else {
 							$("div[name=gridBody]").css('display', 'none');
 							$('#' + $scope.kind).css('display', 'block');
+							
 						}
 					}
 				});
