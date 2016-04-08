@@ -40,8 +40,8 @@
               <ion-checkbox ng-click='goodsCheck(x)'>
                 {{x.G_Code}}<br>
                 <span ng-bind-html='goodslists[$index].G_Name' style="font-size: 0.9em; display: inline-block; width: 95%; white-space: normal;"></span><br>
-                <font style="font-size: 0.9em;">가용재고: </font><font color="red" ng-if="x.Jego<=0">{{x.Jego}}</font>
-                <font color="blue" ng-if="x.Jego>0">{{x.Jego}}</font>
+                <font style="font-size: 0.9em;">가용재고: </font><font color="red" ng-if="x.Jego<=0">{{x.Jego|number:0}}</font>
+                <font color="blue" ng-if="x.Jego>0">{{x.Jego|number:0}}</font>
               </ion-checkbox>
             </td>
             <td style='width:10%; padding-left:9px; vertical-align: middle; background: #dce0e1'><i class="ion-help-circled" style="font-size:2.5em;vertical-align:middle;" ng-click='goodsDetail($index)'></i></td>

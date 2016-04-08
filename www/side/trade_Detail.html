@@ -158,7 +158,7 @@
 						    </tr>
 						    <tr height=30>
 						        <td class='tdList tdListEnd tdLeftSolid tdBottomSolid' rowspan=2 width=45>비 고<br/><br/>사 항</td>
-						        <td class='tdListEnd' width=450 style='border-bottom:0px;'>.</td>
+						        <td class='tdListEnd' width=450 style='border-bottom:0px;'>{{detail.bigo}}</td>
 						        <td class='tdText tdListEnd tdBottomSolid'>합계</td>
 						        <td class='tdNumber tdListEnd tdBottomSolid'>{{detail.numhap}}</td>
 						        <td class='tdNumber tdListEnd tdBottomSolid'>{{detail.pricehap | number:0}}</td>
@@ -315,7 +315,7 @@
 						    </tr>
 						    <tr height=30>
 						        <td class='tdList_red tdListEnd_red tdLeftSolid_red tdBottomSolid_red' rowspan=2 width=45>비 고<br/><br/>사 항</td>
-						        <td class='tdListEnd_red' width=450 style='border-bottom:0px;'>.</td>
+						        <td class='tdListEnd_red' width=450 style='border-bottom:0px;'>{{detail.bigo}}</td>
 						        <td class='tdListEnd_red tdBottomSolid_red tdText_red'>합계</td>
 						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{detail.numhap}}</td>
 						        <td class='tdListEnd_red tdBottomSolid_red tdNumber_red'>{{detail.pricehap | number:0}}</td>
@@ -336,9 +336,9 @@
 	</ion-content>
 
  	<ion-footer-bar align-title="left" style="background: #736777; text-align: center; border: 0;">
-	    <button class='button button-psm04' ng-click='html3image(detail_items, "sms")'>SMS 공유</button>
-	    <button class='button button-psm02' ng-click='html3image(detail_items, "email")' style="margin-left: 5px;">email 공유</button>
-	    <button class='button button-psm03' ng-click='html3image(detail_items, "kakao")' style="margin-left: 5px;">카카오톡 공유</button>
+	    <button class='button button-psm04' ng-click='tradenumber(detail_items, "sms")'>SMS 공유</button>
+	    <button class='button button-psm02' ng-click='tradenumber(detail_items, "email")' style="margin-left: 5px;">email 공유</button>
+	    <button class='button button-psm03' ng-click='tradenumber(detail_items, "kakao");' style="margin-left: 5px;">카카오톡 공유</button>
 	    <!-- <button class='button button-psm01' ng-click='html3image(detail_items, "print")'>출력하기</button> -->
 	</ion-footer-bar>
 

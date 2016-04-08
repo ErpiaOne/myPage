@@ -33,7 +33,25 @@
 	border-color: transparent;
 }*/
 
-input {-webkit-appearance:none; -webkit-border-radius: 0; color: #444444;}
+
+input[type='checkbox'],
+input[type='text'],
+input[type='password'],
+input[type='file'],
+input[type='button'],
+input[type='reset'],
+input[type='submit'],
+input[type='number'],
+input[type='search'],
+input[type='range'],
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'],
+input[type='month'],
+input[type='tel']
+	{-webkit-appearance:none; -webkit-border-radius: 0; color: #444444;}
+
+button {-webkit-appearance:none; -webkit-border-radius: 0;}
 select {-webkit-border-radius: 0; height: 35px;}
 
 .psm_left_top {

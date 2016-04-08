@@ -1,12 +1,14 @@
-<ion-modal-view class="psm_login_body" style="height:100%; padding-top:40px;">
-	<div class="bar bar-header bar-balanced">
-		<h1 class="title">이용약관</h1>
-	</div>
-	<div class="card" style="height:40%">
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
+   	<h1 class="title" style="color: #fff">이용약관</h1>
+  </ion-header-bar>
+  <ion-content scroll="false">
+	<div class="card" style="height:35%">
 		<div class="item item-divider">
 			애플리케이션 서비스 이용약관(필수)
 		</div>
-		<div class="item item-text-wrap" style="overflow-y:scroll; height:70%; font-size:14px;">
+		<div class="item item-text-wrap" style="height:60%; font-size:14px;">
+		<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
 제1장 총칙<br>
 제1조 (목적)<br>
 이 약관은 주식회사 원제로소프트(이하 “회사”)가 제공하는 ‘ERPia’ 모바일(이하 “서비스”) 서비스 이용과 관련하여 회사와 회원 간의 권리, 의무, 책임사항, 기타 필요한 사항을 규정함을 목적으로 한다.<br>
@@ -254,16 +256,18 @@
 부칙 (2015년 11월 06일 공시)<br>
 (시행일) 이 약관은 2015년 11월 06일부터 시행합니다.<br>
 이전의 이용약관은 아래에서 확인할 수 있습니다.<br>
+		</ion-scroll>
 		</div>
-		<div class="item item-divider" style="height:30%;">
+		<div class="item item-divider" style="height:40%;">
 			<input type="checkbox" id="agree_1" class="checkbox-style" ng-model='agree_1'/><label for="agree_1">동의합니다</label>
 		</div>
 	</div>
-	<div class="card" style="height:40%">
+	<div class="card" style="height:35%">
 		<div class="item item-divider">
 			개인정보수집 및 제공에 대한 동의(필수)
 		</div>
-		<div class="item item-text-wrap" style="overflow-y:scroll; height:70%; font-size:14px;">
+		<div class="item item-text-wrap" style="height:60%; font-size:14px;">
+		<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
 주식회사 원제로소프트는 (이하 “회사”) 고객님의 개인정보를 중요시하며, "정보통신망 이용촉진 및 정보보호"에 관한 법률을 준수하고 있습니다. 회사는 개인정보취급방침을 통하여 고객님께서 제공하시는 개인정보가 어떠한 용도와 방식으로 이용되고 있으며, 개인정보보호를 위해 어떠한 조치가 취해지고 있는지 알려 드립니다.<br>
 <br>
 제1조 (수집하는 개인정보 항목)<br>
@@ -374,8 +378,9 @@
 <br>
 제11조 개인정보처리방침 변경<br>
 이 개인정보처리방침은 2015. 11. 06일 부터 적용됩니다.<br>
+		</ion-scroll>
 		</div>
-		<div class="item item-divider" style="height:30%">
+		<div class="item item-divider" style="height:40%">
 			<input type="checkbox" id="agree_2" class="checkbox-style" ng-model='agree_2'/><label for="agree_2">동의합니다</label>
 		</div>
 	</div>
@@ -383,8 +388,9 @@
 		<tr>
 			<td width="10%"></td>
 			<td width="40%" align="right"><button style="margin-right:5px; width:90px;" class="button button-balanced" type="submit" ng-click='click_agreement(this)'>확인</button></td>
-			<td width="40%" align="left"><button style="margin-left:5px; width:90px;" class="button button-assertive" type="submit" ng-click='click_cancel()'>돌아가기</button></td>
+			<td width="40%" align="left"><button style="margin-left:5px; width:90px;" class="button button-assertive" type="submit" ng-click='click_cancel()'>Back</button></td>
 			<td width="10%"></td>
 		</tr>
 	</table>
+	</ion-content>
 </ion-modal-view>

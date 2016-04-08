@@ -1,17 +1,16 @@
 <ion-modal-view class="psm_login_body" style="height:100%; padding-top:40px;">
-	<div class="bar bar-header bar-balanced">
-		<h1 class="title">모바일 보안인증</h1>
-		<div class="buttons">
-			<button class="button button-clear" ng-click="close_cert()">
-				닫기
-			</button>
-		</div>
-	</div>
+  <ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
+   	<h1 class="title" style="color: #fff">모바일 보안인증</h1>
+   	<div class="buttons">
+      <button class="button button-clear" ng-click="close_cert()" style="color: #fff;">닫기</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
 	<div class="card" style="height:95%">
 		<div class="item item-divider">
 			모바일 보안인증
 		</div>
-		<div class="item item-text-wrap" style="overflow-y:scroll; height:70%; font-size:14px;">
+		<div class="item item-text-wrap" style="height:50%; font-size:14px;">
 안녕하세요!<br>
 ERPia 모바일에 오신 것을 환영합니다.<br>
 <br>
@@ -38,4 +37,5 @@ ERPia 애플리케이션은 고객분들의 소중한 정보 유출을 방지하
 			</div>
 		</form>
 	</div>
+</ion-content>
 </ion-modal-view>
