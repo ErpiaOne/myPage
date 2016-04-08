@@ -23,7 +23,7 @@
 									<td class="psm_segum19">{{item.in_date}}</td>
 									<td class="psm_segum35" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
 									<td class="psm_segum35" ng-if="userType == 'ERPia'">
-									{{ (item.Ger_Name.length>15?item.Ger_Name.substring(0,12) + "..." : item.Ger_Name) }}
+									{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
 									</td>
 									<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? 'O' : 'X')}}</td>
 								</tr>

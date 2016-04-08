@@ -83,6 +83,7 @@ angular.module('starter.services', [])
 		}else if(kind == 'ERPia_Ger_Login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
 			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass;
+			console.log(url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -150,8 +151,13 @@ angular.module('starter.services', [])
 		$rootScope.rndNum = Math.floor(Math.random() * 1000000) + 1;
 		if ($rootScope.rndNum < 100000) $rootScope.rndNum = '0' + $rootScope.rndNum;
 		console.log($rootScope.rndNum);
+		//http://www.erpia.net/include/Json_Proc_MyPage_Scm_manage.asp?Kind=mobile_Certification&Value_Kind=list&Admin_Code=onz&ID=dic1&Certify_Code=768528&loginType=S&hp=01099840117
+		if(loginType == 'E'){
+			url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm_manage.asp';
+		}
 		var data = 'Kind=mobile_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID;
-		data += '&Certify_Code=' + $rootScope.rndNum + '&loginType=' + loginType;
+		data += '&Certify_Code=' + $rootScope.rndNum + '&loginType=' + loginType + '&hp=' + rec_num;
+		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
 		.success(function(response){
 			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증코드를 전송했습니다.', 'long', 'center');
@@ -168,15 +174,16 @@ angular.module('starter.services', [])
 			}
 		})
 	}
-	var check = function(Admin_Code, loginType, ID, Input_Code){
+	var check = function(Admin_Code, loginType, ID, Input_Code, rec_num){
 		var data ='';
 		if(loginType == 'S' || loginType == 'N'){
 			data = 'Kind=check_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID;
-			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType;
+			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num;
 		}else if(loginType=='E'){
 			url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID;
+			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num;
 		}
+		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
 		.success(function(response){
 			if (response.list[0].Result == '1'){
@@ -200,7 +207,25 @@ angular.module('starter.services', [])
 	return{
 		tradeList: function(Admin_Code, GerCode){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Kind=select_Trade' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode + '&gu=' + 'E';
+			var data = 'Kind=select_Trade' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode;
+			console.log('tradeList', url,'?',data);
+			return $http.get(url + '?' + data)
+				.then(function(response){
+					console.log('tradeList=>',response.data);
+					if(typeof response.data == 'object'){
+						return response.data;
+					}else{
+						return $q.reject(response.data);
+					}
+				}, function(response){
+					return $q.reject(response.data);
+				})
+		},readDetail_key: function(Admin_Code, Sl_No){
+			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
+			
+			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Key&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
+			else var data = 'Kind=select_Trade_Detail_Key' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
+
 			console.log('tradeList', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
@@ -228,51 +253,71 @@ angular.module('starter.services', [])
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea1) * parseInt(response.data.list[0].G_price1) - parseInt(response.data.list[0].G_Gong1);
 							response.data.list[0].tax1 = tax;
+						}else{
+							response.data.list[0].tax1 = 0;
 						}
 						if(response.data.list[0].G_name2 != null){
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea2) * parseInt(response.data.list[0].G_price2) - parseInt(response.data.list[0].G_Gong2);
 							response.data.list[0].tax2 = tax;
+						}else{
+							response.data.list[0].tax2 = '.';
 						}
 						if(response.data.list[0].G_name3 != null){
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea3) * parseInt(response.data.list[0].G_price3) - parseInt(response.data.list[0].G_Gong3);
 							response.data.list[0].tax3 = tax;
+						}else{
+							response.data.list[0].tax3 = '.';
 						}
 						if(response.data.list[0].G_name4 != null){
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea4) * parseInt(response.data.list[0].G_price4) - parseInt(response.data.list[0].G_Gong4);
 							response.data.list[0].tax4 = tax;
+						}else{
+							response.data.list[0].tax4 = '.';
 						}
 						if(response.data.list[0].G_name5 != null){
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea5) * parseInt(response.data.list[0].G_price5) - parseInt(response.data.list[0].G_Gong5);
 							response.data.list[0].tax5 = tax;
+						}else{
+							response.data.list[0].tax5 =  '.';
 						}
 						if(response.data.list[0].G_name6 != null){
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea6) * parseInt(response.data.list[0].G_price6) - parseInt(response.data.list[0].G_Gong6);
 							response.data.list[0].tax6 = tax;
+						}else{
+							response.data.list[0].tax6 = '.';
 						}
 						if(response.data.list[0].G_name7 != null){
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea7) * parseInt(response.data.list[0].G_price7) - parseInt(response.data.list[0].G_Gong7);
 							response.data.list[0].tax7 = tax;
+						}else{
+							response.data.list[0].tax7 = '.';
 						}
 						if(response.data.list[0].G_name8 != null){
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea8) * parseInt(response.data.list[0].G_price8) - parseInt(response.data.list[0].G_Gong8);
 							response.data.list[0].tax8 = tax;
+						}else{
+							response.data.list[0].tax8 = '.';
 						}
 						if(response.data.list[0].G_name9 != null){
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea9) * parseInt(response.data.list[0].G_price9) - parseInt(response.data.list[0].G_Gong9);
 							response.data.list[0].tax9 = tax;
+						}else{
+							response.data.list[0].tax9 = '.';
 						}
 						if(response.data.list[0].G_name10 != null){
 							var tax = 0;
 							var tax =  parseInt(response.data.list[0].G_ea10) * parseInt(response.data.list[0].G_price10) - parseInt(response.data.list[0].G_Gong10);
 							response.data.list[0].tax10 = tax;
+						}else{
+							response.data.list[0].tax10 = '.';
 						}
 
 						return response.data;

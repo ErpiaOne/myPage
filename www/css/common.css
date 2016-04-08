@@ -33,6 +33,27 @@
 	border-color: transparent;
 }*/
 
+
+input[type='checkbox'],
+input[type='text'],
+input[type='password'],
+input[type='file'],
+input[type='button'],
+input[type='reset'],
+input[type='submit'],
+input[type='number'],
+input[type='search'],
+input[type='range'],
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'],
+input[type='month'],
+input[type='tel']
+	{-webkit-appearance:none; -webkit-border-radius: 0; color: #444444;}
+
+button {-webkit-appearance:none; -webkit-border-radius: 0;}
+select {-webkit-border-radius: 0; height: 35px;}
+
 .psm_left_top {
 	color: #ffffff;
 	text-align: left;
@@ -268,7 +289,7 @@
 .psm_login3  {background: #f6be5c; display: inline-block; width: 50px; height: 50px; text-align: center; font-size: 1.5em; color: #fff; padding-top: 0.37em;}
 
 
-.psm_home01 {background: url('../img/bg_main.jpg'); color: #fff; padding: 3em 0; height: 100%;}
+.psm_home01 {background: url('../img/bg_main.jpg'); color: #fff; padding: 3em 0; height: 400px;}
 .psm_home02 {width:100%}
 .psm_home03 {font-size:17pt; font-weight:bold; text-align: left; padding-left: 15px}
 .psm_home04 {width:100%; margin-top: 20px;}

@@ -2263,7 +2263,7 @@ a:focus {
 .btn-warning:hover,
 .btn-warning:active,
 .btn-warning.hover {
-  background-color: #e08e0b;
+  background-color: #eec45f;
 }
 .btn-outline {
   border: 1px solid #fff;
@@ -4122,7 +4122,7 @@ fieldset[disabled] .btn-vk.active {
   background-color: #01ff70 !important;
 }
 .bg-orange {
-  background-color: #ff851b !important;
+  background-color: #db883f !important;
 }
 .bg-fuchsia {
   background-color: #f012be !important;
@@ -4181,7 +4181,7 @@ fieldset[disabled] .btn-vk.active {
   background-color: #00e765 !important;
 }
 .bg-orange-active {
-  background-color: #ff7701 !important;
+  background-color: #cd7a31 !important;
 }
 .bg-fuchsia-active {
   background-color: #db0ead !important;
