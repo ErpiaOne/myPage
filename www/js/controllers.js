@@ -43,7 +43,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$rootScope.loginState = "R"; //R: READY, E: ERPIA LOGIN TRUE, S: SCM LOGIN TRUE
 	$rootScope.deviceInfo = {};  // Device 정보를 담아두는 변수
 	$scope.ion_login = "ion-power active";  // 로그인/로그아웃 시 변경되는 CSS
-	// 각각의 변수를 담아두는 공간. 초기화를 쉽게 하기 위해 만들었음.
+	// 각각의 변수를 담아두는 공간. 초기화를 쉽게 하기 위해 만들었음.totCnt
 	$rootScope.loginData = {};
 	$scope.userData = {};
 	$scope.SMSData = {};
@@ -290,8 +290,8 @@ $scope.pushYNcheck=function(){
 						// $scope.loginData.UserId = 'demopro';
 						// $scope.loginData.Pwd = 'demopro';
 						$scope.loginData.Admin_Code = 'onz';
-						$scope.loginData.UserId = 'test001';
-						$scope.loginData.Pwd = 'test001!';
+						$scope.loginData.UserId = 'test1234';
+						$scope.loginData.Pwd = 'test1234!';
 					break;
 				}
 			}
@@ -496,8 +496,12 @@ $scope.pushYNcheck=function(){
 					$scope.userData.G_Code = comInfo.data.list[0].G_Code;
 					$scope.userData.G_Sano = comInfo.data.list[0].Sano;
 					$scope.userData.GerCode = comInfo.data.list[0].G_Code;
-					$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
-
+					if(comInfo.data.list[0].cntNotRead == null){
+						$scope.userData.cntNotRead = 0;
+					}else{
+						$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
+					}
+					console.log('정보체크=>', comInfo.data.list[0]);
 					$scope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
 					$rootScope.loginState = "N";
@@ -544,7 +548,7 @@ $scope.pushYNcheck=function(){
 			$scope.userData.cnt_site = '10 개';
 
 			$scope.userData.cntNotRead = 10;	//계산서 미수신건
-			$scope.userData.expire_date = '2015-12-31'; //"2015년<br>8월20일";
+			$scope.userData.expire_date = '2016-03-31'; //"2015년<br>8월20일";
 			$scope.userData.expire_days = 50;
 			$state.go('app.sample_Main');
 		}

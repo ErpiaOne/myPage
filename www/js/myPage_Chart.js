@@ -236,7 +236,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"allLabels": [
 					{
 						"id": "ValueAxis-1",
-						"text": "금액(원)",
+						"text": "금액(만원)",
 						"bold": true,
 						"size": 12,
 						"x": 20,
@@ -328,7 +328,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"allLabels": [
 					{
 						"id": "ValueAxis-1",
-						"text": "금액(원)",
+						"text": "금액(만원)",
 						"bold": true,
 						"size": 12,
 						"x": 20,
@@ -381,72 +381,72 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			break;
 
-// 		case "scm" :		//scm
-// 		console.log('scm');
-// 			var chart = AmCharts.makeChart("scm", {
-// 				"type": "serial",
-// 				"theme": "dark",
-// 				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?Kind=scm&Value_Kind=scm&admin_code=" + admin_code + "&swm_gu=" + gu),
-// 				"startDuration": 1,
-// 				"prefixesOfBigNumbers": [
-// 					{
-// 						"number": 10000,
-// 						"prefix": ""
-// 					}
-// 				],
-// 				"valueAxes": [
-// 					{
-// 						"id": "ValueAxis-1",
-// 						"title": "금액",
-// 						"titleRotation": 0,
-// 						"usePrefixes": true
-// 					},
-// 					{
-// 						"id": "ValueAxis-2",
-// 						"title": "수량",
-// 						"titleRotation": 0,
-// 						"position": "right"
-// 					}
-// 				],
-// 				"graphs": [{
-// //					"balloonText": "수량: <b>[[value]]</b>",
-// 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 개</span>",
-// 					"fillAlphas": 0.9,
-// 					"lineAlpha": 0.2,
-// 					"title": "수량",
-// 					"type": "column",
-// 					"valueAxis": "ValueAxis-2",
-// 					"valueField": "su"
-// 				}, {
-// //					"balloonText": "금액: <b>[[value]]</b>",
-// 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span>",
-// 					"fillAlphas": 0.9,
-// 					"lineAlpha": 0.2,
-// 					"title": "금액",
-// 					"type": "column",
-// 					"clustered":false,
-// 					"columnWidth":0.5,
-// 					"valueAxis": "ValueAxis-1",
-// 					"valueField": "value"
-// 				}],
-// 				"plotAreaFillAlphas": 0.1,
-// 				"categoryField": "name",
-// 				"categoryAxis": {
-// 					"gridPosition": "start",
-// 					"autoRotateAngle" : 0,
-// 					"autoRotateCount": 1,
-// 				},
-// 				"export": {
-// 					"enabled": true
-// 				 },
-//                 "legend": {
-//                     "align": "center",
-//                     "markerType": "circle",
-// 					"balloonText" : "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>"
-//                 }
-// 			});
+		case "scm" :		//scm
+		console.log('scm');
+			var chart = AmCharts.makeChart("scm", {
+				"type": "serial",
+				"theme": "dark",
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?Kind=scm&Value_Kind=scm&admin_code=" + admin_code + "&swm_gu=" + gu),
+				"startDuration": 1,
+				"prefixesOfBigNumbers": [
+					{
+						"number": 10000,
+						"prefix": ""
+					}
+				],
+				"valueAxes": [
+					{
+						"id": "ValueAxis-1",
+						"title": "금액",
+						"titleRotation": 0,
+						"usePrefixes": true
+					},
+					{
+						"id": "ValueAxis-2",
+						"title": "수량",
+						"titleRotation": 0,
+						"position": "right"
+					}
+				],
+				"graphs": [{
+//					"balloonText": "수량: <b>[[value]]</b>",
+					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 개</span>",
+					"fillAlphas": 0.9,
+					"lineAlpha": 0.2,
+					"title": "수량",
+					"type": "column",
+					"valueAxis": "ValueAxis-2",
+					"valueField": "su"
+				}, {
+//					"balloonText": "금액: <b>[[value]]</b>",
+					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span>",
+					"fillAlphas": 0.9,
+					"lineAlpha": 0.2,
+					"title": "금액",
+					"type": "column",
+					"clustered":false,
+					"columnWidth":0.5,
+					"valueAxis": "ValueAxis-1",
+					"valueField": "value"
+				}],
+				"plotAreaFillAlphas": 0.1,
+				"categoryField": "name",
+				"categoryAxis": {
+					"gridPosition": "start",
+					"autoRotateAngle" : 0,
+					"autoRotateCount": 1,
+				},
+				"export": {
+					"enabled": true
+				 },
+                "legend": {
+                    "align": "center",
+                    "markerType": "circle",
+					"balloonText" : "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>"
+                }
+			});
 
-// 			break;
+			break;
 
 		case "Meachul_ik" :			//매출이익 증감율
 		console.log('매출이익 증감율');
@@ -497,7 +497,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"allLabels": [
 					{
 						"id": "ValueAxis-1",
-						"text": "이익액(원)",
+						"text": "이익액(만원)",
 						"bold": true,
 						"size": 12,
 						"align": "left",
@@ -620,14 +620,13 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "meachul_7" :			//매출 실적 추이
 		console.log('매출 실적 추이');
-		console.log('매출실적추이 =>', gu);
 			var chart = AmCharts.makeChart("meachul_7", {
 			  "type": "serial",
 			  "addClassNames": true,
 			  "startDuration": 0,
 			  "theme": "dark",
 			  "autoMargins": true,
-			  "marginTop": 30,
+			  // "marginTop": 30,
 			  "mouseWheelScrollEnabled": false,
 			  "balloon": {
 				"adjustBorderColor": false,
@@ -660,7 +659,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"allLabels": [
 					{
 						"id": "ValueAxis-1",
-						"text": "금액(원)",
+						"text": "금액(만원)",
 						"bold": true,
 						"size": 12,
 						"x": 20,
@@ -732,7 +731,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "meaip_7" :			//매입현황
 		console.log('/매입현황');
-		console.log('매입현황 =>', gu);
 			var chart = AmCharts.makeChart("meaip_7", {
 			   "theme": "dark",
 				"type": "serial",
@@ -763,7 +761,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"allLabels": [
 					{
 						"id": "ValueAxis-1",
-						"text": "금액(원)",
+						"text": "금액(만원)",
 						"bold": true,
 						"size": 12,
 						"x": 20,
@@ -780,7 +778,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					}
 				],
 				"graphs": [{
-//					"balloonText": "수량: <b>[[value]]</b>",
+					"balloonText": "수량: <b>[[value]]</b>",
 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 개</span>",
 					"fillAlphas": 0.9,
 					"lineAlpha": 0.2,
@@ -789,7 +787,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"valueAxis": "ValueAxis-2",
 					"valueField": "su"
 				}, {
-//					"balloonText": "금액: <b>[[value]]</b>",
+					"balloonText": "금액: <b>[[value]]</b>",
 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span>",
 					"fillAlphas": 0.9,
 					"lineAlpha": 0.2,
@@ -828,7 +826,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "beasonga" :			//금일 출고 현황
 		console.log('금일 출고 현황');
-		console.log('김일 =>', gu);
 			var chart = AmCharts.makeChart("beasonga", {
 			  "type": "pie",
 			  "theme": "dark",
