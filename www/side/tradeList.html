@@ -1,4 +1,8 @@
-<ion-view view-title="{{tradeList.Title}}">
+<ion-view view-title="//{{YNcheck}}" cache-view="false">
+	<ion-nav-buttons side="right">
+		<button menu-toggle="right" ng-if="YNcheck =='not'" ng-click="tradechange()" class="button button-small button-psm00">전체보기</button> <!-- 미열람건{{tradeList.Title}} -->
+		<button menu-toggle="right" ng-if="YNcheck =='all'" ng-click="tradechange()" class="button button-small button-psm00">미열람건</button>
+	</ion-nav-buttons>
 	<ion-content class="padding" style="width:100%; background: #dce0e1">
 		<!-- <a ng-href="tel:070-7012-3071" class="button button-positive"> call me</a> -->
 		<link ng-href="css/lhkTradeDetail.css" rel="stylesheet">
@@ -16,6 +20,25 @@
 			<div ng-switch-when='Y'>
 				<ion-list>
 					<ion-item ng-repeat="item in items" style="padding:0px;">
+					<any ng-if="YNcheck =='not'">
+						<div ng-if="item.readYN == 'N'" ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}')"  class="psm_segum16" style="border-bottom: 0;">
+							<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+								<tr>
+									<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
+									<td class="psm_segum19">{{item.in_date}}</td>
+									<td class="psm_segum35" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
+									<td class="psm_segum35" ng-if="userType == 'ERPia'">
+									{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
+									</td>
+									<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? 'O' : 'X')}}</td>
+								</tr>
+								<tr>
+									<td colspan="2" class="psm_segum22">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
+								</tr>
+							</table>
+						</div>
+					</any>
+					<any ng-if="YNcheck =='all'">
 						<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}')"  class="psm_segum16" style="border-bottom: 0;">
 							<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
 								<tr>
@@ -32,6 +55,7 @@
 								</tr>
 							</table>
 						</div>
+					</any>
 					</ion-item>
 				</ion-list>
 			</div>

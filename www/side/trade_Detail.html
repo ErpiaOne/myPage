@@ -15,7 +15,7 @@
 					<ion-item ng-repeat="detail in detail_items">
 						<table width="1080" style="margin-bottom: 10px;">
 						    <tr>
-						        <td name='td_User_Date' width=300 align=left>{{userData.GerName}}({{loginData.UserId}})({{detail.Admin_Code}})</br>{{currentDate | date:'yyyy-MM-dd'}}</td>
+						        <td name='td_User_Date' width=300 align=left>{{userData.GerName}}({{loginData.UserId}})({{detail.Admin_Code}}){{currentDate | date:'yyyy-MM-dd'}}</td>
 						        <td width=420 align=center style='color:blue;'><u style='font-size:30px;'>거래명세표</u> (공급받는자용)</td>
 						        <td name='td_Sl_No_Time' width=300 align=right>No.{{detail.Publish_No}}</td>
 						    </tr>
@@ -172,7 +172,7 @@
 
 						<table width=1020 style="margin-bottom: 10px;">
 						    <tr>
-						        <td name='td_User_Date' width=300 align=left>{{userData.GerName}}({{loginData.UserId}})<br/>{{currentDate | date:'yyyy-MM-dd'}}</td>
+						        <td name='td_User_Date' width=300 align=left>{{userData.GerName}}({{loginData.UserId}}){{currentDate | date:'yyyy-MM-dd'}}</td>
 						        <td width=420 align=center style='color:red;'><u style='font-size:30px;'>거래명세표</u> (공급자용)</td>
 						        <td name='td_Sl_No_Time' width=300 align=right>No.{{detail.Publish_No}}</td>
 						    </tr>

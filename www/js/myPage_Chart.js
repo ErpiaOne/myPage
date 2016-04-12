@@ -14,9 +14,10 @@ function renewalDay(kind, gu, admin_code, ERPiaApi_url)
 	makeCharts(kind, gu, admin_code,ERPiaApi_url);
 }
 
-
 function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	//javascript로 parameter 읽어오기
+	// var kind = "#<%=kind%>";
+
 	// 날짜
 	var d= new Date();
 	var month = d.getMonth() + 1;
@@ -99,6 +100,16 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
 		}, ["pie"]);
 	}
+
+	height = $(window).height()-300;
+	$('#' + kind).css('height', height+'px');
+
+	$(window).resize(function () {
+		height = $(window).height()-300;
+		console.log('height값 ->', height);
+		$('#' + kind).css('height', height+'px');
+	});
+
 	switch (kind)
 	{
 		case "meaip_jem" :			//거래처별 매입 점유율
@@ -778,7 +789,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					}
 				],
 				"graphs": [{
-					"balloonText": "수량: <b>[[value]]</b>",
+//					"balloonText": "수량: <b>[[value]]</b>",
 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 개</span>",
 					"fillAlphas": 0.9,
 					"lineAlpha": 0.2,
@@ -787,7 +798,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"valueAxis": "ValueAxis-2",
 					"valueField": "su"
 				}, {
-					"balloonText": "금액: <b>[[value]]</b>",
+//					"balloonText": "금액: <b>[[value]]</b>",
 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span>",
 					"fillAlphas": 0.9,
 					"lineAlpha": 0.2,
@@ -995,7 +1006,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"allLabels": [
 					{
 						"id": "ValueAxis-1",
-						"text": "금액(원)",
+						"text": "금액(만원)",
 						"bold": true,
 						"size": 12,
 						"x": 20,
@@ -1137,7 +1148,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"allLabels": [
 					{
 						"id": "ValueAxis-1",
-						"text": "금액(원)",
+						"text": "금액(만원)",
 						"bold": true,
 						"size": 12,
 						"x": 20,
@@ -1281,7 +1292,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"allLabels": [
 					{
 						"id": "ValueAxis-1",
-						"text": "금액(원)",
+						"text": "금액(만원)",
 						"bold": true,
 						"size": 12,
 						"x": 20,

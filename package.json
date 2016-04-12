@@ -23,7 +23,11 @@
     "cordova-plugin-contacts",
     "cordova-plugin-whitelist",
     "cordova-plugin-canvas2image",
-    "pushbots-cordova-plugin"
+    "pushbots-cordova-plugin",
+    {
+      "locator": "https://github.com/vliesaputra/DeviceInformationPlugin",
+      "id": "com.vliesaputra.deviceinformation"
+    }
   ],
   "cordovaPlatforms": [
     "ios"

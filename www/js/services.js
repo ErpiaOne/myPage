@@ -38,10 +38,10 @@ angular.module('starter.services', [])
 }])
 
 .factory('loginService', function($http, $q, $cordovaToast, ERPiaAPI){
-	var comInfo = function(kind, Admin_Code, G_id, G_Pass){
+	var comInfo = function(kind, Admin_Code, G_id, G_Pass, phoneNo){
 		if(kind == 'scm_login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass;
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass + '&hp=' + phoneNo;
 			console.log('????????????????????????????????????????????????',url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
@@ -56,7 +56,7 @@ angular.module('starter.services', [])
 				});
 		}else if(kind == 'ERPiaLogin'){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&uid=' + G_id + '&pwd=' + G_Pass;
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&uid=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -82,7 +82,7 @@ angular.module('starter.services', [])
 				});
 		}else if(kind == 'ERPia_Ger_Login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass;
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo;
 			console.log(url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){

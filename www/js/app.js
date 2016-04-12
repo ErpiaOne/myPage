@@ -236,10 +236,10 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		  },101);
 	
 		// Identify your user with the Ionic User Service
-		$ionicUser.identify(user).then(function(){
-			//$scope.identified = true;
-			console.log('Identified user ' + user.name + '\n ID ' + user.user_id);
-		});
+		// $ionicUser.identify(user).then(function(){
+		// 	//$scope.identified = true;
+		// 	console.log('Identified user ' + user.name + '\n ID ' + user.user_id);
+		// });
 
 
 		// Register with the Ionic Push service.  All parameters are optional.
