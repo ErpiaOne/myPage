@@ -1,4 +1,4 @@
-<ion-view view-title="//{{YNcheck}}" cache-view="false">
+<ion-view view-title="{{tradeList.Title}}" cache-view="false">
 	<ion-nav-buttons side="right">
 		<button menu-toggle="right" ng-if="YNcheck =='not'" ng-click="tradechange()" class="button button-small button-psm00">전체보기</button> <!-- 미열람건{{tradeList.Title}} -->
 		<button menu-toggle="right" ng-if="YNcheck =='all'" ng-click="tradechange()" class="button button-small button-psm00">미열람건</button>
@@ -24,7 +24,7 @@
 						<div ng-if="item.readYN == 'N'" ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}')"  class="psm_segum16" style="border-bottom: 0;">
 							<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
 								<tr>
-									<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
+									<td rowspan="2" class="psm_segum18">{{$index + 1}}!!</td>
 									<td class="psm_segum19">{{item.in_date}}</td>
 									<td class="psm_segum35" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
 									<td class="psm_segum35" ng-if="userType == 'ERPia'">

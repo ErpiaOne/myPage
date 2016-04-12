@@ -977,7 +977,7 @@ $scope.pushYNcheck=function(){
 	$scope.check = {};
 	$scope.tradeList = {};
 
-	$scope.YNcheck='not';
+	$scope.YNcheck='all';
 
 	$scope.reload_tradelist = function(){
 	// 각각의 로그인 타입별로 보여지는 화면을 다르게 표시.
@@ -1019,10 +1019,11 @@ $scope.reload_tradelist();
 //여기해야됨
 	$scope.tradechange = function(){
 		if($scope.YNcheck == 'not'){
-			$scope.YNcheck == 'all';
+			$scope.YNcheck = 'all';
 		}else{
-			$scope.YNcheck == "not";
+			$scope.YNcheck = "not";
 		}
+		$scope.reload_tradelist(); 
 	}
 
 	function commaChange(Num)
