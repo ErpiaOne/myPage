@@ -27,9 +27,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	      clearcache: 'yes',
 	      toolbar: 'yes'
 	   };
+
+
 	$rootScope.version={
-   		Android_version : '0.1.2', //업데이트시 필수로 변경!!
-   		IOS_version : '0.1.2'	//업데이트시 필수로 변경!!
+   		Android_version : '0.1.6', //업데이트시 필수로 변경!!
+   		IOS_version : '0.1.3'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 */
@@ -39,11 +41,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	         $ionicLoading.hide();
 	      }, 500);
 	}
+	$scope.logindata2 = {};
 
 	$rootScope.loginState = "R"; //R: READY, E: ERPIA LOGIN TRUE, S: SCM LOGIN TRUE
 	$rootScope.deviceInfo = {};  // Device 정보를 담아두는 변수
 	$scope.ion_login = "ion-power active";  // 로그인/로그아웃 시 변경되는 CSS
-	// 각각의 변수를 담아두는 공간. 초기화를 쉽게 하기 위해 만들었음.totCnt
+	// 각각의 변수를 담아두는 공간. 초기화를 쉽게 하기 위해 만들었음.
 	$rootScope.loginData = {};
 	$scope.userData = {};
 	$scope.SMSData = {};
@@ -77,8 +80,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.check_sano_Modal = modal;
 	});
 
+
 $scope.pushYNcheck=function(){
-		window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+		window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});	 //푸쉬봇 선언
 		var cntList = 6;
 		alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
 			.then(function(data){
@@ -165,46 +169,47 @@ $scope.pushYNcheck=function(){
 			disableBack: true
 		});
 		$scope.loginModal.hide();
-		if($rootScope.mobile_Certify_YN == 'Y'){
+		if($rootScope.mobile_Certify_YN == 'Y'){	 // 모바일 아이디 인증이 되어있다면!!  각자 LOGIN TYPE에 맞는 메인으로 이동
 			if($rootScope.loginState == "S"){
 		        $state.go("app.erpia_scmhome");
 			}else if($rootScope.loginState == "E"){
 				//$state.go("app.erpia_main");
 				// $scope.onSlideMove
 		        $state.go("app.slidingtab");
-			}else if($rootScope.loginState == 'N'){
+			}else if($rootScope.loginState == 'N'){ 
 				$state.go("app.erpia_main");
 			}
 			// else if($rootScope.userType == 'Guest'){
 			// 	$location.href = '#/app/slidingtab';
 			// }
 		}
-		else if($rootScope.loginState != "R") {
+		else if($rootScope.loginState != "R") {	 // logintype이 "R"(Ready) 이 아니라면 인증동의 창이 띄워지도록한다. 
+
 			$scope.agreeModal.show();
 		}
-		var PushInsertCheck = "";
-		var PushInsertCheck2 = "";
+		// var PushInsertCheck = "";
+		// var PushInsertCheck2 = "";
 
-		$scope.pushUserCheck = function() {
-			pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SELECT_InsertCheck', $rootScope.UserKey, $rootScope.token, '', '', '', '')
-		    .then(function(pushInfo){
-		    	if(pushInfo.data.list.length != 0){
-		    		PushInsertCheck = pushInfo.data.list[0].token;
-		    	}
-		    	if(PushInsertCheck == $rootScope.token){
-		    		PushInsertCheck2 = "duplication";
-		    		console.log('pushinfo:: duplication');
-		    	}else{
-		    		PushInsertCheck2 = "NewToken";
-		    		console.log('pushinfo:: NewToken.. Insert&Update Start');
-	    			if(PushInsertCheck2 == "NewToken"){
-						$scope.pushUserRegist();
-					};
-		    	}
-		    },function(){
-				alert('pushUserCheck fail')
-			});
-		};
+		// $scope.pushUserCheck = function() {
+		// 	pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SELECT_InsertCheck', $rootScope.UserKey, $rootScope.token, '', '', '', '')
+		//     .then(function(pushInfo){
+		//     	if(pushInfo.data.list.length != 0){
+		//     		PushInsertCheck = pushInfo.data.list[0].token;
+		//     	}
+		//     	if(PushInsertCheck == $rootScope.token){
+		//     		PushInsertCheck2 = "duplication";
+		//     		console.log('pushinfo:: duplication');
+		//     	}else{
+		//     		PushInsertCheck2 = "NewToken";
+		//     		console.log('pushinfo:: NewToken.. Insert&Update Start');
+	 //    			if(PushInsertCheck2 == "NewToken"){
+		// 				$scope.pushUserRegist();
+		// 			};
+		//     	}
+		//     },function(){
+		// 		alert('pushUserCheck fail')
+		// 	});
+		// };
 
 		$scope.pushUserRegist = function() {
 			pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SAVE', $rootScope.UserKey, $rootScope.token, $rootScope.loginState, 'A', '', '')
@@ -214,7 +219,7 @@ $scope.pushYNcheck=function(){
 				/*alert('pushUserRegist fail')*/
 			});
 		};
-		$scope.pushUserCheck();
+		// $scope.pushUserCheck();
 	};
 
 
@@ -229,22 +234,112 @@ $scope.pushYNcheck=function(){
 	         // error
 	      });
 	   }
+	//로그인 체크박스
+	$scope.loginckbox={
+		AdminCodeCK : false,
+		UserIdCK : false,
+		PwdCK : false
+	};
 
 	$rootScope.loginMenu = "selectUser";	//사용자 선택화면
 	$scope.selectType = function(userType){
-		switch(userType){
-			case 'ERPia': $rootScope.loginMenu = 'User'; $rootScope.userType = 'ERPia'; $scope.footer_menu = 'U'; break;
-			case 'SCM': $rootScope.loginMenu = 'User'; $rootScope.userType = 'SCM'; $scope.footer_menu = 'U'; break;
-			case 'Normal': $rootScope.loginMenu = 'User'; $rootScope.userType = 'Normal'; $scope.footer_menu = 'U'; break;
-			case 'Guest': $rootScope.loginMenu = 'User'; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
+		if(userType == 'ERPia'){
+				$rootScope.loginMenu = 'User'; 
+				$rootScope.userType = 'ERPia'; 
+				$scope.footer_menu = 'U'; 
+				if($localstorage.get("EAdminCode") == '' || $localstorage.get("EAdminCode") == undefined){
+					$scope.loginckbox.AdminCodeCK = false;
+					console.log( $localstorage.get("EAdminCode") , "Eundefiend");
+				}else{
+					$scope.loginckbox.AdminCodeCK = true;
+					$rootScope.loginData.Admin_Code = $scope.logindata2.EAdminCode;
+
+					console.log( $localstorage.get("EAdminCode") , "E");
+				}
+				console.log($localstorage.get("EAdminCode"));
+				if($localstorage.get("EUserId") == '' || $localstorage.get("EUserId") == undefined){
+					$scope.loginckbox.UserIdCK = false;
+					console.log( $localstorage.get("EUserId") , "EN");
+				}else{
+					$scope.loginckbox.UserIdCK = true;
+					$rootScope.loginData.UserId = $scope.logindata2.EUserId;
+					console.log( $localstorage.get("EUserId") , "E");
+				}
+				if($localstorage.get("EPwd") == '' ||  $localstorage.get("EPwd") == undefined){
+					$scope.loginckbox.PwdCK = false;
+					console.log( $localstorage.get("EPwd") , "EN");
+				}else{
+					$scope.loginckbox.PwdCK = true;
+					$rootScope.loginData.Pwd = $scope.logindata2.EPwd;
+					console.log( $localstorage.get("EPwd") , "E");
+				}
+				console.log("code:" ,$rootScope.loginData.Admin_Code, "id:", $rootScope.loginData.UserId, "pwd:", $rootScope.loginData.Pwd )
+		}else if(userType =='SCM'){
+				$rootScope.loginMenu = 'User'; 
+				$rootScope.userType = 'SCM'; 
+				$scope.footer_menu = 'U'; 
+				if($localstorage.get("SAdminCode") == '' || $localstorage.get("SAdminCode") == undefined){
+					$scope.loginckbox.AdminCodeCK = false;
+				}else{
+					$rootScope.loginData.Admin_Code = $scope.logindata2.SAdminCode;
+					$scope.loginckbox.AdminCodeCK = true;
+				}
+				if($localstorage.get("SUserId") == '' || $localstorage.get("SUserId") == undefined){
+					$scope.loginckbox.UserIdCK = false;
+					
+				}else{
+					$rootScope.loginData.UserId = $scope.logindata2.SUserId;
+					$scope.loginckbox.UserIdCK = true;
+				}
+				if($localstorage.get("SPwd") == '' ||  $localstorage.get("SPwd") == undefined){
+					$scope.loginckbox.PwdCK = false;
+				}else{
+					$rootScope.loginData.Pwd = $scope.logindata2.SPwd;
+					$scope.loginckbox.PwdCK = true;
+				}
+		}else if(userType == 'Normal'){ 
+				$rootScope.loginMenu = 'User'; 
+				$rootScope.userType = 'Normal'; 
+				$scope.footer_menu = 'U'; 
+				if($localstorage.get("NAdminCode") == '' || $scope.logindata2.NAdminCode == undefined){
+					$scope.loginckbox.AdminCodeCK = false;
+
+				}else{
+					$rootScope.loginData.Admin_Code = $localstorage.get("NAdminCode");
+					$scope.loginckbox.AdminCodeCK = true;
+				}
+				if($localstorage.get("NUserId") == '' || $localstorage.get("NUserId") == undefined){
+					$scope.loginckbox.UserIdCK = false;
+				}else{
+					$rootScope.loginData.UserId = $scope.logindata2.NUserId;
+					$scope.loginckbox.UserIdCK = true;
+				}
+				if($localstorage.get("NPwd") == '' || $localstorage.get("NPwd") == undefined){
+					$scope.loginckbox.PwdCK = false;
+				}else{
+					$rootScope.loginData.Pwd = $scope.logindata2.NPwd;
+					$scope.loginckbox.PwdCK = true;	
+				}
+		}else if(userType == 'Guest'){
+				$rootScope.loginMenu = 'User'; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
 				$scope.loginModal.hide();
 				$scope.doLogin();
-			break;
-			case 'login': $rootScope.loginMenu = 'selectUser'; break;
+		}else{
+				$rootScope.loginMenu = 'selectUser';
 		}
 	}
+	
 	// Open the login modal
 	$scope.login = function() {
+		$scope.logindata2.EAdminCode = $localstorage.get("EAdminCode");
+		$scope.logindata2.EUserId = 	$localstorage.get("EUserId");
+		$scope.logindata2.EPwd = $localstorage.get("EPwd");
+		$scope.logindata2.SAdminCode = $localstorage.get("SAdminCode");
+		$scope.logindata2.SUserId = $localstorage.get("SUserId");
+		$scope.logindata2.SPwd = $localstorage.get("SPwd");
+		$scope.logindata2.NAdminCode = $localstorage.get("NAdminCode");
+		$scope.logindata2.NUserId = $localstorage.get("NUserId");
+		$scope.logindata2.NPwd = $localstorage.get("NPwd");
 		$rootScope.loginMenu = 'selectUser';
 		if($rootScope.loginState == 'R'){
 			$scope.loginModal.show();
@@ -255,9 +350,98 @@ $scope.pushYNcheck=function(){
 		};
 	};
 
+	// 업체코드, 아이디, 패스워드 저장하기..
+	$scope.LoginAdminCodeCK=function(userType){
+		if($scope.loginckbox.AdminCodeCK == true){
+			console.log($scope.loginckbox.AdminCodeCK);
+			switch(userType){
+				case 'ERPia' : 
+					$localstorage.set("EAdminCode", $rootScope.loginData.Admin_Code);
+					console.log($localstorage.get("EAdminCode"));
+				break;
+				case 'SCM' : 
+					$localstorage.set("SAdminCode", $rootScope.loginData.Admin_Code);
+				break;
+				case 'Normal' : 
+					$localstorage.set("NAdminCode", $rootScope.loginData.Admin_Code);
+				break;
+			}
+		}else{
+			console.log("2",$scope.loginckbox.AdminCodeCK);
+			switch(userType){
+				case 'ERPia' : 
+					$localstorage.set("EAdminCode", '');
+					console.log($localstorage.get("EAdminCode"));
+				break;
+				case 'SCM' : 
+					$localstorage.set("SAdminCode", '');
+				break;
+				case 'Normal' : 
+					$localstorage.set("NAdminCode", '');
+				break;
+			}
+		}
+	};
+
+	$scope.LoginUserIdCK=function(userType){
+		if($scope.loginckbox.UserIdCK == true){
+			switch(userType){
+				case 'ERPia' :
+					$localstorage.set("EUserId", $rootScope.loginData.UserId);
+				break;
+				case 'SCM' : 
+					$localstorage.set("SUserId", $rootScope.loginData.UserId);
+				break;
+				case 'Normal' : 
+					$localstorage.set("NUserId", $rootScope.loginData.UserId);
+				break;
+			}
+		}else{
+			switch(userType){
+				case 'ERPia' : 
+					$localstorage.set("EUserId", '');
+				break;
+				case 'SCM' : 
+					$localstorage.set("SUserId", '');
+				break;
+				case 'Normal' : 
+					$localstorage.set("NUserId", '');
+				break;
+			}
+		}
+	};
+
+	$scope.LoginPwdCK=function(userType){
+		if($scope.loginckbox.PwdCK == true){
+			switch(userType){
+				case 'ERPia' : 
+					$localstorage.set("EPwd", $rootScope.loginData.Pwd);
+				break;
+				case 'SCM' : 
+					$localstorage.set("SPwd", $rootScope.loginData.Pwd);
+				break;
+				case 'Normal' : 
+					$localstorage.set("ESPwd", $rootScope.loginData.Pwd);
+				break;
+			}
+		}else{
+			switch(userType){
+				case 'ERPia' : 
+					$localstorage.set("EPwd", '');
+				break;
+				case 'SCM' : 
+					$localstorage.set("SPwd", '');
+				break;
+				case 'Normal' : 
+					$localstorage.set("ESPwd", '');
+				break;
+			}
+		}
+	};
+
 	// 로그인 함수
 	$scope.doLogin = function(admin_code, loginType, id, pwd, autologin_YN) {
-
+		console.log("dologin")
 		if (autologin_YN == 'Y') {
 			switch(loginType){
 				case 'E' : $rootScope.userType = 'ERPia'; $rootScope.loginMenu = 'User'; $scope.footer_menu = 'U'; break;
@@ -275,6 +459,7 @@ $scope.pushYNcheck=function(){
 			}
 			if(ERPiaAPI.toast == 'Y'){
 				uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.loginData.autologin_YN);
+				console.log("test1234")
 			}else{
 				switch($rootScope.userType){
 					case 'SCM':
@@ -289,16 +474,16 @@ $scope.pushYNcheck=function(){
 						// $scope.loginData.Admin_Code = 'demopro';
 						// $scope.loginData.UserId = 'demopro';
 						// $scope.loginData.Pwd = 'demopro';
-						$scope.loginData.Admin_Code = 'onz';
-						$scope.loginData.UserId = 'test1234';
-						$scope.loginData.Pwd = 'test1234!';
+						// $scope.loginData.Admin_Code = 'onz';
+						// $scope.loginData.UserId = 'test1234';
+						// $scope.loginData.Pwd = 'test1234!';
 					break;
 				}
 			}
 		}
 		//SCM 로그인
 		if ($rootScope.userType == 'SCM') {
-			loginService.comInfo('scm_login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd))
+			loginService.comInfo('scm_login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo)
 			.then(function(comInfo){
 				if (comInfo.data.list[0].ResultCk == '1'){
 					$scope.userData.GerName = comInfo.data.list[0].GerName + '<br>(' + comInfo.data.list[0].G_Code + ')';
@@ -348,8 +533,8 @@ $scope.pushYNcheck=function(){
 			});
 		}else if ($rootScope.userType == 'ERPia'){
 			//ERPia 로그인
-			loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd))
-			.then(function(comInfo){
+			loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo)
+			.then(function(comInfo){// 4.11 로그인할때 핸드폰번호 추가
 				if(comInfo.data.list[0].Result=='1'){
 					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 					$scope.loginHTML = "로그아웃";
@@ -474,7 +659,7 @@ $scope.pushYNcheck=function(){
 						}, 1000);
 					},
 					function(){
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('comTax error', 'long', 'center');
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('계정정보가 존재하지 않습니다', 'long', 'center');
 						else alert('comTax error');
 					})
 				}else{
@@ -482,11 +667,11 @@ $scope.pushYNcheck=function(){
 					else alert(comInfo.data.list[0].Comment);
 				}
 			},function(){
-				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('comInfo error', 'long', 'center');
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('계정정보가 존재하지 않습니다.', 'long', 'center');
 				else alert('comInfo error');
 			});
 		}else if($rootScope.userType == 'Normal'){
-			loginService.comInfo('ERPia_Ger_Login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd))
+			loginService.comInfo('ERPia_Ger_Login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo)
 			.then(function(comInfo){
 				if(comInfo.data.list[0].result == '0'){
 					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
@@ -496,12 +681,8 @@ $scope.pushYNcheck=function(){
 					$scope.userData.G_Code = comInfo.data.list[0].G_Code;
 					$scope.userData.G_Sano = comInfo.data.list[0].Sano;
 					$scope.userData.GerCode = comInfo.data.list[0].G_Code;
-					if(comInfo.data.list[0].cntNotRead == null){
-						$scope.userData.cntNotRead = 0;
-					}else{
-						$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
-					}
-					console.log('정보체크=>', comInfo.data.list[0]);
+					$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
+
 					$scope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
 					$rootScope.loginState = "N";
@@ -538,9 +719,9 @@ $scope.pushYNcheck=function(){
 			$rootScope.loginState = "E"
 			$scope.loginHTML = "로그아웃"; //<br>(" + comInfo.data.list[0].Com_Code + ")";
 			$scope.ion_login = "ion-power";
-			$scope.userData.Com_Name = 'ERPia' + '<br>(' + 'onz' + ')';
-			$scope.loginData.Admin_Code = 'ERPia';
-			$scope.loginData.UserId = 'Guest';
+			$scope.userData.Com_Name = '테스트용계정' + '<br>(' + 'ERPMobile' + ')';
+			$scope.loginData.Admin_Code = 'ERPMobile';
+			$scope.loginData.UserId = 'ERPMobile';
 			$scope.loginData.isLogin = 'Y';
 
 			$scope.userData.package = 'Professional';
@@ -548,10 +729,13 @@ $scope.pushYNcheck=function(){
 			$scope.userData.cnt_site = '10 개';
 
 			$scope.userData.cntNotRead = 10;	//계산서 미수신건
-			$scope.userData.expire_date = '2016-03-31'; //"2015년<br>8월20일";
+			$scope.userData.expire_date = '2016-04-31'; //"2015년<br>8월20일";
 			$scope.userData.expire_days = 50;
 			$state.go('app.sample_Main');
 		}
+		$scope.LoginAdminCodeCK($rootScope.userType);
+		$scope.LoginPwdCK($rootScope.userType);
+		$scope.LoginUserIdCK($rootScope.userType);
 	};
 
   	$scope.loginHTML = "로그인";
@@ -611,8 +795,55 @@ $scope.pushYNcheck=function(){
 		$scope.certificationModal.hide();
 		$scope.init('logout');
 	}
+	$rootScope.deviceInfo2={};
+
+	// function autoHypenPhone(str){
+	// str = str.replace(/[^0-9]/g, '');
+	// var tmp = '';
+	// 	if( str.length < 4){
+	// 		return str;
+	// 	}else if(str.length < 7){
+	// 		tmp += str.substr(0, 3);
+	// 		tmp += '-';
+	// 		tmp += str.substr(3);
+	// 		return tmp;
+	// 	}else if(str.length < 11){
+	// 		tmp += str.substr(0, 3);
+	// 		tmp += '-';
+	// 		tmp += str.substr(3, 3);
+	// 		tmp += '-';
+	// 		tmp += str.substr(6);
+	// 		return tmp;
+	// 	}else{				
+	// 		tmp += str.substr(0, 3);
+	// 		tmp += '-';
+	// 		tmp += str.substr(3, 4);
+	// 		tmp += '-';
+	// 		tmp += str.substr(7);
+	// 		return tmp;
+	// 	}
+	// 	return str;
+	// }
+
 	// 단말기로 접속시 UUID의 정보를 불러와서 자동로그인 여부를 체크한 후 자동 로그인 시켜준다.
 	 document.addEventListener("deviceready", function () {
+	 	var deviceInfo = cordova.require("cordova/plugin/DeviceInformation");
+		deviceInfo.get(function(result) {
+		        console.log("result = " + result);
+		        $rootScope.deviceInfo2 = JSON.parse(result);
+		        var phoneNo=$rootScope.deviceInfo2.phoneNo;
+		        if(phoneNo.substring(0,1)=="+"){
+		         // $rootScope.deviceInfo2.phoneNo.replace(\+82, 00);
+		         $rootScope.deviceInfo2.phoneNo=phoneNo.toString().replace("+82", "0");
+		    }else{
+		    	console.log("아니야",phoneNo.substring(0,1) );		    
+		    }
+		   	$scope.SMSData.recUserTel =  $rootScope.deviceInfo2.phoneNo;
+			console.log("$scope.SMSData.recUserTel", $scope.SMSData.recUserTel);
+		        console.log($rootScope.deviceInfo2.phoneNo);
+		    }, function() {
+		        console.log("error");
+		    });
 		$rootScope.deviceInfo.device = $cordovaDevice.getDevice();
 		$rootScope.deviceInfo.cordova = $cordovaDevice.getCordova();
 		$rootScope.deviceInfo.model = $cordovaDevice.getModel();
@@ -692,6 +923,7 @@ $scope.pushYNcheck=function(){
 				$rootScope.loginData.Pwd = response.list[0].pwd;
 				$rootScope.loginData.autologin_YN = response.list[0].autoLogin_YN;
 				$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+				console.log("getUUID")
 			}
 			if($rootScope.loginData.autologin_YN=='Y'){
 				$rootScope.autoLogin = true;
@@ -733,6 +965,66 @@ $scope.pushYNcheck=function(){
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
 	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer, $ionicPopup){
 
+	$scope.email ={
+		toemail : ''
+	};
+
+	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
+		scope : $scope
+	}).then(function(modal){
+		$rootScope.trade_Detail_Modal = modal;
+	});
+	$scope.check = {};
+	$scope.tradeList = {};
+
+	$scope.YNcheck='not';
+
+	$scope.reload_tradelist = function(){
+	// 각각의 로그인 타입별로 보여지는 화면을 다르게 표시.
+	if($rootScope.userType == 'SCM' || $rootScope.userType == "Normal"){
+		$scope.tradeList.Title = '매출거래처 수신함';
+		$scope.tradeList.MeaipMeachul = '매출일';
+		$scope.tradeList.Publisher = '발행처';
+		$scope.tradeList.isRead = '열람';
+		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode)
+			.then(function(response){
+				console.log('list', response);
+				if(response.list.length == 0) {
+					$scope.haveList = 'N';
+				}else{
+					$scope.haveList = 'Y';
+					$scope.items = response.list;
+				}
+				console.log('haveList', $scope.haveList);
+			})
+	}else if($rootScope.userType == 'ERPia'){
+		$scope.tradeList.Title = '매출거래처 발송 내역';
+		$scope.tradeList.MeaipMeachul = '매입일';
+		$scope.tradeList.Publisher = '발송처';
+		$scope.tradeList.isRead = '수신확인';
+		tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N')
+			.then(function(response){
+				if(response.list.length == 0) {
+					$scope.haveList = 'N';
+				}else{
+					$scope.haveList = 'Y';
+					$scope.items = response.list;
+				}
+				console.log('haveList', $scope.haveList);
+			})
+	}
+
+	}
+$scope.reload_tradelist(); 
+//여기해야됨
+	$scope.tradechange = function(){
+		if($scope.YNcheck == 'not'){
+			$scope.YNcheck == 'all';
+		}else{
+			$scope.YNcheck == "not";
+		}
+	}
+
 	function commaChange(Num)
 	{
 		fl="";
@@ -773,20 +1065,16 @@ $scope.pushYNcheck=function(){
 
 	$scope.tradenumber = function(detaillist, where){
 		$rootScope.detaillist = detaillist;
-		console.log('너뭐야 ㅠㅠ=>', $rootScope.Sl_No);
 		$rootScope.where = where;
 		// var Sl_No = detaillist[0].SL_No;
 		tradeDetailService.readDetail_key($scope.loginData.Admin_Code, $rootScope.Sl_No)
 			.then(function(response){
-				console.log('readDetail', response);
-				console.log('Key_New_No=>', response.list[0].Key_New_No);
 				$rootScope.Key_New_No = response.list[0].Key_New_No;
 				$scope.html3image($rootScope.detaillist, $rootScope.where);
 			});
 	}
 
 	$scope.html3image = function(detaillist, where){
-		console.log("kkkkkkkkkkkkkkkkkkkkkkkk=>", $rootScope.Key_New_No);
 		for(var i = 0; i < detaillist.length; i++){
 			var detail = detaillist[i];
 			var j = i+1;
@@ -912,9 +1200,7 @@ $scope.pushYNcheck=function(){
 
 			});
 	}
-	$scope.email ={
-		toemail : ''
-	};
+	
 	$scope.shareAnywhere = function(url, where,Mutual) {
 		// console.log('공유할꺼야 =>', $scope.userData.Com_Name);
 		// var comname = $scope.userData.Com_Name.split('<br>');
@@ -927,48 +1213,6 @@ $scope.pushYNcheck=function(){
                    $cordovaSocialSharing.shareViaEmail("[Erpia 거래명세표] "+'('+Mutual+')'+url, "[Erpia 거래명세표] "+'('+Mutual+')');
 	       }
 	       $scope.toemail ='';
-	}
-
-	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
-		scope : $scope
-	}).then(function(modal){
-		$rootScope.trade_Detail_Modal = modal;
-	});
-	$scope.check = {};
-	$scope.tradeList = {};
-
-	// 각각의 로그인 타입별로 보여지는 화면을 다르게 표시.
-	if($rootScope.userType == 'SCM' || $rootScope.userType == "Normal"){
-		$scope.tradeList.Title = '매출거래처 수신함';
-		$scope.tradeList.MeaipMeachul = '매출일';
-		$scope.tradeList.Publisher = '발행처';
-		$scope.tradeList.isRead = '열람';
-		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode)
-			.then(function(response){
-				console.log('list', response);
-				if(response.list.length == 0) {
-					$scope.haveList = 'N';
-				}else{
-					$scope.haveList = 'Y';
-					$scope.items = response.list;
-				}
-				console.log('haveList', $scope.haveList);
-			})
-	}else if($rootScope.userType == 'ERPia'){
-		$scope.tradeList.Title = '매출거래처 발송 내역';
-		$scope.tradeList.MeaipMeachul = '매입일';
-		$scope.tradeList.Publisher = '발송처';
-		$scope.tradeList.isRead = '수신확인';
-		tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N')
-			.then(function(response){
-				if(response.list.length == 0) {
-					$scope.haveList = 'N';
-				}else{
-					$scope.haveList = 'Y';
-					$scope.items = response.list;
-				}
-				console.log('haveList', $scope.haveList);
-			})
 	}
 
 	/*거래명세표 보기 */
@@ -1035,7 +1279,6 @@ $scope.pushYNcheck=function(){
 				}
 				response.list[0].bigo = ' ';
 				$scope.detail_items = response.list;
-				console.log('detail_items.length =>', $scope.detail_items.length);
 				$rootScope.trade_Detail_Modal.show();
 			})
 		if($scope.userType != "ERPia") tradeDetailService.chkRead($scope.loginData.Admin_Code, $rootScope.Sl_No, $scope.loginData.UserId) // 읽었으면!
@@ -1046,6 +1289,7 @@ $scope.pushYNcheck=function(){
 	}
 	/*거래명세표 닫기*/
 	$scope.close = function(){
+		$scope.reload_tradelist();
 		$scope.trade_Detail_Modal.hide();
 	}
 	// $scope.backToList = function(){
@@ -1080,8 +1324,6 @@ $scope.pushYNcheck=function(){
 				else alert('사업자 번호와 일치하지 않습니다.');
 			}
 		}else if($rootScope.userType == "ERPia"){
-			// alert($scope.loginData.Pwd);
-			// $scope.userData.Sano = $scope.loginData.Pwd; // =========================== 지워야되.
 			if($scope.loginData.Pwd == $scope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
@@ -3894,6 +4136,8 @@ $scope.pushYNcheck=function(){
 
 	/*삭제*/
 	$scope.chitDeleteF = function(no){
+		$ionicHistory.clearCache();
+		$ionicHistory.clearHistory();
 		MLookupService.d_before_check($scope.loginData.Admin_Code, $scope.loginData.UserId, no)
 			.then(function(data){
 				var decheck = 'N';
