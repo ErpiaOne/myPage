@@ -2819,7 +2819,7 @@ $scope.reload_tradelist();
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
-					strHtml = strHtml + commaChange(data[i].value) + "원";
+					strHtml = strHtml + commaChange(data[i].value) + "건";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
