@@ -30,7 +30,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 
 	$rootScope.version={
-   		Android_version : '0.1.6', //업데이트시 필수로 변경!!
+   		Android_version : '0.1.7', //업데이트시 필수로 변경!!
    		IOS_version : '0.1.3'	//업데이트시 필수로 변경!!
    	};
 
@@ -165,6 +165,7 @@ $scope.pushYNcheck=function(){
 	}
 	// 로그인창 닫기 함수
 	$scope.closeLogin = function() {
+		// window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 		$ionicHistory.nextViewOptions({
 			disableBack: true
 		});
@@ -179,13 +180,18 @@ $scope.pushYNcheck=function(){
 			}else if($rootScope.loginState == 'N'){ 
 				$state.go("app.erpia_main");
 			}
+			// window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId);
+			// window.plugins.PushbotsPlugin.tag("test");
+			// console.log("updateAlias("+$rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId+")");
 			// else if($rootScope.userType == 'Guest'){
 			// 	$location.href = '#/app/slidingtab';
 			// }
-		}
-		else if($rootScope.loginState != "R") {	 // logintype이 "R"(Ready) 이 아니라면 인증동의 창이 띄워지도록한다. 
-
+		}else if($rootScope.loginState != "R") {	 // logintype이 "R"(Ready) 이 아니라면 인증동의 창이 띄워지도록한다. 
+			$scope.agree_1 = false;
+			$scope.agree_2 = false;
+			$scope.SMSData.rspnText = '';
 			$scope.agreeModal.show();
+			
 		}
 		// var PushInsertCheck = "";
 		// var PushInsertCheck2 = "";
@@ -459,7 +465,7 @@ $scope.pushYNcheck=function(){
 			}
 			if(ERPiaAPI.toast == 'Y'){
 				uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.loginData.autologin_YN);
-				console.log("test1234")
+
 			}else{
 				switch($rootScope.userType){
 					case 'SCM':
@@ -469,7 +475,7 @@ $scope.pushYNcheck=function(){
 						// $scope.loginData.Admin_Code = 'phj9775';
 						// $scope.loginData.UserId = 'scmtest';
 						// $scope.loginData.Pwd = 'scmtest';
-					break;
+					break; 
 					case 'ERPia':
 						// $scope.loginData.Admin_Code = 'demopro';
 						// $scope.loginData.UserId = 'demopro';
@@ -493,7 +499,7 @@ $scope.pushYNcheck=function(){
 					if(comInfo.data.list[0].cntNotRead == null){
 						$scope.userData.cntNotRead = 0;
 					}else{
-						$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
+						$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead; 
 					}
 					$scope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
@@ -533,8 +539,8 @@ $scope.pushYNcheck=function(){
 			});
 		}else if ($rootScope.userType == 'ERPia'){
 			//ERPia 로그인
-			loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo)
-			.then(function(comInfo){// 4.11 로그인할때 핸드폰번호 추가
+			loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
+			.then(function(comInfo){
 				if(comInfo.data.list[0].Result=='1'){
 					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 					$scope.loginHTML = "로그아웃";
@@ -753,22 +759,30 @@ $scope.pushYNcheck=function(){
 
 	// 약관 동의 취소 클릭 이벤트
 	$scope.click_cancel = function(){
-		$scope.agreeModal.hide();
+		$scope.agreeModal.hide(); //모달 닫을 때 동의체크, 인증번호 초기화
+		$scope.agree_1 = false;
+		$scope.agree_2 = false;
+		$scope.SMSData.rspnText = '';
 		$scope.init('logout');
 	}
 	// 인증번호 전송 버튼 클릭 이벤트
 	$scope.click_Certification = function(){
-		CertifyService.certify($scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, 'erpia', 'a12345', '070-7012-3071', $scope.SMSData.recUserTel)
+		if($scope.SMSData.recUserTel == '' || $scope.SMSData.recUserTel == undefined || $scope.SMSData.recUserTel == 'undefined'){
+			$cordovaToast.show('핸드폰번호를 입력하세요.', 'long', 'center');
+		}else{
+		CertifyService.certify($scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, 'erpia', 'a12345', '070-7012-3071', $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)
 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증번호를 발송했습니다.', 'long', 'center');
 		else alert('인증번호를 발송했습니다.');
+		}
 	}
 	// 인증번호 입력 버튼 클릭 이벤트
 	$scope.click_responseText = function(){
 		if($rootScope.rndNum == $scope.SMSData.rspnText){
-			CertifyService.check($scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $scope.SMSData.rspnText, $scope.SMSData.recUserTel)
+			CertifyService.check($scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $scope.SMSData.rspnText, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)
 			.then(function(response){
 				console.log('rspnText : ', response);
 				$scope.certificationModal.hide();
+				$scope.SMSData.rspnText = '';
 			})
 		}else{
 			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증번호가 일치하지 않습니다.', 'long', 'center');
@@ -793,6 +807,9 @@ $scope.pushYNcheck=function(){
 	// 인증 모달 닫기 함수
 	$scope.close_cert = function(){
 		$scope.certificationModal.hide();
+		$scope.SMSData.rspnText = '';
+		$scope.agree_1 = false;
+		$scope.agree_2 = false;
 		$scope.init('logout');
 	}
 	$rootScope.deviceInfo2={};
@@ -927,7 +944,7 @@ $scope.pushYNcheck=function(){
 			}
 			if($rootScope.loginData.autologin_YN=='Y'){
 				$rootScope.autoLogin = true;
-				$rootScope.loginData.chkAutoLogin=true;
+				$ERPiaLoginrootScope.loginData.chkAutoLogin=true;
 				$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
 			}else{
 				$rootScope.autoLogin = false;
@@ -2658,6 +2675,12 @@ $scope.reload_tradelist();
 		Num = new String(Num)
 		temp=""
 		co=3
+		
+		if(Num < 0){// 마이너스 금액일경우
+			Num = Num.replace(/\-/g,'');
+			fl = '-';
+		} 
+			
 		num_len=Num.length
 		while (num_len>0)
 		{
@@ -2669,6 +2692,7 @@ $scope.reload_tradelist();
 			}
 			temp=","+Num.substr(num_len,co)+temp
 		}
+		
 		rResult =  fl+temp.substr(1);
 		return rResult;
 	}
@@ -2873,7 +2897,6 @@ $scope.reload_tradelist();
 					break;
 			}
 		}
-		console.log('strHtml', strHtml);
 		$("table[name=tbGrid]").html(strHtml);
 	}
 
@@ -2898,7 +2921,6 @@ $scope.reload_tradelist();
 			response = eval(request.responseText);
 			// $rootScope.time_ref = response[0].in_date;
 			$.each(response[0], function(index, jsonData){
-				console.log(jsonData);
 						tmpAlert += jsonData;
 			});
 			$("h3[name=refresh_date]").html(tmpAlert);
@@ -3084,30 +3106,38 @@ $scope.reload_tradelist();
 					case 17: $('#s17').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 				}
 
+
+
 				$("button[name=btnW]").click(function() {
 					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
 				});
 				$("button[name=btnM]").click(function() {
 					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
 				});
 				$("button[name=btnY]").click(function() {
 					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
 				});
 
-				if($('div[name=loading2]').css('display') == 'none'){  // 정보있을때
-					$("button[name=btnGrid]").css('background', '#ececed');
-					$("button[name=btnGrid]").css('color', '#444');
-				}else{
-					$("button[name=btnGrid]").css('background', '#7b7b7b');
-					$("button[name=btnGrid]").css('color', '#686868');
+				$scope.btn = function(){
+					if($('div[name=loading2]').css('display') == 'none'){  // 정보있을때
+						$("button[name=btnGrid]").css('background', '#ececed');
+						$("button[name=btnGrid]").css('color', '#444');
+					}else{
+						$("button[name=btnGrid]").css('background', '#7b7b7b');
+						$("button[name=btnGrid]").css('color', '#686868');
+					}	
 				}
-
+				
+				$scope.btn();
 
 				$("button[name=btnGrid]").click(function() {
 					$scope.loadingani();
@@ -3139,6 +3169,7 @@ $scope.reload_tradelist();
 	// 	console.log('Ionic Push: Got token ', data.token, data.platform);
 	// 	$scope.token = data.token;
 	// });
+	window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 	$scope.identifyUser = function() {
 		var user = $ionicUser.get();
 		if(!user.user_id) {
@@ -3171,6 +3202,8 @@ $scope.reload_tradelist();
 
 		     $rootScope.token = token;
 		});
+		window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId);
+		console.log("updateAlias("+$rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId+")");
 		// Register with the Ionic Push service.  All parameters are optional.
 
 	};
@@ -3183,7 +3216,7 @@ $scope.reload_tradelist();
 	//단가지정배열(매출) 1. 매입가 2. 도매가 3. 인터넷가 4. 소매가 5. 권장소비자가
     $scope.MchulDn = [
       { num: 0, id: '거래처등록단가' },
-      { num: 1, id: '매출가' },
+      { num: 1, id: '매입가' },
       { num: 2, id: '도매가' },
       { num: 3, id: '인터넷가' },
       { num: 4, id: '소매가' },

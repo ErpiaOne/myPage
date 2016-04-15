@@ -1,5 +1,6 @@
 angular.module('starter.services', [])
 
+
 //InnerHtml을 사용하기 위한 compiler
 .directive('compileData', function ( $compile ) {
 	return {
@@ -38,7 +39,7 @@ angular.module('starter.services', [])
 }])
 
 .factory('loginService', function($http, $q, $cordovaToast, ERPiaAPI){
-	var comInfo = function(kind, Admin_Code, G_id, G_Pass, phoneNo){
+	var comInfo = function(kind, Admin_Code, G_id, G_Pass, phoneNo, UUID){
 		if(kind == 'scm_login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
 			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass + '&hp=' + phoneNo;
@@ -54,9 +55,9 @@ angular.module('starter.services', [])
 				},function(response){
 					return $q.reject(response);
 				});
-		}else if(kind == 'ERPiaLogin'){
+		}else if(kind == 'ERPiaLogin'){// }else if(kind == 'ERPiaLogin'){  //수정됨 
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&uid=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo;
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&uid=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -147,7 +148,7 @@ angular.module('starter.services', [])
 })
 .factory('CertifyService', function($http, $cordovaToast, $rootScope, ERPiaAPI){
 	var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-	var certify = function(Admin_Code, loginType, ID, sms_id, sms_pwd, sendNum, rec_num){
+	var certify = function(Admin_Code, loginType, ID, sms_id, sms_pwd, sendNum, rec_num, UUID){
 		$rootScope.rndNum = Math.floor(Math.random() * 1000000) + 1;
 		if ($rootScope.rndNum < 100000) $rootScope.rndNum = '0' + $rootScope.rndNum;
 		console.log($rootScope.rndNum);
@@ -155,8 +156,9 @@ angular.module('starter.services', [])
 		if(loginType == 'E'){
 			url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm_manage.asp';
 		}
+		//수정됨 var data = 'Kind=mobile_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID; 
 		var data = 'Kind=mobile_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID;
-		data += '&Certify_Code=' + $rootScope.rndNum + '&loginType=' + loginType + '&hp=' + rec_num;
+		data += '&Certify_Code=' + $rootScope.rndNum + '&loginType=' + loginType + '&hp=' + rec_num  + '&mac=' + UUID;
 		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
 		.success(function(response){
@@ -174,14 +176,15 @@ angular.module('starter.services', [])
 			}
 		})
 	}
-	var check = function(Admin_Code, loginType, ID, Input_Code, rec_num){
+	var check = function(Admin_Code, loginType, ID, Input_Code, rec_num, UUID){
 		var data ='';
 		if(loginType == 'S' || loginType == 'N'){
 			data = 'Kind=check_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID;
 			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num;
-		}else if(loginType=='E'){
+		}else if(loginType=='E'){ 
 			url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num;
+			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
+			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
 		}
 		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)

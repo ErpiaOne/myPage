@@ -98,7 +98,25 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		  kind.titleField = legendTitleField;
 		  // make the balloonText use full title instead
 		  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
+		  kind.addLabel(6, "80%", temp + sDate + " ~ " + eDate, "left", 12);  // 추가
 		}, ["pie"]);
+	}else if (kind == "meachul_7" || kind == "banpum" || kind == "beasongb" || kind == "Meachul_ik" || kind == "meaip_7" || kind == "beasong_gu" )// 추가
+	{		
+		AmCharts.addInitHandler(function(kind) {
+			//kind.height = containerwidth
+			var containerWidth = $(window).width() - 100;
+
+			if (containerWidth <= 500)//화면 넓이가 374보다 작으면 라벨 각의 값을 준다
+			{
+				kind.categoryAxis.autoRotateAngle = -60;
+				kind.categoryAxis.autoRotateCount = 4;
+			}
+			else
+			{
+				kind.categoryAxis.autoRotateAngle = 0;
+				kind.categoryAxis.autoRotateCount = 0;
+			}
+		}, ["serial"]);
 	}
 
 	height = $(window).height()-300;
@@ -106,7 +124,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 	$(window).resize(function () {
 		height = $(window).height()-300;
-		console.log('height값 ->', height);
 		$('#' + kind).css('height', height+'px');
 	});
 
@@ -128,14 +145,15 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			      "enabled": false,
 				  "truncateLabels": 10 // custom parameter
 			    },
-				"allLabels": [
-					{
-						"id": "Label-1",
-						"text": temp + sDate + " ~ " + eDate,
-						"x": 10,
-						"y": 300
-					}
-				],
+			    "allLabels": [],
+//				"allLabels": [
+//					{
+////						"id": "Label-1",
+////						"text": temp + sDate + " ~ " + eDate,
+////						"x": 6,
+////						"y": 350
+//					}
+//				],
 				"balloon": {},
 				"labelRadius": 1,
 				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_jem&value_kind=meaip_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
@@ -159,14 +177,15 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			      "enabled": false,
 				  "truncateLabels": 10 // custom parameter
 			    },
-				"allLabels": [
-					{
-						"id": "Label-1",
-						"text": temp + sDate + " ~ " + eDate,
-						"x": 6,
-						"y": 300
-					}
-				],
+				"allLabels": [],
+//				"allLabels": [
+//					{
+//						"id": "Label-1",
+//						"text": temp + sDate + " ~ " + eDate,
+//						"x": 6,
+//						"y": 350
+//					}
+//				],
 				"balloon": {},
 				"labelRadius": 1,
 				 "dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_jem&value_kind=meachul_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
@@ -951,14 +970,15 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			      "enabled": false,
 			      "truncateLabels": 10 // custom parameter
 			    },
-				"allLabels": [
-					{
-						"id": "Label-1",
-						"text": temp + sDate + " ~ " + eDate,
-						"x": 6,
-						"y": 300
-					}
-				],
+				"allLabels": [],
+//				"allLabels": [
+//					{
+//						"id": "Label-1",
+//						"text": temp + sDate + " ~ " + eDate,
+//						"x": 6,
+//						"y": 350
+//					}
+//				],
 				"balloon": {},
 				"titles": [],
 				"labelRadius": 1,
@@ -1203,14 +1223,15 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			      "enabled": false,
 			      "truncateLabels": 10 // custom parameter
 			    },
-				"allLabels": [
-					{
-						"id": "Label-1",
-						"text": temp + sDate + " ~ " + eDate,
-						"x": 6,
-						"y": 300
-					}
-				],
+				"allLabels": [],
+//				"allLabels": [
+//					{
+//						"id": "Label-1",
+//						"text": temp + sDate + " ~ " + eDate,
+//						"x": 6,
+//						"y": 350
+//					}
+//				],
 				"balloon": {},
 				"titles": [],
 				"labelRadius": 5,

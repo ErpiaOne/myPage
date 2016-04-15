@@ -6,21 +6,21 @@
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
 	, 'starter.services'])
 
- .constant('ERPiaAPI',{
- 	  url:'http://localhost:8100/include'
- 	, url2:'http://localhost:8100'
- 	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	, gurl:'http://168.126.146.37/20132354'
- 	, toast:'N'
- })
+ // .constant('ERPiaAPI',{
+ // 	  url:'http://localhost:8100/include'
+ // 	, url2:'http://localhost:8100'
+ // 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ // 	, gurl:'http://168.126.146.37/20132354'
+ // 	, toast:'N'
+ // })
 
 //실제 사용
-// .constant('ERPiaAPI',{
-// 	url:'http://www.erpia.net/include',
-// 	url2: 'http://www.erpia.net',
-// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-// 	toast:'Y'
-// })
+.constant('ERPiaAPI',{
+	url:'http://www.erpia.net/include',
+	url2: 'http://www.erpia.net',
+	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+	toast:'Y'
+})
 
 .run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast) {
 	$ionicPlatform.ready(function() {
@@ -46,6 +46,23 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	    	$rootScope.PushData = {};
 		console.log("received:" + JSON.stringify(data));
 		$rootScope.PushData = data;
+		// 	if($rootScope.PushData){	
+		// 	//notification.payload.payload.$state 푸시에서 명시한 로드될 화면
+		// 	if(notification.payload.payload.$state === "app.erpia_board-Main"){
+		// 		// alert("tab.chats");
+		// 		//$rootScope.boardIndex = $rootScope.BoardParam
+		// 		//$state.go("app.erpia_board-Main")
+		// 		if(notification.payload.payload.$BoardParam === "0"){
+		// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+		// 		}else if(notification.payload.payload.$BoardParam === "1"){
+		// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+		// 		}else if(notification.payload.payload.$BoardParam === "2"){
+		// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+		// 		}else if(notification.payload.payload.$BoardParam === "4"){
+		// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+		// 		}							
+		// 	}
+		// }
 	    });
 
 	
@@ -253,24 +270,24 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		// 		// Handle new push notifications here
 		// 		console.log(notification);
 		// 		//notification.message;  푸시 알람 내용
-		// 		if(notification.payload){	
-		// 			//notification.payload.payload.$state 푸시에서 명시한 로드될 화면
-		// 			if(notification.payload.payload.$state === "app.erpia_board-Main"){
-		// 				// alert("tab.chats");
-		// 				//$rootScope.boardIndex = $rootScope.BoardParam
-		// 				//$state.go("app.erpia_board-Main")
-		// 				if(notification.payload.payload.$BoardParam === "0"){
-		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
-		// 				}else if(notification.payload.payload.$BoardParam === "1"){
-		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
-		// 				}else if(notification.payload.payload.$BoardParam === "2"){
-		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
-		// 				}else if(notification.payload.payload.$BoardParam === "4"){
-		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
-		// 				}							
-		// 			}
-		// 		}
-		// 	}
+				// if(notification.payload){	
+				// 	//notification.payload.payload.$state 푸시에서 명시한 로드될 화면
+				// 	if(notification.payload.payload.$state === "app.erpia_board-Main"){
+				// 		// alert("tab.chats");
+				// 		//$rootScope.boardIndex = $rootScope.BoardParam
+				// 		//$state.go("app.erpia_board-Main")
+				// 		if(notification.payload.payload.$BoardParam === "0"){
+				// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+				// 		}else if(notification.payload.payload.$BoardParam === "1"){
+				// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+				// 		}else if(notification.payload.payload.$BoardParam === "2"){
+				// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+				// 		}else if(notification.payload.payload.$BoardParam === "4"){
+				// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+				// 		}							
+				// 	}
+				// }
+			// }
 		// });
 		// $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
 		//     // alert("Successfully registered token " + data.token);
@@ -292,6 +309,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			case 'ERPia': location.href = '#/app/slidingtab'; break;
 			case 'SCM' : location.href = '#/app/scmhome'; break;
 			case 'Geust': location.href = '#/app/sample/Main'; break;
+			case 'Normal': location.href = '#/app/sample/Main'; break;
 		} 
 	}
 	$rootScope.goto_with_clearHistory = function(goto_Href){
