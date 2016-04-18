@@ -100,7 +100,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
 		  kind.addLabel(6, "80%", temp + sDate + " ~ " + eDate, "left", 12);  // 추가
 		}, ["pie"]);
-	}else if (kind == "meachul_7" || kind == "banpum" || kind == "beasongb" || kind == "Meachul_ik" || kind == "meaip_7" || kind == "beasong_gu" )// 추가
+	}else //if (kind == "meachul_7" || kind == "banpum" || kind == "beasongb" || kind == "Meachul_ik" || kind == "meaip_7" || kind == "beasong_gu" )// 추가
 	{		
 		AmCharts.addInitHandler(function(kind) {
 			//kind.height = containerwidth

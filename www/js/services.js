@@ -156,7 +156,7 @@ angular.module('starter.services', [])
 		if(loginType == 'E'){
 			url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm_manage.asp';
 		}
-		//수정됨 var data = 'Kind=mobile_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID; 
+		//var data = 'Kind=mobile_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID; 
 		var data = 'Kind=mobile_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID;
 		data += '&Certify_Code=' + $rootScope.rndNum + '&loginType=' + loginType + '&hp=' + rec_num  + '&mac=' + UUID;
 		console.log(url + '?' + data);
@@ -183,8 +183,9 @@ angular.module('starter.services', [])
 			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num;
 		}else if(loginType=='E'){ 
 			url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
-			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
+			//김형석 바보
+			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
+			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
 		}
 		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
