@@ -30,7 +30,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 
 	$rootScope.version={
-   		Android_version : '0.1.7', //업데이트시 필수로 변경!!
+   		Android_version : '0.1.8', //업데이트시 필수로 변경!!
    		IOS_version : '0.1.3'	//업데이트시 필수로 변경!!
    	};
 
@@ -240,16 +240,39 @@ $scope.pushYNcheck=function(){
 	         // error
 	      });
 	   }
+/*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스*/
+
 	//로그인 체크박스
 	$scope.loginckbox={
 		AdminCodeCK : false,
 		UserIdCK : false,
 		PwdCK : false
 	};
+		// Open the login modal
+	$scope.login = function() {
+		$scope.logindata2.EAdminCode = $localstorage.get("EAdminCode");
+		$scope.logindata2.EUserId = 	$localstorage.get("EUserId");
+		$scope.logindata2.EPwd = $localstorage.get("EPwd");
+		$scope.logindata2.SAdminCode = $localstorage.get("SAdminCode");
+		$scope.logindata2.SUserId = $localstorage.get("SUserId");
+		$scope.logindata2.SPwd = $localstorage.get("SPwd");
+		$scope.logindata2.NAdminCode = $localstorage.get("NAdminCode");
+		$scope.logindata2.NUserId = $localstorage.get("NUserId");
+		$scope.logindata2.NPwd = $localstorage.get("NPwd");
+		$rootScope.loginMenu = 'selectUser';
+		if($rootScope.loginState == 'R'){
+			$scope.loginModal.show();
+			$scope.init('login');
+		}else{
+			$scope.footer_menu = 'G';
+			$scope.init('logout');
+		};
+	};
 
 	$rootScope.loginMenu = "selectUser";	//사용자 선택화면
 	$scope.selectType = function(userType){
-		if(userType == 'ERPia'){
+		$timeout(function(){
+				if(userType == 'ERPia'){
 				$rootScope.loginMenu = 'User'; 
 				$rootScope.userType = 'ERPia'; 
 				$scope.footer_menu = 'U'; 
@@ -280,81 +303,63 @@ $scope.pushYNcheck=function(){
 					console.log( $localstorage.get("EPwd") , "E");
 				}
 				console.log("code:" ,$rootScope.loginData.Admin_Code, "id:", $rootScope.loginData.UserId, "pwd:", $rootScope.loginData.Pwd )
-		}else if(userType =='SCM'){
-				$rootScope.loginMenu = 'User'; 
-				$rootScope.userType = 'SCM'; 
-				$scope.footer_menu = 'U'; 
-				if($localstorage.get("SAdminCode") == '' || $localstorage.get("SAdminCode") == undefined){
-					$scope.loginckbox.AdminCodeCK = false;
-				}else{
-					$rootScope.loginData.Admin_Code = $scope.logindata2.SAdminCode;
-					$scope.loginckbox.AdminCodeCK = true;
-				}
-				if($localstorage.get("SUserId") == '' || $localstorage.get("SUserId") == undefined){
-					$scope.loginckbox.UserIdCK = false;
-					
-				}else{
-					$rootScope.loginData.UserId = $scope.logindata2.SUserId;
-					$scope.loginckbox.UserIdCK = true;
-				}
-				if($localstorage.get("SPwd") == '' ||  $localstorage.get("SPwd") == undefined){
-					$scope.loginckbox.PwdCK = false;
-				}else{
-					$rootScope.loginData.Pwd = $scope.logindata2.SPwd;
-					$scope.loginckbox.PwdCK = true;
-				}
-		}else if(userType == 'Normal'){ 
-				$rootScope.loginMenu = 'User'; 
-				$rootScope.userType = 'Normal'; 
-				$scope.footer_menu = 'U'; 
-				if($localstorage.get("NAdminCode") == '' || $scope.logindata2.NAdminCode == undefined){
-					$scope.loginckbox.AdminCodeCK = false;
+				}else if(userType =='SCM'){
+						$rootScope.loginMenu = 'User'; 
+						$rootScope.userType = 'SCM'; 
+						$scope.footer_menu = 'U'; 
+						if($localstorage.get("SAdminCode") == '' || $localstorage.get("SAdminCode") == undefined){
+							$scope.loginckbox.AdminCodeCK = false;
+						}else{
+							$rootScope.loginData.Admin_Code = $scope.logindata2.SAdminCode;
+							$scope.loginckbox.AdminCodeCK = true;
+						}
+						if($localstorage.get("SUserId") == '' || $localstorage.get("SUserId") == undefined){
+							$scope.loginckbox.UserIdCK = false;
+							
+						}else{
+							$rootScope.loginData.UserId = $scope.logindata2.SUserId;
+							$scope.loginckbox.UserIdCK = true;
+						}
+						if($localstorage.get("SPwd") == '' ||  $localstorage.get("SPwd") == undefined){
+							$scope.loginckbox.PwdCK = false;
+						}else{
+							$rootScope.loginData.Pwd = $scope.logindata2.SPwd;
+							$scope.loginckbox.PwdCK = true;
+						}
+				}else if(userType == 'Normal'){ 
+						$rootScope.loginMenu = 'User'; 
+						$rootScope.userType = 'Normal'; 
+						$scope.footer_menu = 'U'; 
+						if($localstorage.get("NAdminCode") == '' || $scope.logindata2.NAdminCode == undefined){
+							$scope.loginckbox.AdminCodeCK = false;
 
+						}else{
+							$rootScope.loginData.Admin_Code = $localstorage.get("NAdminCode");
+							$scope.loginckbox.AdminCodeCK = true;
+						}
+						if($localstorage.get("NUserId") == '' || $localstorage.get("NUserId") == undefined){
+							$scope.loginckbox.UserIdCK = false;
+						}else{
+							$rootScope.loginData.UserId = $scope.logindata2.NUserId;
+							$scope.loginckbox.UserIdCK = true;
+						}
+						if($localstorage.get("NPwd") == '' || $localstorage.get("NPwd") == undefined){
+							$scope.loginckbox.PwdCK = false;
+						}else{
+							$rootScope.loginData.Pwd = $scope.logindata2.NPwd;
+							$scope.loginckbox.PwdCK = true;	
+						}
+				}else if(userType == 'Guest'){
+						$rootScope.loginMenu = 'User'; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
+						$scope.loginModal.hide();
+						$scope.doLogin();
 				}else{
-					$rootScope.loginData.Admin_Code = $localstorage.get("NAdminCode");
-					$scope.loginckbox.AdminCodeCK = true;
+						$rootScope.loginMenu = 'selectUser';
 				}
-				if($localstorage.get("NUserId") == '' || $localstorage.get("NUserId") == undefined){
-					$scope.loginckbox.UserIdCK = false;
-				}else{
-					$rootScope.loginData.UserId = $scope.logindata2.NUserId;
-					$scope.loginckbox.UserIdCK = true;
-				}
-				if($localstorage.get("NPwd") == '' || $localstorage.get("NPwd") == undefined){
-					$scope.loginckbox.PwdCK = false;
-				}else{
-					$rootScope.loginData.Pwd = $scope.logindata2.NPwd;
-					$scope.loginckbox.PwdCK = true;	
-				}
-		}else if(userType == 'Guest'){
-				$rootScope.loginMenu = 'User'; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
-				$scope.loginModal.hide();
-				$scope.doLogin();
-		}else{
-				$rootScope.loginMenu = 'selectUser';
-		}
+		}, 500);
+
 	}
 	
-	// Open the login modal
-	$scope.login = function() {
-		$scope.logindata2.EAdminCode = $localstorage.get("EAdminCode");
-		$scope.logindata2.EUserId = 	$localstorage.get("EUserId");
-		$scope.logindata2.EPwd = $localstorage.get("EPwd");
-		$scope.logindata2.SAdminCode = $localstorage.get("SAdminCode");
-		$scope.logindata2.SUserId = $localstorage.get("SUserId");
-		$scope.logindata2.SPwd = $localstorage.get("SPwd");
-		$scope.logindata2.NAdminCode = $localstorage.get("NAdminCode");
-		$scope.logindata2.NUserId = $localstorage.get("NUserId");
-		$scope.logindata2.NPwd = $localstorage.get("NPwd");
-		$rootScope.loginMenu = 'selectUser';
-		if($rootScope.loginState == 'R'){
-			$scope.loginModal.show();
-			$scope.init('login');
-		}else{
-			$scope.footer_menu = 'G';
-			$scope.init('logout');
-		};
-	};
 
 	// 업체코드, 아이디, 패스워드 저장하기..
 	$scope.LoginAdminCodeCK=function(userType){
@@ -439,12 +444,13 @@ $scope.pushYNcheck=function(){
 					$localstorage.set("SPwd", '');
 				break;
 				case 'Normal' : 
-					$localstorage.set("ESPwd", '');
+					$localstorage.set("NPwd", ''); //4.18수정
 				break;
 			}
 		}
 	};
 
+/*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스 끝*/ 	
 	// 로그인 함수
 	$scope.doLogin = function(admin_code, loginType, id, pwd, autologin_YN) {
 		console.log("dologin")
@@ -3023,7 +3029,9 @@ $scope.reload_tradelist();
 
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
 				if($scope.kind === "beasonga"){
-					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
+					$scope.htmlCode = 
+						'<ion-content>'	+
+							'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat" style="padding-top:20px;">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; vertical-align: top;">'+
 									'<button class="fa fa-refresh" name="refreshW" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
@@ -3032,7 +3040,7 @@ $scope.reload_tradelist();
 										'<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
 									// '<div name="loading">로딩중...</div>'+
-									'<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
+									// '<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -3050,7 +3058,8 @@ $scope.reload_tradelist();
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>' + '</ion-content>';
+							'</div>' + 
+						'</ion-content>';
 				}else{
 					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat" style="padding-top:20px;">'+
@@ -3063,7 +3072,7 @@ $scope.reload_tradelist();
 										'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
 										'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
-									'<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
+									// '<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -3128,7 +3137,7 @@ $scope.reload_tradelist();
 				});
 
 				$scope.btn = function(){
-					if($('div[name=loading2]').css('display') == 'none'){  // 정보있을때
+					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){   // 정보있을때
 						$("button[name=btnGrid]").css('background', '#ececed');
 						$("button[name=btnGrid]").css('color', '#444');
 					}else{
@@ -3138,10 +3147,11 @@ $scope.reload_tradelist();
 				}
 				
 				$scope.btn();
+				// console.log($("button[name=btnGrid]").css('color'));
 
 				$("button[name=btnGrid]").click(function() {
 					$scope.loadingani();
-					if($('div[name=loading2]').css('display') == 'none'){ // 정보있을때
+					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){  // 정보있을때
 						if ($('div[name=gridBody]').css('display') == 'none') {
 							$('div[name=gridBody]').css('display','block');
 							$('#' + $scope.kind).css('display', 'none');
