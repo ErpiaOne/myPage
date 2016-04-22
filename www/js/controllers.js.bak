@@ -13,6 +13,7 @@ var g_playlists = [{
 }, {
 	title : 'Rap',
 	id : 5
+
 }, {
 	title : 'Cowbell',
 	id : 6
@@ -30,7 +31,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 
 	$rootScope.version={
-   		Android_version : '0.1.7', //업데이트시 필수로 변경!!
+   		Android_version : '0.1.8', //업데이트시 필수로 변경!!
    		IOS_version : '0.1.3'	//업데이트시 필수로 변경!!
    	};
 
@@ -165,7 +166,7 @@ $scope.pushYNcheck=function(){
 	}
 	// 로그인창 닫기 함수
 	$scope.closeLogin = function() {
-		window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+		// window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 		$ionicHistory.nextViewOptions({
 			disableBack: true
 		});
@@ -180,9 +181,9 @@ $scope.pushYNcheck=function(){
 			}else if($rootScope.loginState == 'N'){ 
 				$state.go("app.erpia_main");
 			}
-			window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId);
-			window.plugins.PushbotsPlugin.tag("test");
-			console.log("updateAlias("+$rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId+")");
+			// window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId);
+			// window.plugins.PushbotsPlugin.tag("test");
+			// console.log("updateAlias("+$rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId+")");
 			// else if($rootScope.userType == 'Guest'){
 			// 	$location.href = '#/app/slidingtab';
 			// }
@@ -240,16 +241,39 @@ $scope.pushYNcheck=function(){
 	         // error
 	      });
 	   }
+/*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스*/
+
 	//로그인 체크박스
 	$scope.loginckbox={
 		AdminCodeCK : false,
 		UserIdCK : false,
 		PwdCK : false
 	};
+		// Open the login modal
+	$scope.login = function() {
+		$scope.logindata2.EAdminCode = $localstorage.get("EAdminCode");
+		$scope.logindata2.EUserId = 	$localstorage.get("EUserId");
+		$scope.logindata2.EPwd = $localstorage.get("EPwd");
+		$scope.logindata2.SAdminCode = $localstorage.get("SAdminCode");
+		$scope.logindata2.SUserId = $localstorage.get("SUserId");
+		$scope.logindata2.SPwd = $localstorage.get("SPwd");
+		$scope.logindata2.NAdminCode = $localstorage.get("NAdminCode");
+		$scope.logindata2.NUserId = $localstorage.get("NUserId");
+		$scope.logindata2.NPwd = $localstorage.get("NPwd");
+		$rootScope.loginMenu = 'selectUser';
+		if($rootScope.loginState == 'R'){
+			$scope.loginModal.show();
+			$scope.init('login');
+		}else{
+			$scope.footer_menu = 'G';
+			$scope.init('logout');
+		};
+	};
 
 	$rootScope.loginMenu = "selectUser";	//사용자 선택화면
 	$scope.selectType = function(userType){
-		if(userType == 'ERPia'){
+		$timeout(function(){
+				if(userType == 'ERPia'){
 				$rootScope.loginMenu = 'User'; 
 				$rootScope.userType = 'ERPia'; 
 				$scope.footer_menu = 'U'; 
@@ -280,81 +304,63 @@ $scope.pushYNcheck=function(){
 					console.log( $localstorage.get("EPwd") , "E");
 				}
 				console.log("code:" ,$rootScope.loginData.Admin_Code, "id:", $rootScope.loginData.UserId, "pwd:", $rootScope.loginData.Pwd )
-		}else if(userType =='SCM'){
-				$rootScope.loginMenu = 'User'; 
-				$rootScope.userType = 'SCM'; 
-				$scope.footer_menu = 'U'; 
-				if($localstorage.get("SAdminCode") == '' || $localstorage.get("SAdminCode") == undefined){
-					$scope.loginckbox.AdminCodeCK = false;
-				}else{
-					$rootScope.loginData.Admin_Code = $scope.logindata2.SAdminCode;
-					$scope.loginckbox.AdminCodeCK = true;
-				}
-				if($localstorage.get("SUserId") == '' || $localstorage.get("SUserId") == undefined){
-					$scope.loginckbox.UserIdCK = false;
-					
-				}else{
-					$rootScope.loginData.UserId = $scope.logindata2.SUserId;
-					$scope.loginckbox.UserIdCK = true;
-				}
-				if($localstorage.get("SPwd") == '' ||  $localstorage.get("SPwd") == undefined){
-					$scope.loginckbox.PwdCK = false;
-				}else{
-					$rootScope.loginData.Pwd = $scope.logindata2.SPwd;
-					$scope.loginckbox.PwdCK = true;
-				}
-		}else if(userType == 'Normal'){ 
-				$rootScope.loginMenu = 'User'; 
-				$rootScope.userType = 'Normal'; 
-				$scope.footer_menu = 'U'; 
-				if($localstorage.get("NAdminCode") == '' || $scope.logindata2.NAdminCode == undefined){
-					$scope.loginckbox.AdminCodeCK = false;
+				}else if(userType =='SCM'){
+						$rootScope.loginMenu = 'User'; 
+						$rootScope.userType = 'SCM'; 
+						$scope.footer_menu = 'U'; 
+						if($localstorage.get("SAdminCode") == '' || $localstorage.get("SAdminCode") == undefined){
+							$scope.loginckbox.AdminCodeCK = false;
+						}else{
+							$rootScope.loginData.Admin_Code = $scope.logindata2.SAdminCode;
+							$scope.loginckbox.AdminCodeCK = true;
+						}
+						if($localstorage.get("SUserId") == '' || $localstorage.get("SUserId") == undefined){
+							$scope.loginckbox.UserIdCK = false;
+							
+						}else{
+							$rootScope.loginData.UserId = $scope.logindata2.SUserId;
+							$scope.loginckbox.UserIdCK = true;
+						}
+						if($localstorage.get("SPwd") == '' ||  $localstorage.get("SPwd") == undefined){
+							$scope.loginckbox.PwdCK = false;
+						}else{
+							$rootScope.loginData.Pwd = $scope.logindata2.SPwd;
+							$scope.loginckbox.PwdCK = true;
+						}
+				}else if(userType == 'Normal'){ 
+						$rootScope.loginMenu = 'User'; 
+						$rootScope.userType = 'Normal'; 
+						$scope.footer_menu = 'U'; 
+						if($localstorage.get("NAdminCode") == '' || $scope.logindata2.NAdminCode == undefined){
+							$scope.loginckbox.AdminCodeCK = false;
 
+						}else{
+							$rootScope.loginData.Admin_Code = $localstorage.get("NAdminCode");
+							$scope.loginckbox.AdminCodeCK = true;
+						}
+						if($localstorage.get("NUserId") == '' || $localstorage.get("NUserId") == undefined){
+							$scope.loginckbox.UserIdCK = false;
+						}else{
+							$rootScope.loginData.UserId = $scope.logindata2.NUserId;
+							$scope.loginckbox.UserIdCK = true;
+						}
+						if($localstorage.get("NPwd") == '' || $localstorage.get("NPwd") == undefined){
+							$scope.loginckbox.PwdCK = false;
+						}else{
+							$rootScope.loginData.Pwd = $scope.logindata2.NPwd;
+							$scope.loginckbox.PwdCK = true;	
+						}
+				}else if(userType == 'Guest'){
+						$rootScope.loginMenu = 'User'; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
+						$scope.loginModal.hide();
+						$scope.doLogin();
 				}else{
-					$rootScope.loginData.Admin_Code = $localstorage.get("NAdminCode");
-					$scope.loginckbox.AdminCodeCK = true;
+						$rootScope.loginMenu = 'selectUser';
 				}
-				if($localstorage.get("NUserId") == '' || $localstorage.get("NUserId") == undefined){
-					$scope.loginckbox.UserIdCK = false;
-				}else{
-					$rootScope.loginData.UserId = $scope.logindata2.NUserId;
-					$scope.loginckbox.UserIdCK = true;
-				}
-				if($localstorage.get("NPwd") == '' || $localstorage.get("NPwd") == undefined){
-					$scope.loginckbox.PwdCK = false;
-				}else{
-					$rootScope.loginData.Pwd = $scope.logindata2.NPwd;
-					$scope.loginckbox.PwdCK = true;	
-				}
-		}else if(userType == 'Guest'){
-				$rootScope.loginMenu = 'User'; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
-				$scope.loginModal.hide();
-				$scope.doLogin();
-		}else{
-				$rootScope.loginMenu = 'selectUser';
-		}
+		}, 500);
+
 	}
 	
-	// Open the login modal
-	$scope.login = function() {
-		$scope.logindata2.EAdminCode = $localstorage.get("EAdminCode");
-		$scope.logindata2.EUserId = 	$localstorage.get("EUserId");
-		$scope.logindata2.EPwd = $localstorage.get("EPwd");
-		$scope.logindata2.SAdminCode = $localstorage.get("SAdminCode");
-		$scope.logindata2.SUserId = $localstorage.get("SUserId");
-		$scope.logindata2.SPwd = $localstorage.get("SPwd");
-		$scope.logindata2.NAdminCode = $localstorage.get("NAdminCode");
-		$scope.logindata2.NUserId = $localstorage.get("NUserId");
-		$scope.logindata2.NPwd = $localstorage.get("NPwd");
-		$rootScope.loginMenu = 'selectUser';
-		if($rootScope.loginState == 'R'){
-			$scope.loginModal.show();
-			$scope.init('login');
-		}else{
-			$scope.footer_menu = 'G';
-			$scope.init('logout');
-		};
-	};
 
 	// 업체코드, 아이디, 패스워드 저장하기..
 	$scope.LoginAdminCodeCK=function(userType){
@@ -439,12 +445,13 @@ $scope.pushYNcheck=function(){
 					$localstorage.set("SPwd", '');
 				break;
 				case 'Normal' : 
-					$localstorage.set("ESPwd", '');
+					$localstorage.set("NPwd", ''); //4.18수정
 				break;
 			}
 		}
 	};
 
+/*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스 끝*/ 	
 	// 로그인 함수
 	$scope.doLogin = function(admin_code, loginType, id, pwd, autologin_YN) {
 		console.log("dologin")
@@ -539,7 +546,7 @@ $scope.pushYNcheck=function(){
 			});
 		}else if ($rootScope.userType == 'ERPia'){
 			//ERPia 로그인
-			loginService.comInfo('ERPiaLogin1', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
+			loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
 			.then(function(comInfo){
 				if(comInfo.data.list[0].Result=='1'){
 					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
@@ -1241,60 +1248,244 @@ $scope.reload_tradelist();
 			.then(function(response){
 				console.log('readDetail', response);
 
+				console.log('새액 여부->', response.list[0].vatYN);
+
 				var numhap = 0; // 수량합계
 				var num = 1;
-				switch( num ){
-					case 1:  response.list[0].numhap = response.list[0].G_ea1;
-							 response.list[0].taxhap = response.list[0].tax1;
-							 response.list[0].pricehap = response.list[0].G_price1;
-							 if(response.list[0].G_ea2 == null) break;
+				if(response.list[0].vatYN == 'Y'){// 세액적용
+					console.log('새액적용할꺼야?');
+					response.list[0].Hap = 0;
+					switch( num ){
+						case 1:
+								 var price = parseInt(response.list[0].G_price1)/1.1;
+								 price = price * parseInt(response.list[0].G_ea1); 
+								 var gong = Math.round(price);// 반올림함수
+								 response.list[0].G_Gong1 = gong;
+								 response.list[0].Hap = gong;
+								 response.list[0].numhap = response.list[0].G_ea1;
+								 response.list[0].tax1 = parseInt(response.list[0].G_price1) * parseInt(response.list[0].G_ea1) - parseInt(response.list[0].G_Gong1);
+								 response.list[0].taxhap = response.list[0].tax1;
+								 response.list[0].pricehap = response.list[0].G_price1;
+								 if(response.list[0].G_ea2 == null) break;
 
-					case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
-							 if(response.list[0].G_ea3 == null) break;
+						case 2:  
+								 var price = parseInt(response.list[0].G_price2)/1.1;
+								 price = price * parseInt(response.list[0].G_ea2); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong2 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
+								 response.list[0].tax2 = parseInt(response.list[0].G_price2) * parseInt(response.list[0].G_ea2) - parseInt(response.list[0].G_Gong2);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
+								 if(response.list[0].G_ea3 == null) break;
 
-					case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
-							 if(response.list[0].G_ea4 == null) break;
+						case 3:  
+								 var price = parseInt(response.list[0].G_price3)/1.1;
+								 price = price * parseInt(response.list[0].G_ea3); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong3 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+								 response.list[0].tax3 = parseInt(response.list[0].G_price3) * parseInt(response.list[0].G_ea3) - parseInt(response.list[0].G_Gong3);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
+								 if(response.list[0].G_ea4 == null) break;
 
-					case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
-							 if(response.list[0].G_ea5 == null) break;
+						case 4:  
+								 var price = parseInt(response.list[0].G_price4)/1.1;
+								 price = price * parseInt(response.list[0].G_ea4); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong4 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+								 response.list[0].tax4 = parseInt(response.list[0].G_price4) * parseInt(response.list[0].G_ea4) - parseInt(response.list[0].G_Gong4);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
+								 if(response.list[0].G_ea5 == null) break;
 
-					case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
-							 if(response.list[0].G_ea6 == null) break;
+						case 5:  
+								 var price = parseInt(response.list[0].G_price5)/1.1;
+								 price = price * parseInt(response.list[0].G_ea5); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong5 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+								 response.list[0].tax5 = parseInt(response.list[0].G_price5) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong5);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+								 if(response.list[0].G_ea6 == null) break;
 
-					case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
-							 if(response.list[0].G_ea7 == null) break;
+						case 6:  
+								 var price = parseInt(response.list[0].G_price6)/1.1;
+								 price = price * parseInt(response.list[0].G_ea6); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong6 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+								 response.list[0].tax6 = parseInt(response.list[0].G_price6) * parseInt(response.list[0].G_ea6) - parseInt(response.list[0].G_Gong6);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
+								 if(response.list[0].G_ea7 == null) break;
 
-					case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
-							 if(response.list[0].G_ea8 == null) break;
+						case 7:  
+						 		 var price = parseInt(response.list[0].G_price7)/1.1;
+								 price = price * parseInt(response.list[0].G_ea7); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong7 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+								 response.list[0].tax7 = parseInt(response.list[0].G_price7) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong7);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
+								 if(response.list[0].G_ea8 == null) break;
 
-					case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
-							 if(response.list[0].G_ea9 == null) break;
+						case 8:  
+								 var price = parseInt(response.list[0].G_price8)/1.1;
+								 price = price * parseInt(response.list[0].G_ea8); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong8 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+								 response.list[0].tax8 = parseInt(response.list[0].G_price8) * parseInt(response.list[0].G_ea8) - parseInt(response.list[0].G_Gong8);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
+								 if(response.list[0].G_ea9 == null) break;
 
-					case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
-							 if(response.list[0].G_ea10 == null) break;
+						case 9:  
+								 var price = parseInt(response.list[0].G_price9)/1.1;
+								 price = price * parseInt(response.list[0].G_ea9); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong9 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+								 response.list[0].tax9 = parseInt(response.list[0].G_price9) * parseInt(response.list[0].G_ea9) - parseInt(response.list[0].G_Gong9);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
+								 if(response.list[0].G_ea10 == null) break;
 
-					case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
-							   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
-							   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
-							   break;
-					default : console.log('여기올일 없을껄....');
+						case 10:  
+								 var price = parseInt(response.list[0].G_price10)/1.1;
+								 price = price * parseInt(response.list[0].G_ea10); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong10 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
+								 response.list[0].tax10 = parseInt(response.list[0].G_price10) * parseInt(response.list[0].G_ea10) - parseInt(response.list[0].G_Gong10);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
+								 break;
+						default : console.log('여기올일 없을껄....');
+					}
+				}else {//세액적용 안함
+					console.log('vat미포함 또는 영세율');
+					switch( num ){
+						case 1: response.list[0].numhap = response.list[0].G_ea1;
+								 response.list[0].taxhap = response.list[0].tax1;
+								 response.list[0].pricehap = response.list[0].G_price1;
+								 if(response.list[0].G_ea2 == null) break;
+
+						case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
+								 if(response.list[0].G_ea3 == null) break;
+
+						case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
+								 if(response.list[0].G_ea4 == null) break;
+
+						case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
+								 if(response.list[0].G_ea5 == null) break;
+
+						case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+								 if(response.list[0].G_ea6 == null) break;
+
+						case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
+								 if(response.list[0].G_ea7 == null) break;
+
+						case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
+								 if(response.list[0].G_ea8 == null) break;
+
+						case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
+								 if(response.list[0].G_ea9 == null) break;
+
+						case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
+								 if(response.list[0].G_ea10 == null) break;
+
+						case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
+								   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
+								   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
+								   break;
+						default : console.log('여기올일 없을껄....');
+					}
 				}
+
+				
+				// switch( num ){
+				// 	case 1:  response.list[0].numhap = response.list[0].G_ea1;
+				// 			 response.list[0].taxhap = response.list[0].tax1;
+				// 			 response.list[0].pricehap = response.list[0].G_price1;
+				// 			 if(response.list[0].G_ea2 == null) break;
+
+				// 	case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
+				// 			 if(response.list[0].G_ea3 == null) break;
+
+				// 	case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
+				// 			 if(response.list[0].G_ea4 == null) break;
+
+				// 	case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
+				// 			 if(response.list[0].G_ea5 == null) break;
+
+				// 	case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+				// 			 if(response.list[0].G_ea6 == null) break;
+
+				// 	case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
+				// 			 if(response.list[0].G_ea7 == null) break;
+
+				// 	case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
+				// 			 if(response.list[0].G_ea8 == null) break;
+
+				// 	case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
+				// 			 if(response.list[0].G_ea9 == null) break;
+
+				// 	case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
+				// 			 if(response.list[0].G_ea10 == null) break;
+
+				// 	case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
+				// 			   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
+				// 			   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
+				// 			   break;
+				// 	default : console.log('여기올일 없을껄....');
+				// }
 				response.list[0].bigo = ' ';
 				$scope.detail_items = response.list;
 				$rootScope.trade_Detail_Modal.show();
@@ -2675,6 +2866,12 @@ $scope.reload_tradelist();
 		Num = new String(Num)
 		temp=""
 		co=3
+		
+		if(Num < 0){// 마이너스 금액일경우
+			Num = Num.replace(/\-/g,'');
+			fl = '-';
+		} 
+			
 		num_len=Num.length
 		while (num_len>0)
 		{
@@ -2686,6 +2883,7 @@ $scope.reload_tradelist();
 			}
 			temp=","+Num.substr(num_len,co)+temp
 		}
+		
 		rResult =  fl+temp.substr(1);
 		return rResult;
 	}
@@ -2890,7 +3088,6 @@ $scope.reload_tradelist();
 					break;
 			}
 		}
-		console.log('strHtml', strHtml);
 		$("table[name=tbGrid]").html(strHtml);
 	}
 
@@ -2915,7 +3112,6 @@ $scope.reload_tradelist();
 			response = eval(request.responseText);
 			// $rootScope.time_ref = response[0].in_date;
 			$.each(response[0], function(index, jsonData){
-				console.log(jsonData);
 						tmpAlert += jsonData;
 			});
 			$("h3[name=refresh_date]").html(tmpAlert);
@@ -3018,7 +3214,9 @@ $scope.reload_tradelist();
 
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
 				if($scope.kind === "beasonga"){
-					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
+					$scope.htmlCode = 
+						'<ion-content>'	+
+							'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat" style="padding-top:20px;">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; vertical-align: top;">'+
 									'<button class="fa fa-refresh" name="refreshW" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
@@ -3027,7 +3225,7 @@ $scope.reload_tradelist();
 										'<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
 									// '<div name="loading">로딩중...</div>'+
-									'<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
+									// '<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -3045,7 +3243,8 @@ $scope.reload_tradelist();
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>' + '</ion-content>';
+							'</div>' + 
+						'</ion-content>';
 				}else{
 					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat" style="padding-top:20px;">'+
@@ -3058,7 +3257,7 @@ $scope.reload_tradelist();
 										'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
 										'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
-									'<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
+									// '<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -3101,34 +3300,43 @@ $scope.reload_tradelist();
 					case 17: $('#s17').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 				}
 
+
+
 				$("button[name=btnW]").click(function() {
 					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
 				});
 				$("button[name=btnM]").click(function() {
 					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
 				});
 				$("button[name=btnY]").click(function() {
 					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
 				});
 
-				if($('div[name=loading2]').css('display') == 'none'){  // 정보있을때
-					$("button[name=btnGrid]").css('background', '#ececed');
-					$("button[name=btnGrid]").css('color', '#444');
-				}else{
-					$("button[name=btnGrid]").css('background', '#7b7b7b');
-					$("button[name=btnGrid]").css('color', '#686868');
+				$scope.btn = function(){
+					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){   // 정보있을때
+						$("button[name=btnGrid]").css('background', '#ececed');
+						$("button[name=btnGrid]").css('color', '#444');
+					}else{
+						$("button[name=btnGrid]").css('background', '#7b7b7b');
+						$("button[name=btnGrid]").css('color', '#686868');
+					}	
 				}
-
+				
+				$scope.btn();
+				// console.log($("button[name=btnGrid]").css('color'));
 
 				$("button[name=btnGrid]").click(function() {
 					$scope.loadingani();
-					if($('div[name=loading2]').css('display') == 'none'){ // 정보있을때
+					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){  // 정보있을때
 						if ($('div[name=gridBody]').css('display') == 'none') {
 							$('div[name=gridBody]').css('display','block');
 							$('#' + $scope.kind).css('display', 'none');
@@ -3189,6 +3397,8 @@ $scope.reload_tradelist();
 
 		     $rootScope.token = token;
 		});
+		window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId);
+		console.log("updateAlias("+$rootScope.loginData.Admin_Code+"&"+$rootScope.loginData.UserId+")");
 		// Register with the Ionic Push service.  All parameters are optional.
 
 	};
@@ -3201,7 +3411,7 @@ $scope.reload_tradelist();
 	//단가지정배열(매출) 1. 매입가 2. 도매가 3. 인터넷가 4. 소매가 5. 권장소비자가
     $scope.MchulDn = [
       { num: 0, id: '거래처등록단가' },
-      { num: 1, id: '매출가' },
+      { num: 1, id: '매입가' },
       { num: 2, id: '도매가' },
       { num: 3, id: '인터넷가' },
       { num: 4, id: '소매가' },

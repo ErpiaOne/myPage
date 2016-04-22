@@ -115,7 +115,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}else{
 		  	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경 불안정합니다. 데이터/와이파이접속을 확인해주세요.', 'short', 'center');
 			else alert('네트워크환경 불안정합니다. 데이터접속을 확인해주세요.');
-		}
+		}		
 		})
 
 		$rootScope.$on('$cordovaNetwork:online', function(event, networkState){

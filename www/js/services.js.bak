@@ -42,7 +42,7 @@ angular.module('starter.services', [])
 	var comInfo = function(kind, Admin_Code, G_id, G_Pass, phoneNo, UUID){
 		if(kind == 'scm_login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass + '&hp=' + phoneNo;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -82,7 +82,7 @@ angular.module('starter.services', [])
 				});
 		}else if(kind == 'ERPia_Ger_Login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo;
 			console.log(url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
@@ -179,12 +179,12 @@ angular.module('starter.services', [])
 		var data ='';
 		if(loginType == 'S' || loginType == 'N'){
 			data = 'Kind=check_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID;
-			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num + '&mac=' + UUID;
+			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num;
 		}else if(loginType=='E'){
 			url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 			//김형석 바보
-			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
-			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
+			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
+			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
 		}
 		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
@@ -249,6 +249,7 @@ angular.module('starter.services', [])
 			console.log('readDetail ', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
+					console.log('readDetail_Service : ', response);
 					if(typeof response.data == 'object'){
 
 						if(response.data.list[0].G_name1 != null){

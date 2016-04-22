@@ -13,6 +13,7 @@ var g_playlists = [{
 }, {
 	title : 'Rap',
 	id : 5
+
 }, {
 	title : 'Cowbell',
 	id : 6
@@ -30,8 +31,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 
 	$rootScope.version={
-   		Android_version : '0.1.8', //업데이트시 필수로 변경!!
-   		IOS_version : '0.1.3'	//업데이트시 필수로 변경!!
+   		Android_version : '0.1.9', //업데이트시 필수로 변경!!
+   		IOS_version : '0.1.8'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 */
@@ -495,7 +496,7 @@ $scope.pushYNcheck=function(){
 		}
 		//SCM 로그인
 		if ($rootScope.userType == 'SCM') {
-			loginService.comInfo('scm_login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo)
+			loginService.comInfo('scm_login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd),  $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
 			.then(function(comInfo){
 				if (comInfo.data.list[0].ResultCk == '1'){
 					$scope.userData.GerName = comInfo.data.list[0].GerName + '<br>(' + comInfo.data.list[0].G_Code + ')';
@@ -683,7 +684,7 @@ $scope.pushYNcheck=function(){
 				else alert('comInfo error');
 			});
 		}else if($rootScope.userType == 'Normal'){
-			loginService.comInfo('ERPia_Ger_Login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo)
+			loginService.comInfo('ERPia_Ger_Login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd),  $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
 			.then(function(comInfo){
 				if(comInfo.data.list[0].result == '0'){
 					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
@@ -1247,60 +1248,244 @@ $scope.reload_tradelist();
 			.then(function(response){
 				console.log('readDetail', response);
 
+				console.log('새액 여부->', response.list[0].vatYN);
+
 				var numhap = 0; // 수량합계
 				var num = 1;
-				switch( num ){
-					case 1:  response.list[0].numhap = response.list[0].G_ea1;
-							 response.list[0].taxhap = response.list[0].tax1;
-							 response.list[0].pricehap = response.list[0].G_price1;
-							 if(response.list[0].G_ea2 == null) break;
+				if(response.list[0].vatYN == 'Y'){// 세액적용
+					console.log('새액적용할꺼야?');
+					response.list[0].Hap = 0;
+					switch( num ){
+						case 1:
+								 var price = parseInt(response.list[0].G_price1)/1.1;
+								 price = price * parseInt(response.list[0].G_ea1); 
+								 var gong = Math.round(price);// 반올림함수
+								 response.list[0].G_Gong1 = gong;
+								 response.list[0].Hap = gong;
+								 response.list[0].numhap = response.list[0].G_ea1;
+								 response.list[0].tax1 = parseInt(response.list[0].G_price1) * parseInt(response.list[0].G_ea1) - parseInt(response.list[0].G_Gong1);
+								 response.list[0].taxhap = response.list[0].tax1;
+								 response.list[0].pricehap = response.list[0].G_price1;
+								 if(response.list[0].G_ea2 == null) break;
 
-					case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
-							 if(response.list[0].G_ea3 == null) break;
+						case 2:  
+								 var price = parseInt(response.list[0].G_price2)/1.1;
+								 price = price * parseInt(response.list[0].G_ea2); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong2 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
+								 response.list[0].tax2 = parseInt(response.list[0].G_price2) * parseInt(response.list[0].G_ea2) - parseInt(response.list[0].G_Gong2);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
+								 if(response.list[0].G_ea3 == null) break;
 
-					case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
-							 if(response.list[0].G_ea4 == null) break;
+						case 3:  
+								 var price = parseInt(response.list[0].G_price3)/1.1;
+								 price = price * parseInt(response.list[0].G_ea3); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong3 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+								 response.list[0].tax3 = parseInt(response.list[0].G_price3) * parseInt(response.list[0].G_ea3) - parseInt(response.list[0].G_Gong3);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
+								 if(response.list[0].G_ea4 == null) break;
 
-					case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
-							 if(response.list[0].G_ea5 == null) break;
+						case 4:  
+								 var price = parseInt(response.list[0].G_price4)/1.1;
+								 price = price * parseInt(response.list[0].G_ea4); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong4 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+								 response.list[0].tax4 = parseInt(response.list[0].G_price4) * parseInt(response.list[0].G_ea4) - parseInt(response.list[0].G_Gong4);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
+								 if(response.list[0].G_ea5 == null) break;
 
-					case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
-							 if(response.list[0].G_ea6 == null) break;
+						case 5:  
+								 var price = parseInt(response.list[0].G_price5)/1.1;
+								 price = price * parseInt(response.list[0].G_ea5); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong5 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+								 response.list[0].tax5 = parseInt(response.list[0].G_price5) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong5);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+								 if(response.list[0].G_ea6 == null) break;
 
-					case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
-							 if(response.list[0].G_ea7 == null) break;
+						case 6:  
+								 var price = parseInt(response.list[0].G_price6)/1.1;
+								 price = price * parseInt(response.list[0].G_ea6); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong6 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+								 response.list[0].tax6 = parseInt(response.list[0].G_price6) * parseInt(response.list[0].G_ea6) - parseInt(response.list[0].G_Gong6);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
+								 if(response.list[0].G_ea7 == null) break;
 
-					case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
-							 if(response.list[0].G_ea8 == null) break;
+						case 7:  
+						 		 var price = parseInt(response.list[0].G_price7)/1.1;
+								 price = price * parseInt(response.list[0].G_ea7); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong7 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+								 response.list[0].tax7 = parseInt(response.list[0].G_price7) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong7);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
+								 if(response.list[0].G_ea8 == null) break;
 
-					case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
-							 if(response.list[0].G_ea9 == null) break;
+						case 8:  
+								 var price = parseInt(response.list[0].G_price8)/1.1;
+								 price = price * parseInt(response.list[0].G_ea8); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong8 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+								 response.list[0].tax8 = parseInt(response.list[0].G_price8) * parseInt(response.list[0].G_ea8) - parseInt(response.list[0].G_Gong8);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
+								 if(response.list[0].G_ea9 == null) break;
 
-					case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
-							 if(response.list[0].G_ea10 == null) break;
+						case 9:  
+								 var price = parseInt(response.list[0].G_price9)/1.1;
+								 price = price * parseInt(response.list[0].G_ea9); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong9 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+								 response.list[0].tax9 = parseInt(response.list[0].G_price9) * parseInt(response.list[0].G_ea9) - parseInt(response.list[0].G_Gong9);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
+								 if(response.list[0].G_ea10 == null) break;
 
-					case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
-							   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
-							   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
-							   break;
-					default : console.log('여기올일 없을껄....');
+						case 10:  
+								 var price = parseInt(response.list[0].G_price10)/1.1;
+								 price = price * parseInt(response.list[0].G_ea10); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong10 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
+								 response.list[0].tax10 = parseInt(response.list[0].G_price10) * parseInt(response.list[0].G_ea10) - parseInt(response.list[0].G_Gong10);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
+								 break;
+						default : console.log('여기올일 없을껄....');
+					}
+				}else {//세액적용 안함
+					console.log('vat미포함 또는 영세율');
+					switch( num ){
+						case 1: response.list[0].numhap = response.list[0].G_ea1;
+								 response.list[0].taxhap = response.list[0].tax1;
+								 response.list[0].pricehap = response.list[0].G_price1;
+								 if(response.list[0].G_ea2 == null) break;
+
+						case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
+								 if(response.list[0].G_ea3 == null) break;
+
+						case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
+								 if(response.list[0].G_ea4 == null) break;
+
+						case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
+								 if(response.list[0].G_ea5 == null) break;
+
+						case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+								 if(response.list[0].G_ea6 == null) break;
+
+						case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
+								 if(response.list[0].G_ea7 == null) break;
+
+						case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
+								 if(response.list[0].G_ea8 == null) break;
+
+						case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
+								 if(response.list[0].G_ea9 == null) break;
+
+						case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
+								 if(response.list[0].G_ea10 == null) break;
+
+						case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
+								   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
+								   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
+								   break;
+						default : console.log('여기올일 없을껄....');
+					}
 				}
+
+				
+				// switch( num ){
+				// 	case 1:  response.list[0].numhap = response.list[0].G_ea1;
+				// 			 response.list[0].taxhap = response.list[0].tax1;
+				// 			 response.list[0].pricehap = response.list[0].G_price1;
+				// 			 if(response.list[0].G_ea2 == null) break;
+
+				// 	case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
+				// 			 if(response.list[0].G_ea3 == null) break;
+
+				// 	case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
+				// 			 if(response.list[0].G_ea4 == null) break;
+
+				// 	case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
+				// 			 if(response.list[0].G_ea5 == null) break;
+
+				// 	case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+				// 			 if(response.list[0].G_ea6 == null) break;
+
+				// 	case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
+				// 			 if(response.list[0].G_ea7 == null) break;
+
+				// 	case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
+				// 			 if(response.list[0].G_ea8 == null) break;
+
+				// 	case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
+				// 			 if(response.list[0].G_ea9 == null) break;
+
+				// 	case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
+				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
+				// 			 if(response.list[0].G_ea10 == null) break;
+
+				// 	case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
+				// 			   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
+				// 			   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
+				// 			   break;
+				// 	default : console.log('여기올일 없을껄....');
+				// }
 				response.list[0].bigo = ' ';
 				$scope.detail_items = response.list;
 				$rootScope.trade_Detail_Modal.show();
