@@ -6,20 +6,20 @@
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
 	, 'starter.services'])
 
- .constant('ERPiaAPI',{
- 	  url:'http://localhost:8100/include'
- 	, url2:'http://localhost:8100'
- 	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	, toast:'N'
- })
+ // .constant('ERPiaAPI',{
+ // 	  url:'http://localhost:8100/include'
+ // 	, url2:'http://localhost:8100'
+ // 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ // 	, toast:'N'
+ // })
 
 //실제 사용
-// .constant('ERPiaAPI',{
-// 	url:'http://www.erpia.net/include',
-// 	url2: 'http://www.erpia.net',
-// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-// 	toast:'Y'
-// })
+.constant('ERPiaAPI',{
+	url:'http://www.erpia.net/include',
+	url2: 'http://www.erpia.net',
+	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+	toast:'Y'
+})
 
 .run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast) {
 	$ionicPlatform.ready(function() {

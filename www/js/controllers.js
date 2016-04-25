@@ -993,6 +993,18 @@ $scope.pushYNcheck=function(){
 		toemail : ''
 	};
 
+	$scope.testfax = function(){
+		console.log('durl?');
+		$.ajax({
+				  url: "http://image.erpia.net/fax_test.asp",
+				  method: "POST",
+				   error : function (data) {
+				    alert('죄송합니다. 잠시 후 다시 시도해주세요.');
+				    return false;
+				   }
+				  });
+	}
+
 	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
 		scope : $scope
 	}).then(function(modal){
