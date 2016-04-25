@@ -182,7 +182,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		height = $(window).height()-300;
 		$('#' + kind).css('height', height+'px');
 	});
-
+console.log('여기확인해봅시다.->' , kind);
 	switch (kind)
 	{
 		case "meaip_jem" :			//거래처별 매입 점유율

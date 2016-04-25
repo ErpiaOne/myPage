@@ -1433,59 +1433,6 @@ $scope.reload_tradelist();
 					}
 				}
 
-				
-				// switch( num ){
-				// 	case 1:  response.list[0].numhap = response.list[0].G_ea1;
-				// 			 response.list[0].taxhap = response.list[0].tax1;
-				// 			 response.list[0].pricehap = response.list[0].G_price1;
-				// 			 if(response.list[0].G_ea2 == null) break;
-
-				// 	case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
-				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
-				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
-				// 			 if(response.list[0].G_ea3 == null) break;
-
-				// 	case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
-				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
-				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
-				// 			 if(response.list[0].G_ea4 == null) break;
-
-				// 	case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
-				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
-				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
-				// 			 if(response.list[0].G_ea5 == null) break;
-
-				// 	case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
-				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
-				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
-				// 			 if(response.list[0].G_ea6 == null) break;
-
-				// 	case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
-				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
-				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
-				// 			 if(response.list[0].G_ea7 == null) break;
-
-				// 	case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
-				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
-				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
-				// 			 if(response.list[0].G_ea8 == null) break;
-
-				// 	case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
-				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
-				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
-				// 			 if(response.list[0].G_ea9 == null) break;
-
-				// 	case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
-				// 			 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
-				// 			 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
-				// 			 if(response.list[0].G_ea10 == null) break;
-
-				// 	case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
-				// 			   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
-				// 			   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
-				// 			   break;
-				// 	default : console.log('여기올일 없을껄....');
-				// }
 				response.list[0].bigo = ' ';
 				$scope.detail_items = response.list;
 				$rootScope.trade_Detail_Modal.show();
@@ -3174,7 +3121,7 @@ $scope.reload_tradelist();
 			, {Idx:2, title:"meachul_jem"}
 			, {Idx:3, title:"brand_top5"}
 			, {Idx:4, title:"meachul_top5"}
-			// , {Idx:5, title:"scm"}
+			, {Idx:5, title:"scm"}
 			, {Idx:6, title:"Meachul_ik"}
 			, {Idx:7, title:"meachul_7"}
 			, {Idx:8, title:"meaip_7"}
@@ -4294,6 +4241,12 @@ $scope.reload_tradelist();
 			}
 		})
 	}
+
+	// $ionicModal.fromTemplateUrl('side/trade_Detail.html',{
+	// 	scope : $scope
+	// }).then(function(modal){
+	// 	$rootScope.trade_Detail_Modal = modal;
+	// });
 
 	/*거래명세표 전환*/
 	$scope.traddetail = function(no){

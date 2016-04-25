@@ -183,8 +183,8 @@ angular.module('starter.services', [])
 		}else if(loginType=='E'){
 			url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 			//김형석 바보
-			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
-			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
+			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
+			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
 		}
 		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
