@@ -993,18 +993,6 @@ $scope.pushYNcheck=function(){
 		toemail : ''
 	};
 
-	$scope.testfax = function(){
-		console.log('durl?');
-		$.ajax({
-				  url: "http://image.erpia.net/fax_test.asp",
-				  method: "POST",
-				   error : function (data) {
-				    alert('죄송합니다. 잠시 후 다시 시도해주세요.');
-				    return false;
-				   }
-				  });
-	}
-
 	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
 		scope : $scope
 	}).then(function(modal){
@@ -1836,7 +1824,7 @@ $scope.reload_tradelist();
 })
 // 설정 화면 컨트롤러 끝 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SCM 메인 화면 컨트롤러
-.controller('ScmUser_HomeCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, scmInfoService, AmChart_Service){
+.controller('ScmUser_HomeCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, scmInfoService, AmChart_Service, ERPiaAPI){
 	$scope.ScmBaseData = function() {
 		if($rootScope.loginState == "S") {
 			// 날짜
@@ -1925,9 +1913,43 @@ $scope.reload_tradelist();
 	$scope.load_scm_chart = function(){
 	    AmChart_Service.scm_Chart('scm', 'scm', $scope.loginData.Admin_Code, 3, $scope.userData.G_Code)
 	    .then(function(response){
+	    	console.log('데이터가 이상하다. =', response);
 	    	var chartData = response;
 	    	console.log('chartData', chartData);
-	    	var chart = AmCharts.makeChart("chart5", {
+	    	if(chartData.length == 0){
+	    		AmCharts.addInitHandler(function(kind) {
+			//kind.height = containerwidth
+			if (kind.dataProvider === undefined || kind.dataProvider.length === 0) {
+			// add some bogus data
+			var dp = {};
+			dp[kind.titleField] = "";
+			dp[kind.valueField] = 1;
+			kind.dataProvider.push(dp)
+			
+			var dp = {};
+			dp[kind.titleField] = "";
+			dp[kind.valueField] = 1;
+			kind.dataProvider.push(dp)
+			
+			var dp = {};
+			dp[kind.titleField] = "";
+			dp[kind.valueField] = 1;
+			kind.dataProvider.push(dp)
+			
+			// disable slice labels
+			kind.labelsEnabled = false;
+			
+			// add label to let users know the chart is empty
+			kind.addLabel("50%", "50%", "조회할 데이터가 없습니다.", "middle", 15);
+			
+			// dim the whole chart
+			kind.alpha = 0.3;
+			return;
+		  }
+		}, ["serial"]);
+
+	    	}
+	    		var chart = AmCharts.makeChart("chart5", {
 			   theme: "dark",
 				type: "serial",
 				dataProvider: chartData,
@@ -1941,7 +1963,7 @@ $scope.reload_tradelist();
 				valueAxes: [
 					{
 						id: "ValueAxis-1",
-						title: "금액",
+						title: "금액\n(만원)",
 						titleRotation: 0,
 						usePrefixes: true
 					},
@@ -1989,6 +2011,8 @@ $scope.reload_tradelist();
 					balloonText : "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>"
                 }
 			});
+	    	
+	    	
 	    })
 	}
 	$scope.load_scm_chart();
@@ -3068,7 +3092,9 @@ $scope.reload_tradelist();
 
 		if (load_kind == "refresh")
 		{	$scope.loadingani();
+			console.log('??', request.responseText);
 			response = eval(request.responseText);
+			console.log('확인 ->', response);
 			// $rootScope.time_ref = response[0].in_date;
 			$.each(response[0], function(index, jsonData){
 						tmpAlert += jsonData;
@@ -3132,8 +3158,8 @@ $scope.reload_tradelist();
 			, {Idx:1, title:"meaip_jem"}
 			, {Idx:2, title:"meachul_jem"}
 			, {Idx:3, title:"brand_top5"}
-			, {Idx:4, title:"meachul_top5"}
-			, {Idx:5, title:"scm"}
+			, {Idx:4, title:"scm"}
+			, {Idx:5, title:"meachul_top5"}
 			, {Idx:6, title:"Meachul_ik"}
 			, {Idx:7, title:"meachul_7"}
 			, {Idx:8, title:"meaip_7"}
@@ -3151,24 +3177,26 @@ $scope.reload_tradelist();
 			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index)
 			.then(function(response){
 				$rootScope.kind = 'chart' + response.list[0].idx;
+				console.log('넌머니?=>',response.list[0].idx);
 				switch (response.list[0].idx)
 				{
 					case '1' : $scope.kind = titles[1].title; break;
 					case '2' : $scope.kind = titles[2].title; break;
 					case '3' : $scope.kind = titles[3].title; break;
 					case '4' : $scope.kind = titles[4].title; break;
-					case '6' : $scope.kind = titles[5].title; break;
-					case '7' : $scope.kind = titles[6].title; break;
-					case '8' : $scope.kind = titles[7].title; break;
-					case '9' : $scope.kind = titles[8].title; break;
-					case '10' : $scope.kind = titles[9].title; break;
-					case '11' : $scope.kind = titles[10].title; break;
-					case '12' : $scope.kind = titles[11].title; break;
-					case '13' : $scope.kind = titles[12].title; break;
-					case '14' : $scope.kind = titles[13].title; break;
-					case '15' : $scope.kind = titles[14].title; break;
-					case '16' : $scope.kind = titles[15].title; break;
-					case '17' : $scope.kind = titles[16].title; break;
+					case '5' : $scope.kind = titles[5].title; break;
+					case '6' : $scope.kind = titles[6].title; break;
+					case '7' : $scope.kind = titles[7].title; break;
+					case '8' : $scope.kind = titles[8].title; break;
+					case '9' : $scope.kind = titles[9].title; break;
+					case '10' : $scope.kind = titles[10].title; break;
+					case '11' : $scope.kind = titles[11].title; break;
+					case '12' : $scope.kind = titles[12].title; break;
+					case '13' : $scope.kind = titles[13].title; break;
+					case '14' : $scope.kind = titles[14].title; break;
+					case '15' : $scope.kind = titles[15].title; break;
+					case '16' : $scope.kind = titles[16].title; break;
+					case '17' : $scope.kind = titles[17].title; break;
 				}
 
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
@@ -3256,7 +3284,6 @@ $scope.reload_tradelist();
 					case 14: $('#s14').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 15: $('#s15').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 16: $('#s16').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 17: $('#s17').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 				}
 
 

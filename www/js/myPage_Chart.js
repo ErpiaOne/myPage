@@ -188,18 +188,18 @@ console.log('여기확인해봅시다.->' , kind);
 		case "meaip_jem" :			//거래처별 매입 점유율
 		console.log('거래처별 매입 점유율');
 		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_jem&value_kind=meaip_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
-			for (var i in chartData) {
-			  chartData[i].litres = chartData[i].value;
-			  chartData[i].absValue = Math.abs(chartData[i].value);
-			}
+			// for (var i in chartData) {
+			//   chartData[i].litres = chartData[i].value;
+			//   chartData[i].absValue = Math.abs(chartData[i].value);
+			// }
 
 			var chart = AmCharts.makeChart("meaip_jem", {
 				"type": "pie",
- 			    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[litres]]</span> ([[percents]]%)</span>",
-				"minRadius": 100,
-				"maxLabelWidth":100,
+ 			    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"minRadius": 50,
+				"maxLabelWidth":50,
 				"titleField": "name",
-				"valueField": "absValue",//"value",
+				"valueField": "value",//"value",
 				"fontSize": 12,
 				"theme": "dark",
 			    "labelsEnabled": true,
@@ -219,19 +219,19 @@ console.log('여기확인해봅시다.->' , kind);
 		console.log('사이트별 매출 점유율');
 
 		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_jem&value_kind=meachul_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
-			for (var i in chartData) {
-			  chartData[i].litres = chartData[i].value;
-			  chartData[i].absValue = Math.abs(chartData[i].value);
-			}
+			// for (var i in chartData) {
+			//   chartData[i].litres = chartData[i].value;
+			//   chartData[i].absValue = Math.abs(chartData[i].value);
+			// }
 			
 
 			var chart = AmCharts.makeChart("meachul_jem", {
 				"type": "pie",
- 			     "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<span style='font-size:20px;'>[[litres]]</span> ([[percents]]%)</span>",
-				"minRadius": 100,
-				"maxLabelWidth":100,
+ 			     "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"minRadius": 50,
+				"maxLabelWidth":50,
 				"titleField": "name",
-				"valueField": "absValue",//"value",
+				"valueField": "value",//"value",
 				"fontSize": 12,
 				"theme": "dark",
 			    "labelsEnabled": true,
@@ -924,17 +924,19 @@ console.log('여기확인해봅시다.->' , kind);
 		console.log('금일 출고 현황');
 
 		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasonga&value_kind=beasonga&admin_code=" + admin_code + "&swm_gu=" + gu)
-			for (var i in chartData) {
-			  chartData[i].litres = chartData[i].value;
-			  chartData[i].absValue = Math.abs(chartData[i].value);
-			}
+			// for (var i in chartData) {
+			//   chartData[i].litres = chartData[i].value;
+			//   chartData[i].absValue = Math.abs(chartData[i].value);
+			// }
 
 			var chart = AmCharts.makeChart("beasonga", {
 			  "type": "pie",
 			  "theme": "dark",
+			  "minRadius": 50,
+			  "maxLabelWidth":50,
 			  "dataProvider": chartData,
 			  "titleField": "name",
-			  "valueField": "absValue",//"value",
+			  "valueField": "value",//"value",
 			  "labelRadius": 5,
 			  "radius": "42%",
 			  "innerRadius": "60%",
@@ -944,7 +946,7 @@ console.log('여기확인해봅시다.->' , kind);
 			    "enabled": false,
 			    "truncateLabels": 10 // custom parameter
 			  },
-			  "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[litres]]</span> ([[percents]]%)</span>",
+			  "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
 			  "export": {
 				"enabled": true
 			  }
@@ -1028,18 +1030,19 @@ console.log('여기확인해봅시다.->' , kind);
 			console.log('온 오프라인 비교 매출');
 
 			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_onoff&value_kind=meachul_onoff&admin_code=" + admin_code + "&swm_gu=" + gu)
-			for (var i in chartData) {
-			  chartData[i].litres = chartData[i].value;
-			  chartData[i].absValue = Math.abs(chartData[i].value);
-			}
+			// for (var i in chartData) {
+			//   chartData[i].litres = chartData[i].value;
+			//   chartData[i].absValue = Math.abs(chartData[i].value);
+			// }
 
 			var chart = AmCharts.makeChart("meachul_onoff", {
 				"type": "pie",
-				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[litres]]</span> ([[percents]]%)</span>",
-				"minRadius": 100,
+				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"minRadius": 50,
+				"maxLabelWidth":50,
 				"labelText": "[[title]]: [[percents]]%",
 				"titleField": "name",
-				"valueField": "absValue",//"value",
+				"valueField": "value",//"value",
 				"fontSize": 12,
 				"theme": "dark",
 			    "labelsEnabled": true,
@@ -1282,19 +1285,20 @@ console.log('여기확인해봅시다.->' , kind);
 		case "meachul_cs" :			//CS 컴플레인 현황
 		console.log('CS 컴플레인 현황');
 		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_cs&value_kind=meachul_cs&admin_code=" + admin_code + "&swm_gu=" + gu)
-			for (var i in chartData) {
-			  chartData[i].litres = chartData[i].value;
-			  chartData[i].absValue = Math.abs(chartData[i].value);
-			}
+			// for (var i in chartData) {
+			//   chartData[i].litres = chartData[i].value;
+			//   chartData[i].absValue = Math.abs(chartData[i].value);
+			// }
 
 			var chart = AmCharts.makeChart("meachul_cs", {
 				"type": "pie",
 //				"balloonText": "[[title]]<span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[litres]]</span> ([[percents]]%)</span>",
-				"minRadius": 100,
+				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"minRadius": 50,
+				"maxLabelWidth":50,
 				"labelText": "[[title]]: [[percents]]%",
 				"titleField": "name",
-				"valueField": "absValue",//"value",
+				"valueField": "value",//"value",
 				"fontSize": 12,
 				"theme": "dark",
 			    "labelsEnabled": true,
@@ -1572,7 +1576,6 @@ console.log('여기확인해봅시다.->' , kind);
 	}
 
 	if(chart.dataProvider[0].name == undefined || chart.dataProvider[0].name == ''){
-		console.log('넌?');
 		$("button[name=btnGrid]").css('background', '#7b7b7b');
 		$("button[name=btnGrid]").css('color', '#686868');
 	}else{

@@ -803,6 +803,7 @@ angular.module('starter.services', [])
 			var data = 'Kind=' + Kind + '&Value_Kind=' + Value_Kind + '&admin_code=' + Admin_Code + '&swm_gu=' + swm_gu + '&Ger_code=' + Ger_code;
 			return $http.get(url + '?' + data)
 			.then(function(response){
+				console.log('scm Service 잘옴?=>', response);
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
