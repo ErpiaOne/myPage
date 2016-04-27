@@ -27,28 +27,73 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
 
-	  window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+	  // window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 
-	    // Should be called once the device is registered successfully with Apple or Google servers
-	   window.plugins.PushbotsPlugin.on("registered", function(token){
-	      console.log("registered" + token);
-	      // alert("registered" + token);
-	      $rootScope.token = token;
-	    });
-	   window.plugins.PushbotsPlugin.getRegistrationId(function(token){
-	        // alert("Registration Id:" + token);
-	        console.log("Registration Id:" + token);
-	        $rootScope.token = token;
-	    });
+	  //   // Should be called once the device is registered successfully with Apple or Google servers
+	  //  window.plugins.PushbotsPlugin.on("registered", function(token){
+	  //     console.log("registered" + token);
+	  //     // alert("registered" + token);
+	  //     $rootScope.token = token;
+	  //   });
+	  //  window.plugins.PushbotsPlugin.getRegistrationId(function(token){
+	  //       // alert("Registration Id:" + token);
+	  //       console.log("Registration Id:" + token);
+	  //       $rootScope.token = token;
+	  //   });
 
 
-	    window.plugins.PushbotsPlugin.on("notification:received", function(data){
+
+/*새로 추가된 푸수*/
+
+	  var notificationOpenedCallback = function(jsonData) {
+	    console.log('didReceiveRemoteNotificationCallBack: ' + JSON.stringify(jsonData));
 	    	$rootScope.PushData = {};
-		console.log("received:" + JSON.stringify(data));
-		$rootScope.PushData = data;
-	    });
+		console.log("received:" +  jsonData.additionalData);
+		$rootScope.PushData = jsonData.additionalData;
+			if($rootScope.PushData && $rootScope.loginState =='E'){	
+				console.log('나는 리시브받았지~!111');
+			//$rootScope.PushData.state 푸시에서 명시한 로드될 화면
+			if($rootScope.PushData.state == "app.erpia_board-Main"){
+				// alert("tab.chats");
+				console.log('나는 리시브받았지~!')
+				alert("리시브받았지");
+				$state.go($rootScope.PushData.state);
+				$rootScope.boardIndex = $rootScope.PushData.state;
+				if($rootScope.PushData.BoardParam == "0"){
+					$rootScope.boardIndex = 0;
+					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+				}else if($rootScope.PushData.BoardParam == "1"){
+					$rootScope.boardIndex =1;
+					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+				}else if($rootScope.PushData.BoardParam == "2"){
+					$rootScope.boardIndex = 2;
+					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+				}else if($rootScope.PushData.BoardParam == "3"){
+					$rootScope.boardIndex = 3;
+					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+				}							
+			}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
+				$state.go("app.tradeList");
+			}else if($rootScope.PushData.state != "" || $rootScope.PushData.state != undefined || $rootScope.PushData.state != "undefined"){ //기타 이벤트
+				$state.go($rootScope.PushData.state);
+				console.log("이거야?");
+			}else{
+				
+			}
+			console.log($rootScope.PushData.state,"boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+		}
+	  };
 
-	
+	  window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
+	                                 {googleProjectNumber: "832821752106"},
+	                                   notificationOpenedCallback);
+	  
+	  // Show an alert box if a notification comes in when the user is in your app.
+	  window.plugins.OneSignal.enableInAppAlertNotification(true);
+
+	//푸쉬 등록
+	window.plugins.OneSignal.registerForPushNotifications();
+
 		if(window.cordova && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
@@ -61,6 +106,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			 StatusBar.styleDefault();
 			}
 		}
+
+/*-----------------------------------*/
 		// // //★push regist
 		// console.log('Ionic Push: Registering user');
 		// var user = $ionicUser.get();
@@ -105,6 +152,92 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		 	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('데이터접속이 정상입니다.', 'short', 'center');
 			else alert('네트워크가 정상으로 돌아왔습니다.');
 		})
+//-------------------푸쉬도착 메시지 이벤트처리(앱이 켜져있을 때)
+// window .plugins.PushbotsPlugin.on( "notification:received" , function ( data ) {
+// 	 	$rootScope.PushData = {};
+// 		alert("푸쉬알람이 도착하였습:" + JSON.stringify(data));
+// 		$rootScope.PushData = data;
+// 			if($rootScope.PushData && $rootScope.loginState =='E'){	
+// 				console.log('앱이 켜져있어욧!!!')
+// 			//$rootScope.PushData.state 푸시에서 명시한 로드될 화면
+// 			if($rootScope.PushData.state == "app.erpia_board-Main"){
+// 				// alert("tab.chats");
+// 				alert("리시브받았지");
+// 				$state.go($rootScope.PushData.state);
+// 				$rootScope.boardIndex = $rootScope.PushData.state;
+// 				if($rootScope.PushData.BoardParam == "0"){
+// 					$rootScope.boardIndex = 0;
+// 					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+// 				}else if($rootScope.PushData.BoardParam == "1"){
+// 					$rootScope.boardIndex =1;
+// 					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+// 				}else if($rootScope.PushData.BoardParam == "2"){
+// 					$rootScope.boardIndex = 2;
+// 					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+// 				}else if($rootScope.PushData.BoardParam == "3"){
+// 					$rootScope.boardIndex = 3;
+// 					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+// 				}							
+// 			}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
+// 				$state.go("app.tradeList");
+// 			}else if($rootScope.PushData.state != "" || $rootScope.PushData.state != undefined || $rootScope.PushData.state != "undefined"){ //기타 이벤트
+// 				$state.go($rootScope.PushData.state);
+// 				console.log("이거야?");
+// 			}else{
+				
+// 			}
+// 			console.log($rootScope.PushData.state,"boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+// 		}
+// });
+
+
+// //--------------------푸쉬 도착 메시지 클릭시 이벤트 처리(앱이 꺼져있을 때)
+	// 	window.plugins.PushbotsPlugin.on("notification:clicked", function(data){
+	//     	$rootScope.PushData = {};
+	// 	alert("received:" + JSON.stringify(data));
+	// 	console.log("received:" + JSON.stringify(data));
+	// 	$rootScope.PushData = data;
+	// 		if($rootScope.PushData && $rootScope.loginState =='E'){	
+	// 			console.log('나는 리시브받았지~!111')
+	// 		//$rootScope.PushData.state 푸시에서 명시한 로드될 화면
+	// 		if($rootScope.PushData.state == "app.erpia_board-Main"){
+	// 			// alert("tab.chats");
+	// 			console.log('나는 리시브받았지~!')
+	// 			alert("리시브받았지");
+	// 			$state.go($rootScope.PushData.state);
+	// 			$rootScope.boardIndex = $rootScope.PushData.state;
+	// 			if($rootScope.PushData.BoardParam == "0"){
+	// 				$rootScope.boardIndex = 0;
+	// 				console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+	// 			}else if($rootScope.PushData.BoardParam == "1"){
+	// 				$rootScope.boardIndex =1;
+	// 				console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+	// 			}else if($rootScope.PushData.BoardParam == "2"){
+	// 				$rootScope.boardIndex = 2;
+	// 				console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+	// 			}else if($rootScope.PushData.BoardParam == "3"){
+	// 				$rootScope.boardIndex = 3;
+	// 				console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+	// 			}							
+	// 		}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
+	// 			$state.go("app.tradeList");
+	// 		}else if($rootScope.PushData.state != "" || $rootScope.PushData.state != undefined || $rootScope.PushData.state != "undefined"){ //기타 이벤트
+	// 			$state.go($rootScope.PushData.state);
+	// 			console.log("이거야?");
+	// 		}else{
+				
+	// 		}
+	// 		console.log($rootScope.PushData.state,"boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+	// 	}
+	//     });
+
+
+ //  	  function myMsgClickHandler(msg){
+	//   console.log("Clicked On notification" + JSON.stringify(msg));
+	//   alert(JSON.stringify(msg));
+	// }
+	// PushbotsPlugin.onNotificationClick(myMsgClickHandler);
+
 //----------------뒤로가기 마지막페이지일때 ....----
 		$ionicPlatform.registerBackButtonAction(function(e){
 		$ionicSideMenuDelegate.canDragContent(true);
@@ -236,10 +369,10 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		  },101);
 	
 		// Identify your user with the Ionic User Service
-		$ionicUser.identify(user).then(function(){
-			//$scope.identified = true;
-			console.log('Identified user ' + user.name + '\n ID ' + user.user_id);
-		});
+		// $ionicUser.identify(user).then(function(){
+		// 	//$scope.identified = true;
+		// 	console.log('Identified user ' + user.name + '\n ID ' + user.user_id);
+		// });
 
 
 		// Register with the Ionic Push service.  All parameters are optional.
@@ -253,24 +386,24 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		// 		// Handle new push notifications here
 		// 		console.log(notification);
 		// 		//notification.message;  푸시 알람 내용
-		// 		if(notification.payload){	
-		// 			//notification.payload.payload.$state 푸시에서 명시한 로드될 화면
-		// 			if(notification.payload.payload.$state === "app.erpia_board-Main"){
-		// 				// alert("tab.chats");
-		// 				//$rootScope.boardIndex = $rootScope.BoardParam
-		// 				//$state.go("app.erpia_board-Main")
-		// 				if(notification.payload.payload.$BoardParam === "0"){
-		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
-		// 				}else if(notification.payload.payload.$BoardParam === "1"){
-		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
-		// 				}else if(notification.payload.payload.$BoardParam === "2"){
-		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
-		// 				}else if(notification.payload.payload.$BoardParam === "4"){
-		// 					$rootScope.boardIndex = notification.payload.payload.$BoardParam
-		// 				}							
-		// 			}
-		// 		}
-		// 	}
+				// if(notification.payload){	
+				// 	//notification.payload.payload.$state 푸시에서 명시한 로드될 화면
+				// 	if(notification.payload.payload.$state === "app.erpia_board-Main"){
+				// 		// alert("tab.chats");
+				// 		//$rootScope.boardIndex = $rootScope.BoardParam
+				// 		//$state.go("app.erpia_board-Main")
+				// 		if(notification.payload.payload.$BoardParam === "0"){
+				// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+				// 		}else if(notification.payload.payload.$BoardParam === "1"){
+				// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+				// 		}else if(notification.payload.payload.$BoardParam === "2"){
+				// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+				// 		}else if(notification.payload.payload.$BoardParam === "4"){
+				// 			$rootScope.boardIndex = notification.payload.payload.$BoardParam
+				// 		}							
+				// 	}
+				// }
+			// }
 		// });
 		// $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
 		//     // alert("Successfully registered token " + data.token);
@@ -282,8 +415,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		//     //디바이스 토큰 값 받는곳
 		// });
 
-		
-	});
+
+	 });
 	$rootScope.goHome = function(userType){
 		$ionicHistory.clearCache();
 		$ionicHistory.clearHistory();

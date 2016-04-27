@@ -1,5 +1,6 @@
 angular.module('starter.services', [])
 
+
 //InnerHtml을 사용하기 위한 compiler
 .directive('compileData', function ( $compile ) {
 	return {
@@ -19,6 +20,49 @@ angular.module('starter.services', [])
 		}
 	};
 })
+.factory('app', function($rootScope, $state){
+return{
+	     didReceiveRemoteNotificationCallBack : function(jsonData) {
+	    	$rootScope.PushData = {};
+		console.log("received:" + jsonData.additionalData);
+		$rootScope.PushData = jsonData.additionalData;
+			if($rootScope.PushData && $rootScope.loginState =='E'){	
+				console.log('나는 리시브받았지~!111')
+			//$rootScope.PushData.state 푸시에서 명시한 로드될 화면
+			if($rootScope.PushData.state == "app.erpia_board-Main"){
+				// alert("tab.chats");
+				console.log('나는 리시브받았지~!')
+				$state.go($rootScope.PushData.state);
+				$rootScope.boardIndex = $rootScope.PushData.state;
+				if($rootScope.PushData.BoardParam == "0"){
+					$rootScope.boardIndex = 0;
+					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+				}else if($rootScope.PushData.BoardParam == "1"){
+					$rootScope.boardIndex =1;
+					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+				}else if($rootScope.PushData.BoardParam == "2"){
+					$rootScope.boardIndex = 2;
+					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+				}else if($rootScope.PushData.BoardParam == "3"){
+					$rootScope.boardIndex = 3;
+					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+				}							
+			}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
+				$state.go("app.tradeList");
+			}else if($rootScope.PushData.state != "" || $rootScope.PushData.state != undefined || $rootScope.PushData.state != "undefined"){ //기타 이벤트
+				$state.go($rootScope.PushData.state);
+				console.log("이거야?");
+			}else{
+				
+			}
+			console.log($rootScope.PushData.state,"boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
+	      // alert("Notification received:\n" + JSON.stringify(jsonData));
+	      console.log('didReceiveRemoteNotificationCallBack: ' + JSON.stringify(jsonData));
+	    }
+	    }
+	}
+})
+
 
 .factory('$localstorage', ['$window', function($window) {
   return {
@@ -38,11 +82,10 @@ angular.module('starter.services', [])
 }])
 
 .factory('loginService', function($http, $q, $cordovaToast, ERPiaAPI){
-	var comInfo = function(kind, Admin_Code, G_id, G_Pass){
+	var comInfo = function(kind, Admin_Code, G_id, G_Pass, phoneNo, UUID){
 		if(kind == 'scm_login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass;
-			console.log('????????????????????????????????????????????????',url,'?',data);
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&G_id=' + G_id + '&G_Pass=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -54,9 +97,9 @@ angular.module('starter.services', [])
 				},function(response){
 					return $q.reject(response);
 				});
-		}else if(kind == 'ERPiaLogin'){
+		}else if(kind == 'ERPiaLogin'){// }else if(kind == 'ERPiaLogin'){  //수정됨 
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&uid=' + G_id + '&pwd=' + G_Pass;
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&uid=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -82,7 +125,7 @@ angular.module('starter.services', [])
 				});
 		}else if(kind == 'ERPia_Ger_Login'){
 			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass;
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			console.log(url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
@@ -147,7 +190,7 @@ angular.module('starter.services', [])
 })
 .factory('CertifyService', function($http, $cordovaToast, $rootScope, ERPiaAPI){
 	var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-	var certify = function(Admin_Code, loginType, ID, sms_id, sms_pwd, sendNum, rec_num){
+	var certify = function(Admin_Code, loginType, ID, sms_id, sms_pwd, sendNum, rec_num, UUID, phoneno, DeviceInfo){
 		$rootScope.rndNum = Math.floor(Math.random() * 1000000) + 1;
 		if ($rootScope.rndNum < 100000) $rootScope.rndNum = '0' + $rootScope.rndNum;
 		console.log($rootScope.rndNum);
@@ -155,8 +198,10 @@ angular.module('starter.services', [])
 		if(loginType == 'E'){
 			url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm_manage.asp';
 		}
+		//var data = 'Kind=mobile_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID; 
 		var data = 'Kind=mobile_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID;
-		data += '&Certify_Code=' + $rootScope.rndNum + '&loginType=' + loginType + '&hp=' + rec_num;
+		data += '&Certify_Code=' + $rootScope.rndNum + '&loginType=' + loginType + '&hp=' + rec_num  + '&mac=' + UUID;
+		data += '&model=' + DeviceInfo.model + '&platform=' + DeviceInfo.platform + '&originalhp=' + phoneno;
 		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
 		.success(function(response){
@@ -174,14 +219,16 @@ angular.module('starter.services', [])
 			}
 		})
 	}
-	var check = function(Admin_Code, loginType, ID, Input_Code, rec_num){
+	var check = function(Admin_Code, loginType, ID, Input_Code, rec_num, UUID){
 		var data ='';
 		if(loginType == 'S' || loginType == 'N'){
 			data = 'Kind=check_Certification&Value_Kind=list' + '&Admin_Code=' + Admin_Code + '&ID=' + ID;
-			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num;
-		}else if(loginType=='E'){
+			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num + '&mac=' + UUID;
+		}else if(loginType=='E'){ 
 			url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
-			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num;
+			//김형석 바보
+			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
+			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
 		}
 		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)

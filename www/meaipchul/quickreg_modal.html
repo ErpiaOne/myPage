@@ -7,7 +7,7 @@
 
 	<ion-content style="padding:10px; background: #dce0e1;">
 		<ion-checkbox ng-repeat='x in quicklists' ng-model="x.checked"  ng-click='quickcheck($index)' style="background: #fff; font-size: 0.9em;">
-			{{x.GerName}}**** {{x.Subul_kind}}<br>
+			{{x.GerName}}<br>
 			<any ng-if='x.Subul_kind == 111'>매입입고</any><any ng-if='x.Subul_kind == 122'>매입반품</any><any ng-if='x.Subul_kind == 212'>매출반품</any><any ng-if='x.Subul_kind == 221'>매출출고</any>/ {{x.GoodsName}}
 			<!-- / {{x.GoodsName}} -->
 		</ion-checkbox>
