@@ -164,6 +164,15 @@ $scope.pushYNcheck=function(){
 			$state.go('app.erpia_main');
 		}, 1000);
 	}
+
+	/* 동의화면 체크박스 초기화값 설정 -> 체크안되있게 */
+	$scope.agree_1 = {
+		checked : false
+	}
+	$scope.agree_2 = {
+		checked : false
+	}
+
 	// 로그인창 닫기 함수
 	$scope.closeLogin = function() {
 		// window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
@@ -188,8 +197,8 @@ $scope.pushYNcheck=function(){
 			// 	$location.href = '#/app/slidingtab';
 			// }
 		}else if($rootScope.loginState != "R") {	 // logintype이 "R"(Ready) 이 아니라면 인증동의 창이 띄워지도록한다. 
-			$scope.agree_1 = false;
-			$scope.agree_2 = false;
+			$scope.agree_1.checked = false;
+			$scope.agree_2.checked = false;
 			$scope.SMSData.rspnText = '';
 			$scope.agreeModal.show();
 			
@@ -754,8 +763,18 @@ $scope.pushYNcheck=function(){
   	$scope.loginHTML = "로그인";
 
   	// 약관 동의 클릭 이벤트
-  	$scope.click_agreement = function(agrees){
-		if(agrees.agree_1 && agrees.agree_2){
+ //  	$scope.click_agreement = function(agrees){
+ //  		console.log('???->>>>',agrees.agree_2);
+	// 	if(agrees.agree_1 && agrees.agree_2){
+	// 		$scope.agreeModal.hide();
+	// 		$scope.certificationModal.show();
+	// 	}else{
+	// 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('약관에 동의해 주시기 바랍니다.', 'long', 'center');
+	// 		else alert('약관에 동의해 주시기 바랍니다.');
+	// 	}
+	// }
+	$scope.click_agreement = function(){
+		if($scope.agree_1.checked == true && $scope.agree_2.checked == true){
 			$scope.agreeModal.hide();
 			$scope.certificationModal.show();
 		}else{
@@ -767,8 +786,8 @@ $scope.pushYNcheck=function(){
 	// 약관 동의 취소 클릭 이벤트
 	$scope.click_cancel = function(){
 		$scope.agreeModal.hide(); //모달 닫을 때 동의체크, 인증번호 초기화
-		$scope.agree_1 = false;
-		$scope.agree_2 = false;
+		$scope.agree_1.checked = false;
+		$scope.agree_2.checked = false;
 		$scope.SMSData.rspnText = '';
 		$scope.init('logout');
 	}
@@ -815,8 +834,8 @@ $scope.pushYNcheck=function(){
 	$scope.close_cert = function(){
 		$scope.certificationModal.hide();
 		$scope.SMSData.rspnText = '';
-		$scope.agree_1 = false;
-		$scope.agree_2 = false;
+		$scope.agree_1.checked = true;
+		$scope.agree_2.checked = true;
 		$scope.init('logout');
 	}
 	$rootScope.deviceInfo2={};
@@ -1039,15 +1058,50 @@ $scope.pushYNcheck=function(){
 	}
 
 	}
-$scope.reload_tradelist(); 
-//여기해야됨
+
+	$scope.refresh_time = function(){
+
+	    var nday = new Date();  //오늘 날짜..
+	    nday.setDate(nday.getDate()); //오늘 날짜에서 days만큼을 뒤로 이동
+	    var yy = nday.getFullYear();
+	    var mm = nday.getMonth()+1;
+	    var dd = nday.getDate();
+
+	    var hh = nday.getHours();
+	    var mm = nday.getMinutes();
+	    var tt = nday.getSeconds();
+
+	    if( mm<10) mm="0"+mm;
+	    if( dd<10) dd="0"+dd;
+
+	    $scope.nowtime = yy+"-"+mm+"-"+dd+"/"+hh+":"+mm+":"+tt;
+
+		console.log('날짜 잘 구해와지나?=>', yy , "-" , mm , "-" ,dd, "/", hh, ":", mm, ":", tt);
+	}
+
+	$scope.refresh_time();
+
+	/*거래명세표 새로고침*/
+	$scope.trade_refresh = function(){
+		console.log('새로고침할꺼야');
+		$scope.refresh_time();
+		$scope.reload_tradelist(); 
+		$scope.loadingani();
+	}
+
+	$scope.reload_tradelist(); 
+
+	//여기해야됨
 	$scope.tradechange = function(){
+
 		if($scope.YNcheck == 'not'){
 			$scope.YNcheck = 'all';
 		}else{
 			$scope.YNcheck = "not";
 		}
 		$scope.reload_tradelist(); 
+		$scope.refresh_time();
+		$scope.loadingani();
 	}
 
 	function commaChange(Num)
@@ -1241,15 +1295,15 @@ $scope.reload_tradelist();
 	}
 
 	/*거래명세표 보기 */
-	$scope.readTradeDetail = function(dataParam){
-		$rootScope.Sl_No = dataParam.substring(0, dataParam.indexOf('^'));
-		var detail_title = dataParam.substring(dataParam.indexOf('^') + 1);
+	$scope.readTradeDetail = function(dataParam, num){
+		if(num == 2){
+			$rootScope.Sl_No = dataParam;
+		}else{
+			$rootScope.Sl_No = dataParam.substring(0, dataParam.indexOf('^'));
+			var detail_title = dataParam.substring(dataParam.indexOf('^') + 1);
+		}
 		tradeDetailService.readDetail($scope.loginData.Admin_Code, $rootScope.Sl_No)
 			.then(function(response){
-				console.log('readDetail', response);
-
-				console.log('새액 여부->', response.list[0].vatYN);
-
 				var numhap = 0; // 수량합계
 				var num = 1;
 				if(response.list[0].vatYN == 'Y'){// 세액적용
@@ -3734,10 +3788,10 @@ $scope.reload_tradelist();
 		hap : 0,
 		meaipchulsum : 0
 	}
-
 	/* 금일/ 일주일/ 일개월 / 날짜만검색 */
 	$scope.sear_day = function(agoday) {
 		$scope.chit_lists=[];
+		$rootScope.end_data = [];
 		$scope.chit_atmSum = 0;
 		$scope.chit_jiSum = 0;
 		$scope.pageCnt = 1;
@@ -3769,7 +3823,18 @@ $scope.reload_tradelist();
 					$scope.money.meaipchulsum = 0;
 				}else{
 					$scope.money.meaipchulsum = 0;
-					for(var m = 0; m < data.list.length; m++){
+					if(data.list.length < 5){
+						$scope.moreloading=0;
+						$scope.maxover = 1;
+					}
+					if(data.list.length == 6){
+						var list_cnt = 5;
+						$rootScope.end_data.push(data.list[data.list.length-1]);
+						console.log('마지막꺼저장 =>',$rootScope.end_data);
+					}else{
+						var list_cnt = data.list.length;
+					}
+					for(var m = 0; m < list_cnt; m++){
 						$scope.chit_lists.push(data.list[m]);
 						if($rootScope.distinction == 'meaip'){
 							$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
@@ -3794,6 +3859,7 @@ $scope.reload_tradelist();
 						$scope.chit_jiSum = 0;
 					}
 
+
 				}
 				$scope.moreloading=0;
 			}, 1000);
@@ -3807,35 +3873,49 @@ $scope.reload_tradelist();
 		switch($scope.searchmode){
 			case 'normal' :
 				if($scope.chit_lists.length>0){
-		  		console.log($scope.chit_lists.length);
+			  		if($scope.maxover==0){
+						$scope.pageCnt+=1;
+					    $scope.moreloading=1;
 
-		  		if($scope.maxover==0){
-					$scope.pageCnt+=1;
-				    $scope.moreloading=1;
-
-					MLookupService.chit_lookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams, $scope.company.name, $scope.pageCnt)
-						.then(function(data){
-							$timeout(function(){
-							$scope.maxover=0;
-							if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-								else alert('조회된 데이터가 없습니다.');
-								$scope.moreloading=0;
-								$scope.maxover = 1;
-							}else{
-								for(var m = 0; m < data.list.length; m++){
-									$scope.chit_lists.push(data.list[m]);
-									if($rootScope.distinction == 'meaip'){
-										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
+						MLookupService.chit_lookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams, $scope.company.name, $scope.pageCnt)
+							.then(function(data){
+								$timeout(function(){
+								$scope.maxover=0;
+								if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
+									$scope.moreloading=0;
+									$scope.maxover = 1;
+									if($rootScope.end_data.length != 0){
+										$scope.chit_lists.push($rootScope.end_data[0]);
+										$rootScope.end_data = []; // 초기화?
+									}
+								}else{
+									if(data.list.length == 5){
+										$scope.chit_lists.push($rootScope.end_data[0]);
+										$rootScope.end_data = []; // 초기화?
+										$rootScope.end_data.push(data.list[data.list.length-1]);
+										for(var m = 0; m < data.list.length-1; m++){
+											$scope.chit_lists.push(data.list[m]);
+											if($rootScope.distinction == 'meaip'){
+												$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
+											}else{
+												$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+											}
+										}
 									}else{
-										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+										for(var m = 0; m < data.list.length; m++){
+											$scope.chit_lists.push(data.list[m]);
+											if($rootScope.distinction == 'meaip'){
+												$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
+											}else{
+												$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+											}
+										}
 									}
 								}
-							}
-							$scope.moreloading=0;
-						}, 1000);
-						})
-					}
+								$scope.moreloading=0;
+							}, 1000);
+							})
+						}
 				}
 			break;
 
@@ -4286,74 +4366,6 @@ $scope.reload_tradelist();
 	// }).then(function(modal){
 	// 	$rootScope.trade_Detail_Modal = modal;
 	// });
-
-	/*거래명세표 전환*/
-	$scope.traddetail = function(no){
-		tradeDetailService.readDetail($scope.loginData.Admin_Code, no)
-			.then(function(response){
-				console.log('readDetail _ meaipchul쪽=>', response);
-
-				var numhap = 0; // 수량합계
-				var num = 1;
-				switch( num ){
-					case 1:  response.list[0].numhap = response.list[0].G_ea1;
-							 response.list[0].taxhap = response.list[0].tax1;
-							 response.list[0].pricehap = response.list[0].G_price1;
-							 if(response.list[0].G_ea2 == null) break;
-
-					case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
-							 if(response.list[0].G_ea3 == null) break;
-
-					case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
-							 if(response.list[0].G_ea4 == null) break;
-
-					case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
-							 if(response.list[0].G_ea5 == null) break;
-
-					case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
-							 if(response.list[0].G_ea6 == null) break;
-
-					case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
-							 if(response.list[0].G_ea7 == null) break;
-
-					case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
-							 if(response.list[0].G_ea8 == null) break;
-
-					case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
-							 if(response.list[0].G_ea9 == null) break;
-
-					case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
-							 if(response.list[0].G_ea10 == null) break;
-
-					case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
-							   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
-							   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
-							   break;
-					default : console.log('여기올일 없을껄....');
-				}
-				if($rootScope.distinction == 'meaip') response.list[0].bigo = '[반품]';
-				else  response.list[0].bigo = ' ';
-				$rootScope.detail_items = response.list;
-				$rootScope.trade_Detail_Modal.show();
-			})
-		// tradeDetailService.chkRead($scope.loginData.Admin_Code, no, $scope.loginData.User_Id)
-	}
 
 	/*삭제*/
 	$scope.chitDeleteF = function(no){

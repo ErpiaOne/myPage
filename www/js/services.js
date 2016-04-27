@@ -183,8 +183,8 @@ angular.module('starter.services', [])
 		}else if(loginType=='E'){
 			url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 			//김형석 바보
-			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
-			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
+			data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
+			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + rec_num  + '&mac=' + UUID;
 		}
 		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
@@ -1035,15 +1035,19 @@ angular.module('starter.services', [])
 return{
 	 chit_lookup: function(admin_code, userid, sedata, gername, pageCnt){
 				console.log("MLookupService and chit_lookup");
+				if(pageCnt == 1){
+					var row = 6;
+				}else{
+					var row = 5;
+				}
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master';
 				else var kind = 'ERPia_Sale_Select_Master';
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_Ger_Date&GerName='+ escape(gername) +'&pageCnt='+ pageCnt + '&pageRow=5&sDate='+ sedata.sDate +'&eDate='+ sedata.eDate;
+				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_Ger_Date&GerName='+ escape(gername) +'&pageCnt='+ pageCnt + '&pageRow='+ row +'&sDate='+ sedata.sDate +'&eDate='+ sedata.eDate;
 				
 				return $http.get(url + '?' + data)
 					.then(function(response){
-						console.log('MLookupService');
 						if(typeof response == 'object'){
 							if(response.data == '<!--Parameter Check-->'){
 								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');

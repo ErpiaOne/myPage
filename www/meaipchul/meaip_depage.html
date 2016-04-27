@@ -118,7 +118,7 @@
   <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
   <button class="button button-psm03" ng-click="chitDeleteF(x.iL_No)">삭제</button>
   <button class="button button-psm04" ng-click="meaipchul_u(x.iL_No)">수정</button>
-  <button class="button button-psm02" ng-if='x.Subul_kind == 122' ng-click='traddetail(x.iL_No)'>거래명세서</button>
+  <button class="button button-psm02" ng-if='x.Subul_kind == 122' ng-controller="tradeCtrl" ng-click='readTradeDetail(x.iL_No,2)'>거래명세서</button>
   </any>
 </div>
 </ion-footer-bar>

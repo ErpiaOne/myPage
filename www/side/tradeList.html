@@ -9,6 +9,14 @@
 		<div class="psm_segum11">
 			<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
 				<tr>
+					<td class="psm_segum31"><i class="ion-android-refresh" ng-click="trade_refresh()"></i></td>
+					<td class="psm_segum33">최근조회시간 : {{nowtime}}</td>
+				</tr>
+			</table>
+		</div>
+		<div class="psm_segum11">
+			<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+				<tr>
 					<td class="psm_segum31">No</td>
 					<td class="psm_segum32">{{tradeList.MeaipMeachul}}</td>
 					<td class="psm_segum33">{{tradeList.Publisher}}</td>
@@ -21,7 +29,7 @@
 				<ion-list>
 					<ion-item ng-repeat="item in items" style="padding:0px;">
 					<any ng-if="YNcheck =='not'">
-						<div ng-if="item.readYN == 'N'" ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}')"  class="psm_segum16" style="border-bottom: 0;">
+						<div ng-if="item.readYN == 'N'" ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
 							<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
 								<tr>
 									<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
@@ -39,7 +47,7 @@
 						</div>
 					</any>
 					<any ng-if="YNcheck =='all'">
-						<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}')"  class="psm_segum16" style="border-bottom: 0;">
+						<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
 							<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
 								<tr>
 									<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
