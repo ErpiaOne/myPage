@@ -423,7 +423,7 @@ return{
 		}, getCntNotRead: function(Admin_Code, checkNotRead){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead;
-			console.log('getCntNotRead=> ', url,'?',data);
+			console.log('getCntNotRead ', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					console.log('getCntNotRead=>',response.data);
@@ -438,7 +438,7 @@ return{
 		}, chkRead: function(Admin_Code, Sl_No, user_id){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=read_Trade_Detail&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No + '&user_id=' + user_id;
-			console.log('chkRead =>', url,'?',data);
+			console.log('chkRead ', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -1666,7 +1666,6 @@ return{
 			
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + userid + '&Kind='+ kind;
-			console.log('지급정보=', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response == 'object'){

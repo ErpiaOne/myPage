@@ -259,7 +259,7 @@
 		</ion-scroll>
 		</div>
 		<div class="item item-divider" style="height:40%;">
-			<input type="checkbox" id="agree_1" class="checkbox-style" ng-model='agree_1.checked'/><label for="agree_1">동의합니다</label>
+			<input type="checkbox" id="agree_1" class="checkbox-style" ng-model='agree_1'/><label for="agree_1">동의합니다</label>
 		</div>
 	</div>
 	<div class="card" style="height:35%">
@@ -381,13 +381,13 @@
 		</ion-scroll>
 		</div>
 		<div class="item item-divider" style="height:40%">
-			<input type="checkbox" id="agree_2" class="checkbox-style" ng-model='agree_2.checked'/><label for="agree_2">동의합니다</label>
+			<input type="checkbox" id="agree_2" class="checkbox-style" ng-model='agree_2'/><label for="agree_2">동의합니다</label>
 		</div>
 	</div>
 	<table style="width:100%;">
 		<tr>
 			<td width="10%"></td>
-			<td width="40%" align="right"><button style="margin-right:5px; width:90px;" class="button button-balanced" type="submit" ng-click='click_agreement()'>확인</button></td>
+			<td width="40%" align="right"><button style="margin-right:5px; width:90px;" class="button button-balanced" type="submit" ng-click='click_agreement(this)'>확인</button></td>
 			<td width="40%" align="left"><button style="margin-left:5px; width:90px;" class="button button-assertive" type="submit" ng-click='click_cancel()'>Back</button></td>
 			<td width="10%"></td>
 		</tr>

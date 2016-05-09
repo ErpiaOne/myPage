@@ -31,8 +31,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	   };
 
 	$rootScope.version={
-   		Android_version : '0.1.9', //업데이트시 필수로 변경!!
-   		IOS_version : '0.1.9'	//업데이트시 필수로 변경!!
+   		Android_version : '0.2.1', //업데이트시 필수로 변경!!
+   		IOS_version : '0.2.1'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 */
@@ -51,6 +51,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$rootScope.loginData = {};
 	$scope.userData = {};
 	$scope.SMSData = {};
+
+	/* 동의화면 체크박스 초기화값 설정 -> 체크안되있게 */
+	$scope.agree_1 = {
+		checked : false
+	}
+	$scope.agree_2 = {
+		checked : false
+	}
 
 	$ionicPlatform.ready();
 
@@ -161,7 +169,7 @@ $scope.pushYNcheck=function(){
 						// }
 					
 
-				}else{
+	}else{
 					var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
 					var results = rsltList.match(/\^T\^/g);
 					alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid);
@@ -207,52 +215,16 @@ $scope.pushYNcheck=function(){
 			$state.go('app.erpia_main');
 		}, 1000);
 	}
-///////////////////////////////////////
+///////////////////////////////////////--------------푸쉬유저체크 - 없으면 insert ----------------------------
 
-
-
-	// 로그인창 닫기 함수
-	$scope.closeLogin = function() {
-		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
-                               {googleProjectNumber: "832821752106",
-                                autoRegister: true},
-                                app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
- 		 // window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
-		$ionicHistory.nextViewOptions({
-			disableBack: true
-		});
-		$scope.loginModal.hide();
-		if($rootScope.mobile_Certify_YN == 'Y'){	 // 모바일 아이디 인증이 되어있다면!!  각자 LOGIN TYPE에 맞는 메인으로 이동
-			if($rootScope.loginState == "S"){
-		        $state.go("app.erpia_scmhome");
-			}else if($rootScope.loginState == "E"){
-				//$state.go("app.erpia_main");
-				// $scope.onSlideMove
-
-		     	   $state.go("app.slidingtab");
-			}else if($rootScope.loginState == 'N'){ 
-				$state.go("app.erpia_main");
-			}
-			window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"^"+$rootScope.loginData.UserId+"^"+$rootScope.deviceInfo2.phoneNo+"^"+$rootScope.deviceInfo.uuid);
-			console.log("updateAlias");
-			// else if($rootScope.userType == 'Guest'){
-			// 	$location.href = '#/app/slidingtab';
-			// }
-		}else if($rootScope.loginState != "R") {	 // logintype이 "R"(Ready) 이 아니라면 인증동의 창이 띄워지도록한다. 
-			$scope.agree_1 = false;
-			$scope.agree_2 = false;
-			$scope.SMSData.rspnText = '';
-			$scope.agreeModal.show();
-			
-		}
-		var PushInsertCheck = "";
-		var PushInsertCheck2 = "";
-
-		$scope.pushUserCheck = function() {
+			$scope.pushUserCheck = function() {
+				var PushInsertCheck = '';
+				var PushInsertCheck2 = "";
 			pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SELECT_InsertCheck', $rootScope.UserKey, $rootScope.token, '', '', '', '')
 		    .then(function(pushInfo){
 		    	if(pushInfo.data.list.length != 0){
 		    		PushInsertCheck = pushInfo.data.list[0].token;
+		    		console.log( 'pushinfo : : ', pushInfo.data.list )
 		    	}
 		    	if(PushInsertCheck == $rootScope.token){
 		    		PushInsertCheck2 = "duplication";
@@ -277,7 +249,44 @@ $scope.pushYNcheck=function(){
 				/*alert('pushUserRegist fail')*/
 			});
 		};
-		// $scope.pushUserCheck();
+///////////////////////////////////////--------------푸쉬유저체크 - 없으면 insert 끝 ----------------------------
+	// 로그인창 닫기 함수
+	$scope.closeLogin = function() {
+		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
+                               {googleProjectNumber: "832821752106",
+                                autoRegister: true},
+                                app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
+ 		 // window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
+		$ionicHistory.nextViewOptions({
+			disableBack: true
+		});
+		$scope.loginModal.hide();
+		if($rootScope.mobile_Certify_YN == 'Y'){	 // 모바일 아이디 인증이 되어있다면!!  각자 LOGIN TYPE에 맞는 메인으로 이동
+			if($rootScope.loginState == "S"){
+		        $state.go("app.erpia_scmhome");
+			}else if($rootScope.loginState == "E"){
+				//$state.go("app.erpia_main");
+				// $scope.onSlideMove
+		     	  $state.go("app.slidingtab");
+			}else if($rootScope.loginState == 'N'){ 
+				$state.go("app.erpia_main");
+			}
+			// window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"^"+$rootScope.loginData.UserId+"^"+$rootScope.deviceInfo2.phoneNo+"^"+$rootScope.deviceInfo.uuid);
+			// console.log("updateAlias");
+			// else if($rootScope.userType == 'Guest'){
+			// 	$location.href = '#/app/slidingtab';
+			// }
+		}else if($rootScope.loginState != "R") {	 // logintype이 "R"(Ready) 이 아니라면 인증동의 창이 띄워지도록한다. 
+			$scope.agree_1.checked = false;
+			$scope.agree_2.checked = false;
+			$scope.SMSData.rspnText = '';
+			$scope.agreeModal.show();
+			
+		}
+
+
+
+		$scope.pushUserCheck();
 	};
 
 
@@ -292,7 +301,6 @@ $scope.pushYNcheck=function(){
 	         // error
 	      });
 	   }
-
 /*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스*/
 
 	//로그인 체크박스
@@ -485,7 +493,7 @@ $scope.pushYNcheck=function(){
 					$localstorage.set("SPwd", $rootScope.loginData.Pwd);
 				break;
 				case 'Normal' : 
-					$localstorage.set("ESPwd", $rootScope.loginData.Pwd);
+					$localstorage.set("NPwd", $rootScope.loginData.Pwd);
 				break;
 			}
 		}else{
@@ -506,6 +514,10 @@ $scope.pushYNcheck=function(){
 /*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스 끝*/ 	
 // 로그인 함수
 	$scope.doLogin = function(admin_code, loginType, id, pwd, autologin_YN) {
+		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
+                       {googleProjectNumber: "832821752106",
+                        autoRegister: true},
+                        app.didReceiveRemoteNotificationCallBack);
 		console.log("dologin")
 		if (autologin_YN == 'Y') {
 			switch(loginType){
@@ -516,14 +528,16 @@ $scope.pushYNcheck=function(){
 			$rootScope.loginData.Admin_Code = admin_code;
 			$rootScope.loginData.UserId = id;
 			$rootScope.loginData.Pwd = pwd;
+			console.log("자동로그인실행중:", admin_code, id, pwd, loginType);
 		}else{
+			console.log( $rootScope.deviceInfo);
 			switch($rootScope.userType){
 				case 'ERPia': userType ='E'; break;
 				case 'SCM': userType = 'S'; break;
 				case 'Normal': userType = 'N'; break;
 			}
-			if(ERPiaAPI.toast == 'Y'){
-				uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.loginData.autologin_YN);
+			if(ERPiaAPI.toast == 'Y'){//uuid, admin_code, loginType, id, pwd, autoLogin_YN, UUID, phoneno, DeviceInfo
+				uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 			}else{
 				switch($rootScope.userType){
 					case 'SCM':
@@ -547,15 +561,18 @@ $scope.pushYNcheck=function(){
 		}
 		//SCM 로그인
 		if ($rootScope.userType == 'SCM') {
-			loginService.comInfo('scm_login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo)
+			loginService.comInfo('scm_login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
 			.then(function(comInfo){
-				if (comInfo.data.list[0].ResultCk == '1'){
-					window.plugins.OneSignal.sendTag("gerid", $scope.loginData.UserId);
+				if (comInfo.data.list[0].Result == '1'){
+					window.plugins.OneSignal.sendTag("id", $scope.loginData.UserId);
 					window.plugins.OneSignal.sendTag("usertype", "S");
-					$scope.userData.GerName = comInfo.data.list[0].GerName + '<br>(' + comInfo.data.list[0].G_Code + ')';
-					$scope.userData.G_Code = comInfo.data.list[0].G_Code;
+					window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
+					window.plugins.OneSignal.sendTag("gercode", comInfo.data.list[0].G_code);
+					$localstorage.set("EAdminCode", '');
+					$scope.userData.GerName = comInfo.data.list[0].G_Name + '<br>(' + comInfo.data.list[0].G_code + ')';
+					$scope.userData.G_Code = comInfo.data.list[0].G_code;
 					$scope.userData.G_Sano = comInfo.data.list[0].Sano;
-					$scope.userData.GerCode = comInfo.data.list[0].G_Code;
+					$scope.userData.GerCode = comInfo.data.list[0].G_code;
 					if(comInfo.data.list[0].cntNotRead == null){
 						$scope.userData.cntNotRead = 0;
 					}else{
@@ -570,17 +587,27 @@ $scope.pushYNcheck=function(){
 
 					if($scope.loginData.chkAutoLogin == true){
 						if(ERPiaAPI.toast == 'Y'){
-							uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
+						uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 							$scope.loginData.autologin_YN = 'Y';
+							$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+							$localstorage.set("autologinType", $rootScope.userType);
+							$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+							$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+							$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 						}else{
-							uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
+							uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId);
 						}
 					}else{
 						if(ERPiaAPI.toast == 'Y'){
-							uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
+						uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 							$scope.loginData.autologin_YN = 'N';
+							$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+							$localstorage.set("autologinType", $rootScope.userType);
+							$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+							$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+							$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 						}else{
-							uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
+							uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId);
 						}
 					}
 
@@ -590,14 +617,15 @@ $scope.pushYNcheck=function(){
 						$scope.pushYNcheck();
 					}, 1000);
 				}else{
-					if(ERPiaAPI.toast == 'Y') $cordovaToast.show(comInfo.data.list[0].ResultMsg, 'long', 'center');
-					else alert(comInfo.data.list[0].ResultMsg);
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show(comInfo.data.list[0].Comment, 'long', 'center');
+					else alert(comInfo.data.list[0].Comment);
 				}
 			},function(){
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('login error', 'long', 'center');
 					else alert('login error');
 			});
 		}else if ($rootScope.userType == 'ERPia'){
+			console.log("여기왔니?",'ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid);
 			//ERPia 로그인
 			loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
 			.then(function(comInfo){
@@ -605,8 +633,10 @@ $scope.pushYNcheck=function(){
 					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 					$scope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
-					window.plugins.OneSignal.sendTag("gerid", $scope.loginData.UserId);
+					window.plugins.OneSignal.sendTag("id", $scope.loginData.UserId);
 					window.plugins.OneSignal.sendTag("usertype", "E");
+					window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
+					window.plugins.OneSignal.sendTag("gercode", "");
 					$scope.userData.Com_Code = comInfo.data.list[0].Com_Code;
 					$scope.userData.Com_Name = comInfo.data.list[0].Com_Name + '<br>(' + comInfo.data.list[0].Com_Code + ')';
 					$scope.userData.package = comInfo.data.list[0].Pack_Name;
@@ -617,7 +647,7 @@ $scope.pushYNcheck=function(){
 
 					$scope.loginData.isLogin = 'Y';
 
-					loginService.comInfo('erpia_ComInfo', $scope.loginData.Admin_Code)
+					loginService.comInfo('ComInfo_Erpia', $scope.loginData.Admin_Code)
 					.then(function(comTax){
 						var d= new Date();
 						var month = d.getMonth() + 1;
@@ -705,20 +735,30 @@ $scope.pushYNcheck=function(){
 
 						if($scope.loginData.chkAutoLogin == true){
 							if(ERPiaAPI.toast == 'Y'){
-								uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
+							uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 								$scope.loginData.autologin_YN = 'Y';
+								$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+								$localstorage.set("autologinType", $rootScope.userType);
+								$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+								$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+								$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+								console.log("autosave ", $rootScope.userType, $scope.loginData.UserId);
 							}else{
-								uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
+								uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId);
 							}
 						}else{
 							if(ERPiaAPI.toast == 'Y'){
-								uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
+							uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 								$scope.loginData.autologin_YN = 'N';
+								$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+								$localstorage.set("autologinType", $rootScope.userType);
+								$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+								$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+								$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 							}else{
-								uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
+								uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId);
 							}
 						}
-
 						$timeout(function() {
 							$ionicLoading.hide();
 							$scope.closeLogin();
@@ -767,50 +807,63 @@ $scope.pushYNcheck=function(){
 				else alert('comInfo error');
 			});
 		}else if($rootScope.userType == 'Normal'){
-			loginService.comInfo('ERPia_Ger_Login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo)
+			loginService.comInfo('ERPia_Ger_Login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
 			.then(function(comInfo){
-				if(comInfo.data.list[0].result == '0'){
-					window.plugins.OneSignal.sendTag("gerid", $scope.loginData.UserId);
+				if(comInfo.data.list[0].Result == '1'){
+					window.plugins.OneSignal.sendTag("id", $scope.loginData.UserId);
 					window.plugins.OneSignal.sendTag("usertype", "N");
-					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-					$scope.loginData.UserId = comInfo.data.list[0].G_ID;
+					window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
+					window.plugins.OneSignal.sendTag("gercode", comInfo.data.list[0].G_code);
 
-					$scope.userData.GerName = comInfo.data.list[0].GerName + '<br>(' + comInfo.data.list[0].G_Code + ')';
-					$scope.userData.G_Code = comInfo.data.list[0].G_Code;
+
+					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+					$scope.loginData.UserId = comInfo.data.list[0].user_id;
+
+					$scope.userData.GerName = comInfo.data.list[0].G_Name + '<br>(' + comInfo.data.list[0].G_code + ')';
+					$scope.userData.G_Code = comInfo.data.list[0].G_code;
 					$scope.userData.G_Sano = comInfo.data.list[0].Sano;
-					$scope.userData.GerCode = comInfo.data.list[0].G_Code;
+					$scope.userData.GerCode = comInfo.data.list[0].G_code;
 					$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
 
 					$scope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
 					$rootScope.loginState = "N";
-					$rootScope.mobile_Certify_YN = 'Y';
+					$rootScope.mobile_Certify_YN = comInfo.data.list[0].mobile_CertifyYN;
 
 					$scope.loginData.isLogin = 'Y';
 
 					if($scope.loginData.chkAutoLogin == true){
 						if(ERPiaAPI.toast == 'Y'){
-							uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
+					uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 							$scope.loginData.autologin_YN = 'Y';
+							$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+							$localstorage.set("autologinType", $rootScope.userType);
+							$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+							$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+							$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 						}else{
-							uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y');
+							uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId);
 						}
 					}else{
 						if(ERPiaAPI.toast == 'Y'){
-							uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
+						uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 							$scope.loginData.autologin_YN = 'N';
+							$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+							$localstorage.set("autologinType", $rootScope.userType);
+							$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+							$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+							$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 						}else{
-							uuidService.saveUUID('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N');
+							uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId);
 						}
 					}
-
 					$timeout(function() {
 						$ionicLoading.hide();
 						$scope.closeLogin();
 					}, 1000);
 				}else{
-					if(ERPiaAPI.toast == 'Y') $cordovaToast.show(comInfo.data.list[0].comment, 'long', 'center');
-					else alert(comInfo.data.list[0].comment);
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show(comInfo.data.list[0].Comment, 'long', 'center');
+					else alert(comInfo.data.list[0].Comment);
 				}
 			})
 		}else if($rootScope.userType == 'Guest'){
@@ -834,13 +887,24 @@ $scope.pushYNcheck=function(){
 		$scope.LoginAdminCodeCK($rootScope.userType);
 		$scope.LoginPwdCK($rootScope.userType);
 		$scope.LoginUserIdCK($rootScope.userType);
+		console.log("체크한거 저장중....");
 	};
 
   	$scope.loginHTML = "로그인";
 
   	// 약관 동의 클릭 이벤트
-  	$scope.click_agreement = function(agrees){
-		if(agrees.agree_1 && agrees.agree_2){
+ //  	$scope.click_agreement = function(agrees){
+ //  		console.log('???->>>>',agrees.agree_2);
+	// 	if(agrees.agree_1 && agrees.agree_2){
+	// 		$scope.agreeModal.hide();
+	// 		$scope.certificationModal.show();
+	// 	}else{
+	// 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('약관에 동의해 주시기 바랍니다.', 'long', 'center');
+	// 		else alert('약관에 동의해 주시기 바랍니다.');
+	// 	}
+	// }
+	$scope.click_agreement = function(){
+		if($scope.agree_1.checked == true && $scope.agree_2.checked == true){
 			$scope.agreeModal.hide();
 			$scope.certificationModal.show();
 		}else{
@@ -852,17 +916,17 @@ $scope.pushYNcheck=function(){
 	// 약관 동의 취소 클릭 이벤트
 	$scope.click_cancel = function(){
 		$scope.agreeModal.hide(); //모달 닫을 때 동의체크, 인증번호 초기화
-		$scope.agree_1 = false;
-		$scope.agree_2 = false;
+		$scope.agree_1.checked = false;
+		$scope.agree_2.checked = false;
 		$scope.SMSData.rspnText = '';
 		$scope.init('logout');
 	}
-// 인증번호 전송 버튼 클릭 이벤트
+	// 인증번호 전송 버튼 클릭 이벤트
 	$scope.click_Certification = function(){
 		if($scope.SMSData.recUserTel == '' || $scope.SMSData.recUserTel == undefined || $scope.SMSData.recUserTel == 'undefined'){
 			$cordovaToast.show('핸드폰번호를 입력하세요.', 'long', 'center');
-		}else{
-		CertifyService.certify($scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, 'erpia', 'a12345', '070-7012-3071', $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo)//수정 4.22
+		}else{ //Admin_Code, loginType, ID, pwd, sms_id, sms_pwd, sendNum, rec_num, UUID, phoneno, DeviceInfo
+		CertifyService.certify($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.userData.G_Code, 'erpia', 'a12345', '070-7012-3071', $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo)//수정 4.22
 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증번호를 발송했습니다.', 'long', 'center');
 		else alert('인증번호를 발송했습니다.');
 		}
@@ -870,7 +934,7 @@ $scope.pushYNcheck=function(){
 	// 인증번호 입력 버튼 클릭 이벤트
 	$scope.click_responseText = function(){
 		if($rootScope.rndNum == $scope.SMSData.rspnText){
-			CertifyService.check($scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $scope.SMSData.rspnText, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)//수정 4.22
+			CertifyService.check($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.userData.G_Code, $scope.SMSData.rspnText, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)//수정 4.22
 			.then(function(response){
 				console.log('rspnText : ', response);
 				$scope.certificationModal.hide();
@@ -899,8 +963,8 @@ $scope.pushYNcheck=function(){
 	$scope.close_cert = function(){
 		$scope.certificationModal.hide();
 		$scope.SMSData.rspnText = '';
-		$scope.agree_1 = false;
-		$scope.agree_2 = false;
+		$scope.agree_1.checked = true;
+		$scope.agree_2.checked = true;
 		$scope.init('logout');
 	}
 	$rootScope.deviceInfo2={};
@@ -959,10 +1023,12 @@ $scope.pushYNcheck=function(){
 		$rootScope.deviceInfo.platform = $cordovaDevice.getPlatform();
 		$rootScope.deviceInfo.uuid = $cordovaDevice.getUUID();
 		$rootScope.deviceInfo.version = $cordovaDevice.getVersion();
+		console.log(">>>>>>>>",$rootScope.deviceInfo.device, $rootScope.deviceInfo.cordova, $rootScope.deviceInfo.model, $rootScope.deviceInfo.platform )
 		$scope.ckversion={};
 	   	$scope.thisversioncurrent='Y';
 	   	$scope.thisversion='';
 	   	$scope.currentversion='';
+	   	$rootScope.loginData.autologin_YN = 'N';
 		VersionCKService.currentVersion()
 		.then(function(data){
 			$timeout(function(){
@@ -1023,51 +1089,65 @@ $scope.pushYNcheck=function(){
 				         ]
 				        })
 			}
-		uuidService.getUUID($rootScope.deviceInfo.uuid)
-		.then(function(response){
-			if(response.list[0].result == '1'){
-				$rootScope.loginData.Admin_Code = response.list[0].admin_code;
-				$rootScope.loginData.loginType = response.list[0].loginType;
-				$rootScope.loginData.User_Id = response.list[0].ID;
-				$rootScope.loginData.Pwd = response.list[0].pwd;
-				$rootScope.loginData.autologin_YN = response.list[0].autoLogin_YN;
-				$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
-				console.log("getUUID")
-			}
-			if($rootScope.loginData.autologin_YN=='Y'){
-				$rootScope.autoLogin = true;
-				$rootScope.loginData.chkAutoLogin=true;
-				$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
-			}else{
-				$rootScope.autoLogin = false;
-				$rootScope.loginData.chkAutoLogin=false;
-			}
-		})
-
+		// uuidService.getUUID($rootScope.deviceInfo.uuid)
+		// .then(function(response){
+		// 	if(response.list[0].result == '1'){
+		// 		$rootScope.loginData.Admin_Code = response.list[0].admin_code;
+		// 		$rootScope.loginData.loginType = response.list[0].loginType;
+		// 		$rootScope.loginData.User_Id = response.list[0].ID;
+		// 		$rootScope.loginData.Pwd = response.list[0].pwd;
+		// 		$rootScope.loginData.autologin_YN = response.list[0].autoLogin_YN;
+		// 		$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+		// 		console.log("getUUID")
+		// 	}
+		// 	if($rootScope.loginData.autologin_YN=='Y'){
+		// 		$rootScope.autoLogin = true;
+		// 		$rootScope.loginData.chkAutoLogin=true;
+		// 		$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
+		// 	}else{
+		// 		$rootScope.autoLogin = false;
+		// 		$rootScope.loginData.chkAutoLogin=false;
+		// 	}
+		// })
+		$rootScope.loginData.autologin_YN = $localstorage.get("autoLoginYN");
 
 		console.log('autoLogin_YN' ,$localstorage.get("autoLoginYN"));
 	 }, false);
 
-	if($localstorage.get("autoLoginYN")=='Y'){
-		uuidService.getUUID($rootScope.deviceInfo.uuid)
-		.then(function(response){
-		if(response.list[0].result == '1'){
-			$rootScope.loginData.Admin_Code = response.list[0].admin_Code;
-			$rootScope.loginData.loginType = response.list[0].loginType;
-			$rootScope.loginData.User_Id = response.list[0].ID;
-			$rootScope.loginData.Pwd = response.list[0].pwd;
-			$rootScope.loginData.autologin_YN = response.list[0].autoLogin_YN;
-		}
+	if($localstorage.get("autoLoginYN")=="Y"){
+			$rootScope.loginData.Admin_Code = $localstorage.get("autoAdmin_Code");
+			$rootScope.loginData.loginType = $localstorage.get("autologinType");
+			if($localstorage.get("autologinType") == 'ERPia'){
+				$rootScope.loginData.loginType = 'E';
+			}else if($localstorage.get("autologinType") == 'SCM'){
+				$rootScope.loginData.loginType = 'S';
+			}else if($localstorage.get("autologinType") == 'Normal'){
+				$rootScope.loginData.loginType = 'N';
+			}
+			
+			$rootScope.loginData.User_Id = $localstorage.get("autoUser_Id");
+			$rootScope.loginData.Pwd = $localstorage.get("autoPwd");
+			$rootScope.loginData.autologin_YN = $localstorage.get("autoLoginYN");
+			console.log("1",$localstorage.get("autoAdmin_Code"), $localstorage.get("autologinType"), $localstorage.get("autoUser_Id"), $localstorage.get("autoPwd"));
 		if($rootScope.loginData.autologin_YN=='Y'){
 			$rootScope.autoLogin = true;
 			$rootScope.loginData.chkAutoLogin=true;
-			$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
+			console.log("여기1");
+			
+			$timeout(function(){
+				$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
+	      		}, 1000);
 		}else{
+			console.log("여기2");
 			$rootScope.autoLogin = false;
 			$rootScope.loginData.chkAutoLogin=false;
 		}
 
-		})
+		
+	}else{
+		console.log("",$localstorage.get("autoAdmin_Code"), $localstorage.get("autologinType"), $localstorage.get("autoUser_Id"), $localstorage.get("autoPwd"));
+		$rootScope.autoLogin = false;
+		$rootScope.loginData.chkAutoLogin=false;
 	}
 
 })
@@ -1075,6 +1155,100 @@ $scope.pushYNcheck=function(){
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
 	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer, $ionicPopup, app){
 
+	$scope.email ={
+		toemail : ''
+	};
+
+	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
+		scope : $scope
+	}).then(function(modal){
+		$rootScope.trade_Detail_Modal = modal;
+	});
+	$scope.check = {};
+	$scope.tradeList = {};
+
+	$scope.YNcheck='all';
+
+	$scope.reload_tradelist = function(){
+	// 각각의 로그인 타입별로 보여지는 화면을 다르게 표시.
+	if($rootScope.userType == 'SCM' || $rootScope.userType == "Normal"){
+		$scope.tradeList.Title = '매출거래처 수신함';
+		$scope.tradeList.MeaipMeachul = '매출일';
+		$scope.tradeList.Publisher = '발행처';
+		$scope.tradeList.isRead = '열람';
+		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode)
+			.then(function(response){
+				console.log('list', response);
+				if(response.list.length == 0) {
+					$scope.haveList = 'N';
+				}else{
+					$scope.haveList = 'Y';
+					$scope.items = response.list;
+				}
+				console.log('haveList', $scope.haveList);
+			})
+	}else if($rootScope.userType == 'ERPia'){
+		$scope.tradeList.Title = '매출거래처 발송 내역';
+		$scope.tradeList.MeaipMeachul = '매입일';
+		$scope.tradeList.Publisher = '발송처';
+		$scope.tradeList.isRead = '수신확인';
+		tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N')
+			.then(function(response){
+				if(response.list.length == 0) {
+					$scope.haveList = 'N';
+				}else{
+					$scope.haveList = 'Y';
+					$scope.items = response.list;
+				}
+				console.log('haveList', $scope.haveList);
+			})
+	}
+
+	}
+
+	$scope.refresh_time = function(){
+
+	    var nday = new Date();  //오늘 날짜..
+	    nday.setDate(nday.getDate()); //오늘 날짜에서 days만큼을 뒤로 이동
+	    var yy = nday.getFullYear();
+	    var mm = nday.getMonth()+1;
+	    var dd = nday.getDate();
+
+	    var hh = nday.getHours();
+	    var mm = nday.getMinutes();
+	    var tt = nday.getSeconds();
+
+	    if( mm<10) mm="0"+mm;
+	    if( dd<10) dd="0"+dd;
+
+	    $scope.nowtime = yy+"-"+mm+"-"+dd+"/"+hh+":"+mm+":"+tt;
+
+		console.log('날짜 잘 구해와지나?=>', yy , "-" , mm , "-" ,dd, "/", hh, ":", mm, ":", tt);
+	}
+
+	$scope.refresh_time();
+
+	/*거래명세표 새로고침*/
+	$scope.trade_refresh = function(){
+		$scope.refresh_time();
+		$scope.reload_tradelist(); 
+		$scope.loadingani();
+	}
+
+	$scope.reload_tradelist(); 
+
+	//여기해야됨
+	$scope.tradechange = function(){
+
+		if($scope.YNcheck == 'not'){
+			$scope.YNcheck = 'all';
+		}else{
+			$scope.YNcheck = "not";
+		}
+		$scope.reload_tradelist(); 
+		$scope.refresh_time();
+		$scope.loadingani();
+	}
 	function commaChange(Num)
 	{
 		fl="";
@@ -1115,20 +1289,16 @@ $scope.pushYNcheck=function(){
 
 	$scope.tradenumber = function(detaillist, where){
 		$rootScope.detaillist = detaillist;
-		console.log('너뭐야 ㅠㅠ=>', $rootScope.Sl_No);
 		$rootScope.where = where;
 		// var Sl_No = detaillist[0].SL_No;
 		tradeDetailService.readDetail_key($scope.loginData.Admin_Code, $rootScope.Sl_No)
 			.then(function(response){
-				console.log('readDetail', response);
-				console.log('Key_New_No=>', response.list[0].Key_New_No);
 				$rootScope.Key_New_No = response.list[0].Key_New_No;
 				$scope.html3image($rootScope.detaillist, $rootScope.where);
 			});
 	}
 
 	$scope.html3image = function(detaillist, where){
-		console.log("kkkkkkkkkkkkkkkkkkkkkkkk=>", $rootScope.Key_New_No);
 		for(var i = 0; i < detaillist.length; i++){
 			var detail = detaillist[i];
 			var j = i+1;
@@ -1254,9 +1424,7 @@ $scope.pushYNcheck=function(){
 
 			});
 	}
-	$scope.email ={
-		toemail : ''
-	};
+
 	$scope.shareAnywhere = function(url, where,Mutual) {
 		// console.log('공유할꺼야 =>', $scope.userData.Com_Name);
 		// var comname = $scope.userData.Com_Name.split('<br>');
@@ -1271,113 +1439,202 @@ $scope.pushYNcheck=function(){
 	       $scope.toemail ='';
 	}
 
-	$ionicModal.fromTemplateUrl('side/trade_Detail.html',{
-		scope : $scope
-	}).then(function(modal){
-		$rootScope.trade_Detail_Modal = modal;
-	});
-	$scope.check = {};
-	$scope.tradeList = {};
-
-	// 각각의 로그인 타입별로 보여지는 화면을 다르게 표시.
-	if($rootScope.userType == 'SCM' || $rootScope.userType == "Normal"){
-		$scope.tradeList.Title = '매출거래처 수신함';
-		$scope.tradeList.MeaipMeachul = '매출일';
-		$scope.tradeList.Publisher = '발행처';
-		$scope.tradeList.isRead = '열람';
-		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode)
-			.then(function(response){
-				console.log('list', response);
-				if(response.list.length == 0) {
-					$scope.haveList = 'N';
-				}else{
-					$scope.haveList = 'Y';
-					$scope.items = response.list;
-				}
-				console.log('haveList', $scope.haveList);
-			})
-	}else if($rootScope.userType == 'ERPia'){
-		$scope.tradeList.Title = '매출거래처 발송 내역';
-		$scope.tradeList.MeaipMeachul = '매입일';
-		$scope.tradeList.Publisher = '발송처';
-		$scope.tradeList.isRead = '수신확인';
-		tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N')
-			.then(function(response){
-				if(response.list.length == 0) {
-					$scope.haveList = 'N';
-				}else{
-					$scope.haveList = 'Y';
-					$scope.items = response.list;
-				}
-				console.log('haveList', $scope.haveList);
-			})
-	}
 
 	/*거래명세표 보기 */
-	$scope.readTradeDetail = function(dataParam){
-		$rootScope.Sl_No = dataParam.substring(0, dataParam.indexOf('^'));
-		var detail_title = dataParam.substring(dataParam.indexOf('^') + 1);
+	$scope.readTradeDetail = function(dataParam, num){
+		if(num == 2){
+			$rootScope.Sl_No = dataParam;
+		}else{
+			$rootScope.Sl_No = dataParam.substring(0, dataParam.indexOf('^'));
+			var detail_title = dataParam.substring(dataParam.indexOf('^') + 1);
+		}
 		tradeDetailService.readDetail($scope.loginData.Admin_Code, $rootScope.Sl_No)
 			.then(function(response){
-				console.log('readDetail', response);
-
 				var numhap = 0; // 수량합계
 				var num = 1;
-				switch( num ){
-					case 1:  response.list[0].numhap = response.list[0].G_ea1;
-							 response.list[0].taxhap = response.list[0].tax1;
-							 response.list[0].pricehap = response.list[0].G_price1;
-							 if(response.list[0].G_ea2 == null) break;
+				if(response.list[0].vatYN == 'Y'){// 세액적용
+					console.log('새액적용할꺼야?');
+					response.list[0].Hap = 0;
+					switch( num ){
+						case 1:
+								 var price = parseInt(response.list[0].G_price1)/1.1;
+								 price = price * parseInt(response.list[0].G_ea1); 
+								 var gong = Math.round(price);// 반올림함수
+								 response.list[0].G_Gong1 = gong;
+								 response.list[0].Hap = gong;
+								 response.list[0].numhap = response.list[0].G_ea1;
+								 response.list[0].tax1 = parseInt(response.list[0].G_price1) * parseInt(response.list[0].G_ea1) - parseInt(response.list[0].G_Gong1);
+								 response.list[0].taxhap = response.list[0].tax1;
+								 response.list[0].pricehap = response.list[0].G_price1;
+								 if(response.list[0].G_ea2 == null) break;
 
-					case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
-							 if(response.list[0].G_ea3 == null) break;
+						case 2:  
+								 var price = parseInt(response.list[0].G_price2)/1.1;
+								 price = price * parseInt(response.list[0].G_ea2); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong2 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
+								 response.list[0].tax2 = parseInt(response.list[0].G_price2) * parseInt(response.list[0].G_ea2) - parseInt(response.list[0].G_Gong2);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
+								 if(response.list[0].G_ea3 == null) break;
 
-					case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
-							 if(response.list[0].G_ea4 == null) break;
+						case 3:  
+								 var price = parseInt(response.list[0].G_price3)/1.1;
+								 price = price * parseInt(response.list[0].G_ea3); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong3 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+								 response.list[0].tax3 = parseInt(response.list[0].G_price3) * parseInt(response.list[0].G_ea3) - parseInt(response.list[0].G_Gong3);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
+								 if(response.list[0].G_ea4 == null) break;
 
-					case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
-							 if(response.list[0].G_ea5 == null) break;
+						case 4:  
+								 var price = parseInt(response.list[0].G_price4)/1.1;
+								 price = price * parseInt(response.list[0].G_ea4); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong4 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+								 response.list[0].tax4 = parseInt(response.list[0].G_price4) * parseInt(response.list[0].G_ea4) - parseInt(response.list[0].G_Gong4);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
+								 if(response.list[0].G_ea5 == null) break;
 
-					case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
-							 if(response.list[0].G_ea6 == null) break;
+						case 5:  
+								 var price = parseInt(response.list[0].G_price5)/1.1;
+								 price = price * parseInt(response.list[0].G_ea5); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong5 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+								 response.list[0].tax5 = parseInt(response.list[0].G_price5) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong5);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+								 if(response.list[0].G_ea6 == null) break;
 
-					case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
-							 if(response.list[0].G_ea7 == null) break;
+						case 6:  
+								 var price = parseInt(response.list[0].G_price6)/1.1;
+								 price = price * parseInt(response.list[0].G_ea6); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong6 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+								 response.list[0].tax6 = parseInt(response.list[0].G_price6) * parseInt(response.list[0].G_ea6) - parseInt(response.list[0].G_Gong6);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
+								 if(response.list[0].G_ea7 == null) break;
 
-					case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
-							 if(response.list[0].G_ea8 == null) break;
+						case 7:  
+						 		 var price = parseInt(response.list[0].G_price7)/1.1;
+								 price = price * parseInt(response.list[0].G_ea7); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong7 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+								 response.list[0].tax7 = parseInt(response.list[0].G_price7) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong7);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
+								 if(response.list[0].G_ea8 == null) break;
 
-					case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
-							 if(response.list[0].G_ea9 == null) break;
+						case 8:  
+								 var price = parseInt(response.list[0].G_price8)/1.1;
+								 price = price * parseInt(response.list[0].G_ea8); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong8 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+								 response.list[0].tax8 = parseInt(response.list[0].G_price8) * parseInt(response.list[0].G_ea8) - parseInt(response.list[0].G_Gong8);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
+								 if(response.list[0].G_ea9 == null) break;
 
-					case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
-							 if(response.list[0].G_ea10 == null) break;
+						case 9:  
+								 var price = parseInt(response.list[0].G_price9)/1.1;
+								 price = price * parseInt(response.list[0].G_ea9); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong9 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+								 response.list[0].tax9 = parseInt(response.list[0].G_price9) * parseInt(response.list[0].G_ea9) - parseInt(response.list[0].G_Gong9);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
+								 if(response.list[0].G_ea10 == null) break;
 
-					case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
-							   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
-							   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
-							   break;
-					default : console.log('여기올일 없을껄....');
+						case 10:  
+								 var price = parseInt(response.list[0].G_price10)/1.1;
+								 price = price * parseInt(response.list[0].G_ea10); 
+								 var gong = Math.round(price);
+								 response.list[0].G_Gong10 = gong;
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
+								 response.list[0].tax10 = parseInt(response.list[0].G_price10) * parseInt(response.list[0].G_ea10) - parseInt(response.list[0].G_Gong10);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
+								 break;
+						default : console.log('여기올일 없을껄....');
+					}
+				}else {//세액적용 안함
+					console.log('vat미포함 또는 영세율');
+					switch( num ){
+						case 1: response.list[0].numhap = response.list[0].G_ea1;
+								 response.list[0].taxhap = response.list[0].tax1;
+								 response.list[0].pricehap = response.list[0].G_price1;
+								 if(response.list[0].G_ea2 == null) break;
+
+						case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
+								 if(response.list[0].G_ea3 == null) break;
+
+						case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
+								 if(response.list[0].G_ea4 == null) break;
+
+						case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
+								 if(response.list[0].G_ea5 == null) break;
+
+						case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+								 if(response.list[0].G_ea6 == null) break;
+
+						case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
+								 if(response.list[0].G_ea7 == null) break;
+
+						case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
+								 if(response.list[0].G_ea8 == null) break;
+
+						case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
+								 if(response.list[0].G_ea9 == null) break;
+
+						case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
+								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
+								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
+								 if(response.list[0].G_ea10 == null) break;
+
+						case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
+								   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
+								   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
+								   break;
+						default : console.log('여기올일 없을껄....');
+					}
 				}
+
 				response.list[0].bigo = ' ';
 				$scope.detail_items = response.list;
-				console.log('detail_items.length =>', $scope.detail_items.length);
 				$rootScope.trade_Detail_Modal.show();
 			})
 		if($scope.userType != "ERPia") tradeDetailService.chkRead($scope.loginData.Admin_Code, $rootScope.Sl_No, $scope.loginData.UserId) // 읽었으면!
@@ -1388,6 +1645,7 @@ $scope.pushYNcheck=function(){
 	}
 	/*거래명세표 닫기*/
 	$scope.close = function(){
+		$scope.reload_tradelist();
 		$scope.trade_Detail_Modal.hide();
 	}
 	// $scope.backToList = function(){
@@ -1422,8 +1680,6 @@ $scope.pushYNcheck=function(){
 				else alert('사업자 번호와 일치하지 않습니다.');
 			}
 		}else if($rootScope.userType == "ERPia"){
-			// alert($scope.loginData.Pwd);
-			// $scope.userData.Sano = $scope.loginData.Pwd; // =========================== 지워야되.
 			if($scope.loginData.Pwd == $scope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
@@ -1839,22 +2095,29 @@ $scope.pushYNcheck=function(){
 	if($rootScope.loginData.autologin_YN == 'Y'){
 		$rootScope.autoLogin = true;
 		// $localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+		$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+		console.log("autologin", $rootScope.loginData.loginType,  $rootScope.loginData.User_Id);
 	}else{
 		$rootScope.autoLogin = false;
-		// $localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+		$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 	}
-
-	$scope.autoLogin_YN = function(check){
+		$scope.autoLogin_YN = function(check){
 		if(check==true){
-			uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'Y')
 			$rootScope.autoLogin = true;
 			$rootScope.loginData.autologin_YN = 'Y';
 			$localstorage.set("autoLoginYN", "Y");
+			$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+			$localstorage.set("autologinType", $rootScope.userType);
+			$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+			$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
 		}else{
-			uuidService.saveUUID($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, escape($scope.loginData.Pwd), 'N')
 			$rootScope.autoLogin = false;
 			$rootScope.loginData.autologin_YN = 'N';
 			$localstorage.set("autoLoginYN", "N");
+			$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+			$localstorage.set("autologinType", $rootScope.userType);
+			$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+			$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
 		}
 	}
 })
@@ -1949,9 +2212,43 @@ $scope.pushYNcheck=function(){
 	$scope.load_scm_chart = function(){
 	    AmChart_Service.scm_Chart('scm', 'scm', $scope.loginData.Admin_Code, 3, $scope.userData.G_Code)
 	    .then(function(response){
+	    	console.log('데이터가 이상하다. =', response);
 	    	var chartData = response;
 	    	console.log('chartData', chartData);
-	    	var chart = AmCharts.makeChart("chart5", {
+	    	if(chartData.length == 0){
+	    		AmCharts.addInitHandler(function(kind) {
+			//kind.height = containerwidth
+			if (kind.dataProvider === undefined || kind.dataProvider.length === 0) {
+			// add some bogus data
+			var dp = {};
+			dp[kind.titleField] = "";
+			dp[kind.valueField] = 1;
+			kind.dataProvider.push(dp)
+			
+			var dp = {};
+			dp[kind.titleField] = "";
+			dp[kind.valueField] = 1;
+			kind.dataProvider.push(dp)
+			
+			var dp = {};
+			dp[kind.titleField] = "";
+			dp[kind.valueField] = 1;
+			kind.dataProvider.push(dp)
+			
+			// disable slice labels
+			kind.labelsEnabled = false;
+			
+			// add label to let users know the chart is empty
+			kind.addLabel("50%", "50%", "조회할 데이터가 없습니다.", "middle", 15);
+			
+			// dim the whole chart
+			kind.alpha = 0.3;
+			return;
+		  }
+		}, ["serial"]);
+
+	    	}
+	    		var chart = AmCharts.makeChart("chart5", {
 			   theme: "dark",
 				type: "serial",
 				dataProvider: chartData,
@@ -1965,7 +2262,7 @@ $scope.pushYNcheck=function(){
 				valueAxes: [
 					{
 						id: "ValueAxis-1",
-						title: "금액",
+						title: "금액\n(만원)",
 						titleRotation: 0,
 						usePrefixes: true
 					},
@@ -2786,11 +3083,41 @@ $scope.pushYNcheck=function(){
 	}
 })
 // ERPia 차트 컨트롤러
-.controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, ERPiaAPI, statisticService, IndexService, $cordovaToast, app) {
+.controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, ERPiaAPI, statisticService, IndexService, $cordovaToast, $ionicSlideBoxDelegate, app) {
 	$scope.myStyle = {
 	    "width" : "100%",
 	    "height" : "100%"
 	};
+	$scope.chartlist = false;
+	$scope.chrtlistF = function(){
+		if($scope.chartlist == false){
+			$scope.chartlist = true;
+		}else{
+			$scope.chartlist = false;
+		}
+	}
+	$scope.onTouch = function(){
+		$ionicSlideBoxDelegate.enableSlide(false);
+	 };
+
+	$scope.onRelease = function(){
+		$ionicSlideBoxDelegate.enableSlide(true);
+	};
+
+	$scope.nextSlide = function() {
+		$ionicSlideBoxDelegate.next();
+	 };
+
+	$scope.previousSlide = function() {
+		$ionicSlideBoxDelegate.previous();
+	};
+
+	$scope.slideChanged = function(index) {
+		$ionicSlideBoxDelegate.slide(index, 500);
+		$scope.chartlist = false;
+	};
+
+
 	$scope.dashBoard = {};
 	var indexList = [];
 	// 날짜
@@ -2849,6 +3176,12 @@ $scope.pushYNcheck=function(){
 		Num = new String(Num)
 		temp=""
 		co=3
+
+		if(Num < 0){// 마이너스 금액일경우
+			Num = Num.replace(/\-/g,'');
+			fl = '-';
+		} 
+			
 		num_len=Num.length
 		while (num_len>0)
 		{
@@ -3010,7 +3343,7 @@ $scope.pushYNcheck=function(){
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
-					strHtml = strHtml + commaChange(data[i].value) + "원";
+					strHtml = strHtml + commaChange(data[i].value) + "건";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
@@ -3064,7 +3397,6 @@ $scope.pushYNcheck=function(){
 					break;
 			}
 		}
-		console.log('strHtml', strHtml);
 		$("table[name=tbGrid]").html(strHtml);
 	}
 
@@ -3086,10 +3418,11 @@ $scope.pushYNcheck=function(){
 
 		if (load_kind == "refresh")
 		{	$scope.loadingani();
+			console.log('??', request.responseText);
 			response = eval(request.responseText);
+			console.log('확인 ->', response);
 			// $rootScope.time_ref = response[0].in_date;
 			$.each(response[0], function(index, jsonData){
-				console.log(jsonData);
 						tmpAlert += jsonData;
 			});
 			$("h3[name=refresh_date]").html(tmpAlert);
@@ -3151,8 +3484,8 @@ $scope.pushYNcheck=function(){
 			, {Idx:1, title:"meaip_jem"}
 			, {Idx:2, title:"meachul_jem"}
 			, {Idx:3, title:"brand_top5"}
-			, {Idx:4, title:"meachul_top5"}
-			// , {Idx:5, title:"scm"}
+			, {Idx:4, title:"scm"}
+			, {Idx:5, title:"meachul_top5"}
 			, {Idx:6, title:"Meachul_ik"}
 			, {Idx:7, title:"meachul_7"}
 			, {Idx:8, title:"meaip_7"}
@@ -3170,29 +3503,33 @@ $scope.pushYNcheck=function(){
 			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index)
 			.then(function(response){
 				$rootScope.kind = 'chart' + response.list[0].idx;
+				console.log('넌머니?=>',response.list[0].idx);
 				switch (response.list[0].idx)
 				{
 					case '1' : $scope.kind = titles[1].title; break;
 					case '2' : $scope.kind = titles[2].title; break;
 					case '3' : $scope.kind = titles[3].title; break;
 					case '4' : $scope.kind = titles[4].title; break;
-					case '6' : $scope.kind = titles[5].title; break;
-					case '7' : $scope.kind = titles[6].title; break;
-					case '8' : $scope.kind = titles[7].title; break;
-					case '9' : $scope.kind = titles[8].title; break;
-					case '10' : $scope.kind = titles[9].title; break;
-					case '11' : $scope.kind = titles[10].title; break;
-					case '12' : $scope.kind = titles[11].title; break;
-					case '13' : $scope.kind = titles[12].title; break;
-					case '14' : $scope.kind = titles[13].title; break;
-					case '15' : $scope.kind = titles[14].title; break;
-					case '16' : $scope.kind = titles[15].title; break;
-					case '17' : $scope.kind = titles[16].title; break;
+					case '5' : $scope.kind = titles[5].title; break;
+					case '6' : $scope.kind = titles[6].title; break;
+					case '7' : $scope.kind = titles[7].title; break;
+					case '8' : $scope.kind = titles[8].title; break;
+					case '9' : $scope.kind = titles[9].title; break;
+					case '10' : $scope.kind = titles[10].title; break;
+					case '11' : $scope.kind = titles[11].title; break;
+					case '12' : $scope.kind = titles[12].title; break;
+					case '13' : $scope.kind = titles[13].title; break;
+					case '14' : $scope.kind = titles[14].title; break;
+					case '15' : $scope.kind = titles[15].title; break;
+					case '16' : $scope.kind = titles[16].title; break;
+					case '17' : $scope.kind = titles[17].title; break;
 				}
 
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
 				if($scope.kind === "beasonga"){
-					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
+					$scope.htmlCode = 
+						'<ion-content>'	+
+							'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat" style="padding-top:20px;">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; vertical-align: top;">'+
 									'<button class="fa fa-refresh" name="refreshW" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
@@ -3201,7 +3538,7 @@ $scope.pushYNcheck=function(){
 										'<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
 									// '<div name="loading">로딩중...</div>'+
-									'<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
+									// '<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -3219,7 +3556,8 @@ $scope.pushYNcheck=function(){
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>' + '</ion-content>';
+							'</div>' + 
+						'</ion-content>';
 				}else{
 					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat" style="padding-top:20px;">'+
@@ -3232,7 +3570,7 @@ $scope.pushYNcheck=function(){
 										'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
 										'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
-									'<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
+									// '<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -3272,37 +3610,43 @@ $scope.pushYNcheck=function(){
 					case 14: $('#s14').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 15: $('#s15').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 16: $('#s16').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 17: $('#s17').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 				}
 
 				$("button[name=btnW]").click(function() {
 					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
 				});
 				$("button[name=btnM]").click(function() {
 					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
 				});
 				$("button[name=btnY]").click(function() {
 					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
 				});
 
-				if($('div[name=loading2]').css('display') == 'none'){  // 정보있을때
-					$("button[name=btnGrid]").css('background', '#ececed');
-					$("button[name=btnGrid]").css('color', '#444');
-				}else{
-					$("button[name=btnGrid]").css('background', '#7b7b7b');
-					$("button[name=btnGrid]").css('color', '#686868');
+				$scope.btn = function(){
+					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){   // 정보있을때
+						$("button[name=btnGrid]").css('background', '#ececed');
+						$("button[name=btnGrid]").css('color', '#444');
+					}else{
+						$("button[name=btnGrid]").css('background', '#7b7b7b');
+						$("button[name=btnGrid]").css('color', '#686868');
+					}	
 				}
-
+				
+				$scope.btn();
+				// console.log($("button[name=btnGrid]").css('color'));
 
 				$("button[name=btnGrid]").click(function() {
 					$scope.loadingani();
-					if($('div[name=loading2]').css('display') == 'none'){ // 정보있을때
+					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){  // 정보있을때
 						if ($('div[name=gridBody]').css('display') == 'none') {
 							$('div[name=gridBody]').css('display','block');
 							$('#' + $scope.kind).css('display', 'none');
@@ -3364,18 +3708,19 @@ $scope.pushYNcheck=function(){
 		// 	console.log(token);
 		// });
 		window.plugins.OneSignal.getIds(function(ids) {
-		  document.getElementById("OneSignalUserID").innerHTML = "UserID: " + ids.userId;
-		  document.getElementById("OneSignalPushToken").innerHTML = "PushToken: " + ids.pushToken;
+		  // document.getElementById("OneSignalUserID").innerHTML = "UserID: " + ids.userId;
+		  // document.getElementById("OneSignalPushToken").innerHTML = "PushToken: " + ids.pushToken;
 		  console.log('getIds: ' + JSON.stringify(ids));
 		  	$rootScope.token = ids.pushToken;
+		  	$rootScope.UserKey = ids.userId;
 		});
-		window.plugins.PushbotsPlugin.getRegistrationId(function(token){
-		    console.log("Registration Id:" + token);
+		// window.plugins.PushbotsPlugin.getRegistrationId(function(token){
+		//     console.log("Registration Id:" + token);
 
-		     $rootScope.token = token;
-		});
-		window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"^"+$rootScope.loginData.UserId+"^"+$rootScope.deviceInfo2.phoneNo+"^"+$rootScope.deviceInfo.uuid);
-		console.log("updateAlias");
+		//      $rootScope.token = token;
+		// });
+		// window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"^"+$rootScope.loginData.UserId+"^"+$rootScope.deviceInfo2.phoneNo+"^"+$rootScope.deviceInfo.uuid);
+		// console.log("updateAlias");
 		// Register with the Ionic Push service.  All parameters are optional.
 
 	};
@@ -3388,7 +3733,7 @@ $scope.pushYNcheck=function(){
 	//단가지정배열(매출) 1. 매입가 2. 도매가 3. 인터넷가 4. 소매가 5. 권장소비자가
     $scope.MchulDn = [
       { num: 0, id: '거래처등록단가' },
-      { num: 1, id: '매출가' },
+      { num: 1, id: '매입가' },
       { num: 2, id: '도매가' },
       { num: 3, id: '인터넷가' },
       { num: 4, id: '소매가' },
@@ -3725,10 +4070,10 @@ $scope.pushYNcheck=function(){
 		hap : 0,
 		meaipchulsum : 0
 	}
-
 	/* 금일/ 일주일/ 일개월 / 날짜만검색 */
 	$scope.sear_day = function(agoday) {
 		$scope.chit_lists=[];
+		$rootScope.end_data = [];
 		$scope.chit_atmSum = 0;
 		$scope.chit_jiSum = 0;
 		$scope.pageCnt = 1;
@@ -3760,7 +4105,18 @@ $scope.pushYNcheck=function(){
 					$scope.money.meaipchulsum = 0;
 				}else{
 					$scope.money.meaipchulsum = 0;
-					for(var m = 0; m < data.list.length; m++){
+					if(data.list.length < 6){
+						$scope.moreloading=0;
+						$scope.maxover = 1;
+					}
+					if(data.list.length == 6){
+						var list_cnt = 5;
+						$rootScope.end_data.push(data.list[data.list.length-1]);
+						console.log('마지막꺼저장 =>',$rootScope.end_data);
+					}else{
+						var list_cnt = data.list.length;
+					}
+					for(var m = 0; m < list_cnt; m++){
 						$scope.chit_lists.push(data.list[m]);
 						if($rootScope.distinction == 'meaip'){
 							$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
@@ -3798,35 +4154,49 @@ $scope.pushYNcheck=function(){
 		switch($scope.searchmode){
 			case 'normal' :
 				if($scope.chit_lists.length>0){
-		  		console.log($scope.chit_lists.length);
+			  		if($scope.maxover==0){
+						$scope.pageCnt+=1;
+					    $scope.moreloading=1;
 
-		  		if($scope.maxover==0){
-					$scope.pageCnt+=1;
-				    $scope.moreloading=1;
-
-					MLookupService.chit_lookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams, $scope.company.name, $scope.pageCnt)
-						.then(function(data){
-							$timeout(function(){
-							$scope.maxover=0;
-							if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-								else alert('조회된 데이터가 없습니다.');
-								$scope.moreloading=0;
-								$scope.maxover = 1;
-							}else{
-								for(var m = 0; m < data.list.length; m++){
-									$scope.chit_lists.push(data.list[m]);
-									if($rootScope.distinction == 'meaip'){
-										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
+						MLookupService.chit_lookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams, $scope.company.name, $scope.pageCnt)
+							.then(function(data){
+								$timeout(function(){
+								$scope.maxover=0;
+								if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
+									$scope.moreloading=0;
+									$scope.maxover = 1;
+									if($rootScope.end_data.length != 0){
+										$scope.chit_lists.push($rootScope.end_data[0]);
+										$rootScope.end_data = []; // 초기화?
+									}
+								}else{
+									if(data.list.length == 5){
+										$scope.chit_lists.push($rootScope.end_data[0]);
+										$rootScope.end_data = []; // 초기화?
+										$rootScope.end_data.push(data.list[data.list.length-1]);
+										for(var m = 0; m < data.list.length-1; m++){
+											$scope.chit_lists.push(data.list[m]);
+											if($rootScope.distinction == 'meaip'){
+												$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
+											}else{
+												$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+											}
+										}
 									}else{
-										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+										for(var m = 0; m < data.list.length; m++){
+											$scope.chit_lists.push(data.list[m]);
+											if($rootScope.distinction == 'meaip'){
+												$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
+											}else{
+												$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+											}
+										}
 									}
 								}
-							}
-							$scope.moreloading=0;
-						}, 1000);
-						})
-					}
+								$scope.moreloading=0;
+							}, 1000);
+							})
+						}
 				}
 			break;
 
@@ -4102,34 +4472,34 @@ $scope.pushYNcheck=function(){
     }
 
     $scope.OpsetScopeCarry=function(index){
-    	$ionicSlideBoxDelegate.slide(0, 500);
-    	if($scope.OptsetList[index].sel_Ger_Name == null || $scope.OptsetList[index].sel_Ger_Name == '') $scope.OptsetList[index].sel_Ger_Name = '';
-    	if($scope.OptsetList[index].sel_Ger_Code == null || $scope.OptsetList[index].sel_Ger_Code == '') $scope.OptsetList[index].sel_Ger_Code = '0';
-	if($scope.OptsetList[index].sel_Damdang == null || $scope.OptsetList[index].sel_Damdang == '' || $scope.OptsetList[index].sel_Damdang == '미지정') $scope.OptsetList[index].sel_Damdang = '0';
-	if($scope.OptsetList[index].sel_Place_Name == null || $scope.OptsetList[index].sel_Place_Name == '') $scope.OptsetList[index].sel_Place_Name = '';
-    	if($scope.OptsetList[index].sel_Place_Code == null || $scope.OptsetList[index].sel_Place_Code == '') $scope.OptsetList[index].sel_Place_Code = '0';
+	    	$ionicSlideBoxDelegate.slide(0, 500);
+	    	if($scope.OptsetList[index].sel_Ger_Name == null || $scope.OptsetList[index].sel_Ger_Name == '') $scope.OptsetList[index].sel_Ger_Name = '';
+	    	if($scope.OptsetList[index].sel_Ger_Code == null || $scope.OptsetList[index].sel_Ger_Code == '') $scope.OptsetList[index].sel_Ger_Code = '0';
+		if($scope.OptsetList[index].sel_Damdang == null || $scope.OptsetList[index].sel_Damdang == '' || $scope.OptsetList[index].sel_Damdang == '미지정') $scope.OptsetList[index].sel_Damdang = '0';
+		if($scope.OptsetList[index].sel_Place_Name == null || $scope.OptsetList[index].sel_Place_Name == '') $scope.OptsetList[index].sel_Place_Name = '';
+	    	if($scope.OptsetList[index].sel_Place_Code == null || $scope.OptsetList[index].sel_Place_Code == '') $scope.OptsetList[index].sel_Place_Code = '0';
 
-    	if($scope.OptsetList[index].sel_Sdate == 'today'){
-    		$scope.reqparams.sDate = $scope.todate;
-    		$scope.date.sDate1 = new Date($scope.reqparams.sDate);
-    	}else{
-    		$scope.reqparams.sDate = $scope.OptsetList[index].sel_Sdate;
-    		$scope.date.sDate1 = new Date($scope.reqparams.sDate);
-    	}
+	    	if($scope.OptsetList[index].sel_Sdate == 'today'){
+	    		$scope.reqparams.sDate = $scope.todate;
+	    		$scope.date.sDate1 = new Date($scope.reqparams.sDate);
+	    	}else{
+	    		$scope.reqparams.sDate = $scope.OptsetList[index].sel_Sdate;
+	    		$scope.date.sDate1 = new Date($scope.reqparams.sDate);
+	    	}
 
-    	if($scope.OptsetList[index].sel_Edate == 'today'){
-    		$scope.reqparams.eDate = $scope.todate;
-    		$scope.date.eDate1 = new Date($scope.reqparams.eDate);
-    	}else{
-    		$scope.reqparams.eDate = $scope.OptsetList[index].sel_Edate;
-    		$scope.date.eDate1 = new Date($scope.reqparams.eDate);
-    	}
+	    	if($scope.OptsetList[index].sel_Edate == 'today'){
+	    		$scope.reqparams.eDate = $scope.todate;
+	    		$scope.date.eDate1 = new Date($scope.reqparams.eDate);
+	    	}else{
+	    		$scope.reqparams.eDate = $scope.OptsetList[index].sel_Edate;
+	    		$scope.date.eDate1 = new Date($scope.reqparams.eDate);
+	    	}
 
-		$scope.company.username = $scope.OptsetList[index].sel_Ger_Name;
-		$scope.company.name = $scope.OptsetList[index].sel_Ger_Name;
-		$scope.company.code = $scope.OptsetList[index].sel_Ger_Code;
-		$scope.company.dam = $scope.OptsetList[index].sel_Damdang;
-		$scope.detail.Place_Code = $scope.OptsetList[index].sel_Place_Code;
+			$scope.company.username = $scope.OptsetList[index].sel_Ger_Name;
+			$scope.company.name = $scope.OptsetList[index].sel_Ger_Name;
+			$scope.company.code = $scope.OptsetList[index].sel_Ger_Code;
+			$scope.company.dam = $scope.OptsetList[index].sel_Damdang;
+			$scope.detail.Place_Code = $scope.OptsetList[index].sel_Place_Code;
 	}
 
 	$scope.onTouch = function(){
@@ -4172,7 +4542,7 @@ $scope.pushYNcheck=function(){
 
 
 /* 매입&매출 전표상세조회 컨트롤러 */
-.controller('MLookup_DeCtrl', function($scope, $rootScope, $ionicModal, $ionicPopup, $ionicHistory, $state, $cordovaToast, ERPiaAPI, MLookupService, MiuService, tradeDetailService, app) {
+.controller('MLookup_DeCtrl', function($scope, $rootScope, $ionicModal, $ionicPopup, $ionicHistory, $state, $cordovaToast, ERPiaAPI, MLookupService, MiuService, tradeDetailService) {
 
  	/*매출매입 상세조회*/
 	MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.m_no)
@@ -4272,73 +4642,11 @@ $scope.pushYNcheck=function(){
 		})
 	}
 
-	/*거래명세표 전환*/
-	$scope.traddetail = function(no){
-		tradeDetailService.readDetail($scope.loginData.Admin_Code, no)
-			.then(function(response){
-				console.log('readDetail _ meaipchul쪽=>', response);
-
-				var numhap = 0; // 수량합계
-				var num = 1;
-				switch( num ){
-					case 1:  response.list[0].numhap = response.list[0].G_ea1;
-							 response.list[0].taxhap = response.list[0].tax1;
-							 response.list[0].pricehap = response.list[0].G_price1;
-							 if(response.list[0].G_ea2 == null) break;
-
-					case 2:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
-							 if(response.list[0].G_ea3 == null) break;
-
-					case 3:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
-							 if(response.list[0].G_ea4 == null) break;
-
-					case 4:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
-							 if(response.list[0].G_ea5 == null) break;
-
-					case 5:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
-							 if(response.list[0].G_ea6 == null) break;
-
-					case 6:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
-							 if(response.list[0].G_ea7 == null) break;
-
-					case 7:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
-							 if(response.list[0].G_ea8 == null) break;
-
-					case 8:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
-							 if(response.list[0].G_ea9 == null) break;
-
-					case 9:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
-							 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
-							 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
-							 if(response.list[0].G_ea10 == null) break;
-
-					case 10:  response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
-							   response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
-							   response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price10);
-							   break;
-					default : console.log('여기올일 없을껄....');
-				}
-				if($rootScope.distinction == 'meaip') response.list[0].bigo = '[반품]';
-				else  response.list[0].bigo = ' ';
-				$rootScope.detail_items = response.list;
-				$rootScope.trade_Detail_Modal.show();
-			})
-		// tradeDetailService.chkRead($scope.loginData.Admin_Code, no, $scope.loginData.User_Id)
-	}
+	// $ionicModal.fromTemplateUrl('side/trade_Detail.html',{
+	// 	scope : $scope
+	// }).then(function(modal){
+	// 	$rootScope.trade_Detail_Modal = modal;
+	// });
 
 	/*삭제*/
 	$scope.chitDeleteF = function(no){

@@ -12,6 +12,9 @@ function renewalDay(kind, gu, admin_code, ERPiaApi_url)
 	$("#loading").css("display","block");
 	AmCharts.loadJSON(ERPiaApi_url + "/renewalDay.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh"); //최근갱신일 로딩
 	makeCharts(kind, gu, admin_code,ERPiaApi_url);
+
+	height = $(window).height()-100;
+	$(kind).attr('style', "height:"+ height + "px;");	
 }
 
 function makeCharts(kind, gu, admin_code, ERPiaApi_url){
@@ -78,61 +81,9 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 	if (kind == "meachul_jem" || kind == "meaip_jem" || kind == "beasonga" || kind == "meachul_onoff" || kind == "meachul_cs")
 	{
-
-		AmCharts.checkEmptyDataPie = function (kind) {
-			// add some bogus data
-			var dp = {};
-			dp[kind.titleField] = "";
-			dp[kind.valueField] = 1;
-			kind.dataProvider.push(dp)
-
-			var dp = {};
-			dp[kind.titleField] = "";
-			dp[kind.valueField] = 1;
-			kind.dataProvider.push(dp)
-
-			var dp = {};
-			dp[kind.titleField] = "";
-			dp[kind.valueField] = 1;
-			kind.dataProvider.push(dp)
-
-			// disable slice labels
-			kind.labelsEnabled = false;
-
-			// add label to let users know the chart is empty
-			kind.addLabel("50%", "50%", "조회할 데이터가 없습니다.", "middle", 15);
-
-						//  x    y     text                          위치   fontsize
-			kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
-
-			// dim the whole chart
-			kind.alpha = 0.3;
-			return;
-		}
-		
 		AmCharts.addInitHandler(function(kind) {
-		  if (kind.dataProvider === undefined || kind.dataProvider.length === 0) {
-			AmCharts.checkEmptyDataPie(kind);
+		  if (kind.legend === undefined || kind.legend.truncateLabels === undefined)
 			return;
-		}
-
-		 if (kind.legend === undefined || kind.legend.truncateLabels === undefined)
-		return;
-
-		var cnt1 = 0
-		for (var i in kind.dataProvider) {
-		  if (kind.dataProvider[i].value < 0)
-		  {			
-			cnt1 = cnt1 + 1
-		  }
-		}
-
-		if (kind.dataProvider.length === cnt1 )
-		{
-			AmCharts.checkEmptyDataPie(kind);
-		}
-
-		kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
 
 		 var titleField =""
 		 var legendTitleField=""
@@ -145,67 +96,12 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			if (label.length > kind.legend.truncateLabels)
 			  label = label.substr(0, kind.legend.truncateLabels-1)+'...'
 			  kind.dataProvider[i][legendTitleField] = label;
-		  }		
+		  }
 		  // replace chart.titleField to show our own truncated field
-		  kind.titleField = legendTitleField;			  
+		  kind.titleField = legendTitleField;
 		  // make the balloonText use full title instead
 		  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
-
-		  //var containerHeight =$(window).height()-100;
-		  //kind.height = containerHeight
-
-
 		}, ["pie"]);
-	}else //if (kind == "meachul_7" || kind == "banpum" || kind == "beasongb" || kind == "Meachul_ik" || kind == "meaip_7" || kind == "beasong_gu" )// 추가
-	{		
-		AmCharts.checkEmptyData = function (kind) {
-			if ( 0 == kind.dataProvider.length ) {
-				// set min/max on the value axis
-				kind.valueAxes[0].minimum = 0;
-				kind.valueAxes[0].maximum = 100;
-				
-				// add dummy data point
-				var dataPoint = {
-					dummyValue: 0
-				};
-				dataPoint[kind.categoryField] = '';
-				kind.dataProvider = [dataPoint];
-				
-				// add label to let users know the chart is empty
-				kind.addLabel("50%", "50%", "조회할 데이터가 없습니다.", "middle", 15);
-							//  x    y     text                          위치   fontsize
-				kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
-				
-				// set opacity of the chart div
-				//kind.chartDiv.style.opacity = 0.3;
-				
-				// redraw it
-				kind.validateNow();
-			}
-		}
-
-		AmCharts.addInitHandler(function(kind) {
-
-			if (kind.dataProvider === undefined || kind.dataProvider.length === 0) {
-				AmCharts.checkEmptyData(kind);
-				return;
-			}
-
-			kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);
-
-			var containerWidth = $(window).width() - 100;
-
-			if (containerWidth <= 500)//화면 넓이가 374보다 작으면 라벨 각의 값을 준다
-			{
-				kind.categoryAxis.autoRotateAngle = -60;
-				kind.categoryAxis.autoRotateCount = 4;
-			}
-			else
-			{
-				kind.categoryAxis.autoRotateAngle = 0;
-				kind.categoryAxis.autoRotateCount = 0;
-			}
-		}, ["serial"]);
 	}
 
 	height = $(window).height()-300;
@@ -213,6 +109,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 	$(window).resize(function () {
 		height = $(window).height()-300;
+		console.log('height값 ->', height);
 		$('#' + kind).css('height', height+'px');
 	});
 
@@ -220,20 +117,13 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	{
 		case "meaip_jem" :			//거래처별 매입 점유율
 		console.log('거래처별 매입 점유율');
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_jem&value_kind=meaip_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
-			// for (var i in chartData) {
-			//   chartData[i].litres = chartData[i].value;
-			//   chartData[i].absValue = Math.abs(chartData[i].value);
-			// }
-
 			var chart = AmCharts.makeChart("meaip_jem", {
 				"type": "pie",
-				"startDuration": 0, //차트 애니메이션 
- 			    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
-				"minRadius": 50,
-				"maxLabelWidth":50,
+ 			    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"minRadius": 100,
+				"maxLabelWidth":100,
 				"titleField": "name",
-				"valueField": "value",//"value",
+				"valueField": "value",
 				"fontSize": 12,
 				"theme": "dark",
 			    "labelsEnabled": true,
@@ -241,59 +131,60 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			      "enabled": false,
 				  "truncateLabels": 10 // custom parameter
 			    },
-			    "allLabels": [],
+				"allLabels": [
+					{
+						"id": "Label-1",
+						"text": temp + sDate + " ~ " + eDate,
+						"x": 10,
+						"y": 300
+					}
+				],
 				"balloon": {},
 				"labelRadius": 1,
-				"dataProvider": chartData
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_jem&value_kind=meaip_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
 			});
 
 			break;
 
 		case "meachul_jem" :			//사이트별 매출 점유율
 		console.log('사이트별 매출 점유율');
-
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_jem&value_kind=meachul_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
-			// for (var i in chartData) {
-			//   chartData[i].litres = chartData[i].value;
-			//   chartData[i].absValue = Math.abs(chartData[i].value);
-			// }
-			
-
 			var chart = AmCharts.makeChart("meachul_jem", {
 				"type": "pie",
-				"startDuration": 0, //차트 애니메이션 
- 			     "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
-				"minRadius": 50,
-				"maxLabelWidth":50,
+ 			    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"minRadius": 100,
+				"maxLabelWidth":100,
 				"titleField": "name",
-				"valueField": "value",//"value",
+				"valueField": "value",
 				"fontSize": 12,
 				"theme": "dark",
-				"startDuration": 0,
 			    "labelsEnabled": true,
 			    "legend": {
 			      "enabled": false,
 				  "truncateLabels": 10 // custom parameter
 			    },
-				"allLabels": [],
+				"allLabels": [
+					{
+						"id": "Label-1",
+						"text": temp + sDate + " ~ " + eDate,
+						"x": 6,
+						"y": 300
+					}
+				],
 				"balloon": {},
 				"labelRadius": 1,
-				 "dataProvider": chartData
+				 "dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_jem&value_kind=meachul_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
 			});
 
 			break;
 
 		case "brand_top5" :			//브랜드별 매출 Top 5
 		console.log('브랜드별 매출 Top 5');
-
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=brand_top5&value_kind=brand_top5&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("brand_top5", {
 				"type": "serial",
-				"startDuration": 0, //차트 애니메이션
 				 "theme": "dark",
 				"categoryField": "name",
 				"rotate": true,
+				"startDuration": 1,
 				"autoMarginOffset": 40,
 				"autoMargins": false,
 				"marginBottom": 40,
@@ -325,6 +216,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"bulletBorderAlpha": 1,
 					"bulletBorderThickness": 1,
 					"bulletSize": 16,
+					// "id": "AmGraph-2",
 					"valueAxis": "ValueAxis-2",
 					"lineThickness": 3,
 					"title": "수량",
@@ -352,7 +244,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"title": "",
 						"usePrefixes": true,
 						"axisAlpha": 0,
-						"precision" : 0, // 추추추
 						"position": "bottom"
 					}
 				],
@@ -363,7 +254,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"x": 20,
-						"y": 15
+						"y": 0
 					},
 					{
 						"id": "ValueAxis-2",
@@ -371,13 +262,13 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"align": "right",
-						"x": 70,
+						"x": 80,
 						"y": "95%"
 					}
 				],
 				"balloon": {},
 				"titles": [],
-				"dataProvider": chartData,
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=brand_top5&value_kind=brand_top5&admin_code=" + admin_code + "&swm_gu=" + gu),
 				"export": {
 					"enabled": true
 				 },
@@ -399,20 +290,17 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "meachul_top5" :			//상품별 매출 TOP5
 		console.log('상품별 매출 TOP5');
-
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_top5&value_kind=meachul_top5&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("meachul_top5", {
 				"type": "serial",
-				"startDuration": 0,
 				 "theme": "dark",
 				"categoryField": "name",
 				"rotate": true,
-				"autoMarginOffset": 10,
+				"startDuration": 1,
+				"autoMarginOffset": 40,
 				"autoMargins": false,
 				"marginBottom": 40,
 				"marginRight": 40,
-				"marginTop": 50,
+				"marginTop": 40,
 				"marginLeft": 20,
 				"categoryAxis": {
 					"gridPosition": "middle",
@@ -458,7 +346,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"x": 20,
-						"y": 15
+						"y": 0
 					},
 					{
 						"id": "ValueAxis-2",
@@ -467,7 +355,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"size": 12,
 						"align": "right",
 						"x": 80,
-						"y": "93%"
+						"y": "95%"
 					}
 				],
 				"valueAxes": [
@@ -487,7 +375,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"position": "bottom"
 					}
 				],
-				"dataProvider": chartData,
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_top5&value_kind=meachul_top5&admin_code=" + admin_code + "&swm_gu=" + gu),
 				"export": {
 					"enabled": true
 				 },
@@ -509,19 +397,11 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "scm" :		//scm
 		console.log('scm');
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?Kind=scm&Value_Kind=scm&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("scm", {
 				"type": "serial",
-				"startDuration": 0, //차트 애니메이션
-			    	"theme": "dark",
-				"autoMarginOffset": 20,
-				"autoMargins": false,
-				"marginBottom": 60,
-				"marginRight": 80,
-				"marginTop": 10,
-				"marginLeft": 80,
-				"dataProvider": chartData ,
+				"theme": "dark",
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?Kind=scm&Value_Kind=scm&admin_code=" + admin_code + "&swm_gu=" + gu),
+				"startDuration": 1,
 				"prefixesOfBigNumbers": [
 					{
 						"number": 10000,
@@ -543,6 +423,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					}
 				],
 				"graphs": [{
+//					"balloonText": "수량: <b>[[value]]</b>",
 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 개</span>",
 					"fillAlphas": 0.9,
 					"lineAlpha": 0.2,
@@ -551,6 +432,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"valueAxis": "ValueAxis-2",
 					"valueField": "su"
 				}, {
+//					"balloonText": "금액: <b>[[value]]</b>",
 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span>",
 					"fillAlphas": 0.9,
 					"lineAlpha": 0.2,
@@ -582,21 +464,12 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "Meachul_ik" :			//매출이익 증감율
 		console.log('매출이익 증감율');
-
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=Meachul_ik&value_kind=Meachul_ik&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("Meachul_ik", {
-			   	"type": "serial",
-				"startDuration": 0, //차트 애니메이션
-			    	"theme": "dark",
-				"dataProvider": chartData,
-				"autoMarginOffset": 20,
-				"autoMargins": false,
-				"marginBottom": 30,
-				"marginRight": 50,
-				"marginTop": 50,
-				"marginLeft": 50,
-
+			   "theme": "dark",
+				"type": "serial",
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=Meachul_ik&value_kind=Meachul_ik&admin_code=" + admin_code + "&swm_gu=" + gu),
+				"startDuration": 1,
+				"marginTop": 30,
 				"prefixesOfBigNumbers": [
 					{
 						"number": 10000,
@@ -643,7 +516,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"size": 12,
 						"align": "left",
 						"x": 20,
-						"y": 20
+						"y": 0
 					},
 					{
 						"id": "ValueAxis-2",
@@ -659,7 +532,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"size": 12,
 						"align": "right",
 						"x": "98%",
-						"y": 20
+						"y": 0
 					},
 					{
 						"id": "ValueAxis-4",
@@ -761,26 +634,18 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "meachul_7" :			//매출 실적 추이
 		console.log('매출 실적 추이');
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_7&value_kind=meachul_7&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("meachul_7", {
 			  "type": "serial",
-			  "startDuration": 0, //차트 애니메이션
-			  "theme": "dark",
 			  "addClassNames": true,
-			  "autoMarginOffset": 20,
-			  "autoMargins": false,
-			  "marginBottom": 30,
-			  "marginRight": 50,
-			  "marginTop": 50,
-			  "marginLeft": 50,
-
+			  "startDuration": 0,
+			  "theme": "dark",
+			  "autoMargins": true,
+			  // "marginTop": 30,
 			  "mouseWheelScrollEnabled": false,
 			  "balloon": {
 				"adjustBorderColor": false,
 				"horizontalPadding": 10,
 				"verticalPadding": 8,
-				"startDuration": 0,
 				"color": "#ffffff"
 			  },
 				"prefixesOfBigNumbers": [
@@ -789,7 +654,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 								"prefix": ""
 							}
 				],
-				"dataProvider": chartData,
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_7&value_kind=meachul_7&admin_code=" + admin_code + "&swm_gu=" + gu),
 				"valueAxes": [
 						{
 							"id": "ValueAxis-1",
@@ -812,7 +677,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"x": 20,
-						"y": 20
+						"y": 0
 					},
 					{
 						"id": "ValueAxis-2",
@@ -821,9 +686,10 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"size": 12,
 						"align": "right",
 						"x": "98%",
-						"y": 20
+						"y": 0
 					}
 				],
+				  "startDuration": 1,
 				   "graphs": [{
 					"id": "graph1",
 					"alphaField": "alpha",
@@ -833,7 +699,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"type": "column",
 					"valueField": "value",
 					"dashLengthField": "dashLengthColumn",
-					"startDuration": 0,
 					"ValueAxis": "ValueAxis-1"
 				  }, {
 					"id": "graph2",
@@ -850,7 +715,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"title": "수량",
 					"valueField": "su",
 					"valueAxis": "ValueAxis-2",
-					"startDuration": 0,
 					"position" : "right"
 				  }],
 				  "categoryField": "name",
@@ -881,20 +745,12 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "meaip_7" :			//매입현황
 		console.log('/매입현황');
-
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_7&value_kind=meaip_7&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("meaip_7", {
-			   	"type": "serial",
-			    	"startDuration": 0, //차트 애니메이션
-				"theme": "dark",
-				"dataProvider": chartData,
-				"autoMargins": true,
-				"marginBottom": 30,
-				"marginRight": 50,
-				"marginTop": 40,
-				"marginLeft": 50,
-
+			   "theme": "dark",
+				"type": "serial",
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_7&value_kind=meaip_7&admin_code=" + admin_code + "&swm_gu=" + gu),
+				"startDuration": 1,
+				"marginTop": 30,
 				"prefixesOfBigNumbers": [
 					{
 						"number": 10000,
@@ -923,7 +779,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"x": 20,
-						"y": 20
+						"y": 0
 					},
 					{
 						"id": "ValueAxis-2",
@@ -932,7 +788,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"size": 12,
 						"align": "right",
 						"x": "98%",
-						"y": 20
+						"y": 0
 					}
 				],
 				"graphs": [{
@@ -984,22 +840,12 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "beasonga" :			//금일 출고 현황
 		console.log('금일 출고 현황');
-
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasonga&value_kind=beasonga&admin_code=" + admin_code + "&swm_gu=" + gu)
-			// for (var i in chartData) {
-			//   chartData[i].litres = chartData[i].value;
-			//   chartData[i].absValue = Math.abs(chartData[i].value);
-			// }
-
 			var chart = AmCharts.makeChart("beasonga", {
 			  "type": "pie",
-			  "startDuration": 0, //차트 애니메이션 
 			  "theme": "dark",
-			  "minRadius": 50,
-			  "maxLabelWidth":50,
-			  "dataProvider": chartData,
+			  "dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasonga&value_kind=beasonga&admin_code=" + admin_code + "&swm_gu=" + gu),
 			  "titleField": "name",
-			  "valueField": "value",//"value",
+			  "valueField": "value",
 			  "labelRadius": 5,
 			  "radius": "42%",
 			  "innerRadius": "60%",
@@ -1009,33 +855,22 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			    "enabled": false,
 			    "truncateLabels": 10 // custom parameter
 			  },
-			  "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
+			  "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
 			  "export": {
 				"enabled": true
 			  }
 
 			});
 
+			//alert("http://www.erpia.net/include/JSon_Proc_graph.asp?kind=beasonga&value_kind=beasonga&admin_code=" + admin_code + "&swm_gu=" + gu);
+
 			break;
 
 		case "beasong_gu" :			//택배사별 구분건수 통계
 		console.log('택배사별 구분건수 통계');
-
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasong_gu&value_kind=beasong_gu&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("beasong_gu", {
 					"type": "serial",
-					"startDuration": 0, //차트 애니메이션
 					"theme": "dark",
-
-					"autoMarginOffset": 20,
-					"autoMargins": false,
-
-					"marginBottom": 60,
-					"marginRight": 50,
-					"marginTop": 30,
-					"marginLeft": 50,
-
 					"legend": {
 						"horizontalGap": 10,
 						"maxColumns": 1,
@@ -1043,13 +878,14 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"useGraphSettings": true,
 						"markerSize": 10
 					},
-					"dataProvider": chartData,
+					"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasong_gu&value_kind=beasong_gu&admin_code=" + admin_code + "&swm_gu=" + gu),
 					"valueAxes": [{
 						"stackType": "regular",
 						"axisAlpha": 0.3,
 						"gridAlpha": 0
 					}],
 					"graphs": [{
+//						"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
 						"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 건</span>",
 						"fillAlphas": 0.8,
 						"labelText": "[[value]]",
@@ -1060,6 +896,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"valueField": "value"
 					}, {
 						"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 건</span>",
+						//"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
 						"fillAlphas": 0.8,
 						"labelText": "[[value]]",
 						"lineAlpha": 0.3,
@@ -1069,6 +906,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"valueField": "value1"
 					}, {
 						"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 건</span>",
+						//"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
 						"fillAlphas": 0.8,
 						"labelText": "[[value]]",
 						"lineAlpha": 0.3,
@@ -1087,36 +925,28 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"export": {
 						"enabled": true
 					 },
-				// "allLabels": [
-				// 	{
-				// 		"id": "Label-1",
-				// 		"text": temp + sDate + " ~ " + eDate,
-				// 		"x": 10,
-				// 		"y": 0
-				// 	}
-				// ]
+				"allLabels": [
+					{
+						"id": "Label-1",
+						"text": temp + sDate + " ~ " + eDate,
+						"x": 10,
+						"y": 0
+					}
+				]
 			});
 
 			break;
 
 		case "meachul_onoff" :			//온 오프라인 비교 매출
 			console.log('온 오프라인 비교 매출');
-
-			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_onoff&value_kind=meachul_onoff&admin_code=" + admin_code + "&swm_gu=" + gu)
-			// for (var i in chartData) {
-			//   chartData[i].litres = chartData[i].value;
-			//   chartData[i].absValue = Math.abs(chartData[i].value);
-			// }
-
 			var chart = AmCharts.makeChart("meachul_onoff", {
 				"type": "pie",
-				"startDuration": 0, //차트 애니메이션 
-				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
-				"minRadius": 50,
-				"maxLabelWidth":50,
+//				"balloonText": "[[title]]<span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"minRadius": 100,
 				"labelText": "[[title]]: [[percents]]%",
 				"titleField": "name",
-				"valueField": "value",//"value",
+				"valueField": "value",
 				"fontSize": 12,
 				"theme": "dark",
 			    "labelsEnabled": true,
@@ -1124,31 +954,30 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			      "enabled": false,
 			      "truncateLabels": 10 // custom parameter
 			    },
-				"allLabels": [],
+				"allLabels": [
+					{
+						"id": "Label-1",
+						"text": temp + sDate + " ~ " + eDate,
+						"x": 6,
+						"y": 300
+					}
+				],
 				"balloon": {},
 				"titles": [],
 				"labelRadius": 1,
-				 dataProvider: chartData
+				 dataProvider: AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_onoff&value_kind=meachul_onoff&admin_code=" + admin_code + "&swm_gu=" + gu)
 			});
 
 			break;
 
 		case "banpum" :			//매출 반품 현황
 			console.log('매출 반품 현황');
-			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=banpum&value_kind=banpum&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("banpum", {
-				"type": "serial",
-			  "startDuration": 0, //차트 애니메이션
-			  "theme": "dark",
+				 "type": "serial",
 			  "addClassNames": true,
-			  "autoMarginOffset": 20,
-			  "autoMargins": false,
-			  "marginBottom": 30,
-			  "marginRight": 50,
-			  "marginTop": 50,
-			  "marginLeft": 50,
-
+			  "theme": "dark",
+			  "autoMargins": true,
+			  "marginTop": 30,
 			  "balloon": {
 				"adjustBorderColor": false,
 				"horizontalPadding": 10,
@@ -1161,7 +990,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 								"prefix": ""
 							}
 				],
-				"dataProvider": chartData,
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=banpum&value_kind=banpum&admin_code=" + admin_code + "&swm_gu=" + gu),
 				"valueAxes": [
 						{
 							"id": "ValueAxis-1",
@@ -1174,7 +1003,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 							"id": "ValueAxis-2",
 							//"title": "수량",
 							"titleRotation": 0,
-							"precision" : 0,
 							"position": "right"
 						}
 					],
@@ -1185,7 +1013,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"x": 20,
-						"y": 20
+						"y": 0
 					},
 					{
 						"id": "ValueAxis-2",
@@ -1194,9 +1022,10 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"size": 12,
 						"align": "right",
 						"x": "98%",
-						"y": 20
+						"y": 0
 					}
 				],
+				  "startDuration": 1,
 				  "graphs": [{
 					"id": "graph1",
 					"alphaField": "alpha",
@@ -1251,19 +1080,17 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "banpum_top5" 	:			//상품별 매출 반품 건수/ 반품액 Top 5
 			console.log('상품별 매출 반품 건수/ 반품액 Top 5');
-			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=banpum_top5&value_kind=banpum_top5&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("banpum_top5", {
 				"type": "serial",
-			    	"startDuration": 0, //차트 애니메이션
-				"theme": "dark",
+				 "theme": "dark",
 				"categoryField": "name",
 				"rotate": true,
+				"startDuration": 1,
 				"autoMarginOffset": 40,
 				"autoMargins": false,
-				"marginBottom": 50,
+				"marginBottom": 40,
 				"marginRight": 40,
-				"marginTop": 50,
+				"marginTop": 40,
 				"marginLeft": 20,
 				"categoryAxis": {
 					"gridPosition": "middle",
@@ -1328,7 +1155,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"x": 20,
-						"y": 15
+						"y": 0
 					},
 					{
 						"id": "ValueAxis-2",
@@ -1336,13 +1163,13 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"align": "right",
-						"x": 70,
-						"y": "93%"
+						"x": 80,
+						"y": "95%"
 					}
 				],
 				"balloon": {},
 				"titles": [],
-				"dataProvider": chartData,
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=banpum_top5&value_kind=banpum_top5&admin_code=" + admin_code + "&swm_gu=" + gu),
 				"export": {
 					"enabled": true
 				 },
@@ -1364,21 +1191,14 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "meachul_cs" :			//CS 컴플레인 현황
 		console.log('CS 컴플레인 현황');
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_cs&value_kind=meachul_cs&admin_code=" + admin_code + "&swm_gu=" + gu)
-			// for (var i in chartData) {
-			//   chartData[i].litres = chartData[i].value;
-			//   chartData[i].absValue = Math.abs(chartData[i].value);
-			// }
-
 			var chart = AmCharts.makeChart("meachul_cs", {
 				"type": "pie",
-				"startDuration": 0, //차트 애니메이션 
-				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
-				"minRadius": 50,
-				"maxLabelWidth":50,
+//				"balloonText": "[[title]]<span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"minRadius": 100,
 				"labelText": "[[title]]: [[percents]]%",
 				"titleField": "name",
-				"valueField": "value",//"value",
+				"valueField": "value",
 				"fontSize": 12,
 				"theme": "dark",
 			    "labelsEnabled": true,
@@ -1386,30 +1206,35 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			      "enabled": false,
 			      "truncateLabels": 10 // custom parameter
 			    },
-				"allLabels": [],
+				"allLabels": [
+					{
+						"id": "Label-1",
+						"text": temp + sDate + " ~ " + eDate,
+						"x": 6,
+						"y": 300
+					}
+				],
 				"balloon": {},
 				"titles": [],
 				"labelRadius": 5,
-				 dataProvider: chartData
+				 dataProvider: AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_cs&value_kind=meachul_cs&admin_code=" + admin_code + "&swm_gu=" + gu)
 			});
 
 			break;
 
 		case "meaip_commgoods" :			//상품별 매입건수/매입액 top5
 			console.log('상품별 매입건수/매입액 top5');
-			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_commgoods&value_kind=meaip_commgoods&admin_code=" + admin_code + "&swm_gu=" + gu)
-			
 			var chart = AmCharts.makeChart("meaip_commgoods", {
 				"type": "serial",
-			    	"startDuration": 0, //차트 애니메이션
-				"theme": "dark",
+				 "theme": "dark",
 				"categoryField": "name",
 				"rotate": true,
+				"startDuration": 1,
 				"autoMarginOffset": 40,
 				"autoMargins": false,
 				"marginBottom": 40,
 				"marginRight": 40,
-				"marginTop": 50,
+				"marginTop": 40,
 				"marginLeft": 20,
 				"categoryAxis": {
 					"gridPosition": "middle",
@@ -1474,7 +1299,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"x": 20,
-						"y": 15
+						"y": 0
 					},
 					{
 						"id": "ValueAxis-2",
@@ -1482,13 +1307,13 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"align": "right",
-						"x": 70,
+						"x": 80,
 						"y": "95%"
 					}
 				],
 				"balloon": {},
 				"titles": [],
-				"dataProvider": chartData,
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_commgoods&value_kind=meaip_commgoods&admin_code=" + admin_code + "&swm_gu=" + gu),
 				"export": {
 					"enabled": true
 				 },
@@ -1510,15 +1335,18 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "JeGo_TurnOver" :			//재고회전율top5
 			console.log('재고회전율top5');
-			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=JeGo_TurnOver&value_kind=JeGo_TurnOver&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("JeGo_TurnOver", {
 				"type": "serial",
-			    	"startDuration": 0, //차트 애니메이션
-				"theme": "dark",
+				 "theme": "dark",
 				"categoryField": "name",
-				"rotate": true,	
-				
+				"rotate": true,
+				"startDuration": 1,
+				"autoMarginOffset": 25,
+				"autoMargins": true,
+				"marginBottom": 25,
+				"marginRight": 25,
+				"margintop": 25,
+				"marginleft": 25,
 				"categoryAxis": {
 					"gridPosition": "start",
 					"position": "left"
@@ -1571,28 +1399,20 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"allLabels": [],
 				"balloon": {},
 				"titles": [],
-				"dataProvider": chartData,
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=JeGo_TurnOver&value_kind=JeGo_TurnOver&admin_code=" + admin_code + "&swm_gu=" + gu),
 				"export": {
 					"enabled": true
 				 }
 			});
 			break;
-
 		case "beasongb" :			//출고현황
 			console.log('출고현황');
-			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasongb&value_kind=beasongb&admin_code=" + admin_code + "&swm_gu=" + gu)
-
 			var chart = AmCharts.makeChart("beasongb", {
 			  "type": "serial",
-			  "startDuration": 0, //차트 애니메이션
 			  "addClassNames": true,
 			  "theme": "dark",
-			  "autoMarginOffset": 20,
-			  "autoMargins": false,
-			  "marginBottom": 30,
-			  "marginRight": 50,
-			  "marginTop": 50,
-			  "marginLeft": 50,
+			  "autoMargins": true,
+			  "marginTop": 30,
 			  "balloon": {
 				"adjustBorderColor": false,
 				"horizontalPadding": 10,
@@ -1605,7 +1425,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 								"prefix": ""
 							}
 				],
-				"dataProvider": chartData,
+				"dataProvider": AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasongb&value_kind=beasongb&admin_code=" + admin_code + "&swm_gu=" + gu),
 				"valueAxes": [
 						{
 							"id": "ValueAxis-1",
@@ -1622,9 +1442,10 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 						"bold": true,
 						"size": 12,
 						"x": 20,
-						"y": 20
+						"y": 0
 					}
 				],
+				  "startDuration": 1,
 				  "graphs": [{
 					"id": "graph1",
 					"alphaField": "alpha",
@@ -1653,13 +1474,10 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			break;
 
 	}
-
-	if(chart.dataProvider[0].name == undefined || chart.dataProvider[0].name == ''){
-		$("button[name=btnGrid]").css('background', '#7b7b7b');
-		$("button[name=btnGrid]").css('color', '#686868');
+	if (!chart.dataProvider[0])
+	{
+		$("#div[name=loading2]").css("display","block");
 	}else{
-		$("button[name=btnGrid]").css('background', '#ececed');
-		$("button[name=btnGrid]").css('color', '#444');
+		$("#div[name=loading2]").css("display","none");
 	}
-
 }

@@ -1,18 +1,58 @@
+<script>
+	    var app = angular.module('slidebox', ['ionic', 'tabSlideBox'])
+		.run(['$q', '$http', '$rootScope', '$location', '$window', '$timeout', 
+					function($q, $http, $rootScope, $location, $window, $timeout){
+	    
+	        $rootScope.$on("$locationChangeStart", function(event, next, current){
+	            $rootScope.error = null;
+	            console.log("Route change!!!", $location.path());
+	            var path = $location.path();
+	            
+	            
+	            console.log("App Loaded!!!");
+	        });
+	    }
+	    ]);
+</script>
+<script src="https://rawgit.com/arielfaur/ionic-pullup/master/dist/ion-pullup.js"></script>
+
+<body ng-app="slidebox" animation="slide-left-right-ios7">
+
+    <ion-nav-bar class="nav-title-slide-ios7 bar-positive">
+        <ion-nav-back-button class="button-icon ion-arrow-left-c">
+        </ion-nav-back-button>
+    </ion-nav-bar>
+
 	<ion-view view-title="MY PAGE">
 	<ion-content scroll="false" style="background: #ececed">
 		<div style="position:absolute; bottom:0px; z-index:1; margin-bottom: -5px;">
 			<img src="./img/banner_event1.jpg" width="100%">
 		</div>
+
 		<tab-slide-box>
 			<div class="tsb-icons" style="background: #ececed">
 				<div class="tsb-ic-wrp">
 					<ion-scroll direction="x" class="tsb-hscroll">
+						<div>
 						<a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.title}}</a>
+						</div>
+						<!-- <a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()"><i class="{{tab.title}}"></i></a> -->
 					</ion-scroll>
+					<div>
+						<i class='ion-arrow-down-b' style='margin-left:38px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size:25px;' ng-click='chrtlistF()'></i>
+					</div>
 				</div>
 			</div>
+			<!-- 탭 리스트 -->
+			<div class="list" ng-if='chartlist == true' style="width: 100%; height: 100%;">
+				<ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()">
+						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+							<li class="item" style="background: #ebebeb; font-size: 13px;"  ng-repeat='tab in tabs' ng-click="slideChanged($index)">{{tab.title}}</li>
+						</ion-scroll>
+				</ion-content>
+			</div>
 
-			<ion-slide-box does-continue="true" show-pager="false" on-slide-changed="slideHasChanged($index)">
+			<ion-slide-box does-continue="true" show-pager="false" on-slide-changed="slideHasChanged($index);">
 				<ion-slide>
 					<ion-content overflow-scroll="false">
 						<p ng-bind-html="login_alert"></p>
@@ -30,7 +70,6 @@
 
 
 							<div class="row psm_home30">
-
 								<!-- 사용만료일 -->
 								<div class=" col-xs-psm3" style="width:33%; padding-right: 2px;">
 									<div class="info-box" style="background: #716674; color: #fff;">
@@ -186,3 +225,4 @@
 		</tab-slide-box>
 	</ion-content>
 </ion-view>
+

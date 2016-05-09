@@ -27,11 +27,11 @@
       "locator": "https://github.com/vliesaputra/DeviceInformationPlugin",
       "id": "com.vliesaputra.deviceinformation"
     },
-    "onesignal-cordova-plugin",
-    "pushbots-cordova-plugin"
+    "pushbots-cordova-plugin",
+    "onesignal-cordova-plugin"
   ],
   "cordovaPlatforms": [
-    "android",
-    "ios"
+    "ios",
+    "android"
   ]
 }
