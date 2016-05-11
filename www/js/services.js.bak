@@ -263,16 +263,16 @@ return{
 	}
 	//C_Certify  http://www.erpia.net/include/Json_Proc_Mobile_Erpia.asp?Kind=C_Certify&loginType=E&Admin_Code=phj9775&ID=phj9775&Input_Code=123762&hp=01030641526&mac=ba8e205a02d20e66
 	//인증번호비교
-	var check = function(Admin_Code, loginType, ID, pwd, Input_Code, rec_num, UUID){
+	var check = function(Admin_Code, loginType, ID, G_Code, Input_Code, rec_num, UUID){
 		var data ='';
 		if(loginType == 'S' || loginType == 'N'){
 			url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
-			data = 'Kind=C_Certify&Admin_Code=' + Admin_Code + '&ID=' + ID + '&pwd=' + pwd;
+			data = 'Kind=C_Certify&Admin_Code=' + Admin_Code + '&ID=' + ID + '&G_Code=' + G_Code;
 			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num + '&mac=' + UUID;
 		}else if(loginType=='E'){ 
 			url = ERPiaAPI.url + '/Json_Proc_Mobile_Erpia.asp';
 			// data = 'Kind=ERPiaCertify' + '&Admin_Code=' + Admin_Code + '&uid=' + ID + '&Input_Code=' + Input_Code + '&hp=' + 'test'  + '&mac=' + 'test';
-			data = 'Kind=C_Certify&Admin_Code=' + Admin_Code + '&ID=' + ID + '&pwd=' + pwd;
+			data = 'Kind=C_Certify&Admin_Code=' + Admin_Code + '&ID=' + ID + '&G_Code=' + G_Code;
 			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num + '&mac=' + UUID;
 
 		}
@@ -423,7 +423,7 @@ return{
 		}, getCntNotRead: function(Admin_Code, checkNotRead){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead;
-			console.log('getCntNotRead ', url,'?',data);
+			console.log('getCntNotRead=> ', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					console.log('getCntNotRead=>',response.data);
@@ -438,7 +438,7 @@ return{
 		}, chkRead: function(Admin_Code, Sl_No, user_id){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=read_Trade_Detail&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No + '&user_id=' + user_id;
-			console.log('chkRead ', url,'?',data);
+			console.log('chkRead =>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -551,9 +551,9 @@ return{
 				}, function(response){
 					return $q.reject(response.data);
 				})
-		},save : function(kind, mode, Admin_Code, loginType, G_Id, statistic){
+		},save : function(kind, mode, Admin_Code, loginType, G_Id, statistic,mac){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id + '&statistic=' + statistic;
+			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id + '&statistic=' + statistic+'&mac=' + mac;
 			console.log('차트 순성 변경 =>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response) {
@@ -617,8 +617,8 @@ return{
 .factory('alarmService', function($http, $q, ERPiaAPI){
 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 	return{
-		select : function(kind, Admin_Code, loginType, G_Id){
-			var data = 'Value_Kind=list&Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id;
+		select : function(kind, Admin_Code, loginType, G_Id, mac){
+			var data = 'Value_Kind=list&Kind=' + kind + '1&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					console.log('response', response);
@@ -630,8 +630,8 @@ return{
 				}, function(response){
 					return $q.reject(response.data);
 				})
-		}, save : function(kind, Admin_Code, loginType, G_Id, alarm){
-			var data = 'Value_Kind=list&Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id + '&alarm=' + alarm;
+		}, save : function(kind, Admin_Code, loginType, G_Id, alarm, mac){
+			var data = 'Value_Kind=list&Kind=' + kind + '1&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id + '&alarm=' + alarm + '&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -805,8 +805,8 @@ return{
 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 	var PushList = [];
 	return{
-		select : function(Kind, Mode, Admin_Code, ChkAdmin, UserId){
-			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId;
+		select : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, mac){
+			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					console.log('response', response);
@@ -819,8 +819,8 @@ return{
 				}, function(response){
 					return $q.reject(response.data);
 				})
-		}, save : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, alarm){
-			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId + '&alarm=' + alarm;
+		}, save : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, alarm, mac){
+			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId + '&alarm=' + alarm +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -831,8 +831,8 @@ return{
 				}, function(response){
 					return $q.reject(response.data);
 			})
-		}, view : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, idx){
-			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId + '&idx=' + idx;
+		}, view : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, idx, mac){
+			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId + '&idx=' + idx +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -843,8 +843,8 @@ return{
 				}, function(response){
 					return $q.reject(response.data);
 			})
-		}, delete : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, idx){
-			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId + '&idx=' + idx;
+		}, delete : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, idx, mac){
+			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId + '&idx=' + idx +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -855,8 +855,8 @@ return{
 				}, function(response){
 					return $q.reject(response.data);
 			})
-		},getData : function(Seq) {
-			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId;
+		},getData : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, Seq, mac) {
+			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					console.log('response', response);
@@ -1666,6 +1666,7 @@ return{
 			
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + userid + '&Kind='+ kind;
+			console.log('지급정보=', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response == 'object'){

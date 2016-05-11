@@ -106,7 +106,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	window.plugins.OneSignal.getIds(function(ids) {
 	  console.log('getIds: ' + ids.userId, ids.pushToken);
 		$rootScope.token = ids.pushToken;
-		$rootScope.UserKey = ids.userId;
+		$rootScope.UserKey = $rootScope.deviceInfo.uuid;
 	});
 		if(window.cordova && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);

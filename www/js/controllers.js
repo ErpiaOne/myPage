@@ -31,8 +31,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	   };
 
 	$rootScope.version={
-   		Android_version : '0.2.1', //업데이트시 필수로 변경!!
-   		IOS_version : '0.2.1'	//업데이트시 필수로 변경!!
+   		Android_version : '0.2.2', //업데이트시 필수로 변경!!
+   		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 */
@@ -98,7 +98,7 @@ $scope.pushYNcheck=function(){
                                 app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
 		// window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});	 //푸쉬봇 선언
 		var cntList = 6;
-		alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
+		alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 			.then(function(data){
 				if(data != '<!--Parameter Check-->'){
 					$scope.settingsList = data.list;
@@ -172,7 +172,7 @@ $scope.pushYNcheck=function(){
 	}else{
 					var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
 					var results = rsltList.match(/\^T\^/g);
-					alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid);
+					alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
 					$scope.fnAlarm('checkAll');
 					// window.plugins.PushbotsPlugin.tag("all");
 						window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
@@ -256,6 +256,7 @@ $scope.pushYNcheck=function(){
                                {googleProjectNumber: "832821752106",
                                 autoRegister: true},
                                 app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
+		window.plugins.OneSignal.sendTags({"mac": $rootScope.deviceInfo.uuid});
  		 // window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 		$ionicHistory.nextViewOptions({
 			disableBack: true
@@ -568,7 +569,6 @@ $scope.pushYNcheck=function(){
 					window.plugins.OneSignal.sendTag("usertype", "S");
 					window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
 					window.plugins.OneSignal.sendTag("gercode", comInfo.data.list[0].G_code);
-					$localstorage.set("EAdminCode", '');
 					$scope.userData.GerName = comInfo.data.list[0].G_Name + '<br>(' + comInfo.data.list[0].G_code + ')';
 					$scope.userData.G_Code = comInfo.data.list[0].G_code;
 					$scope.userData.G_Sano = comInfo.data.list[0].Sano;
@@ -925,7 +925,7 @@ $scope.pushYNcheck=function(){
 	$scope.click_Certification = function(){
 		if($scope.SMSData.recUserTel == '' || $scope.SMSData.recUserTel == undefined || $scope.SMSData.recUserTel == 'undefined'){
 			$cordovaToast.show('핸드폰번호를 입력하세요.', 'long', 'center');
-		}else{ //Admin_Code, loginType, ID, pwd, sms_id, sms_pwd, sendNum, rec_num, UUID, phoneno, DeviceInfo
+		}else{ //Admin_Code, loginType, ID, G_Code, sms_id, sms_pwd, sendNum, rec_num, UUID, phoneno, DeviceInfo
 		CertifyService.certify($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.userData.G_Code, 'erpia', 'a12345', '070-7012-3071', $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo)//수정 4.22
 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증번호를 발송했습니다.', 'long', 'center');
 		else alert('인증번호를 발송했습니다.');
@@ -1112,9 +1112,7 @@ $scope.pushYNcheck=function(){
 		$rootScope.loginData.autologin_YN = $localstorage.get("autoLoginYN");
 
 		console.log('autoLogin_YN' ,$localstorage.get("autoLoginYN"));
-	 }, false);
-
-	if($localstorage.get("autoLoginYN")=="Y"){
+			if($localstorage.get("autoLoginYN")=="Y"){
 			$rootScope.loginData.Admin_Code = $localstorage.get("autoAdmin_Code");
 			$rootScope.loginData.loginType = $localstorage.get("autologinType");
 			if($localstorage.get("autologinType") == 'ERPia'){
@@ -1149,6 +1147,9 @@ $scope.pushYNcheck=function(){
 		$rootScope.autoLogin = false;
 		$rootScope.loginData.chkAutoLogin=false;
 	}
+
+	 }, false);
+
 
 })
 // 거래명세표 컨트롤러
@@ -1888,7 +1889,7 @@ $scope.pushYNcheck=function(){
 			rsltList += $scope.items[i].visible + '^|';
 		}
 		console.log('rsltList', rsltList);
-		statisticService.save('myPage_Config_Stat', 'save_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList);
+		statisticService.save('myPage_Config_Stat', 'save_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
 	};
 	// 지우려고 만들었는데 2차 업데이트로 넘김.
 	$scope.onItemDelete = function(item) {
@@ -1918,7 +1919,7 @@ $scope.pushYNcheck=function(){
 		}else{
 			console.log("is check All else ");
 			// 서버에 저장된 설정 값을 불러와서 알맞게 체크해줌.
-			alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
+			alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 			.then(function(data){
 					$scope.settingsList = data.list;
 					// var cntList = data.list.length;
@@ -2037,7 +2038,7 @@ $scope.pushYNcheck=function(){
 		if(check) {
 			rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
 			var results = rsltList.match(/\^T\^/g);
-			alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid);
+			alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
 			$scope.fnAlarm('checkAll');
 			// window.plugins.PushbotsPlugin.untag("no");
 			// window.plugins.PushbotsPlugin.tag("all");
@@ -2051,7 +2052,7 @@ $scope.pushYNcheck=function(){
 			$scope.settingsList = [];
 			rsltList = '0^F^|1^F^|2^F^|3^F^|4^F^|5^F^|6^F^|';
 			var results = rsltList.match(/\^F\^/g);
-			alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid);
+			alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
 			for(i=1; i<=6 ; i++){
 				var tagnum = i.toString();
 				// window.plugins.PushbotsPlugin.untag(tagnum);
@@ -2086,7 +2087,7 @@ $scope.pushYNcheck=function(){
 			rsltList += ($scope.settingsList[i].checked == true)?'T^|':'F^|';
 
 		}
-		alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, '0^U|' + rsltList, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
+		alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, '0^U|' + rsltList, $rootScope.deviceInfo.uuid)
 	}
 	$scope.fnAlarm('loadAlarm');
 })//로그인 설정 컨트롤러
@@ -3012,7 +3013,7 @@ $scope.pushYNcheck=function(){
 	// Kind, Mode, Admin_Code, ChkAdmin, UserId
 	$scope.PushList = function() {
 		if($scope.loginData.Admin_Code != undefined){
-			PushSelectService.select('Mobile_Push_Log', 'SELECT', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
+			PushSelectService.select('Mobile_Push_Log', 'SELECT', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 			.then(function(data){
 				$scope.items = data.list;
 				console.log($scope.items);
@@ -3030,7 +3031,7 @@ $scope.pushYNcheck=function(){
 	$scope.onItemDelete = function(item) {
     	$scope.items.splice($scope.items.indexOf(item), 1);
     	$scope.listSeq = item.idx;
-    	PushSelectService.delete('Mobile_Push_Log', 'DELETE', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $scope.listSeq)
+    	PushSelectService.delete('Mobile_Push_Log', 'DELETE', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $scope.listSeq, $rootScope.deviceInfo.uuid)
   	};
 
   	$scope.data = {
@@ -3049,7 +3050,7 @@ $scope.pushYNcheck=function(){
 	// 	$ionicHistory.clearHistory();
 	// 	$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 	// };
-	$scope.pList = PushSelectService.get($stateParams.Seq)
+	$scope.pList = PushSelectService.getData('Mobile_Push_Log', 'View', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $stateParams.Seq, $rootScope.deviceInfo.uuid)
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -3712,7 +3713,7 @@ $scope.pushYNcheck=function(){
 		  // document.getElementById("OneSignalPushToken").innerHTML = "PushToken: " + ids.pushToken;
 		  console.log('getIds: ' + JSON.stringify(ids));
 		  	$rootScope.token = ids.pushToken;
-		  	$rootScope.UserKey = ids.userId;
+		  	$rootScope.UserKey = $rootScope.deviceInfo.uuid;
 		});
 		// window.plugins.PushbotsPlugin.getRegistrationId(function(token){
 		//     console.log("Registration Id:" + token);
