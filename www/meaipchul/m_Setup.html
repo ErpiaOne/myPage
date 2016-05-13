@@ -13,7 +13,7 @@
 	  <label class="item item-input" style="padding: 0;">
 		<span class="input-label psm_sang_01" style="width: 42%; height: 50px; background: #8c8391; color: #fff; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;기본창고 지정</i></span>
 		<select ng-model="setupData.basic_Ch_Code" ng-change='Changosave()' style="height: 32px;">
-		  <option value='000' ng-selected = "setupData.basic_Ch_Code == 000">창고를 선택해주세요.</option>
+		  <option value='000' ng-selected ="setupData.basic_Ch_Code == 000">창고를 선택해주세요.</option>
 		  <option ng-repeat="x in changolists" value="{{x.Code}}" ng-selected="setupData.basic_Ch_Code == {{x.Code}}">{{x.Name}}</option>
 		</select><br>
 	  </label>
@@ -21,8 +21,8 @@
 	  <label class="item item-input" style="padding: 0;">
 		<span class="input-label psm_sang_01" style="width: 42%; height: 50px; background: #8c8391; color: #fff; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;기본매장 지정</i></span>
 		<select ng-model="setupData.basic_Place_Code" ng-change='Link_Chango()' style="height: 32px;">
-		  <option value='000' ng-selected="setupData.basic_Place_Code == 000">매장미지정</option>
-		  <option ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}" ng-selected="setupData.basic_Place_Code == {{x.Sale_Place_Code}}">{{x.Sale_Place_Name}}</option>
+		  <option value='000' ng-if="setupData.basic_Place_Code == 000" ng-selected>매장미지정</option>
+		  <option  ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}" ng-selected>{{x.Sale_Place_Name}}</option>
 		</select><br>
 	  </label>
 

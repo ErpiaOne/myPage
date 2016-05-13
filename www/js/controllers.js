@@ -3761,10 +3761,10 @@ $scope.pushYNcheck=function(){
       { id: '매입입고', num: 2 },
       { id: '매입반품', num: 3 }
     ];
-	$rootScope.setupData={};
+    $rootScope.setupData={};
     $rootScope.mejanglists=[];
     $rootScope.changolists=[];
-    $rootScope.mejanglists=[];
+    $rootScope.mejang2 =[]; // 체인지 변수
 
     /*환경설정값 있는지 먼저 불러오기.*/
     MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
@@ -3775,12 +3775,49 @@ $scope.pushYNcheck=function(){
 		MconfigService.basicM($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
 		.then(function(data){
 			$rootScope.mejanglists = data.list;
-		})
 
-		/*기본 창고조회*/
-		MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
-		.then(function(data){
-			$rootScope.changolists = data.list;
+			/*이알피아 매장값 조회*/
+			MconfigService.erpia_basicM($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
+			.then(function(data){
+				var basicMeajang_code = data.list[0].Sale_Place_Code;
+				console.log('잘나오지?=>',basicMeajang_code);
+				if(data.list[0].Sale_Place_Code.length > 1){
+					$rootScope.setupData.basic_Place_Code = data.list[0].Sale_Place_Code;
+					for(var i=0; i < $rootScope.mejanglists.length; i++ ){
+						if($rootScope.mejanglists[i].Sale_Place_Code == basicMeajang_code){
+							console.log('같다!!!!!',i);
+							console.log('0000=>',$rootScope.mejanglists);
+							$rootScope.mejang2 = $rootScope.mejanglists[i];
+							console.log('1111=>',$rootScope.mejanglists);
+							$rootScope.mejanglists.splice(0,$rootScope.mejanglists.length);
+							$rootScope.mejanglists.push($rootScope.mejang2); 
+							console.log('2222=>',$rootScope.mejanglists);
+							console.log($rootScope.mejanglists.Sale_Place_Code);
+							break;
+						}
+					}
+				}else{
+					$rootScope.setupData.basic_Place_Code = '000';
+				}	
+				
+				/*기본 창고조회*/
+				MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
+				.then(function(data){
+					$rootScope.changolists = data.list;
+					console.log($rootScope.changolists);
+					var gubun = false;
+					for(var i = 0; i < $rootScope.changolists.length; i++){
+						if($rootScope.changolists[i].Code == $rootScope.setupData.basic_Ch_Code){
+							var gubun = true;
+							break;
+						}
+					}
+					if(gubun == false){
+						$rootScope.setupData.basic_Ch_Code = '000';
+					}
+				})
+			})
+
 		})
 
 	})
@@ -4914,14 +4951,14 @@ $scope.pushYNcheck=function(){
     /*환경설정값 있는지 먼저 불러오기.*/
     MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
 	.then(function(data){
-		$scope.setupData = data;
+		$rootScope.setupData = data;
 		$scope.m_check.meajangCheck = 't';
 		$scope.m_check.changoCheck = 't';
 
 		if($rootScope.distinction == 'meaip'){  								//매입 수불구분확인 -------------------- 매입일경우
-			var i = $scope.setupData.basic_Subul_Meaip;
+			var i = $rootScope.setupData.basic_Subul_Meaip;
 			switch (i) {
-			    case '1' :  switch($scope.setupData.basic_Subul_Meaip_Before){
+			    case '1' :  switch($rootScope.setupData.basic_Subul_Meaip_Before){
 			    		   		case 'I' : console.log('I'); $scope.datas.subulkind=111; break;
 			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=122; break;
 			    		   		case 'N' : console.log('N'); break;
@@ -4936,9 +4973,9 @@ $scope.pushYNcheck=function(){
 				$scope.m_check.subulCheck = 'f';
 			}
 		}else{  																//매출 수불구분확인 -------------------- 매출일경우
-			var i = $scope.setupData.basic_Subul_Sale;
+			var i = $rootScope.setupData.basic_Subul_Sale;
 			switch (i) {
-			    case '1' :  switch($scope.setupData.basic_Subul_Sale_Before){
+			    case '1' :  switch($rootScope.setupData.basic_Subul_Sale_Before){
 			    		   		case 'C' : console.log('C'); $scope.datas.subulkind=221; break;
 			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=212; break;
 			    		   		case 'N' : console.log('N'); break;
@@ -4958,13 +4995,50 @@ $scope.pushYNcheck=function(){
 		/*기본 매장조회*/
 		MconfigService.basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
 		.then(function(data){
-			$scope.mejanglists = data.list;
-		})
+			$rootScope.mejanglists = data.list;
 
-		/*기본 창고조회*/
-		MconfigService.basicC($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.setupData.basic_Place_Code)
-		.then(function(data){
-			$scope.changolists = data.list;
+			/*이알피아 매장값 조회*/
+			MconfigService.erpia_basicM($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
+			.then(function(data){
+				var basicMeajang_code = data.list[0].Sale_Place_Code;
+				console.log('잘나오지?=>',basicMeajang_code);
+				if(data.list[0].Sale_Place_Code.length > 1){
+					$rootScope.setupData.basic_Place_Code = data.list[0].Sale_Place_Code;
+					for(var i=0; i < $rootScope.mejanglists.length; i++ ){
+						if($rootScope.mejanglists[i].Sale_Place_Code == basicMeajang_code){
+							console.log('같다!!!!!',i);
+							console.log('0000=>',$rootScope.mejanglists);
+							$rootScope.mejang2 = $rootScope.mejanglists[i];
+							console.log('1111=>',$rootScope.mejanglists);
+							$rootScope.mejanglists.splice(0,$rootScope.mejanglists.length);
+							$rootScope.mejanglists.push($rootScope.mejang2); 
+							console.log('2222=>',$rootScope.mejanglists);
+							console.log($rootScope.mejanglists.Sale_Place_Code);
+							break;
+						}
+					}
+				}else{
+					$rootScope.setupData.basic_Place_Code = '000';
+				}	
+				
+				/*기본 창고조회*/
+				MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
+				.then(function(data){
+					console.log('data=>', data.list);
+					$rootScope.changolists = data.list;
+					console.log($rootScope.changolists);
+					var gubun = false;
+					for(var i = 0; i < $rootScope.changolists.length; i++){
+						if($rootScope.changolists[i].Code == $rootScope.setupData.basic_Ch_Code){
+							var gubun = true;
+							break;
+						}
+					}
+					if(gubun == false){
+						$rootScope.setupData.basic_Ch_Code = '000';
+					}
+				})
+			})
 		})
 
 	})

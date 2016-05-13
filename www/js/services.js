@@ -1092,11 +1092,27 @@ return{
 						return $q.reject(response.data);
 					})
 
-		}, basicM: function(admin_code, userid){ //기본매장찾기basicC
+		}, basicM: function(admin_code, userid){ //기본매장찾기
 		console.log("MconfigService and basicM");
 		var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 		var data = 'Admin_Code=' + admin_code + '&User_id=' + userid + '&Kind=ERPia_Meaip_Select_Place_CName&Mode=Select_Place';
 		console.log('basicM=', url,'?',data);
+		return $http.get(url + '?' + data)
+			.then(function(response){
+				if(typeof response == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})
+
+		}, erpia_basicM: function(admin_code, userid){ //기본매장찾기
+		console.log("MconfigService and basicM");
+		var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp';
+		var data = 'kind=ERPia_Config_Sale_Place_Check&Admin_Code=' + admin_code + '&UserId=' + userid;
+		console.log('erpia_basicM=', url,'?',data);
 		return $http.get(url + '?' + data)
 			.then(function(response){
 				if(typeof response == 'object'){
