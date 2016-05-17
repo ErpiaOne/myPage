@@ -1,8 +1,4 @@
 
-<!--     <ion-nav-bar class="nav-title-slide-ios7 bar-positive">
-        <ion-nav-back-button class="button-icon ion-arrow-left-c">
-        </ion-nav-back-button>
-    </ion-nav-bar> -->
 	<ion-view view-title="MY PAGE">
 	<ion-content >
 		<div style="position:absolute; bottom:0px; z-index:1; margin-bottom: -5px;">
@@ -12,22 +8,24 @@
 		<tab-slide-box>
 			<div class="tsb-icons"> <!-- class건들이면 안되요..ㅠㅠ -->
 				<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
-					<ion-scroll direction="x" class="tsb-hscroll">
-						<a href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs">{{tab.title}}</a>
+					<ion-scroll direction="x" class="tsb-hscroll" style="position: relative; z-index: 1">
+						<a ng-href="javascript:;" class="{{tab.icon}}" ng-repeat="tab in tabs" on-finish-render="test()">{{tab.title}}</a>
 					</ion-scroll>
-					<i class='ion-arrow-down-b' style='margin-left:-38px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size:35px; position: absolute;' ng-click='chrtlistF()'></i>
+
+
+					<div style="background: #ccc; width: 100%; position: relative; z-index: 2 ; margin-top: -10px; margin-bottom: -10px;">
+						<i class='ion-arrow-down-b' style='padding-top:40px; text-align: center; vertical-align:middle; font-size:35px; color: #000;' ng-click='chrtlistF()'></i>
+					</div>
 				</div>
 			</div>
 
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index);slideChanged(index)" style="border-top: 1px solid #e0e0e0;">
 		
 			<!-- 탭 리스트 -->
-			<div class="list" ng-if='chartlist == true' style="width: 100%; height: 100%;">
-				<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+			<div class="list" ng-if='chartlist == true' style="width: 100%; height: 100%; padding-bottom: 100px;">
+				<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both; ">
 					<li class="item" style="background: #ebebeb; font-size: 13px;"  ng-repeat='tab in tabs' ng-click="slideChanged($index)">{{tab.title}}</li>
 				</ion-scroll>
-				<br>
-				<br>
 			</div>
 				<ion-slide>
 					<ion-content overflow-scroll="false">

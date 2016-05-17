@@ -54,7 +54,7 @@
 								<option value='000' ng-if="setupData.basic_Place_Code == 000" ng-selected>매장미지정</option>
 							  	<option  ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}" ng-selected>{{x.Sale_Place_Name}}</option>
 							</select> -->
-							<select ng-model="setupData.basic_Place_Code" ng-change='Link_Chango()' style="width:100%; border-bottom: 1px solid #e0e0e0;">
+							<select ng-model="setupData.basic_Place_Code" ng-change='Link_Chango();checkup()' style="width:100%; border-bottom: 1px solid #e0e0e0;">
 							  <option value='000' ng-if="setupData.basic_Place_Code == 000" ng-selected>매장미지정</option>
 							  <option  ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}" ng-selected>{{x.Sale_Place_Name}}</option>
 							</select>
@@ -72,7 +72,7 @@
 							<option value='000' ng-selected ="setupData.basic_Ch_Code == 000">창고를 선택해주세요.</option>
 		  					<option ng-repeat="x in changolists" value="{{x.Code}}" ng-selected="setupData.basic_Ch_Code == {{x.Code}}">{{x.Name}}</option>
 							</select> -->
-							<select ng-model="setupData.basic_Ch_Code" ng-change='Changosave()' style="width:100%; border-bottom: 1px solid #e0e0e0;">
+							<select ng-model="setupData.basic_Ch_Code" ng-change='Changosave();checkup()' style="width:100%; border-bottom: 1px solid #e0e0e0;">
 							  <option value='000' ng-selected ="setupData.basic_Ch_Code == 000">창고를 선택해주세요.</option>
 							  <option ng-repeat="x in changolists" value="{{x.Code}}" ng-selected="setupData.basic_Ch_Code == {{x.Code}}">{{x.Name}}</option>
 							</select>
