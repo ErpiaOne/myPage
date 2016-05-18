@@ -20,11 +20,16 @@ angular.module('starter.services', [])
 		}
 	};
 })
-.factory('app', function($rootScope, $state, $ionicPopup){
+.factory('app', function($rootScope, $state, $ionicPopup, $cordovaInAppBrowser){
 return{
 
 
 	     didReceiveRemoteNotificationCallBack : function(jsonData) {
+	        var browseroptions = {
+		      location: 'yes',
+		      clearcache: 'yes',
+		      toolbar: 'yes'
+		   };
 	    	$rootScope.PushData = {};
 	    	 if (   jsonData.additionalData
 		      && jsonData.additionalData.stacked_notifications) {
@@ -73,8 +78,21 @@ return{
 							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
 								$state.go("app.tradeList");
 							}else if($rootScope.PushData.state != "" || $rootScope.PushData.state != undefined || $rootScope.PushData.state != "undefined"){ //기타 이벤트
-								$state.go($rootScope.PushData.state);
-								console.log("이거야?");
+								  if (jsonData.additionalData) {
+								    if (jsonData.additionalData.launchURL){
+								     $cordovaInAppBrowser.open(jsonData.additionalData.launchURL, '_blank', browseroptions)
+
+										      .then(function(event) {
+										         // success
+										      })
+
+										      .catch(function(event) {
+										         // error
+										      });
+								    
+						
+								  }
+								}
 							}else{
 								
 							}
@@ -200,7 +218,6 @@ return{
 		var url = ERPiaAPI.url + '/JSon_Proc_Multi_Lhk.asp';
 		var data = 'Value_Kind=list&kind=' + kind + '&BaljuMode=' + BaljuMode + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode;
 		data += '&FDate=' + FDate + '&TDate=' + TDate;
-		console.log('scmInfo->',url,'?',data);
 		return $http.get(url + '?' + data);
 	}
 	return{
@@ -231,7 +248,6 @@ return{
 	var certify = function(Admin_Code, loginType, ID, G_Code, sms_id, sms_pwd, sendNum, rec_num, UUID, phoneno, DeviceInfo){
 		$rootScope.rndNum = Math.floor(Math.random() * 1000000) + 1;
 		if ($rootScope.rndNum < 100000) $rootScope.rndNum = '0' + $rootScope.rndNum;
-		console.log($rootScope.rndNum);
 		//http://www.erpia.net/include/Json_Proc_Mobile_Erpia.asp?Kind=F_Certify&loginType=E&Admin_Code=phj9775&ID=phj9775&Certify_Code=123762&hp=01030641526&mac=ba8e205a02d20e66
 		if(loginType == 'E'){
 			url = ERPiaAPI.url + '/Json_Proc_Mobile_Erpia.asp';
@@ -244,7 +260,6 @@ return{
 			data += '&Certify_Code=' + $rootScope.rndNum + '&loginType=' + loginType + '&hp=' + rec_num  + '&mac=' + UUID;
 			data += '&model=' + DeviceInfo.model + '&platform=' + DeviceInfo.platform + '&originalhp=' + phoneno;
 		}
-		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
 		.success(function(response){
 			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증코드를 전송했습니다.', 'long', 'center');
@@ -276,7 +291,6 @@ return{
 			data += '&Input_Code=' + Input_Code + '&loginType=' + loginType + '&hp=' + rec_num + '&mac=' + UUID;
 
 		}
-		console.log(url + '?' + data);
 		return $http.get(url + '?' + data)
 		.success(function(response){
 			if (response.list[0].Result == '1'){
@@ -301,10 +315,8 @@ return{
 		tradeList: function(Admin_Code, GerCode){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=select_Trade' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode;
-			console.log('tradeList', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('tradeList=>',response.data);
 					if(typeof response.data == 'object'){
 						return response.data;
 					}else{
@@ -319,10 +331,8 @@ return{
 			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Key&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
 			else var data = 'Kind=select_Trade_Detail_Key' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
 
-			console.log('tradeList', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('tradeList=>',response.data);
 					if(typeof response.data == 'object'){
 						return response.data;
 					}else{
@@ -336,10 +346,8 @@ return{
 
 			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Meaip&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
 			else var data = 'Kind=select_Trade_Detail' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
-			console.log('readDetail ', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('readDetail_Service : ', response.data);
 					if(typeof response.data == 'object'){
 
 						if(response.data.list[0].G_name1 != null){
@@ -423,10 +431,8 @@ return{
 		}, getCntNotRead: function(Admin_Code, checkNotRead){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead;
-			console.log('getCntNotRead=> ', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('getCntNotRead=>',response.data);
 					if(typeof response.data == 'object'){
 						return response.data;
 					}else{
@@ -438,11 +444,9 @@ return{
 		}, chkRead: function(Admin_Code, Sl_No, user_id){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=read_Trade_Detail&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No + '&user_id=' + user_id;
-			console.log('chkRead =>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
-						console.log('chkRead=>',response.data);
 						return response.data;
 					}else{
 						return $q.reject(response.data);
@@ -554,7 +558,6 @@ return{
 		},save : function(kind, mode, Admin_Code, loginType, G_Id, statistic,mac){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id + '&statistic=' + statistic+'&mac=' + mac;
-			console.log('차트 순성 변경 =>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response) {
 					if(typeof response.data == 'object'){
@@ -618,7 +621,7 @@ return{
 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 	return{
 		select : function(kind, Admin_Code, loginType, G_Id, mac){
-			var data = 'Value_Kind=list&Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id +'&mac=' + mac;
+			var data = 'Value_Kind=list&Kind=Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					console.log('response', response);
@@ -755,16 +758,13 @@ return{
 							.replace(/<img src=/g, '<img width=100% src=');
 					}
 					}
-					console.log(response.data);
 					return response.data;					
 				}else{
-					console.log(response.data);
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
 					else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 					return $q.reject(response.data);					
 				}
 			}, function(response){
-				console.log(response.data);
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
 				else alert('네트워크환경이 불안정합니다. 다시시도해주세요.');
 				return $q.reject(response.data);
@@ -776,7 +776,6 @@ return{
 		var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
 		var data = 'Admin_Code='+Admin_Code+'&UserId=' + UserId + '&Kind=ERPia_Mypage_Board_Request_insert&Mode=insert&bSubject='+ escape(Subject)+'&bContent='+escape(Content)+'&bPwd='+pwd;
 	//		//http://erpia.net/include/JSon_Proc_MyPage_Scm_Manage.asp?kind=board_Request&pageCnt=1&pageRow=10
-		console.log(url + '?' + data)
 		return $http.get(url + '?' + data)
 			.then(function(response){
 				if(typeof response.data == 'object'){
@@ -809,7 +808,6 @@ return{
 			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('response', response);
 					if(typeof response.data == 'object'){
 						PushList = response.data
 						return PushList;
@@ -859,7 +857,6 @@ return{
 			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('response', response);
 					if(typeof response.data == 'object'){
 						PushList = response.data;
 						for (var i = 0; i < PushList.length; i++) {
@@ -883,7 +880,6 @@ return{
 			// data += '&basic_Ch_Code=' + basic_Ch_Code + '&basic_Place_Code=' + basic_Place_Code + '&basic_Dn_Sale=' + basic_Dn_Sale + '&basic_Dn_Meaip=' + basic_Dn_Meaip
 			// data += '&basic_Subul_Sale=' + basic_Subul_Sale + '&basic_Subul_Sale_Before=' + basic_Subul_Sale_Before + '&basic_Subul_Meaip=' + basic_Subul_Meaip + '&basic_Subul_Meaip_Before=' + basic_Subul_Meaip_Before
 			data += '&basic_Subul_Sale_Before=' + basic_Subul_Sale_Before + '&basic_Subul_Meaip_Before=' + basic_Subul_Meaip_Before
-		console.log(url + '?' + data)
 		return $http.get(url + '?' + data);
 	}
 	return{
@@ -916,7 +912,6 @@ return{
 			var data = 'Kind=' + Kind + '&Value_Kind=' + Value_Kind + '&admin_code=' + Admin_Code + '&swm_gu=' + swm_gu + '&Ger_code=' + Ger_code;
 			return $http.get(url + '?' + data)
 			.then(function(response){
-				console.log('scm Service 잘옴?=>', response);
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
@@ -1026,7 +1021,6 @@ return{
 					var jidata = '<item><Aseq>'+ 1 +'</Aseq><ij_Date>'+ date.payday +'</ij_Date><Comp_No>'+ atc.GerCode +'</Comp_No><Subul_kind>'+ atc.paysubul +'</Subul_kind><Bank_Code>'+ paycardbank[0].code +'</Bank_Code><Bank_Name> <![CDATA['+ escape(paycardbank[0].name) +']]> </Bank_Name><Bank_Account>'+ paycardbank[0].num +'</Bank_Account><Card_Code>'+ paycardbank[1].code +'</Card_Code><Card_Name><![CDATA['+ escape(paycardbank[1].name) +']]></Card_Name><Card_Num>'+ paycardbank[1].num +'</Card_Num><Hap_Amt>'+ atc.payprice +'</Hap_Amt></item>';
 					var sum = url + '?' + basicdata+ meaip + goods + middel + jidata + end + 'Y';
 				}
-				console.log('인서트 확인 =>', sum);
 				return $http.get(sum)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1053,7 +1047,6 @@ return{
 			console.log("MconfigService and basicSetup");
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=select';
-			console.log('basicSetup=', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response == 'object'){
@@ -1096,7 +1089,6 @@ return{
 		console.log("MconfigService and basicM");
 		var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 		var data = 'Admin_Code=' + admin_code + '&User_id=' + userid + '&Kind=ERPia_Meaip_Select_Place_CName&Mode=Select_Place';
-		console.log('basicM=', url,'?',data);
 		return $http.get(url + '?' + data)
 			.then(function(response){
 				if(typeof response == 'object'){
@@ -1112,7 +1104,6 @@ return{
 		console.log("MconfigService and basicM");
 		var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp';
 		var data = 'kind=ERPia_Config_Sale_Place_Check&Admin_Code=' + admin_code + '&UserId=' + userid;
-		console.log('erpia_basicM=', url,'?',data);
 		return $http.get(url + '?' + data)
 			.then(function(response){
 				if(typeof response == 'object'){
@@ -1128,7 +1119,6 @@ return{
 				console.log("MconfigService and basicC");
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&User_id=' + userid + '&Kind=ERPia_Sale_Select_Place_CName&Mode=Select_CName&Sale_Place_Code=' + meajang_code;
-				console.log('basicC=', url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1141,14 +1131,12 @@ return{
 					})
 		}, configIU: function(admin_code, userid, configdata, mode){
 				console.log("mconfigService and configIU");
-				console.log($rootScope.basicSetup);
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				if(mode == 'insert'){
 					var data = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode='+ mode +'&basic_Ch_Code='+ configdata.basic_Ch_Code +'&basic_Place_Code='+ configdata.basic_Place_Code +'&basic_Dn_Meaip='+ configdata.basic_Dn_Meaip +'&basic_Dn_Sale='+ configdata.basic_Dn_Sale +'&basic_Subul_Sale='+  configdata.basic_Subul_Sale +'&basic_Subul_Sale_Before=N&basic_Subul_Meaip='+ configdata.basic_Subul_Meaip +'&basic_Subul_Meaip_Before=N';
 				}else{
 					var data = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=update&basic_Ch_Code='+ configdata.basic_Ch_Code +'&basic_Place_Code='+ configdata.basic_Place_Code +'&basic_Dn_Meaip='+ configdata.basic_Dn_Meaip +'&basic_Dn_Sale='+ configdata.basic_Dn_Sale +'&basic_Subul_Sale='+  configdata.basic_Subul_Sale +'&basic_Subul_Sale_Before='+ configdata.basic_Subul_Sale_Before  +'&basic_Subul_Meaip='+ configdata.basic_Subul_Meaip +'&basic_Subul_Meaip_Before='+ configdata.basic_Subul_Meaip_Before;
 				}
-				console.log('configIU=', url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1303,13 +1291,11 @@ return{
 				console.log("MLookupService and detailSet", ger);
 				if(todate == date.eDate) date.eDate = 'today';
 				if(todate == date.sDate) date.sDate = 'today';
-				console.log("ger.dam: ", ger.dam);
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
 				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';				
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind;
-				console.log('detailSet->',url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1347,10 +1333,8 @@ return{
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind + '&Mode=' + mode + '&GerCode=' + escape(ger.code) + '&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang;
-				console.log('lqdetail_set->',url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
-						console.log(mode,' ???=>', response.data);
 						if(typeof response == 'object'){
 							return response.data;
 						}else{
@@ -1367,7 +1351,6 @@ return{
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=' + kind;
-				console.log('Select_OptSet=',url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1494,8 +1477,6 @@ return{
 											Recent_purchase_date : '',
 											Recent_sales_date : ''
 									};
-										
-										console.log('확인=>', data);
 										return data;
 								}
 
@@ -1535,10 +1516,8 @@ return{
 			}
 			
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-			console.log(data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('dmadma?=', response.data);
 					if(typeof response == 'object'){
 						if(response.data == '<!--Parameter Check-->'){
 							if(pageCnt > 1){
@@ -1550,7 +1529,7 @@ return{
 								} 
 								else{
 									alert('일치하는 정보가 없습니다.');
-									console.log('=======================>',response);
+
 								} 
 
 							}
@@ -1598,7 +1577,6 @@ return{
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_G_Dn0&GoodsCode=' + goods_code + '&GerCode=' + ger_code;
 			return $http.get(url + '?' + data)
 				.then(function(response){
-					console.log('MLookupService', response);
 					if(typeof response == 'object'){
 						var returndata = { 
 							'data' : response.data,
@@ -1682,7 +1660,6 @@ return{
 			
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + userid + '&Kind='+ kind;
-			console.log('지급정보=', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response == 'object'){

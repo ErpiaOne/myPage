@@ -50,13 +50,10 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	    	$rootScope.PushData = {};
 		console.log("received:" +  jsonData.additionalData);
 		$rootScope.PushData = jsonData.additionalData;
-			if($rootScope.PushData && $rootScope.loginState =='E'){	
-				console.log('나는 리시브받았지~!111');
+			if($rootScope.PushData && $rootScope.loginState =='E'){
 			//$rootScope.PushData.state 푸시에서 명시한 로드될 화면
 			if($rootScope.PushData.state == "app.erpia_board-Main"){
 				// alert("tab.chats");
-				console.log('나는 리시브받았지~!')
-				alert("리시브받았지");
 				$state.go($rootScope.PushData.state);
 				$rootScope.boardIndex = $rootScope.PushData.state;
 				if($rootScope.PushData.BoardParam == "0"){
@@ -76,7 +73,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				$state.go("app.tradeList");
 			}else if($rootScope.PushData.state != "" || $rootScope.PushData.state != undefined || $rootScope.PushData.state != "undefined"){ //기타 이벤트
 				$state.go($rootScope.PushData.state);
-				console.log("이거야?");
 			}else{
 				
 			}

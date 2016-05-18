@@ -31,7 +31,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	   };
 
 	$rootScope.version={
-   		Android_version : '0.2.2', //업데이트시 필수로 변경!!
+   		Android_version : '0.2.3', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -176,7 +176,6 @@ $scope.pushYNcheck=function(){
 					$scope.fnAlarm('checkAll');
 					// window.plugins.PushbotsPlugin.tag("all");
 						window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
-						console.log("tag all");
 				}
 			});
 	}
@@ -224,14 +223,11 @@ $scope.pushYNcheck=function(){
 		    .then(function(pushInfo){
 		    	if(pushInfo.data.list.length != 0){
 		    		PushInsertCheck = pushInfo.data.list[0].token;
-		    		console.log( 'pushinfo : : ', pushInfo.data.list )
 		    	}
 		    	if(PushInsertCheck == $rootScope.token){
 		    		PushInsertCheck2 = "duplication";
-		    		console.log('pushinfo:: duplication');
 		    	}else{
 		    		PushInsertCheck2 = "NewToken";
-		    		console.log('pushinfo:: NewToken.. Insert&Update Start');
 	    			if(PushInsertCheck2 == "NewToken"){
 						$scope.pushUserRegist();
 					};
@@ -244,7 +240,6 @@ $scope.pushYNcheck=function(){
 		$scope.pushUserRegist = function() {
 			pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SAVE', $rootScope.UserKey, $rootScope.token, $rootScope.loginState, 'A', '', '')
 		    .then(function(pushInfo){
-		    	console.log(pushInfo)
 		    },function(){
 				/*alert('pushUserRegist fail')*/
 			});
@@ -340,31 +335,22 @@ $scope.pushYNcheck=function(){
 				$scope.footer_menu = 'U'; 
 				if($localstorage.get("EAdminCode") == '' || $localstorage.get("EAdminCode") == undefined){
 					$scope.loginckbox.AdminCodeCK = false;
-					console.log( $localstorage.get("EAdminCode") , "Eundefiend");
 				}else{
 					$scope.loginckbox.AdminCodeCK = true;
 					$rootScope.loginData.Admin_Code = $scope.logindata2.EAdminCode;
-
-					console.log( $localstorage.get("EAdminCode") , "E");
 				}
-				console.log($localstorage.get("EAdminCode"));
 				if($localstorage.get("EUserId") == '' || $localstorage.get("EUserId") == undefined){
 					$scope.loginckbox.UserIdCK = false;
-					console.log( $localstorage.get("EUserId") , "EN");
 				}else{
 					$scope.loginckbox.UserIdCK = true;
 					$rootScope.loginData.UserId = $scope.logindata2.EUserId;
-					console.log( $localstorage.get("EUserId") , "E");
 				}
 				if($localstorage.get("EPwd") == '' ||  $localstorage.get("EPwd") == undefined){
 					$scope.loginckbox.PwdCK = false;
-					console.log( $localstorage.get("EPwd") , "EN");
 				}else{
 					$scope.loginckbox.PwdCK = true;
 					$rootScope.loginData.Pwd = $scope.logindata2.EPwd;
-					console.log( $localstorage.get("EPwd") , "E");
 				}
-				console.log("code:" ,$rootScope.loginData.Admin_Code, "id:", $rootScope.loginData.UserId, "pwd:", $rootScope.loginData.Pwd )
 				}else if(userType =='SCM'){
 						$rootScope.loginMenu = 'User'; 
 						$rootScope.userType = 'SCM'; 
@@ -426,11 +412,9 @@ $scope.pushYNcheck=function(){
 	// 업체코드, 아이디, 패스워드 저장하기..
 	$scope.LoginAdminCodeCK=function(userType){
 		if($scope.loginckbox.AdminCodeCK == true){
-			console.log($scope.loginckbox.AdminCodeCK);
 			switch(userType){
 				case 'ERPia' : 
 					$localstorage.set("EAdminCode", $rootScope.loginData.Admin_Code);
-					console.log($localstorage.get("EAdminCode"));
 				break;
 				case 'SCM' : 
 					$localstorage.set("SAdminCode", $rootScope.loginData.Admin_Code);
@@ -440,11 +424,9 @@ $scope.pushYNcheck=function(){
 				break;
 			}
 		}else{
-			console.log("2",$scope.loginckbox.AdminCodeCK);
 			switch(userType){
 				case 'ERPia' : 
 					$localstorage.set("EAdminCode", '');
-					console.log($localstorage.get("EAdminCode"));
 				break;
 				case 'SCM' : 
 					$localstorage.set("SAdminCode", '');
@@ -519,7 +501,6 @@ $scope.pushYNcheck=function(){
                        {googleProjectNumber: "832821752106",
                         autoRegister: true},
                         app.didReceiveRemoteNotificationCallBack);
-		console.log("dologin")
 		if (autologin_YN == 'Y') {
 			switch(loginType){
 				case 'E' : $rootScope.userType = 'ERPia'; $rootScope.loginMenu = 'User'; $scope.footer_menu = 'U'; break;
@@ -529,9 +510,7 @@ $scope.pushYNcheck=function(){
 			$rootScope.loginData.Admin_Code = admin_code;
 			$rootScope.loginData.UserId = id;
 			$rootScope.loginData.Pwd = pwd;
-			console.log("자동로그인실행중:", admin_code, id, pwd, loginType);
 		}else{
-			console.log( $rootScope.deviceInfo);
 			switch($rootScope.userType){
 				case 'ERPia': userType ='E'; break;
 				case 'SCM': userType = 'S'; break;
@@ -886,7 +865,6 @@ $scope.pushYNcheck=function(){
 		$scope.LoginAdminCodeCK($rootScope.userType);
 		$scope.LoginPwdCK($rootScope.userType);
 		$scope.LoginUserIdCK($rootScope.userType);
-		console.log("체크한거 저장중....");
 	};
 
   	$scope.loginHTML = "로그인";
@@ -935,7 +913,6 @@ $scope.pushYNcheck=function(){
 		if($rootScope.rndNum == $scope.SMSData.rspnText){
 			CertifyService.check($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.userData.G_Code, $scope.SMSData.rspnText, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)//수정 4.22
 			.then(function(response){
-				console.log('rspnText : ', response);
 				$scope.certificationModal.hide();
 				$scope.SMSData.rspnText = '';
 			})
@@ -1001,20 +978,15 @@ $scope.pushYNcheck=function(){
 		$rootScope.loginState = 'R';
 	 	var deviceInfo = cordova.require("cordova/plugin/DeviceInformation");
 		deviceInfo.get(function(result) {
-		        console.log("result = " + result);
 		        $rootScope.deviceInfo2 = JSON.parse(result);
 		        var phoneNo=$rootScope.deviceInfo2.phoneNo;
 		        if(phoneNo.substring(0,1)=="+"){
 		         // $rootScope.deviceInfo2.phoneNo.replace(\+82, 00);
 		         $rootScope.deviceInfo2.phoneNo=phoneNo.toString().replace("+82", "0");
-		    }else{
-		    	console.log("아니야",phoneNo.substring(0,1) );		    
+		    }else{	    
 		    }
 		   	$scope.SMSData.recUserTel =  $rootScope.deviceInfo2.phoneNo;
-			console.log("$scope.SMSData.recUserTel", $scope.SMSData.recUserTel);
-		        console.log($rootScope.deviceInfo2.phoneNo);
 		    }, function() {
-		        console.log("error");
 		    });
 		$rootScope.deviceInfo.device = $cordovaDevice.getDevice();
 		$rootScope.deviceInfo.cordova = $cordovaDevice.getCordova();
@@ -1022,7 +994,6 @@ $scope.pushYNcheck=function(){
 		$rootScope.deviceInfo.platform = $cordovaDevice.getPlatform();
 		$rootScope.deviceInfo.uuid = $cordovaDevice.getUUID();
 		$rootScope.deviceInfo.version = $cordovaDevice.getVersion();
-		console.log(">>>>>>>>",$rootScope.deviceInfo.device, $rootScope.deviceInfo.cordova, $rootScope.deviceInfo.model, $rootScope.deviceInfo.platform )
 		$scope.ckversion={};
 	   	$scope.thisversioncurrent='Y';
 	   	$scope.thisversion='';
@@ -1033,7 +1004,6 @@ $scope.pushYNcheck=function(){
 			$timeout(function(){
 				if(data != '<!--Parameter Check-->'){
 					$rootScope.ckversion = data;
-					console.log("currentVersionService", $rootScope.ckversion);
 				if(ionic.Platform.isAndroid()==true){
 						console.log('android');
 						var version = $scope.version.Android_version.split('.');
@@ -1068,7 +1038,6 @@ $scope.pushYNcheck=function(){
 				else alert('조회실패. 데이터접속을 확인해주세요.');
 			}
 		      		}, 1000);
-				console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
 		});
 
 			$scope.updatego=function(){
@@ -1125,24 +1094,20 @@ $scope.pushYNcheck=function(){
 			$rootScope.loginData.User_Id = $localstorage.get("autoUser_Id");
 			$rootScope.loginData.Pwd = $localstorage.get("autoPwd");
 			$rootScope.loginData.autologin_YN = $localstorage.get("autoLoginYN");
-			console.log("1",$localstorage.get("autoAdmin_Code"), $localstorage.get("autologinType"), $localstorage.get("autoUser_Id"), $localstorage.get("autoPwd"));
 		if($rootScope.loginData.autologin_YN=='Y'){
 			$rootScope.autoLogin = true;
 			$rootScope.loginData.chkAutoLogin=true;
-			console.log("여기1");
 			
 			$timeout(function(){
 				$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
 	      		}, 1000);
 		}else{
-			console.log("여기2");
 			$rootScope.autoLogin = false;
 			$rootScope.loginData.chkAutoLogin=false;
 		}
 
 		
 	}else{
-		console.log("",$localstorage.get("autoAdmin_Code"), $localstorage.get("autologinType"), $localstorage.get("autoUser_Id"), $localstorage.get("autoPwd"));
 		$rootScope.autoLogin = false;
 		$rootScope.loginData.chkAutoLogin=false;
 	}
@@ -1178,14 +1143,12 @@ $scope.pushYNcheck=function(){
 		$scope.tradeList.isRead = '열람';
 		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode)
 			.then(function(response){
-				console.log('list', response);
 				if(response.list.length == 0) {
 					$scope.haveList = 'N';
 				}else{
 					$scope.haveList = 'Y';
 					$scope.items = response.list;
 				}
-				console.log('haveList', $scope.haveList);
 			})
 	}else if($rootScope.userType == 'ERPia'){
 		$scope.tradeList.Title = '매출거래처 발송 내역';
@@ -1200,7 +1163,6 @@ $scope.pushYNcheck=function(){
 					$scope.haveList = 'Y';
 					$scope.items = response.list;
 				}
-				console.log('haveList', $scope.haveList);
 			})
 	}
 
@@ -1222,8 +1184,6 @@ $scope.pushYNcheck=function(){
 	    if( dd<10) dd="0"+dd;
 
 	    $scope.nowtime = yy+"-"+mm+"-"+dd+"/"+hh+":"+mm+":"+tt;
-
-		console.log('날짜 잘 구해와지나?=>', yy , "-" , mm , "-" ,dd, "/", hh, ":", mm, ":", tt);
 	}
 
 	$scope.refresh_time();
@@ -1408,9 +1368,6 @@ $scope.pushYNcheck=function(){
 			       	var imgname = name + "_" + nameplus ;
 			       }
 
-				console.log('check1=>>', imgname);
-				console.log('check2=>>', admincode);
-
 				$.ajax({
 				  url: "http://image.erpia.net/fn_save_card_data_image.asp?Kind=" + Kind,
 				  method: "POST",
@@ -1426,9 +1383,6 @@ $scope.pushYNcheck=function(){
 	}
 
 	$scope.shareAnywhere = function(url, where,Mutual) {
-		// console.log('공유할꺼야 =>', $scope.userData.Com_Name);
-		// var comname = $scope.userData.Com_Name.split('<br>');
-		// var com_name = comname[0] + comname[1];
 	       if(where == 'kakao'){
 	       	$cordovaSocialSharing.shareVia("com.kakao.talk","[Erpia 거래명세표] "+'('+Mutual+')'+url);
 	       }else if(where == 'sms'){
@@ -1453,7 +1407,6 @@ $scope.pushYNcheck=function(){
 				var numhap = 0; // 수량합계
 				var num = 1;
 				if(response.list[0].vatYN == 'Y'){// 세액적용
-					console.log('새액적용할꺼야?');
 					response.list[0].Hap = 0;
 					switch( num ){
 						case 1:
@@ -1624,8 +1577,6 @@ $scope.pushYNcheck=function(){
 								   break;
 						default : console.log('여기올일 없을껄....');
 					}
-					// response.list[0].H_Price = parseInt(response.list[0].Hap)/1.1;
-					// response.list[0].taxhap = parseInt(response.list[0].Hap) - parseInt(response.list[0].H_Price);
 				}
 
 				response.list[0].bigo = ' ';
@@ -1643,9 +1594,6 @@ $scope.pushYNcheck=function(){
 		$scope.reload_tradelist();
 		$scope.trade_Detail_Modal.hide();
 	}
-	// $scope.backToList = function(){
-	// 	$ionicSlideBoxDelegate.previous();
-	// }
 	/*프린트 (거래명세표 화면에서 프린트 버튼의 주석을 해제해야 기능을 사용할 수 있음.. 블루투스 연결까지는 확인했으나 프린트 잉크가 없어서 테스트 못함.)*/
 	$scope.print = function(){
 		cordova.plugins.printer.isAvailable(
@@ -1662,7 +1610,6 @@ $scope.pushYNcheck=function(){
 
 	$scope.check_Sano = function(){
 		if($rootScope.userType == "SCM" || $rootScope.userType == "Normal" ){
-			console.log('sano', $scope.userData.G_Sano.substring($scope.userData.G_Sano.lastIndexOf('-') + 1));
 			if($scope.userData.G_Sano.substring($scope.userData.G_Sano.lastIndexOf('-') + 1) == $scope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
@@ -1706,7 +1653,6 @@ $scope.pushYNcheck=function(){
 		$timeout(function(){
 			if(data != '<!--Parameter Check-->'){
 				$rootScope.ckversion = data;
-				console.log("currentVersionService", $rootScope.ckversion);
 			if(ionic.Platform.isAndroid()==true){
 					console.log('android');
 					var version = $scope.version.Android_version.split('.');
@@ -1741,9 +1687,7 @@ $scope.pushYNcheck=function(){
 			else alert('조회실패. 데이터접속을 확인해주세요.');
 		}
 	      		}, 1000);
-			console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
 	});
-	console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
 		$scope.updatebtn=function(){
 			if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
 			else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
@@ -1782,75 +1726,12 @@ $scope.pushYNcheck=function(){
 	         			$ionicLoading.hide();
 	      		}, 1000);
 	});
-	    // $scope.toggle = false;
-	// $scope.moreloading=0;
- //    	$scope.pageCnt=1;
- //    	$scope.maxover=0;
 
-	// NoticeService.getList($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1)
-	// .then(function(data){
-	// 		$scope.maxover=0;
-	// 		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-	// 			$timeout(function(){
-	// 				if(data != '<!--Parameter Check-->'){
-	// 			    		$scope.maxover=0;
-	// 					$scope.items = data.list;
-	// 				}else{
-	// 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-	// 					else alert('조회된 데이터가 없습니다.');
-	// 					$scope.moreloading=0;
-	// 					$scope.maxover = 1;
-	// 				}
-	//        			$scope.moreloading=0;
-	//          			$ionicLoading.hide();
-	//       		}, 1000);
-	// });
-	//     /* 더보기 버튼 클릭시 */
-	// $scope.boards_more = function() {
-	//   		if($scope.items.length>0){
-	//   		console.log($scope.items.length);
-
-	//   		if($scope.maxover==0){
-	// 	        	$scope.pageCnt+=1;
-
-	// 	      	$scope.moreloading=1;
-
-
-	// 	      	BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',$scope.pageCnt).then(function(data){
-	//       	 		$scope.maxCnt=0;
-	// 			$timeout(function(){
-	// 				if(data != '<!--Parameter Check-->'){
-	// 			    		$scope.maxover=0;
-	// 					for(var i=0; i<data.list.length; i++){
-	// 						$scope.items.push(data.list[i]);
-	// 					}
-	// 				}else{
-	// 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-	// 					else alert('조회된 데이터가 없습니다.');
-	// 					$scope.moreloading=0;
-	// 					$scope.maxover = 1;
-	// 				}
-	//        			$scope.moreloading=0;
-	// 	         		$ionicLoading.hide();
-	// 	      		}, 1000);
-	// 	      		});
-	// 		}
-	//       }
-	//     };
-	    /* 최상단으로 */
+	/* 최상단으로 */
 	$scope.scrollTop = function() {
     		$ionicScrollDelegate.scrollTop();
     	};
-	// $scope.sendSMS = function (message) {
-	// 	  KakaoLinkPlugin.call("kakaotalk share...");
-	// }
 
-	// $scope.sendEmail = function (message, subject) {
-	// 	message="테스트입니당.";
-	// 	subject="[이알피아모바일]세금계산서"
-	// 	fromemail="khs239@erpia.net"
-	//     $cordovaSocialSharing.shareViaEmail(message, subject, null, fromemail, null);
-	// }
 })
 // 통계리포트 설정 컨트롤러
 .controller('configCtrl_statistics', function($scope, $rootScope, statisticService, publicFunction, app){
@@ -1882,7 +1763,6 @@ $scope.pushYNcheck=function(){
 			rsltList += $scope.items[i].Idx + '^';
 			rsltList += $scope.items[i].visible + '^|';
 		}
-		console.log('rsltList', rsltList);
 		statisticService.save('myPage_Config_Stat', 'save_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
 	};
 	// 지우려고 만들었는데 2차 업데이트로 넘김.
@@ -1909,9 +1789,7 @@ $scope.pushYNcheck=function(){
 			arrAlarm.push({idx:5,name:'거래명세서 도착',checked:true});
 			arrAlarm.push({idx:6,name:'기타 이벤트',checked:true});
 			$scope.settingsList = arrAlarm;
-			console.log("is check All ");
 		}else{
-			console.log("is check All else ");
 			// 서버에 저장된 설정 값을 불러와서 알맞게 체크해줌.
 			alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 			.then(function(data){
@@ -2014,9 +1892,7 @@ $scope.pushYNcheck=function(){
 				else{
 					$scope.selectedAll = true;
 					$scope.settingsList = data.list;
-					console.log("splice 실행 전",$scope.settingsList);
 					$scope.settingsList.splice(0,1);
-					console.log("splice 실행 후",$scope.settingsList);
 				}
 			});
 		}
@@ -2041,7 +1917,6 @@ $scope.pushYNcheck=function(){
 				// window.plugins.PushbotsPlugin.tag(tagnum);
 				window.plugins.OneSignal.sendTag("key"+tagnum, tagnum);
 			}
-			console.log("tag all");
 		}else{
 			$scope.settingsList = [];
 			rsltList = '0^F^|1^F^|2^F^|3^F^|4^F^|5^F^|6^F^|';
@@ -2052,7 +1927,6 @@ $scope.pushYNcheck=function(){
 				// window.plugins.PushbotsPlugin.untag(tagnum);
 				window.plugins.OneSignal.deleteTag("key"+tagnum);
 			}
-			console.log("untag all");
 			// window.plugins.PushbotsPlugin.untag("all");
 			// window.plugins.PushbotsPlugin.tag("no");
 		}
@@ -2062,20 +1936,16 @@ $scope.pushYNcheck=function(){
 	}
 	// 알람 내용이 변경될때마다 그 내용을 서버에 저장
 	$scope.check_change = function(item){
-		console.log(item);
 		if(item.checked==true){
 			var tagnum = item.idx.toString();
 			// window.plugins.PushbotsPlugin.tag(tagnum);
 			window.plugins.OneSignal.sendTag("key"+tagnum, tagnum);
-			console.log("Pushbots.tag",tagnum);
 		}else{
 			var tagnum = item.idx.toString();
 			// window.plugins.PushbotsPlugin.untag(tagnum);
 			window.plugins.OneSignal.deleteTag("key"+tagnum);
-			console.log("Pushbots.untag",tagnum);
 		}
 		var rsltList = '';
-		console.log('settingsList', $scope.settingsList[0]);
 		for(var i=0; i<cntList; i++){
 			rsltList += $scope.settingsList[i].idx + '^';
 			rsltList += ($scope.settingsList[i].checked == true)?'T^|':'F^|';
@@ -2091,7 +1961,6 @@ $scope.pushYNcheck=function(){
 		$rootScope.autoLogin = true;
 		// $localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 		$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
-		console.log("autologin", $rootScope.loginData.loginType,  $rootScope.loginData.User_Id);
 	}else{
 		$rootScope.autoLogin = false;
 		$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
@@ -2207,9 +2076,7 @@ $scope.pushYNcheck=function(){
 	$scope.load_scm_chart = function(){
 	    AmChart_Service.scm_Chart('scm', 'scm', $scope.loginData.Admin_Code, 3, $scope.userData.G_Code)
 	    .then(function(response){
-	    	console.log('데이터가 이상하다. =', response);
 	    	var chartData = response;
-	    	console.log('chartData', chartData);
 	    	if(chartData.length == 0){
 	    		AmCharts.addInitHandler(function(kind) {
 			//kind.height = containerwidth
@@ -2310,7 +2177,7 @@ $scope.pushYNcheck=function(){
 	$scope.load_scm_chart();
 }) // 메인화면 컨트롤러
 .controller('MainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, app){
-	console.log("MainCtrl");
+
 
 	$scope.ERPiaCS_Link = function() {
         $state.go('app.erpia_cs');
@@ -2327,7 +2194,7 @@ $scope.pushYNcheck=function(){
 })
 
 .controller('CsCtrl', function($rootScope, $scope, $ionicModal, $ionicPopup, $timeout, $stateParams, $location, $http, csInfoService, TestService, $ionicHistory, ERPiaAPI, $cordovaToast, app){
-	console.log("CsCtrl");
+
 	$scope.csData = {
 		interestTopic1 : 'no',
 		interestTopic2 : 'no',
@@ -2348,7 +2215,6 @@ $scope.pushYNcheck=function(){
     $scope.csagree=function(){
     	if($scope.cscustomagree == false) $scope.cscustomagree =true;
     	else $scope.cscustomagree = false;
-    	console.log($scope.cscustomagree);
     }
     $scope.csagreemodalopen=function(){
     	$scope.csagreeModal.show();
@@ -2435,7 +2301,6 @@ $scope.pushYNcheck=function(){
 	  		errMsg += "/문의사항";
 	  	}
 	  	if(errMsg != ""){
-	  		console.log(errMsg + "쓰셈");
 	  		if(errMsg.substring(0, 1) == "/"){
 	  			errMsg = errMsg.replace("/", "");
 	  		}
@@ -2513,8 +2378,6 @@ $scope.pushYNcheck=function(){
 	$rootScope.useBoardCtrl = "Y";
 	var idx = $rootScope.boardIndex;//푸쉬받은것에서 idx번호를 입력 후 어떤 종류의 게시판인지 판별
 	$rootScope.PushData.state='';
-	console.log("idx", $rootScope.boardIndex);
-	console.log($rootScope.PushData.state,"boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 	$scope.onTouch = function(){
 		$ionicSlideBoxDelegate.enableSlide(false);
 		$ionicSideMenuDelegate.canDragContent(false);
@@ -2703,7 +2566,6 @@ $scope.pushYNcheck=function(){
 
 		}
 
-	console.log(">>>>페이지cnt", $scope.searchck.SearchValue)
 	};
 
 
@@ -2830,8 +2692,6 @@ $scope.pushYNcheck=function(){
     /* 더보기 버튼 클릭시 */
 	$scope.boards_more = function() {
 	  		if($scope.items.length>0){
-	  		console.log($scope.items.length);
-	  		console.log($rootScope.boardIndex);
 
 	  		if($scope.maxover==0){
 		        	$scope.pageCnt+=1;
@@ -2844,7 +2704,6 @@ $scope.pushYNcheck=function(){
 							$timeout(function(){
 								if(data != '<!--Parameter Check-->' && data.list.length>0){
 							    		$scope.maxover=0;
-							    		console.log('data.list', data.list)
 									for(var i=0; i<data.list.length; i++){
 										$scope.items.push(data.list[i]);
 									}
@@ -2960,14 +2819,12 @@ $scope.pushYNcheck=function(){
 										$timeout(function(){
 											if(data != '<!--Parameter Check-->' && data.list.length>0){
 												for(var i=0; i<data.list.length; i++){
-													console.log('data.list', data.list)
 													$scope.maxover=0;
 													$scope.items.push(data.list[i]);
 												}
 											}else{
 												if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 												else alert('조회된 데이터가 없습니다.');
-												console.log('data.list', data.list)
 												$scope.moreloading=0;
 												$scope.maxover = 1;
 											}
@@ -3010,7 +2867,6 @@ $scope.pushYNcheck=function(){
 			PushSelectService.select('Mobile_Push_Log', 'SELECT', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 			.then(function(data){
 				$scope.items = data.list;
-				console.log($scope.items);
 			})
 		} else {
 			// alert('로그인 후 실행해주세요.');
@@ -3053,7 +2909,6 @@ $scope.pushYNcheck=function(){
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
-	console.log($stateParams);
 	$scope.playlists = g_playlists;
 	$scope.playlist = $scope.playlists[$stateParams.playlistId - 1];
 })
@@ -3083,6 +2938,7 @@ $scope.pushYNcheck=function(){
 	    "width" : "100%",
 	    "height" : "100%"
 	};
+	/*차트 리스트 목록관련*/
 	$scope.chartlist = false;
 	$scope.chrtlistF = function(){
 		if($scope.chartlist == false){
@@ -3091,6 +2947,7 @@ $scope.pushYNcheck=function(){
 			$scope.chartlist = false;
 		}
 	}
+	/*차트 슬라이드 관련*/
 	$scope.onTouch = function(){
 		$ionicSlideBoxDelegate.enableSlide(false);
 	 };
@@ -3105,16 +2962,7 @@ $scope.pushYNcheck=function(){
 
 	$scope.previousSlide = function() {
 		$ionicSlideBoxDelegate.previous();
-	};
-
-	$scope.slideChanged = function(index) {
-		$ionicSlideBoxDelegate.slide(index, 500);
-		$scope.chartlist = false;
-	};
-
-
-	
-
+	};	
 
 	$scope.dashBoard = {};
 	var indexList = [];
@@ -3416,9 +3264,7 @@ $scope.pushYNcheck=function(){
 
 		if (load_kind == "refresh")
 		{	$scope.loadingani();
-			console.log('??', request.responseText);
 			response = eval(request.responseText);
-			console.log('확인 ->', response);
 			// $rootScope.time_ref = response[0].in_date;
 			$.each(response[0], function(index, jsonData){
 						tmpAlert += jsonData;
@@ -3467,6 +3313,13 @@ $scope.pushYNcheck=function(){
 
 
 	};
+
+	$scope.slideC= function(index) {
+		var num = parseInt(index);
+		$ionicSlideBoxDelegate.slide(num, 500);
+		$scope.loadingani();
+	};
+
 	// ERPia 차트화면에서 위에 차트 이름을 보여주는 부분. (차트 이름을 변경시켜야 하므로 서버에 저장하고 이를 불러옴.)
 	statisticService.title('myPage_Config_Stat', 'select_Title', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
 	.then(function(data){
@@ -3476,6 +3329,10 @@ $scope.pushYNcheck=function(){
 
 	// 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함.
 	$scope.onSlideMove = function(data) {
+		if($scope.chartlist != false){
+			data.index = parseInt(data.index);
+			$scope.chartlist = false;
+		}
 		console.log("You have selected " + data.index + " tab");
 		$scope.loadingani();
 		var titles =  [{Idx:0, title:"홈"}
@@ -3501,7 +3358,6 @@ $scope.pushYNcheck=function(){
 			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index)
 			.then(function(response){
 				$rootScope.kind = 'chart' + response.list[0].idx;
-				console.log('넌머니?=>',response.list[0].idx);
 				switch (response.list[0].idx)
 				{
 					case '1' : $scope.kind = titles[1].title; break;
@@ -3589,8 +3445,6 @@ $scope.pushYNcheck=function(){
 							'</div>'+ '</ion-content></ion-scroll>';
 				}
 
-
-				console.log(data.index);
 				switch(data.index){
 					case 1: $('#s1').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 2: $('#s2').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
@@ -3640,7 +3494,6 @@ $scope.pushYNcheck=function(){
 				}
 				
 				$scope.btn();
-				// console.log($("button[name=btnGrid]").css('color'));
 
 				$("button[name=btnGrid]").click(function() {
 					$scope.loadingani();
@@ -3708,7 +3561,6 @@ $scope.pushYNcheck=function(){
 		window.plugins.OneSignal.getIds(function(ids) {
 		  // document.getElementById("OneSignalUserID").innerHTML = "UserID: " + ids.userId;
 		  // document.getElementById("OneSignalPushToken").innerHTML = "PushToken: " + ids.pushToken;
-		  console.log('getIds: ' + JSON.stringify(ids));
 		  	$rootScope.token = ids.pushToken;
 		  	$rootScope.UserKey = $rootScope.deviceInfo.uuid;
 		});
@@ -3795,7 +3647,6 @@ $scope.pushYNcheck=function(){
 				MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
 				.then(function(data){
 					$rootScope.changolists = data.list;
-					console.log($rootScope.changolists);
 					var gubun = false;
 					for(var i = 0; i < $rootScope.changolists.length; i++){
 						if($rootScope.changolists[i].Code == $rootScope.setupData.basic_Ch_Code){
@@ -3852,7 +3703,6 @@ $scope.pushYNcheck=function(){
 
              		MconfigService.configIU($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData, mode)
 						.then(function(data){
-							console.log('Y?',data.list[0].rslt);
 							if(data.list[0].rslt == 'Y'){
 								$ionicHistory.goBack();
 							}else{
@@ -4031,12 +3881,9 @@ $scope.pushYNcheck=function(){
     			var gubun = 'Ger'
     			MiuService.companyAndgoods_lately($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun)
 			.then(function(data){
-				console.log(data);
-
 				if(data != '<!--Parameter Check-->'){
 					$scope.companylatelyDatas = [];
 					for(var i = 0; i < data.list.length; i++){
-						console.log('데이터 구별중....=>',i);
 						if($rootScope.distinction == 'meaip'){
 							if(data.list[i].SM_Gubun == 'M' && data.list[i].Search_Ger_Name.length != 0){
 								$scope.companylatelyDatas.push(data.list[i]);
@@ -4086,7 +3933,6 @@ $scope.pushYNcheck=function(){
     			var gubun = 'Ger';
 	    		MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun, $scope.company.username, $scope.company.code)
 			.then(function(data){
-				console.log(data);
 			})
     		}
 
@@ -4141,7 +3987,6 @@ $scope.pushYNcheck=function(){
 					if(data.list.length == 6){
 						var list_cnt = 5;
 						$rootScope.end_data.push(data.list[data.list.length-1]);
-						console.log('마지막꺼저장 =>',$rootScope.end_data);
 					}else{
 						var list_cnt = data.list.length;
 					}
@@ -4231,33 +4076,31 @@ $scope.pushYNcheck=function(){
 
 			case 'detail' :
 				if($scope.chit_lists.length>0){
-		  		console.log($scope.chit_lists.length);
+			  		if($scope.maxover==0){
+						$scope.pageCnt+=1;
+					    $scope.moreloading=1;
 
-		  		if($scope.maxover==0){
-					$scope.pageCnt+=1;
-				    $scope.moreloading=1;
-
-				    MLookupService.detailSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams,$scope.company, $scope.detail.Place_Code, $scope.pageCnt, $scope.todate)
-						.then(function(data){
-							$timeout(function(){
-							$scope.maxover=0;
-							if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-								else alert('조회된 데이터가 없습니다.');
-								$scope.moreloading=0;
-								$scope.maxover = 1;
-							}else{
-								for(var m = 0; m < data.list.length; m++){
-									$scope.chit_lists.push(data.list[m]);
-									if($rootScope.distinction == 'meaip'){
-										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
-									}else{
-										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+					    MLookupService.detailSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams,$scope.company, $scope.detail.Place_Code, $scope.pageCnt, $scope.todate)
+							.then(function(data){
+								$timeout(function(){
+								$scope.maxover=0;
+								if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.');
+									$scope.moreloading=0;
+									$scope.maxover = 1;
+								}else{
+									for(var m = 0; m < data.list.length; m++){
+										$scope.chit_lists.push(data.list[m]);
+										if($rootScope.distinction == 'meaip'){
+											$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
+										}else{
+											$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+										}
 									}
 								}
-							}
-							$scope.moreloading=0;
-						}, 1000);
+								$scope.moreloading=0;
+							}, 1000);
 						})
 					}
 				}
@@ -4326,9 +4169,7 @@ $scope.pushYNcheck=function(){
 
 	$scope.quickcheck = function(index){
 	 	for(var i = 0; i < $scope.quicklists.length; i++){
-			if(i == index){
-				console.log('같음! true');
-			}else{
+			if(i != index){
 				$scope.quicklists[i].checked = false;
 			}
   		}
@@ -4438,10 +4279,8 @@ $scope.pushYNcheck=function(){
     	//조회셋 조회
     	MLookupService.detailSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams,$scope.company, $scope.detail.Place_Code, 1, $scope.todate)
 		.then(function(data){
-				console.log('detailSet =>' ,data);
 			MLookupService.lqdetail_set($scope.loginData.Admin_Code, $scope.loginData.UserId,$scope.reqparams,$scope.company,$scope.detail.Place_Code,1)
 				.then(function(data){
-					console.log('lqdetail_set', data);
 				})
 			if(data == '<!--Parameter Check-->'){
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 결과가 없습니다.', 'short', 'center');
@@ -4548,10 +4387,8 @@ $scope.pushYNcheck=function(){
 	};
 
 	$scope.detailSet_Delete = function(index) {
-		console.log(index);
            	MLookupService.Delete_OptSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.OptsetList[index].idx)
 		.then(function(data){
-			console.log(data);
 			if(data.list[0].rslt == 'Y'){
 				$scope.OptsetList.splice(index,1);
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('삭제되었습니다.', 'short', 'center');
@@ -5020,12 +4857,10 @@ $scope.pushYNcheck=function(){
 				for(var i = 0; i < $scope.changolists.length; i++){ ////여기여기! 
 					if($scope.changolists[i].Code == $scope.setupData.basic_Ch_Code){
 						var gubun = true;
-						console.log('?');
 						break;
 					}
 				}
 				if(gubun == false){
-					console.log(';;;;;;');
 					$scope.setupData.basic_Ch_Code = '000';
 				}
 			})
@@ -5163,12 +4998,10 @@ $scope.pushYNcheck=function(){
 					$scope.Payments_division(3);
 					$scope.pay.paycardbank = data.list[0].Card_Code + ',' + data.list[0].Card_Name + ',' + data.list[0].Card_Num;
 					$scope.pay.codenum = data.list[0].Card_Code;
-					console.log(">>>pay.paycardbank",$scope.pay.paycardbank, data.list);
 				}else if(data.list[0].IpJi_Gubun == 702 || data.list[0].IpJi_Gubun == 722){
 					$scope.Payments_division(1);
 					$scope.pay.paycardbank = data.list[0].Bank_Code + ',' + data.list[0].Bank_Name + ',' + data.list[0].Bank_Account;
 					$scope.pay.codenum = data.list[0].Bank_Code;
-					console.log(">>>pay.paycardbank",$scope.pay.paycardbank, data.list);
 				}else{
 					for(var i=0; i<2; i++){
 						$scope.paylist.push({
@@ -5228,7 +5061,6 @@ $scope.pushYNcheck=function(){
      	}
 		MiuService.company_sear($scope.loginData.Admin_Code, $scope.loginData.UserId, cusname)
 		.then(function(data){
-			console.log(data);
 			$scope.companyDatas = data.list;
 			$scope.companylatelyDatas = '';
 		})
@@ -5241,8 +5073,6 @@ $scope.pushYNcheck=function(){
     			var gubun = 'Ger';
     			MiuService.companyAndgoods_lately($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun)
 			.then(function(data){
-				console.log(data);
-
 				if(data != '<!--Parameter Check-->'){
 					$scope.companylatelyDatas = [];
 					for(var i = 0; i < data.list.length; i++){
@@ -5281,7 +5111,6 @@ $scope.pushYNcheck=function(){
 	var gubun = 'Ger';
 	MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun, gname, gcode)
 	.then(function(data){
-		console.log(data);
 	})
     }
 
@@ -5329,7 +5158,6 @@ $scope.pushYNcheck=function(){
 				var gubun = 'Goods';
 				MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun,goodsname)
 				.then(function(data){
-					console.log(data);
 				})
 			}
 			$scope.goodslists = data.list;
@@ -5342,7 +5170,6 @@ $scope.pushYNcheck=function(){
 				var gubun = 'Goods';
 				MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun,goodsname)
 				.then(function(data){
-					console.log(data);
 				})
 			}
 			$scope.goodslists = data.list;
@@ -5364,7 +5191,6 @@ $scope.pushYNcheck=function(){
     		var gubun = 'Goods';
     		MiuService.companyAndgoods_lately($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun)
 			.then(function(data){
-				console.log(data);
 				if(data != '<!--Parameter Check-->'){
 					$scope.goodlately_slists = data.list;
 				}
@@ -5388,9 +5214,6 @@ $scope.pushYNcheck=function(){
 	$scope.goods_more = function() {
 			var goodsname = escape($scope.user.userGoodsName);
 	  		if($scope.goodslists.length>0){
-	  		console.log($scope.goodslists.length);
-
-
 	  		if($scope.maxover==0){
 		        $scope.pageCnt+=1;
 
@@ -5466,7 +5289,6 @@ $scope.pushYNcheck=function(){
 
     /*선택된 상품들을 등록리스트에 저장 --> 이중 $scope*/
     $scope.checkdataSave=function(){
-    	console.log($scope.goodsaddlists);
 		if($scope.goodsaddlists.length > 0){
 			var check = 'N';
 			for(var j=0; j < $scope.goodsaddlists.length; j++){
@@ -5647,7 +5469,6 @@ $scope.pushYNcheck=function(){
 		}
 		$cordovaBarcodeScanner.scan().then(function(imageData) {
 			if ($ionicHistory.backView()&&imageData.text=='') {
-				console.log('뒤로가기');
 			}else{
 	            MiuService.barcode($scope.loginData.Admin_Code, $scope.loginData.UserId, imageData.text)
 				.then(function(data){
@@ -5787,8 +5608,6 @@ $scope.goods_seqlist = [];
     }
 
     $scope.paydelete = function(){
-    	console.log('지급전표 삭제', $scope.pay.acno);
-    	console.log('?',$scope.pay.gubun);
     	$ionicPopup.show({
 	       title: '경고',
 	       subTitle: '',
@@ -5854,8 +5673,6 @@ $scope.goods_seqlist = [];
 						});
 					}
 				}
-
-				console.log($scope.paycardbank[0].name);
   			})
   		}else{
   			$scope.pay.gubun = 0;
@@ -5907,7 +5724,6 @@ $scope.goods_seqlist = [];
 
 
     $scope.insertGoodsF=function(){
-    	console.log('$scope.pay.paycardbank',$scope.pay);
     	if($scope.pay.use == false && $scope.pay.payprice == 0){
     		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('지급액을 확인해주세요.', 'short', 'center');
 			else alert('지급액을 확인해주세요.');
@@ -5974,7 +5790,6 @@ $scope.goods_seqlist = [];
 		                  	if($scope.pay.gubun == 4 && $scope.pay.delete == false){
 		                  		MiuService.pay_delete($scope.loginData.Admin_Code, $scope.loginData.UserId,$scope.pay.acno)
 		                  		.then(function(data){
-		                  			console.log('삭제잘됨?', data);
 		                  		});
 		                  	}
 
