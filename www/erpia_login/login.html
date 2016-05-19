@@ -64,12 +64,12 @@
 						<center><h4 ng-if="userType&&userType=='ERPia'">이알피아Login</h4><h4 ng-if="userType&&userType=='SCM'">SCMLogin</h4><h4 ng-if="userType&&userType=='Normal'">거래처Login</h4></center>
 						<div class="list list-inset" style="margin:0px 10% 0px 10%; background-color:transparent">
 							<label class="item item-input" style="padding: 0;"><span class="psm_login1 ion-ios-paper-outline"></span>
-								<input style="font-size:100%; padding-left: 15px;" type="text" ng-model="loginData.Admin_Code" placeholder="업체코드">
+								<input style="font-size:100%; padding-left: 15px; text-transform: lowercase" type="text" ng-model="loginData.Admin_Code" placeholder="업체코드">
 								<input type="checkbox" id="loginckbox.AdminCodeCK" class="checkbox-style" ng-model='loginckbox.AdminCodeCK'/>
 								<label for="loginckbox.AdminCodeCK" style="font-size:100%;">저장</label>
 							</label>
 							<label class="item item-input" style="padding: 0;"><span class="psm_login2 ion-ios-grid-view-outline"></span>
-								<input style="font-size:100%; padding-left: 15px;" type="text" ng-model="loginData.UserId" placeholder="아이디">
+								<input style="font-size:100%; padding-left: 15px; text-transform: lowercase" type="text" ng-model="loginData.UserId" placeholder="아이디">
 								<input type="checkbox" id="loginckbox.UserIdCK" class="checkbox-style" ng-model='loginckbox.UserIdCK' />
 								<label for="loginckbox.UserIdCK" style="font-size:100%;">저장</label>
 							</label>

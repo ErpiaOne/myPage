@@ -20,11 +20,16 @@ angular.module('starter.services', [])
 		}
 	};
 })
-.factory('app', function($rootScope, $state, $ionicPopup){
+.factory('app', function($rootScope, $state, $ionicPopup, $cordovaInAppBrowser, $ionicSlideBoxDelegate){
 return{
 
 
 	     didReceiveRemoteNotificationCallBack : function(jsonData) {
+	        var browseroptions = {
+		      location: 'yes',
+		      clearcache: 'yes',
+		      toolbar: 'yes'
+		   };
 	    	$rootScope.PushData = {};
 	    	 if (   jsonData.additionalData
 		      && jsonData.additionalData.stacked_notifications) {
@@ -37,8 +42,8 @@ return{
 
 	    	$ionicPopup.show({
 		         title: '푸쉬알림',
-		         subTitle: jsonData.message,
-		         content: '페이지를 이동하시겠습니까?',
+		         subTitle: '페이지를 이동하시겠습니까?',
+		         content: jsonData.message,
 		         buttons: [
 		           { text: 'No',
 		            onTap: function(e){
@@ -69,12 +74,26 @@ return{
 								}else if($rootScope.PushData.BoardParam == "3"){
 									$rootScope.boardIndex = 3;
 									console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
-								}							
+								}
+								$ionicSlideBoxDelegate.slide($rootScope.boardIndex, 500);							
 							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
 								$state.go("app.tradeList");
 							}else if($rootScope.PushData.state != "" || $rootScope.PushData.state != undefined || $rootScope.PushData.state != "undefined"){ //기타 이벤트
-								$state.go($rootScope.PushData.state);
-								console.log("이거야?");
+								  if (jsonData.additionalData) {
+								    if (jsonData.additionalData.launchURL){
+								     $cordovaInAppBrowser.open(jsonData.additionalData.launchURL, '_blank', browseroptions)
+
+										      .then(function(event) {
+										         // success
+										      })
+
+										      .catch(function(event) {
+										         // error
+										      });
+								    
+						
+								  }
+								}
 							}else{
 								
 							}
@@ -618,7 +637,7 @@ return{
 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 	return{
 		select : function(kind, Admin_Code, loginType, G_Id, mac){
-			var data = 'Value_Kind=list&Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id +'&mac=' + mac;
+			var data = 'Value_Kind=list&Kind=Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					console.log('response', response);
