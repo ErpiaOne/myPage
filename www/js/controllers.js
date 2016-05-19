@@ -21,7 +21,7 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app){
+	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter){
 	$rootScope.PushData = {};
 
 	   var browseroptions = {
@@ -31,7 +31,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	   };
 
 	$rootScope.version={
-   		Android_version : '0.2.2', //업데이트시 필수로 변경!!
+   		Android_version : '0.2.4', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -176,7 +176,6 @@ $scope.pushYNcheck=function(){
 					$scope.fnAlarm('checkAll');
 					// window.plugins.PushbotsPlugin.tag("all");
 						window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
-						console.log("tag all");
 				}
 			});
 	}
@@ -224,14 +223,11 @@ $scope.pushYNcheck=function(){
 		    .then(function(pushInfo){
 		    	if(pushInfo.data.list.length != 0){
 		    		PushInsertCheck = pushInfo.data.list[0].token;
-		    		console.log( 'pushinfo : : ', pushInfo.data.list )
 		    	}
 		    	if(PushInsertCheck == $rootScope.token){
 		    		PushInsertCheck2 = "duplication";
-		    		console.log('pushinfo:: duplication');
 		    	}else{
 		    		PushInsertCheck2 = "NewToken";
-		    		console.log('pushinfo:: NewToken.. Insert&Update Start');
 	    			if(PushInsertCheck2 == "NewToken"){
 						$scope.pushUserRegist();
 					};
@@ -244,7 +240,6 @@ $scope.pushYNcheck=function(){
 		$scope.pushUserRegist = function() {
 			pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SAVE', $rootScope.UserKey, $rootScope.token, $rootScope.loginState, 'A', '', '')
 		    .then(function(pushInfo){
-		    	console.log(pushInfo)
 		    },function(){
 				/*alert('pushUserRegist fail')*/
 			});
@@ -312,14 +307,14 @@ $scope.pushYNcheck=function(){
 	};
 		// Open the login modal
 	$scope.login = function() {
-		$scope.logindata2.EAdminCode = $localstorage.get("EAdminCode");
-		$scope.logindata2.EUserId = 	$localstorage.get("EUserId");
-		$scope.logindata2.EPwd = $localstorage.get("EPwd");
-		$scope.logindata2.SAdminCode = $localstorage.get("SAdminCode");
-		$scope.logindata2.SUserId = $localstorage.get("SUserId");
-		$scope.logindata2.SPwd = $localstorage.get("SPwd");
-		$scope.logindata2.NAdminCode = $localstorage.get("NAdminCode");
-		$scope.logindata2.NUserId = $localstorage.get("NUserId");
+		$scope.logindata2.EAdminCode = $filter('lowercase')($localstorage.get("EAdminCode"));
+		$scope.logindata2.EUserId = 	$filter('lowercase')($localstorage.get("EUserId"));
+		$scope.logindata2.EPwd = $localstorage.get("EPwd")
+		$scope.logindata2.SAdminCode = $filter('lowercase')($localstorage.get("SAdminCode"));
+		$scope.logindata2.SUserId = $filter('lowercase')($localstorage.get("SUserId"));
+		$scope.logindata2.SPwd = $localstorage.get("SPwd")
+		$scope.logindata2.NAdminCode = $filter('lowercase')($localstorage.get("NAdminCode"));
+		$scope.logindata2.NUserId = $filter('lowercase')($localstorage.get("NUserId"));
 		$scope.logindata2.NPwd = $localstorage.get("NPwd");
 		$rootScope.loginMenu = 'selectUser';
 		if($rootScope.loginState == 'R'){
@@ -340,31 +335,22 @@ $scope.pushYNcheck=function(){
 				$scope.footer_menu = 'U'; 
 				if($localstorage.get("EAdminCode") == '' || $localstorage.get("EAdminCode") == undefined){
 					$scope.loginckbox.AdminCodeCK = false;
-					console.log( $localstorage.get("EAdminCode") , "Eundefiend");
 				}else{
 					$scope.loginckbox.AdminCodeCK = true;
 					$rootScope.loginData.Admin_Code = $scope.logindata2.EAdminCode;
-
-					console.log( $localstorage.get("EAdminCode") , "E");
 				}
-				console.log($localstorage.get("EAdminCode"));
 				if($localstorage.get("EUserId") == '' || $localstorage.get("EUserId") == undefined){
 					$scope.loginckbox.UserIdCK = false;
-					console.log( $localstorage.get("EUserId") , "EN");
 				}else{
 					$scope.loginckbox.UserIdCK = true;
 					$rootScope.loginData.UserId = $scope.logindata2.EUserId;
-					console.log( $localstorage.get("EUserId") , "E");
 				}
 				if($localstorage.get("EPwd") == '' ||  $localstorage.get("EPwd") == undefined){
 					$scope.loginckbox.PwdCK = false;
-					console.log( $localstorage.get("EPwd") , "EN");
 				}else{
 					$scope.loginckbox.PwdCK = true;
 					$rootScope.loginData.Pwd = $scope.logindata2.EPwd;
-					console.log( $localstorage.get("EPwd") , "E");
 				}
-				console.log("code:" ,$rootScope.loginData.Admin_Code, "id:", $rootScope.loginData.UserId, "pwd:", $rootScope.loginData.Pwd )
 				}else if(userType =='SCM'){
 						$rootScope.loginMenu = 'User'; 
 						$rootScope.userType = 'SCM'; 
@@ -426,25 +412,21 @@ $scope.pushYNcheck=function(){
 	// 업체코드, 아이디, 패스워드 저장하기..
 	$scope.LoginAdminCodeCK=function(userType){
 		if($scope.loginckbox.AdminCodeCK == true){
-			console.log($scope.loginckbox.AdminCodeCK);
 			switch(userType){
 				case 'ERPia' : 
-					$localstorage.set("EAdminCode", $rootScope.loginData.Admin_Code);
-					console.log($localstorage.get("EAdminCode"));
+					$localstorage.set("EAdminCode", $filter('lowercase')($rootScope.loginData.Admin_Code));
 				break;
 				case 'SCM' : 
-					$localstorage.set("SAdminCode", $rootScope.loginData.Admin_Code);
+					$localstorage.set("SAdminCode", $filter('lowercase')($rootScope.loginData.Admin_Code));
 				break;
 				case 'Normal' : 
-					$localstorage.set("NAdminCode", $rootScope.loginData.Admin_Code);
+					$localstorage.set("NAdminCode", $filter('lowercase')($rootScope.loginData.Admin_Code));
 				break;
 			}
 		}else{
-			console.log("2",$scope.loginckbox.AdminCodeCK);
 			switch(userType){
 				case 'ERPia' : 
 					$localstorage.set("EAdminCode", '');
-					console.log($localstorage.get("EAdminCode"));
 				break;
 				case 'SCM' : 
 					$localstorage.set("SAdminCode", '');
@@ -460,13 +442,13 @@ $scope.pushYNcheck=function(){
 		if($scope.loginckbox.UserIdCK == true){
 			switch(userType){
 				case 'ERPia' :
-					$localstorage.set("EUserId", $rootScope.loginData.UserId);
+					$localstorage.set("EUserId", $filter('lowercase')($rootScope.loginData.UserId));
 				break;
 				case 'SCM' : 
-					$localstorage.set("SUserId", $rootScope.loginData.UserId);
+					$localstorage.set("SUserId", $filter('lowercase')($rootScope.loginData.UserId));
 				break;
 				case 'Normal' : 
-					$localstorage.set("NUserId", $rootScope.loginData.UserId);
+					$localstorage.set("NUserId", $filter('lowercase')($rootScope.loginData.UserId));
 				break;
 			}
 		}else{
@@ -519,25 +501,26 @@ $scope.pushYNcheck=function(){
                        {googleProjectNumber: "832821752106",
                         autoRegister: true},
                         app.didReceiveRemoteNotificationCallBack);
-		console.log("dologin")
+		admin_code = $filter('lowercase')(admin_code);
+		id = $filter('lowercase')(id);
 		if (autologin_YN == 'Y') {
 			switch(loginType){
 				case 'E' : $rootScope.userType = 'ERPia'; $rootScope.loginMenu = 'User'; $scope.footer_menu = 'U'; break;
 				case 'S' : $rootScope.userType = 'SCM'; $rootScope.loginMenu = 'User'; $scope.footer_menu = 'U'; break;
 				case 'N' : $rootScope.userType = 'Normal'; $rootScope.loginMenu = 'User'; $scope.footer_menu = 'U'; break;
 			}
-			$rootScope.loginData.Admin_Code = admin_code;
-			$rootScope.loginData.UserId = id;
+			$rootScope.loginData.Admin_Code = $filter('lowercase')(admin_code);
+			$rootScope.loginData.UserId = $filter('lowercase')(id);
 			$rootScope.loginData.Pwd = pwd;
-			console.log("자동로그인실행중:", admin_code, id, pwd, loginType);
 		}else{
-			console.log( $rootScope.deviceInfo);
 			switch($rootScope.userType){
 				case 'ERPia': userType ='E'; break;
 				case 'SCM': userType = 'S'; break;
 				case 'Normal': userType = 'N'; break;
 			}
 			if(ERPiaAPI.toast == 'Y'){//uuid, admin_code, loginType, id, pwd, autoLogin_YN, UUID, phoneno, DeviceInfo
+				$rootScope.loginData.Admin_Code = $filter('lowercase')($scope.loginData.Admin_Code);
+				$rootScope.loginData.UserId = $filter('lowercase')($scope.loginData.UserId);
 				uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 			}else{
 				switch($rootScope.userType){
@@ -781,13 +764,27 @@ $scope.pushYNcheck=function(){
 									console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 								}else{
 								}
-								$state.go("app.erpia_board-Main");							
+								location.href= '#/app/board/Main';
+								// $state.go("app.erpia_board-Main");							
 							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
 								$scope.showCheckSano();
 
 							}else if($rootScope.PushData.state != "" || !isUndefined($rootScope.PushData.state) || $rootScope.PushData.state != "undefined"){ //기타 이벤트
-								$state.go($rootScope.PushData.state);
-								console.log("이거야?");
+								 if (jsonData.additionalData) {
+								    if (jsonData.additionalData.launchURL){
+								     $cordovaInAppBrowser.open(jsonData.additionalData.launchURL, '_blank', browseroptions)
+
+										      .then(function(event) {
+										         // success
+										      })
+
+										      .catch(function(event) {
+										         // error
+										      });
+								    
+						
+								  }
+								}
 							}else{
 							
 						}
@@ -887,7 +884,6 @@ $scope.pushYNcheck=function(){
 		$scope.LoginAdminCodeCK($rootScope.userType);
 		$scope.LoginPwdCK($rootScope.userType);
 		$scope.LoginUserIdCK($rootScope.userType);
-		console.log("체크한거 저장중....");
 	};
 
   	$scope.loginHTML = "로그인";
@@ -936,7 +932,6 @@ $scope.pushYNcheck=function(){
 		if($rootScope.rndNum == $scope.SMSData.rspnText){
 			CertifyService.check($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.userData.G_Code, $scope.SMSData.rspnText, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)//수정 4.22
 			.then(function(response){
-				console.log('rspnText : ', response);
 				$scope.certificationModal.hide();
 				$scope.SMSData.rspnText = '';
 			})
@@ -1002,20 +997,15 @@ $scope.pushYNcheck=function(){
 		$rootScope.loginState = 'R';
 	 	var deviceInfo = cordova.require("cordova/plugin/DeviceInformation");
 		deviceInfo.get(function(result) {
-		        console.log("result = " + result);
 		        $rootScope.deviceInfo2 = JSON.parse(result);
 		        var phoneNo=$rootScope.deviceInfo2.phoneNo;
 		        if(phoneNo.substring(0,1)=="+"){
 		         // $rootScope.deviceInfo2.phoneNo.replace(\+82, 00);
 		         $rootScope.deviceInfo2.phoneNo=phoneNo.toString().replace("+82", "0");
-		    }else{
-		    	console.log("아니야",phoneNo.substring(0,1) );		    
+		    }else{	    
 		    }
 		   	$scope.SMSData.recUserTel =  $rootScope.deviceInfo2.phoneNo;
-			console.log("$scope.SMSData.recUserTel", $scope.SMSData.recUserTel);
-		        console.log($rootScope.deviceInfo2.phoneNo);
 		    }, function() {
-		        console.log("error");
 		    });
 		$rootScope.deviceInfo.device = $cordovaDevice.getDevice();
 		$rootScope.deviceInfo.cordova = $cordovaDevice.getCordova();
@@ -1023,7 +1013,6 @@ $scope.pushYNcheck=function(){
 		$rootScope.deviceInfo.platform = $cordovaDevice.getPlatform();
 		$rootScope.deviceInfo.uuid = $cordovaDevice.getUUID();
 		$rootScope.deviceInfo.version = $cordovaDevice.getVersion();
-		console.log(">>>>>>>>",$rootScope.deviceInfo.device, $rootScope.deviceInfo.cordova, $rootScope.deviceInfo.model, $rootScope.deviceInfo.platform )
 		$scope.ckversion={};
 	   	$scope.thisversioncurrent='Y';
 	   	$scope.thisversion='';
@@ -1034,7 +1023,6 @@ $scope.pushYNcheck=function(){
 			$timeout(function(){
 				if(data != '<!--Parameter Check-->'){
 					$rootScope.ckversion = data;
-					console.log("currentVersionService", $rootScope.ckversion);
 				if(ionic.Platform.isAndroid()==true){
 						console.log('android');
 						var version = $scope.version.Android_version.split('.');
@@ -1069,7 +1057,6 @@ $scope.pushYNcheck=function(){
 				else alert('조회실패. 데이터접속을 확인해주세요.');
 			}
 		      		}, 1000);
-				console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
 		});
 
 			$scope.updatego=function(){
@@ -1082,8 +1069,8 @@ $scope.pushYNcheck=function(){
 				             text: '확인',
 				             type: 'button-positive',
 				             onTap: function(e) {
-				             	if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
-						else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
+				             	if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/store/apps/details?id=com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
+						else location.href=window.open('https://itunes.apple.com/kr/app/erpia-ialpia/id1100611372?mt=8&ign-mpt=uo%3D4','_system', 'location=yes,closebuttoncaption=Done');
 				             }
 				           },
 				         ]
@@ -1126,24 +1113,20 @@ $scope.pushYNcheck=function(){
 			$rootScope.loginData.User_Id = $localstorage.get("autoUser_Id");
 			$rootScope.loginData.Pwd = $localstorage.get("autoPwd");
 			$rootScope.loginData.autologin_YN = $localstorage.get("autoLoginYN");
-			console.log("1",$localstorage.get("autoAdmin_Code"), $localstorage.get("autologinType"), $localstorage.get("autoUser_Id"), $localstorage.get("autoPwd"));
 		if($rootScope.loginData.autologin_YN=='Y'){
 			$rootScope.autoLogin = true;
 			$rootScope.loginData.chkAutoLogin=true;
-			console.log("여기1");
 			
 			$timeout(function(){
 				$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
 	      		}, 1000);
 		}else{
-			console.log("여기2");
 			$rootScope.autoLogin = false;
 			$rootScope.loginData.chkAutoLogin=false;
 		}
 
 		
 	}else{
-		console.log("",$localstorage.get("autoAdmin_Code"), $localstorage.get("autologinType"), $localstorage.get("autoUser_Id"), $localstorage.get("autoPwd"));
 		$rootScope.autoLogin = false;
 		$rootScope.loginData.chkAutoLogin=false;
 	}
@@ -1179,14 +1162,12 @@ $scope.pushYNcheck=function(){
 		$scope.tradeList.isRead = '열람';
 		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode)
 			.then(function(response){
-				console.log('list', response);
 				if(response.list.length == 0) {
 					$scope.haveList = 'N';
 				}else{
 					$scope.haveList = 'Y';
 					$scope.items = response.list;
 				}
-				console.log('haveList', $scope.haveList);
 			})
 	}else if($rootScope.userType == 'ERPia'){
 		$scope.tradeList.Title = '매출거래처 발송 내역';
@@ -1201,7 +1182,6 @@ $scope.pushYNcheck=function(){
 					$scope.haveList = 'Y';
 					$scope.items = response.list;
 				}
-				console.log('haveList', $scope.haveList);
 			})
 	}
 
@@ -1223,8 +1203,6 @@ $scope.pushYNcheck=function(){
 	    if( dd<10) dd="0"+dd;
 
 	    $scope.nowtime = yy+"-"+mm+"-"+dd+"/"+hh+":"+mm+":"+tt;
-
-		console.log('날짜 잘 구해와지나?=>', yy , "-" , mm , "-" ,dd, "/", hh, ":", mm, ":", tt);
 	}
 
 	$scope.refresh_time();
@@ -1309,8 +1287,8 @@ $scope.pushYNcheck=function(){
 			var html_view3 = "<tr><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>상 호</td><td name='td_GerName1' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>" + detail.R_Snm +"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=10 colspan=2>성 명</td><td name='td_userName1' style='border-bottom: solid #0100FF;'>" + detail.R_Boss + "</td><td style='color:blue; border-bottom: solid #0100FF; border-right: solid #0100FF;' align=right>(인)</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;''>상 호</td><td name='td_GerName2' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=3>" + detail.Snm + "</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=45>성 명</td><td name='td_userName2' style='border-bottom: solid #0100FF;'>" + detail.Boss + "</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' align=right>(인)</td></tr>";
 			var html_view4 = "<tr><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>주 소</td><td name='td_Addr1' style='border-bottom: solid #0100FF;'colspan=6>"+detail.R_Addr+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>주 소</td><td name='td_Addr2' style='border-bottom: solid #0100FF; border-right: solid #0100FF;' colspan=6>"+detail.Addr+"</td> </tr>";
 			var html_view5 = "<tr><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>업 태</td><td name='td_UpType1' style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+ detail.R_up +"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=45>종 목</td><td name='td_Category1' style='border-bottom: solid #0100FF;' colspan=4>"+detail.R_jong+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;''>업 태</td><td name='td_UpType2' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>"+detail.Up+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' width=45>종 목</td><td name='td_Category2'style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=3>"+detail.Jong+"</td></tr>";
-			var html_view6 = "<tr><td style='color:blue; border-left: solid #0100FF; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>합계금액</td><td name='td_TotAmt' style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+commaChange(detail.Hap)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>전잔액</td><td name='td_PreJanAmt' style='border-bottom: solid #0100FF;' colspan=3>"+commaChange(detail.Pre_Jan_Amt)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>담 당</td><td name='td_DamDang' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>"+detail.G_GDamdang+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>전 화</td><td name='td_Tel' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=3>"+detail.G_GDamdangTel+"</td></tr>";
-			var html_view7 = "<tr><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #0100FF; border-bottom: solid #0100FF;'>"+commaChange(detail.In_Amt)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #0100FF;' colspan=3>" + commaChange(detail.Cur_Jan_Amt )+ "</td><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #0100FF; '>"+detail.Boss+"</td><td style='color: blue; border-bottom: solid #0100FF; border-right: solid #0100FF;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";
+			var html_view6 = "<tr><td style='color:blue; border-left: solid #0100FF; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>합계금액</td><td name='td_TotAmt' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' align=right>"+commaChange(detail.Hap)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>전잔액</td><td name='td_PreJanAmt' style='border-bottom: solid #0100FF;' colspan=3 align=right>"+commaChange(detail.Pre_Jan_Amt)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>담 당</td><td name='td_DamDang' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>"+detail.G_GDamdang+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;'>전 화</td><td name='td_Tel' style='border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=3>"+detail.G_GDamdangTel+"</td></tr>";
+			var html_view7 = "<tr><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #0100FF; border-bottom: solid #0100FF;' align=right>"+commaChange(detail.In_Amt)+"</td><td style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #0100FF;' colspan=3 align=right>" + commaChange(detail.Cur_Jan_Amt )+ "</td><td style='color:blue; border-bottom: solid #0100FF; border-left: solid #0100FF; border-right: solid #0100FF;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #0100FF; '>"+detail.Boss+"</td><td style='color: blue; border-bottom: solid #0100FF; border-right: solid #0100FF;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:blue; border-right: solid #0100FF; border-bottom: solid #0100FF;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";
 
 			//두번째 테이블
 			var html_view8 = "<table bordercolor='#0100FF' border=3 width=1080 style='margin-top:10px;' cellspacing=0 cellpadding=0><thead style='color:blue; border-bottom: solid #0100FF;'><th width=550 style='border-right:2px solid #0100FF;'' colspan=3>품목 및 규격</th><th style='border-right:2px solid #0100FF;'' width=97>수 량</th><th style='border-right:2px solid #0100FF;'' width=140>단 가</th><th style='border-right:2px solid #0100FF;'' width=140>공 급 가 액</th><th width=140>세 액</th></thead>";
@@ -1324,7 +1302,7 @@ $scope.pushYNcheck=function(){
 			var html_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax8)+"</td></tr>";
 			var html_view17 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name9)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea9)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price9)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong9)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax9)+"</td></tr>";
 			var html_view18 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;'>"+ checklist(detail.G_name10)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.G_ea10)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.G_price10)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.G_Gong10)+"</td><td width=140 style='border-bottom: solid #0100FF;' align=right>"+checklist2(detail.tax10)+"</td></tr>";
-			var html_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #0100FF;'>비 고<br/><br/>사 항</td><td width=450>"+ detail.bigo +"</td><td  style='height:25px; border-right: solid #0100FF; border-bottom: solid #0100FF; border-left:2px solid #0100FF;'>합계</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #0100FF;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6 ></td></tr></table><span align='center'>(" + j + "/" + detaillist.length + ")</span><br>"
+			var html_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #0100FF;'>비 고<br/><br/>사 항</td><td width=450>"+ detail.bigo +"</td><td  style='height:25px; border-right: solid #0100FF; border-bottom: solid #0100FF; border-left:2px solid #0100FF;'>합계</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #0100FF; border-bottom: solid #0100FF;' align=right>"+checklist2(detail.H_Price)+"</td><td style='border-bottom: solid #0100FF;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6 ></td></tr></table><span align='center'>(" + j + "/" + detaillist.length + ")</span><br>"
 
 
 
@@ -1333,8 +1311,8 @@ $scope.pushYNcheck=function(){
 			var html2_view3 = "<tr><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>상 호</td><td name='td_GerName1' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>" + detail.R_Snm +"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=10 colspan=2>성 명</td><td name='td_userName1' style='border-bottom: solid #FF0000;'>" + detail.R_Boss + "</td><td style='color:red; border-bottom: solid #FF0000; border-right: solid #FF0000;' align=right>(인)</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;''>상 호</td><td name='td_GerName2' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=3>" + detail.Snm + "</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=45>성 명</td><td name='td_userName2' style='border-bottom: solid #FF0000;'>" + detail.Boss + "</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' align=right>(인)</td></tr>";
 			var html2_view4 = "<tr><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>주 소</td><td name='td_Addr1' style='border-bottom: solid #FF0000;'colspan=6>"+detail.R_Addr+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>주 소</td><td name='td_Addr2' style='border-bottom: solid #FF0000; border-right: solid #FF0000;' colspan=6>"+detail.Addr+"</td> </tr>";
 			var html2_view5 = "<tr><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>업 태</td><td name='td_UpType1' style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+ detail.R_up +"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=45>종 목</td><td name='td_Category1' style='border-bottom: solid #FF0000;' colspan=4>"+detail.R_jong+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;''>업 태</td><td name='td_UpType2' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>"+detail.Up+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' width=45>종 목</td><td name='td_Category2'style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=3>"+detail.Jong+"</td></tr>";
-			var html2_view6 = "<tr><td style='color:red; border-left: solid #FF0000; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>합계금액</td><td name='td_TotAmt' style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+commaChange(detail.Hap)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>전잔액</td><td name='td_PreJanAmt' style='border-bottom: solid #FF0000;' colspan=3>"+commaChange(detail.Pre_Jan_Amt)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>담 당</td><td name='td_DamDang' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>"+detail.G_GDamdang+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>전 화</td><td name='td_Tel' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=3>"+detail.G_GDamdangTel+"</td></tr>";
-			var html2_view7 = "<tr><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #FF0000; border-bottom: solid #FF0000;'>"+commaChange(detail.In_Amt)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #FF0000;' colspan=3>" + commaChange(detail.Cur_Jan_Amt) + "</td><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #FF0000;'>"+detail.Boss+"</td><td style='color: red; border-bottom: solid #FF0000; border-right: solid #FF0000;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";
+			var html2_view6 = "<tr><td style='color:red; border-left: solid #FF0000; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>합계금액</td><td name='td_TotAmt' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' align=right>"+commaChange(detail.Hap)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>전잔액</td><td name='td_PreJanAmt' style='border-bottom: solid #FF0000;' colspan=3 align=right>"+commaChange(detail.Pre_Jan_Amt)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>담 당</td><td name='td_DamDang' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>"+detail.G_GDamdang+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;'>전 화</td><td name='td_Tel' style='border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=3>"+detail.G_GDamdangTel+"</td></tr>";
+			var html2_view7 = "<tr><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>입 금 액</td><td name='td_Deposit 'style='border-right: solid #FF0000; border-bottom: solid #FF0000;' align=right>"+commaChange(detail.In_Amt)+"</td><td style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=2>현잔액</td><td name='td_NowJanAmt' style='border-bottom: solid #FF0000;' colspan=3 align=right>" + commaChange(detail.Cur_Jan_Amt) + "</td><td style='color:red; border-bottom: solid #FF0000; border-left: solid #FF0000; border-right: solid #FF0000;' colspan=2>인 수 자</td><td name='td_Receiver' style='border-bottom: solid #FF0000;'>"+detail.Boss+"</td><td style='color: red; border-bottom: solid #FF0000; border-right: solid #FF0000;' align='right'>(인)</td>	<td name='td_Receiver_Mark' style='color:red; border-right: solid #FF0000; border-bottom: solid #FF0000;' colspan=4>아래의 금액을&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;합니다.</td></tr></table>";
 
 
 			//두번째 테이블
@@ -1350,7 +1328,7 @@ $scope.pushYNcheck=function(){
 			var html2_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax8)+"</td></tr>";
 			var html2_view17 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name9)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea9)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price9)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong9)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax9)+"</td></tr>";
 			var html2_view18 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;'>"+ checklist(detail.G_name10)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.G_ea10)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.G_price10)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.G_Gong10)+"</td><td width=140 style='border-bottom: solid #FF0000;' align=right>"+checklist2(detail.tax10)+"</td></tr>";
-			var html2_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #FF0000;'>비 고<br/><br/>사 항</td><td width=450>"+detail.bigo+"</td><td  style='height:25px; border-right: solid #FF0000; border-bottom: solid #FF0000; border-left:2px solid #FF0000;'>합계</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.Hap)+"</td><td style='border-bottom: solid #FF0000;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6></td></tr></table><span align='center'>(" + j + "/" + detaillist.length + ")</span><br>"
+			var html2_view19 = "<tr><td rowspan=2 style='width:45px; height:100px; border-right:2px solid #FF0000;'>비 고<br/><br/>사 항</td><td width=450>"+detail.bigo+"</td><td  style='height:25px; border-right: solid #FF0000; border-bottom: solid #FF0000; border-left:2px solid #FF0000;'>합계</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist(detail.numhap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.pricehap)+"</td><td style='border-right:2px solid #FF0000; border-bottom: solid #FF0000;' align=right>"+checklist2(detail.H_Price)+"</td><td style='border-bottom: solid #FF0000;' align=right>"+checklist2(detail.taxhap)+"</td></tr><tr><td colspan=6></td></tr></table><span align='center'>(" + j + "/" + detaillist.length + ")</span><br>"
 
 
 			var html_end =  "</body></html>" ;
@@ -1409,9 +1387,6 @@ $scope.pushYNcheck=function(){
 			       	var imgname = name + "_" + nameplus ;
 			       }
 
-				console.log('check1=>>', imgname);
-				console.log('check2=>>', admincode);
-
 				$.ajax({
 				  url: "http://image.erpia.net/fn_save_card_data_image.asp?Kind=" + Kind,
 				  method: "POST",
@@ -1427,9 +1402,6 @@ $scope.pushYNcheck=function(){
 	}
 
 	$scope.shareAnywhere = function(url, where,Mutual) {
-		// console.log('공유할꺼야 =>', $scope.userData.Com_Name);
-		// var comname = $scope.userData.Com_Name.split('<br>');
-		// var com_name = comname[0] + comname[1];
 	       if(where == 'kakao'){
 	       	$cordovaSocialSharing.shareVia("com.kakao.talk","[Erpia 거래명세표] "+'('+Mutual+')'+url);
 	       }else if(where == 'sms'){
@@ -1454,7 +1426,6 @@ $scope.pushYNcheck=function(){
 				var numhap = 0; // 수량합계
 				var num = 1;
 				if(response.list[0].vatYN == 'Y'){// 세액적용
-					console.log('새액적용할꺼야?');
 					response.list[0].Hap = 0;
 					switch( num ){
 						case 1:
@@ -1462,10 +1433,9 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea1); 
 								 var gong = Math.round(price);// 반올림함수
 								 response.list[0].G_Gong1 = gong;
-								 response.list[0].Hap = gong;
+								 response.list[0].Hap = parseInt(response.list[0].G_price1)* parseInt(response.list[0].G_ea1);
 								 response.list[0].numhap = response.list[0].G_ea1;
 								 response.list[0].tax1 = parseInt(response.list[0].G_price1) * parseInt(response.list[0].G_ea1) - parseInt(response.list[0].G_Gong1);
-								 response.list[0].taxhap = response.list[0].tax1;
 								 response.list[0].pricehap = response.list[0].G_price1;
 								 if(response.list[0].G_ea2 == null) break;
 
@@ -1474,10 +1444,9 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea2); 
 								 var gong = Math.round(price);
 								 response.list[0].G_Gong2 = gong;
-								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price2) * parseInt(response.list[0].G_ea2);
 								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea2);
 								 response.list[0].tax2 = parseInt(response.list[0].G_price2) * parseInt(response.list[0].G_ea2) - parseInt(response.list[0].G_Gong2);
-								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax2);
 								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price2);
 								 if(response.list[0].G_ea3 == null) break;
 
@@ -1486,10 +1455,9 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea3); 
 								 var gong = Math.round(price);
 								 response.list[0].G_Gong3 = gong;
-								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price3)* parseInt(response.list[0].G_ea3);
 								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea3);
 								 response.list[0].tax3 = parseInt(response.list[0].G_price3) * parseInt(response.list[0].G_ea3) - parseInt(response.list[0].G_Gong3);
-								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax3);
 								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price3);
 								 if(response.list[0].G_ea4 == null) break;
 
@@ -1498,10 +1466,9 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea4); 
 								 var gong = Math.round(price);
 								 response.list[0].G_Gong4 = gong;
-								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price4)* parseInt(response.list[0].G_ea4);
 								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea4);
 								 response.list[0].tax4 = parseInt(response.list[0].G_price4) * parseInt(response.list[0].G_ea4) - parseInt(response.list[0].G_Gong4);
-								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax4);
 								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price4);
 								 if(response.list[0].G_ea5 == null) break;
 
@@ -1510,10 +1477,9 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea5); 
 								 var gong = Math.round(price);
 								 response.list[0].G_Gong5 = gong;
-								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price5)* parseInt(response.list[0].G_ea5);
 								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
 								 response.list[0].tax5 = parseInt(response.list[0].G_price5) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong5);
-								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
 								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
 								 if(response.list[0].G_ea6 == null) break;
 
@@ -1522,10 +1488,9 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea6); 
 								 var gong = Math.round(price);
 								 response.list[0].G_Gong6 = gong;
-								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price6)* parseInt(response.list[0].G_ea6);
 								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea6);
 								 response.list[0].tax6 = parseInt(response.list[0].G_price6) * parseInt(response.list[0].G_ea6) - parseInt(response.list[0].G_Gong6);
-								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax6);
 								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price6);
 								 if(response.list[0].G_ea7 == null) break;
 
@@ -1534,10 +1499,9 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea7); 
 								 var gong = Math.round(price);
 								 response.list[0].G_Gong7 = gong;
-								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price7)* parseInt(response.list[0].G_ea7);
 								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea7);
 								 response.list[0].tax7 = parseInt(response.list[0].G_price7) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong7);
-								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax7);
 								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price7);
 								 if(response.list[0].G_ea8 == null) break;
 
@@ -1546,10 +1510,9 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea8); 
 								 var gong = Math.round(price);
 								 response.list[0].G_Gong8 = gong;
-								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price8)* parseInt(response.list[0].G_ea8);
 								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea8);
 								 response.list[0].tax8 = parseInt(response.list[0].G_price8) * parseInt(response.list[0].G_ea8) - parseInt(response.list[0].G_Gong8);
-								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax8);
 								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price8);
 								 if(response.list[0].G_ea9 == null) break;
 
@@ -1558,10 +1521,9 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea9); 
 								 var gong = Math.round(price);
 								 response.list[0].G_Gong9 = gong;
-								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price9)* parseInt(response.list[0].G_ea9);
 								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea9);
 								 response.list[0].tax9 = parseInt(response.list[0].G_price9) * parseInt(response.list[0].G_ea9) - parseInt(response.list[0].G_Gong9);
-								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax9);
 								 response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price9);
 								 if(response.list[0].G_ea10 == null) break;
 
@@ -1570,7 +1532,7 @@ $scope.pushYNcheck=function(){
 								 price = price * parseInt(response.list[0].G_ea10); 
 								 var gong = Math.round(price);
 								 response.list[0].G_Gong10 = gong;
-								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(gong);
+								 response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price10)* parseInt(response.list[0].G_ea10);
 								 response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea10);
 								 response.list[0].tax10 = parseInt(response.list[0].G_price10) * parseInt(response.list[0].G_ea10) - parseInt(response.list[0].G_Gong10);
 								 response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax10);
@@ -1578,6 +1540,8 @@ $scope.pushYNcheck=function(){
 								 break;
 						default : console.log('여기올일 없을껄....');
 					}
+					response.list[0].H_Price = parseInt(response.list[0].Hap)/1.1;
+					response.list[0].taxhap = parseInt(response.list[0].Hap) - parseInt(response.list[0].H_Price);
 				}else {//세액적용 안함
 					console.log('vat미포함 또는 영세율');
 					switch( num ){
@@ -1649,9 +1613,6 @@ $scope.pushYNcheck=function(){
 		$scope.reload_tradelist();
 		$scope.trade_Detail_Modal.hide();
 	}
-	// $scope.backToList = function(){
-	// 	$ionicSlideBoxDelegate.previous();
-	// }
 	/*프린트 (거래명세표 화면에서 프린트 버튼의 주석을 해제해야 기능을 사용할 수 있음.. 블루투스 연결까지는 확인했으나 프린트 잉크가 없어서 테스트 못함.)*/
 	$scope.print = function(){
 		cordova.plugins.printer.isAvailable(
@@ -1668,7 +1629,6 @@ $scope.pushYNcheck=function(){
 
 	$scope.check_Sano = function(){
 		if($rootScope.userType == "SCM" || $rootScope.userType == "Normal" ){
-			console.log('sano', $scope.userData.G_Sano.substring($scope.userData.G_Sano.lastIndexOf('-') + 1));
 			if($scope.userData.G_Sano.substring($scope.userData.G_Sano.lastIndexOf('-') + 1) == $scope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
@@ -1712,7 +1672,6 @@ $scope.pushYNcheck=function(){
 		$timeout(function(){
 			if(data != '<!--Parameter Check-->'){
 				$rootScope.ckversion = data;
-				console.log("currentVersionService", $rootScope.ckversion);
 			if(ionic.Platform.isAndroid()==true){
 					console.log('android');
 					var version = $scope.version.Android_version.split('.');
@@ -1747,9 +1706,7 @@ $scope.pushYNcheck=function(){
 			else alert('조회실패. 데이터접속을 확인해주세요.');
 		}
 	      		}, 1000);
-			console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
 	});
-	console.log("지금버전은?: ",$scope.thisversioncurrent, "최신버전: ",$scope.currentversion, "지금버전: ",$scope.thisversion);
 		$scope.updatebtn=function(){
 			if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
 			else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
@@ -1788,75 +1745,12 @@ $scope.pushYNcheck=function(){
 	         			$ionicLoading.hide();
 	      		}, 1000);
 	});
-	    // $scope.toggle = false;
-	// $scope.moreloading=0;
- //    	$scope.pageCnt=1;
- //    	$scope.maxover=0;
 
-	// NoticeService.getList($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',1)
-	// .then(function(data){
-	// 		$scope.maxover=0;
-	// 		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-	// 			$timeout(function(){
-	// 				if(data != '<!--Parameter Check-->'){
-	// 			    		$scope.maxover=0;
-	// 					$scope.items = data.list;
-	// 				}else{
-	// 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-	// 					else alert('조회된 데이터가 없습니다.');
-	// 					$scope.moreloading=0;
-	// 					$scope.maxover = 1;
-	// 				}
-	//        			$scope.moreloading=0;
-	//          			$ionicLoading.hide();
-	//       		}, 1000);
-	// });
-	//     /* 더보기 버튼 클릭시 */
-	// $scope.boards_more = function() {
-	//   		if($scope.items.length>0){
-	//   		console.log($scope.items.length);
-
-	//   		if($scope.maxover==0){
-	// 	        	$scope.pageCnt+=1;
-
-	// 	      	$scope.moreloading=1;
-
-
-	// 	      	BoardService.BoardInfo($scope.loginData.Admin_Code, $scope.loginData.UserId,'board_notice',$scope.pageCnt).then(function(data){
-	//       	 		$scope.maxCnt=0;
-	// 			$timeout(function(){
-	// 				if(data != '<!--Parameter Check-->'){
-	// 			    		$scope.maxover=0;
-	// 					for(var i=0; i<data.list.length; i++){
-	// 						$scope.items.push(data.list[i]);
-	// 					}
-	// 				}else{
-	// 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-	// 					else alert('조회된 데이터가 없습니다.');
-	// 					$scope.moreloading=0;
-	// 					$scope.maxover = 1;
-	// 				}
-	//        			$scope.moreloading=0;
-	// 	         		$ionicLoading.hide();
-	// 	      		}, 1000);
-	// 	      		});
-	// 		}
-	//       }
-	//     };
-	    /* 최상단으로 */
+	/* 최상단으로 */
 	$scope.scrollTop = function() {
     		$ionicScrollDelegate.scrollTop();
     	};
-	// $scope.sendSMS = function (message) {
-	// 	  KakaoLinkPlugin.call("kakaotalk share...");
-	// }
 
-	// $scope.sendEmail = function (message, subject) {
-	// 	message="테스트입니당.";
-	// 	subject="[이알피아모바일]세금계산서"
-	// 	fromemail="khs239@erpia.net"
-	//     $cordovaSocialSharing.shareViaEmail(message, subject, null, fromemail, null);
-	// }
 })
 // 통계리포트 설정 컨트롤러
 .controller('configCtrl_statistics', function($scope, $rootScope, statisticService, publicFunction, app){
@@ -1888,7 +1782,6 @@ $scope.pushYNcheck=function(){
 			rsltList += $scope.items[i].Idx + '^';
 			rsltList += $scope.items[i].visible + '^|';
 		}
-		console.log('rsltList', rsltList);
 		statisticService.save('myPage_Config_Stat', 'save_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
 	};
 	// 지우려고 만들었는데 2차 업데이트로 넘김.
@@ -1915,9 +1808,7 @@ $scope.pushYNcheck=function(){
 			arrAlarm.push({idx:5,name:'거래명세서 도착',checked:true});
 			arrAlarm.push({idx:6,name:'기타 이벤트',checked:true});
 			$scope.settingsList = arrAlarm;
-			console.log("is check All ");
 		}else{
-			console.log("is check All else ");
 			// 서버에 저장된 설정 값을 불러와서 알맞게 체크해줌.
 			alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 			.then(function(data){
@@ -2020,9 +1911,7 @@ $scope.pushYNcheck=function(){
 				else{
 					$scope.selectedAll = true;
 					$scope.settingsList = data.list;
-					console.log("splice 실행 전",$scope.settingsList);
 					$scope.settingsList.splice(0,1);
-					console.log("splice 실행 후",$scope.settingsList);
 				}
 			});
 		}
@@ -2047,7 +1936,6 @@ $scope.pushYNcheck=function(){
 				// window.plugins.PushbotsPlugin.tag(tagnum);
 				window.plugins.OneSignal.sendTag("key"+tagnum, tagnum);
 			}
-			console.log("tag all");
 		}else{
 			$scope.settingsList = [];
 			rsltList = '0^F^|1^F^|2^F^|3^F^|4^F^|5^F^|6^F^|';
@@ -2058,7 +1946,6 @@ $scope.pushYNcheck=function(){
 				// window.plugins.PushbotsPlugin.untag(tagnum);
 				window.plugins.OneSignal.deleteTag("key"+tagnum);
 			}
-			console.log("untag all");
 			// window.plugins.PushbotsPlugin.untag("all");
 			// window.plugins.PushbotsPlugin.tag("no");
 		}
@@ -2068,20 +1955,16 @@ $scope.pushYNcheck=function(){
 	}
 	// 알람 내용이 변경될때마다 그 내용을 서버에 저장
 	$scope.check_change = function(item){
-		console.log(item);
 		if(item.checked==true){
 			var tagnum = item.idx.toString();
 			// window.plugins.PushbotsPlugin.tag(tagnum);
 			window.plugins.OneSignal.sendTag("key"+tagnum, tagnum);
-			console.log("Pushbots.tag",tagnum);
 		}else{
 			var tagnum = item.idx.toString();
 			// window.plugins.PushbotsPlugin.untag(tagnum);
 			window.plugins.OneSignal.deleteTag("key"+tagnum);
-			console.log("Pushbots.untag",tagnum);
 		}
 		var rsltList = '';
-		console.log('settingsList', $scope.settingsList[0]);
 		for(var i=0; i<cntList; i++){
 			rsltList += $scope.settingsList[i].idx + '^';
 			rsltList += ($scope.settingsList[i].checked == true)?'T^|':'F^|';
@@ -2097,7 +1980,6 @@ $scope.pushYNcheck=function(){
 		$rootScope.autoLogin = true;
 		// $localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 		$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
-		console.log("autologin", $rootScope.loginData.loginType,  $rootScope.loginData.User_Id);
 	}else{
 		$rootScope.autoLogin = false;
 		$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
@@ -2213,9 +2095,7 @@ $scope.pushYNcheck=function(){
 	$scope.load_scm_chart = function(){
 	    AmChart_Service.scm_Chart('scm', 'scm', $scope.loginData.Admin_Code, 3, $scope.userData.G_Code)
 	    .then(function(response){
-	    	console.log('데이터가 이상하다. =', response);
 	    	var chartData = response;
-	    	console.log('chartData', chartData);
 	    	if(chartData.length == 0){
 	    		AmCharts.addInitHandler(function(kind) {
 			//kind.height = containerwidth
@@ -2316,7 +2196,7 @@ $scope.pushYNcheck=function(){
 	$scope.load_scm_chart();
 }) // 메인화면 컨트롤러
 .controller('MainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, app){
-	console.log("MainCtrl");
+
 
 	$scope.ERPiaCS_Link = function() {
         $state.go('app.erpia_cs');
@@ -2333,7 +2213,7 @@ $scope.pushYNcheck=function(){
 })
 
 .controller('CsCtrl', function($rootScope, $scope, $ionicModal, $ionicPopup, $timeout, $stateParams, $location, $http, csInfoService, TestService, $ionicHistory, ERPiaAPI, $cordovaToast, app){
-	console.log("CsCtrl");
+
 	$scope.csData = {
 		interestTopic1 : 'no',
 		interestTopic2 : 'no',
@@ -2354,7 +2234,6 @@ $scope.pushYNcheck=function(){
     $scope.csagree=function(){
     	if($scope.cscustomagree == false) $scope.cscustomagree =true;
     	else $scope.cscustomagree = false;
-    	console.log($scope.cscustomagree);
     }
     $scope.csagreemodalopen=function(){
     	$scope.csagreeModal.show();
@@ -2441,7 +2320,6 @@ $scope.pushYNcheck=function(){
 	  		errMsg += "/문의사항";
 	  	}
 	  	if(errMsg != ""){
-	  		console.log(errMsg + "쓰셈");
 	  		if(errMsg.substring(0, 1) == "/"){
 	  			errMsg = errMsg.replace("/", "");
 	  		}
@@ -2519,8 +2397,6 @@ $scope.pushYNcheck=function(){
 	$rootScope.useBoardCtrl = "Y";
 	var idx = $rootScope.boardIndex;//푸쉬받은것에서 idx번호를 입력 후 어떤 종류의 게시판인지 판별
 	$rootScope.PushData.state='';
-	console.log("idx", $rootScope.boardIndex);
-	console.log($rootScope.PushData.state,"boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 	$scope.onTouch = function(){
 		$ionicSlideBoxDelegate.enableSlide(false);
 		$ionicSideMenuDelegate.canDragContent(false);
@@ -2709,7 +2585,6 @@ $scope.pushYNcheck=function(){
 
 		}
 
-	console.log(">>>>페이지cnt", $scope.searchck.SearchValue)
 	};
 
 
@@ -2836,8 +2711,6 @@ $scope.pushYNcheck=function(){
     /* 더보기 버튼 클릭시 */
 	$scope.boards_more = function() {
 	  		if($scope.items.length>0){
-	  		console.log($scope.items.length);
-	  		console.log($rootScope.boardIndex);
 
 	  		if($scope.maxover==0){
 		        	$scope.pageCnt+=1;
@@ -2850,7 +2723,6 @@ $scope.pushYNcheck=function(){
 							$timeout(function(){
 								if(data != '<!--Parameter Check-->' && data.list.length>0){
 							    		$scope.maxover=0;
-							    		console.log('data.list', data.list)
 									for(var i=0; i<data.list.length; i++){
 										$scope.items.push(data.list[i]);
 									}
@@ -2966,14 +2838,12 @@ $scope.pushYNcheck=function(){
 										$timeout(function(){
 											if(data != '<!--Parameter Check-->' && data.list.length>0){
 												for(var i=0; i<data.list.length; i++){
-													console.log('data.list', data.list)
 													$scope.maxover=0;
 													$scope.items.push(data.list[i]);
 												}
 											}else{
 												if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 												else alert('조회된 데이터가 없습니다.');
-												console.log('data.list', data.list)
 												$scope.moreloading=0;
 												$scope.maxover = 1;
 											}
@@ -3016,7 +2886,6 @@ $scope.pushYNcheck=function(){
 			PushSelectService.select('Mobile_Push_Log', 'SELECT', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 			.then(function(data){
 				$scope.items = data.list;
-				console.log($scope.items);
 			})
 		} else {
 			// alert('로그인 후 실행해주세요.');
@@ -3059,7 +2928,6 @@ $scope.pushYNcheck=function(){
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
-	console.log($stateParams);
 	$scope.playlists = g_playlists;
 	$scope.playlist = $scope.playlists[$stateParams.playlistId - 1];
 })
@@ -3089,6 +2957,7 @@ $scope.pushYNcheck=function(){
 	    "width" : "100%",
 	    "height" : "100%"
 	};
+	/*차트 리스트 목록관련*/
 	$scope.chartlist = false;
 	$scope.chrtlistF = function(){
 		if($scope.chartlist == false){
@@ -3097,6 +2966,7 @@ $scope.pushYNcheck=function(){
 			$scope.chartlist = false;
 		}
 	}
+	/*차트 슬라이드 관련*/
 	$scope.onTouch = function(){
 		$ionicSlideBoxDelegate.enableSlide(false);
 	 };
@@ -3111,13 +2981,7 @@ $scope.pushYNcheck=function(){
 
 	$scope.previousSlide = function() {
 		$ionicSlideBoxDelegate.previous();
-	};
-
-	$scope.slideChanged = function(index) {
-		$ionicSlideBoxDelegate.slide(index, 500);
-		$scope.chartlist = false;
-	};
-
+	};	
 
 	$scope.dashBoard = {};
 	var indexList = [];
@@ -3419,9 +3283,7 @@ $scope.pushYNcheck=function(){
 
 		if (load_kind == "refresh")
 		{	$scope.loadingani();
-			console.log('??', request.responseText);
 			response = eval(request.responseText);
-			console.log('확인 ->', response);
 			// $rootScope.time_ref = response[0].in_date;
 			$.each(response[0], function(index, jsonData){
 						tmpAlert += jsonData;
@@ -3470,6 +3332,13 @@ $scope.pushYNcheck=function(){
 
 
 	};
+
+	$scope.slideC= function(index) {
+		var num = parseInt(index);
+		$ionicSlideBoxDelegate.slide(num, 500);
+		$scope.loadingani();
+	};
+
 	// ERPia 차트화면에서 위에 차트 이름을 보여주는 부분. (차트 이름을 변경시켜야 하므로 서버에 저장하고 이를 불러옴.)
 	statisticService.title('myPage_Config_Stat', 'select_Title', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
 	.then(function(data){
@@ -3479,6 +3348,10 @@ $scope.pushYNcheck=function(){
 
 	// 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함.
 	$scope.onSlideMove = function(data) {
+		if($scope.chartlist != false){
+			data.index = parseInt(data.index);
+			$scope.chartlist = false;
+		}
 		console.log("You have selected " + data.index + " tab");
 		$scope.loadingani();
 		var titles =  [{Idx:0, title:"홈"}
@@ -3504,7 +3377,6 @@ $scope.pushYNcheck=function(){
 			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index)
 			.then(function(response){
 				$rootScope.kind = 'chart' + response.list[0].idx;
-				console.log('넌머니?=>',response.list[0].idx);
 				switch (response.list[0].idx)
 				{
 					case '1' : $scope.kind = titles[1].title; break;
@@ -3592,8 +3464,6 @@ $scope.pushYNcheck=function(){
 							'</div>'+ '</ion-content></ion-scroll>';
 				}
 
-
-				console.log(data.index);
 				switch(data.index){
 					case 1: $('#s1').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 2: $('#s2').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
@@ -3643,7 +3513,6 @@ $scope.pushYNcheck=function(){
 				}
 				
 				$scope.btn();
-				// console.log($("button[name=btnGrid]").css('color'));
 
 				$("button[name=btnGrid]").click(function() {
 					$scope.loadingani();
@@ -3711,7 +3580,6 @@ $scope.pushYNcheck=function(){
 		window.plugins.OneSignal.getIds(function(ids) {
 		  // document.getElementById("OneSignalUserID").innerHTML = "UserID: " + ids.userId;
 		  // document.getElementById("OneSignalPushToken").innerHTML = "PushToken: " + ids.pushToken;
-		  console.log('getIds: ' + JSON.stringify(ids));
 		  	$rootScope.token = ids.pushToken;
 		  	$rootScope.UserKey = $rootScope.deviceInfo.uuid;
 		});
@@ -3766,7 +3634,7 @@ $scope.pushYNcheck=function(){
     $rootScope.changolists=[];
     $rootScope.mejang2 =[]; // 체인지 변수
 
-    /*환경설정값 있는지 먼저 불러오기.*/
+ /*환경설정값 있는지 먼저 불러오기.*/
     MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
 	.then(function(data){
 		$rootScope.setupData = data;
@@ -3780,31 +3648,23 @@ $scope.pushYNcheck=function(){
 			MconfigService.erpia_basicM($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
 			.then(function(data){
 				var basicMeajang_code = data.list[0].Sale_Place_Code;
-				console.log('잘나오지?=>',basicMeajang_code);
-				if(data.list[0].Sale_Place_Code.length > 1){
+				if(data.list[0].Sale_Place_Code == null || data.list[0].Sale_Place_Code.length == undefined){
+					$rootScope.setupData.basic_Place_Code = '000';
+				}else{
 					$rootScope.setupData.basic_Place_Code = data.list[0].Sale_Place_Code;
 					for(var i=0; i < $rootScope.mejanglists.length; i++ ){
 						if($rootScope.mejanglists[i].Sale_Place_Code == basicMeajang_code){
-							console.log('같다!!!!!',i);
-							console.log('0000=>',$rootScope.mejanglists);
 							$rootScope.mejang2 = $rootScope.mejanglists[i];
-							console.log('1111=>',$rootScope.mejanglists);
 							$rootScope.mejanglists.splice(0,$rootScope.mejanglists.length);
 							$rootScope.mejanglists.push($rootScope.mejang2); 
-							console.log('2222=>',$rootScope.mejanglists);
-							console.log($rootScope.mejanglists.Sale_Place_Code);
 							break;
 						}
 					}
-				}else{
-					$rootScope.setupData.basic_Place_Code = '000';
-				}	
-				
-				/*기본 창고조회*/
+				}
+				/*기본 창고조회 php래 프래임워크 */
 				MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
 				.then(function(data){
 					$rootScope.changolists = data.list;
-					console.log($rootScope.changolists);
 					var gubun = false;
 					for(var i = 0; i < $rootScope.changolists.length; i++){
 						if($rootScope.changolists[i].Code == $rootScope.setupData.basic_Ch_Code){
@@ -3861,7 +3721,6 @@ $scope.pushYNcheck=function(){
 
              		MconfigService.configIU($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData, mode)
 						.then(function(data){
-							console.log('Y?',data.list[0].rslt);
 							if(data.list[0].rslt == 'Y'){
 								$ionicHistory.goBack();
 							}else{
@@ -4040,12 +3899,9 @@ $scope.pushYNcheck=function(){
     			var gubun = 'Ger'
     			MiuService.companyAndgoods_lately($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun)
 			.then(function(data){
-				console.log(data);
-
 				if(data != '<!--Parameter Check-->'){
 					$scope.companylatelyDatas = [];
 					for(var i = 0; i < data.list.length; i++){
-						console.log('데이터 구별중....=>',i);
 						if($rootScope.distinction == 'meaip'){
 							if(data.list[i].SM_Gubun == 'M' && data.list[i].Search_Ger_Name.length != 0){
 								$scope.companylatelyDatas.push(data.list[i]);
@@ -4095,7 +3951,6 @@ $scope.pushYNcheck=function(){
     			var gubun = 'Ger';
 	    		MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun, $scope.company.username, $scope.company.code)
 			.then(function(data){
-				console.log(data);
 			})
     		}
 
@@ -4150,7 +4005,6 @@ $scope.pushYNcheck=function(){
 					if(data.list.length == 6){
 						var list_cnt = 5;
 						$rootScope.end_data.push(data.list[data.list.length-1]);
-						console.log('마지막꺼저장 =>',$rootScope.end_data);
 					}else{
 						var list_cnt = data.list.length;
 					}
@@ -4240,33 +4094,31 @@ $scope.pushYNcheck=function(){
 
 			case 'detail' :
 				if($scope.chit_lists.length>0){
-		  		console.log($scope.chit_lists.length);
+			  		if($scope.maxover==0){
+						$scope.pageCnt+=1;
+					    $scope.moreloading=1;
 
-		  		if($scope.maxover==0){
-					$scope.pageCnt+=1;
-				    $scope.moreloading=1;
-
-				    MLookupService.detailSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams,$scope.company, $scope.detail.Place_Code, $scope.pageCnt, $scope.todate)
-						.then(function(data){
-							$timeout(function(){
-							$scope.maxover=0;
-							if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-								else alert('조회된 데이터가 없습니다.');
-								$scope.moreloading=0;
-								$scope.maxover = 1;
-							}else{
-								for(var m = 0; m < data.list.length; m++){
-									$scope.chit_lists.push(data.list[m]);
-									if($rootScope.distinction == 'meaip'){
-										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
-									}else{
-										$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+					    MLookupService.detailSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams,$scope.company, $scope.detail.Place_Code, $scope.pageCnt, $scope.todate)
+							.then(function(data){
+								$timeout(function(){
+								$scope.maxover=0;
+								if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+									else alert('조회된 데이터가 없습니다.');
+									$scope.moreloading=0;
+									$scope.maxover = 1;
+								}else{
+									for(var m = 0; m < data.list.length; m++){
+										$scope.chit_lists.push(data.list[m]);
+										if($rootScope.distinction == 'meaip'){
+											$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].Meaip_Amt);
+										}else{
+											$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
+										}
 									}
 								}
-							}
-							$scope.moreloading=0;
-						}, 1000);
+								$scope.moreloading=0;
+							}, 1000);
 						})
 					}
 				}
@@ -4335,9 +4187,7 @@ $scope.pushYNcheck=function(){
 
 	$scope.quickcheck = function(index){
 	 	for(var i = 0; i < $scope.quicklists.length; i++){
-			if(i == index){
-				console.log('같음! true');
-			}else{
+			if(i != index){
 				$scope.quicklists[i].checked = false;
 			}
   		}
@@ -4447,10 +4297,8 @@ $scope.pushYNcheck=function(){
     	//조회셋 조회
     	MLookupService.detailSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams,$scope.company, $scope.detail.Place_Code, 1, $scope.todate)
 		.then(function(data){
-				console.log('detailSet =>' ,data);
 			MLookupService.lqdetail_set($scope.loginData.Admin_Code, $scope.loginData.UserId,$scope.reqparams,$scope.company,$scope.detail.Place_Code,1)
 				.then(function(data){
-					console.log('lqdetail_set', data);
 				})
 			if(data == '<!--Parameter Check-->'){
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 결과가 없습니다.', 'short', 'center');
@@ -4557,10 +4405,8 @@ $scope.pushYNcheck=function(){
 	};
 
 	$scope.detailSet_Delete = function(index) {
-		console.log(index);
-        MLookupService.Delete_OptSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.OptsetList[index].idx)
+           	MLookupService.Delete_OptSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.OptsetList[index].idx)
 		.then(function(data){
-			console.log(data);
 			if(data.list[0].rslt == 'Y'){
 				$scope.OptsetList.splice(index,1);
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('삭제되었습니다.', 'short', 'center');
@@ -4948,17 +4794,27 @@ $scope.pushYNcheck=function(){
     	}
     }
 
-    /*환경설정값 있는지 먼저 불러오기.*/
+    /*erpia 설정값*/
+    MconfigService.erpia_basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
+    .then(function(data){
+    	if(data.list[0].Sale_Place_Code.length > 1){
+    		$rootScope.erpia_code = data.list[0].Sale_Place_Code;
+    	}else{
+    		$rootScope.erpia_code = '000';
+    	}
+     })
+
+    /*환경설정값 있는지 먼저 불러오기*/
     MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
 	.then(function(data){
-		$rootScope.setupData = data;
+		$scope.setupData = data;
 		$scope.m_check.meajangCheck = 't';
 		$scope.m_check.changoCheck = 't';
 
 		if($rootScope.distinction == 'meaip'){  								//매입 수불구분확인 -------------------- 매입일경우
-			var i = $rootScope.setupData.basic_Subul_Meaip;
+			var i = $scope.setupData.basic_Subul_Meaip;
 			switch (i) {
-			    case '1' :  switch($rootScope.setupData.basic_Subul_Meaip_Before){
+			    case '1' :  switch($scope.setupData.basic_Subul_Meaip_Before){
 			    		   		case 'I' : console.log('I'); $scope.datas.subulkind=111; break;
 			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=122; break;
 			    		   		case 'N' : console.log('N'); break;
@@ -4973,9 +4829,9 @@ $scope.pushYNcheck=function(){
 				$scope.m_check.subulCheck = 'f';
 			}
 		}else{  																//매출 수불구분확인 -------------------- 매출일경우
-			var i = $rootScope.setupData.basic_Subul_Sale;
+			var i = $scope.setupData.basic_Subul_Sale;
 			switch (i) {
-			    case '1' :  switch($rootScope.setupData.basic_Subul_Sale_Before){
+			    case '1' :  switch($scope.setupData.basic_Subul_Sale_Before){
 			    		   		case 'C' : console.log('C'); $scope.datas.subulkind=221; break;
 			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=212; break;
 			    		   		case 'N' : console.log('N'); break;
@@ -4995,52 +4851,38 @@ $scope.pushYNcheck=function(){
 		/*기본 매장조회*/
 		MconfigService.basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
 		.then(function(data){
-			$rootScope.mejanglists = data.list;
-
-			/*이알피아 매장값 조회*/
-			MconfigService.erpia_basicM($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
-			.then(function(data){
-				var basicMeajang_code = data.list[0].Sale_Place_Code;
-				console.log('잘나오지?=>',basicMeajang_code);
-				if(data.list[0].Sale_Place_Code.length > 1){
-					$rootScope.setupData.basic_Place_Code = data.list[0].Sale_Place_Code;
-					for(var i=0; i < $rootScope.mejanglists.length; i++ ){
-						if($rootScope.mejanglists[i].Sale_Place_Code == basicMeajang_code){
-							console.log('같다!!!!!',i);
-							console.log('0000=>',$rootScope.mejanglists);
-							$rootScope.mejang2 = $rootScope.mejanglists[i];
-							console.log('1111=>',$rootScope.mejanglists);
-							$rootScope.mejanglists.splice(0,$rootScope.mejanglists.length);
-							$rootScope.mejanglists.push($rootScope.mejang2); 
-							console.log('2222=>',$rootScope.mejanglists);
-							console.log($rootScope.mejanglists.Sale_Place_Code);
-							break;
-						}
+			$scope.mejanglists = data.list;
+			if($rootScope.erpia_code == '000'){
+				$scope.setupData.basic_Place_Code = '000';
+			}else{
+				$scope.setupData.basic_Place_Code = $rootScope.erpia_code;
+				for(var i=0; i < $scope.mejanglists.length; i++ ){
+					if($scope.mejanglists[i].Sale_Place_Code == $rootScope.erpia_code){
+						$scope.mejang2 = $scope.mejanglists[i];
+						$scope.mejanglists.splice(0,$scope.mejanglists.length);
+						$scope.mejanglists.push($scope.mejang2); 
+						break;
 					}
-				}else{
-					$rootScope.setupData.basic_Place_Code = '000';
-				}	
+				}
 				
-				/*기본 창고조회*/
-				MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
-				.then(function(data){
-					console.log('data=>', data.list);
-					$rootScope.changolists = data.list;
-					console.log($rootScope.changolists);
-					var gubun = false;
-					for(var i = 0; i < $rootScope.changolists.length; i++){
-						if($rootScope.changolists[i].Code == $rootScope.setupData.basic_Ch_Code){
-							var gubun = true;
-							break;
-						}
+			}
+
+			/*기본 창고조회*/
+			MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.setupData.basic_Place_Code)
+			.then(function(data){
+				$scope.changolists = data.list;
+				var gubun = false;
+				for(var i = 0; i < $scope.changolists.length; i++){ ////여기여기! 
+					if($scope.changolists[i].Code == $scope.setupData.basic_Ch_Code){
+						var gubun = true;
+						break;
 					}
-					if(gubun == false){
-						$rootScope.setupData.basic_Ch_Code = '000';
-					}
-				})
+				}
+				if(gubun == false){
+					$scope.setupData.basic_Ch_Code = '000';
+				}
 			})
 		})
-
 	})
 
     /*지급정보 구분 - one(현금) two(통장) th(어음) fo(카드)*/
@@ -5174,12 +5016,10 @@ $scope.pushYNcheck=function(){
 					$scope.Payments_division(3);
 					$scope.pay.paycardbank = data.list[0].Card_Code + ',' + data.list[0].Card_Name + ',' + data.list[0].Card_Num;
 					$scope.pay.codenum = data.list[0].Card_Code;
-					console.log(">>>pay.paycardbank",$scope.pay.paycardbank, data.list);
 				}else if(data.list[0].IpJi_Gubun == 702 || data.list[0].IpJi_Gubun == 722){
 					$scope.Payments_division(1);
 					$scope.pay.paycardbank = data.list[0].Bank_Code + ',' + data.list[0].Bank_Name + ',' + data.list[0].Bank_Account;
 					$scope.pay.codenum = data.list[0].Bank_Code;
-					console.log(">>>pay.paycardbank",$scope.pay.paycardbank, data.list);
 				}else{
 					for(var i=0; i<2; i++){
 						$scope.paylist.push({
@@ -5239,7 +5079,6 @@ $scope.pushYNcheck=function(){
      	}
 		MiuService.company_sear($scope.loginData.Admin_Code, $scope.loginData.UserId, cusname)
 		.then(function(data){
-			console.log(data);
 			$scope.companyDatas = data.list;
 			$scope.companylatelyDatas = '';
 		})
@@ -5252,8 +5091,6 @@ $scope.pushYNcheck=function(){
     			var gubun = 'Ger';
     			MiuService.companyAndgoods_lately($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun)
 			.then(function(data){
-				console.log(data);
-
 				if(data != '<!--Parameter Check-->'){
 					$scope.companylatelyDatas = [];
 					for(var i = 0; i < data.list.length; i++){
@@ -5292,7 +5129,6 @@ $scope.pushYNcheck=function(){
 	var gubun = 'Ger';
 	MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun, gname, gcode)
 	.then(function(data){
-		console.log(data);
 	})
     }
 
@@ -5340,7 +5176,6 @@ $scope.pushYNcheck=function(){
 				var gubun = 'Goods';
 				MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun,goodsname)
 				.then(function(data){
-					console.log(data);
 				})
 			}
 			$scope.goodslists = data.list;
@@ -5353,7 +5188,6 @@ $scope.pushYNcheck=function(){
 				var gubun = 'Goods';
 				MiuService.companyAndgoods_latelysave($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun,goodsname)
 				.then(function(data){
-					console.log(data);
 				})
 			}
 			$scope.goodslists = data.list;
@@ -5375,7 +5209,6 @@ $scope.pushYNcheck=function(){
     		var gubun = 'Goods';
     		MiuService.companyAndgoods_lately($scope.loginData.Admin_Code, $scope.loginData.UserId, gubun)
 			.then(function(data){
-				console.log(data);
 				if(data != '<!--Parameter Check-->'){
 					$scope.goodlately_slists = data.list;
 				}
@@ -5399,9 +5232,6 @@ $scope.pushYNcheck=function(){
 	$scope.goods_more = function() {
 			var goodsname = escape($scope.user.userGoodsName);
 	  		if($scope.goodslists.length>0){
-	  		console.log($scope.goodslists.length);
-
-
 	  		if($scope.maxover==0){
 		        $scope.pageCnt+=1;
 
@@ -5477,7 +5307,6 @@ $scope.pushYNcheck=function(){
 
     /*선택된 상품들을 등록리스트에 저장 --> 이중 $scope*/
     $scope.checkdataSave=function(){
-    	console.log($scope.goodsaddlists);
 		if($scope.goodsaddlists.length > 0){
 			var check = 'N';
 			for(var j=0; j < $scope.goodsaddlists.length; j++){
@@ -5658,7 +5487,6 @@ $scope.pushYNcheck=function(){
 		}
 		$cordovaBarcodeScanner.scan().then(function(imageData) {
 			if ($ionicHistory.backView()&&imageData.text=='') {
-				console.log('뒤로가기');
 			}else{
 	            MiuService.barcode($scope.loginData.Admin_Code, $scope.loginData.UserId, imageData.text)
 				.then(function(data){
@@ -5798,8 +5626,6 @@ $scope.goods_seqlist = [];
     }
 
     $scope.paydelete = function(){
-    	console.log('지급전표 삭제', $scope.pay.acno);
-    	console.log('?',$scope.pay.gubun);
     	$ionicPopup.show({
 	       title: '경고',
 	       subTitle: '',
@@ -5865,8 +5691,6 @@ $scope.goods_seqlist = [];
 						});
 					}
 				}
-
-				console.log($scope.paycardbank[0].name);
   			})
   		}else{
   			$scope.pay.gubun = 0;
@@ -5918,7 +5742,6 @@ $scope.goods_seqlist = [];
 
 
     $scope.insertGoodsF=function(){
-    	console.log('$scope.pay.paycardbank',$scope.pay);
     	if($scope.pay.use == false && $scope.pay.payprice == 0){
     		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('지급액을 확인해주세요.', 'short', 'center');
 			else alert('지급액을 확인해주세요.');
@@ -5985,7 +5808,6 @@ $scope.goods_seqlist = [];
 		                  	if($scope.pay.gubun == 4 && $scope.pay.delete == false){
 		                  		MiuService.pay_delete($scope.loginData.Admin_Code, $scope.loginData.UserId,$scope.pay.acno)
 		                  		.then(function(data){
-		                  			console.log('삭제잘됨?', data);
 		                  		});
 		                  	}
 
