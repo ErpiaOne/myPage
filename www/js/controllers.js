@@ -943,6 +943,7 @@ $scope.pushYNcheck=function(){
 	}
 	// 모달창을 띄워주는 함수
 	$scope.showCheckSano = function(){
+		$rootScope.distinction = '';
 		$scope.check_sano_Modal.show();
 	}
 	// 로그인 화면에서 이알피아 아이콘을 클릭하면 사용자 선택화면으로 돌아간다.
@@ -1540,7 +1541,8 @@ $scope.pushYNcheck=function(){
 								 break;
 						default : console.log('여기올일 없을껄....');
 					}
-					response.list[0].H_Price = parseInt(response.list[0].Hap)/1.1;
+					var hapgu = parseInt(response.list[0].Hap)/1.1;
+					response.list[0].H_Price = Math.round(hapgu);
 					response.list[0].taxhap = parseInt(response.list[0].Hap) - parseInt(response.list[0].H_Price);
 				}else {//세액적용 안함
 					console.log('vat미포함 또는 영세율');
@@ -1754,7 +1756,7 @@ $scope.pushYNcheck=function(){
 })
 // 통계리포트 설정 컨트롤러
 .controller('configCtrl_statistics', function($scope, $rootScope, statisticService, publicFunction, app){
-	statisticService.all('myPage_Config_Stat', 'select_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
+	statisticService.all('myPage_Config_Stat', 'select_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 		.then(function(data){
 			$scope.items = data;
 		})
@@ -3358,8 +3360,8 @@ $scope.pushYNcheck=function(){
 			, {Idx:1, title:"meaip_jem"}
 			, {Idx:2, title:"meachul_jem"}
 			, {Idx:3, title:"brand_top5"}
-			, {Idx:4, title:"scm"}
-			, {Idx:5, title:"meachul_top5"}
+			// , {Idx:4, title:"scm"}
+			, {Idx:4, title:"meachul_top5"}
 			, {Idx:6, title:"Meachul_ik"}
 			, {Idx:7, title:"meachul_7"}
 			, {Idx:8, title:"meaip_7"}
@@ -3646,12 +3648,12 @@ $scope.pushYNcheck=function(){
 			/*이알피아 매장값 조회*/
 			MconfigService.erpia_basicM($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
 			.then(function(data){
-				var basicMeajang_code = data.list[0].Sale_Place_Code;
-				if(data.list[0].Sale_Place_Code == null || data.list[0].Sale_Place_Code.length == undefined){
+				var basicMeajang_code = data.list[0].basic_Place_Code;
+				if(basicMeajang_code == null || basicMeajang_code.length == undefined || basicMeajang_code == ''){
 					$rootScope.setupData.basic_Place_Code = '000';
 				}else{
-					$rootScope.setupData.basic_Place_Code = data.list[0].Sale_Place_Code;
 					for(var i=0; i < $rootScope.mejanglists.length; i++ ){
+						$rootScope.setupData.basic_Place_Code = basicMeajang_code;
 						if($rootScope.mejanglists[i].Sale_Place_Code == basicMeajang_code){
 							$rootScope.mejang2 = $rootScope.mejanglists[i];
 							$rootScope.mejanglists.splice(0,$rootScope.mejanglists.length);
@@ -3660,7 +3662,6 @@ $scope.pushYNcheck=function(){
 						}
 					}
 				}	
-				
 				/*기본 창고조회*/
 				MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
 				.then(function(data){

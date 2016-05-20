@@ -332,7 +332,7 @@ return{
 			
 			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Key&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
 			else var data = 'Kind=select_Trade_Detail_Key' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
-
+			
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -524,9 +524,10 @@ return{
 				, {Idx:15, title:"재고회전율top5"}
 				, {Idx:16, title:"출고현황"}];
 	return{
-		all : function(kind, mode, Admin_Code, loginType, G_Id) {
+		all : function(kind, mode, Admin_Code, loginType, G_Id, mac) {
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id;
+			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id + '&mac=' + mac;
+			console.log('all =>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response) {
 					if(typeof response.data == 'object'){
@@ -560,6 +561,7 @@ return{
 		},save : function(kind, mode, Admin_Code, loginType, G_Id, statistic,mac){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id + '&statistic=' + statistic+'&mac=' + mac;
+			console.log('save =>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response) {
 					if(typeof response.data == 'object'){
@@ -609,8 +611,10 @@ return{
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType;
 				data += '&G_Id=' + G_Id + '&chart_idx=' + chart_idx +'&mac=' + mac;
+				console.log('chart =>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response) {
+					console.log('idx확인 =>', response);
 					if(typeof response.data == 'object'){
 						return response.data;	
 					}else{
