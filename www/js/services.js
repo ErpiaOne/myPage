@@ -20,7 +20,8 @@ angular.module('starter.services', [])
 		}
 	};
 })
-.factory('app', function($rootScope, $state, $ionicPopup, $cordovaInAppBrowser){
+
+.factory('app', function($rootScope, $state, $ionicPopup, $cordovaInAppBrowser, $ionicSlideBoxDelegate){
 return{
 
 
@@ -42,8 +43,8 @@ return{
 
 	    	$ionicPopup.show({
 		         title: '푸쉬알림',
-		         subTitle: jsonData.message,
-		         content: '페이지를 이동하시겠습니까?',
+		         subTitle: '페이지를 이동하시겠습니까?',
+		         content: jsonData.message,
 		         buttons: [
 		           { text: 'No',
 		            onTap: function(e){
@@ -74,7 +75,8 @@ return{
 								}else if($rootScope.PushData.BoardParam == "3"){
 									$rootScope.boardIndex = 3;
 									console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
-								}							
+								}
+								$ionicSlideBoxDelegate.slide($rootScope.boardIndex, 500);							
 							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
 								$state.go("app.tradeList");
 							}else if($rootScope.PushData.state != "" || $rootScope.PushData.state != undefined || $rootScope.PushData.state != "undefined"){ //기타 이벤트
@@ -568,9 +570,10 @@ return{
 				}, function(response){
 					return $q.reject(response.data);
 				})
-		}, title : function(kind, mode, Admin_Code, loginType, G_Id){
+		}, title : function(kind, mode, Admin_Code, loginType, G_Id, mac){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id;
+			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id +'&mac=' + mac;
+			console.log('title=', url,'?', data);
 			return $http.get(url + '?' + data)
 				.then(function(response) {
 					if(typeof response.data == 'object'){
@@ -602,10 +605,10 @@ return{
 				}, function(response){
 					return $q.rejec(response.data);
 				})
-		}, chart : function(kind, mode, Admin_Code, loginType, G_Id, chart_idx){
+		}, chart : function(kind, mode, Admin_Code, loginType, G_Id, chart_idx,mac){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType;
-				data += '&G_Id=' + G_Id + '&chart_idx=' + chart_idx;
+				data += '&G_Id=' + G_Id + '&chart_idx=' + chart_idx +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response) {
 					if(typeof response.data == 'object'){
@@ -1047,6 +1050,7 @@ return{
 			console.log("MconfigService and basicSetup");
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=select';
+			console.log('basicSetup', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response == 'object'){
@@ -1089,6 +1093,7 @@ return{
 		console.log("MconfigService and basicM");
 		var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 		var data = 'Admin_Code=' + admin_code + '&User_id=' + userid + '&Kind=ERPia_Meaip_Select_Place_CName&Mode=Select_Place';
+		console.log('basicM', url,'?',data);
 		return $http.get(url + '?' + data)
 			.then(function(response){
 				if(typeof response == 'object'){
@@ -1119,6 +1124,7 @@ return{
 				console.log("MconfigService and basicC");
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&User_id=' + userid + '&Kind=ERPia_Sale_Select_Place_CName&Mode=Select_CName&Sale_Place_Code=' + meajang_code;
+				console.log('basicC', url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){

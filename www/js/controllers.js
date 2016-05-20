@@ -21,7 +21,7 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app){
+	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter){
 	$rootScope.PushData = {};
 
 	   var browseroptions = {
@@ -31,7 +31,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	   };
 
 	$rootScope.version={
-   		Android_version : '0.2.3', //업데이트시 필수로 변경!!
+   		Android_version : '0.2.4', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -307,14 +307,14 @@ $scope.pushYNcheck=function(){
 	};
 		// Open the login modal
 	$scope.login = function() {
-		$scope.logindata2.EAdminCode = $localstorage.get("EAdminCode");
-		$scope.logindata2.EUserId = 	$localstorage.get("EUserId");
-		$scope.logindata2.EPwd = $localstorage.get("EPwd");
-		$scope.logindata2.SAdminCode = $localstorage.get("SAdminCode");
-		$scope.logindata2.SUserId = $localstorage.get("SUserId");
-		$scope.logindata2.SPwd = $localstorage.get("SPwd");
-		$scope.logindata2.NAdminCode = $localstorage.get("NAdminCode");
-		$scope.logindata2.NUserId = $localstorage.get("NUserId");
+		$scope.logindata2.EAdminCode = $filter('lowercase')($localstorage.get("EAdminCode"));
+		$scope.logindata2.EUserId = 	$filter('lowercase')($localstorage.get("EUserId"));
+		$scope.logindata2.EPwd = $localstorage.get("EPwd")
+		$scope.logindata2.SAdminCode = $filter('lowercase')($localstorage.get("SAdminCode"));
+		$scope.logindata2.SUserId = $filter('lowercase')($localstorage.get("SUserId"));
+		$scope.logindata2.SPwd = $localstorage.get("SPwd")
+		$scope.logindata2.NAdminCode = $filter('lowercase')($localstorage.get("NAdminCode"));
+		$scope.logindata2.NUserId = $filter('lowercase')($localstorage.get("NUserId"));
 		$scope.logindata2.NPwd = $localstorage.get("NPwd");
 		$rootScope.loginMenu = 'selectUser';
 		if($rootScope.loginState == 'R'){
@@ -414,13 +414,13 @@ $scope.pushYNcheck=function(){
 		if($scope.loginckbox.AdminCodeCK == true){
 			switch(userType){
 				case 'ERPia' : 
-					$localstorage.set("EAdminCode", $rootScope.loginData.Admin_Code);
+					$localstorage.set("EAdminCode", $filter('lowercase')($rootScope.loginData.Admin_Code));
 				break;
 				case 'SCM' : 
-					$localstorage.set("SAdminCode", $rootScope.loginData.Admin_Code);
+					$localstorage.set("SAdminCode", $filter('lowercase')($rootScope.loginData.Admin_Code));
 				break;
 				case 'Normal' : 
-					$localstorage.set("NAdminCode", $rootScope.loginData.Admin_Code);
+					$localstorage.set("NAdminCode", $filter('lowercase')($rootScope.loginData.Admin_Code));
 				break;
 			}
 		}else{
@@ -442,13 +442,13 @@ $scope.pushYNcheck=function(){
 		if($scope.loginckbox.UserIdCK == true){
 			switch(userType){
 				case 'ERPia' :
-					$localstorage.set("EUserId", $rootScope.loginData.UserId);
+					$localstorage.set("EUserId", $filter('lowercase')($rootScope.loginData.UserId));
 				break;
 				case 'SCM' : 
-					$localstorage.set("SUserId", $rootScope.loginData.UserId);
+					$localstorage.set("SUserId", $filter('lowercase')($rootScope.loginData.UserId));
 				break;
 				case 'Normal' : 
-					$localstorage.set("NUserId", $rootScope.loginData.UserId);
+					$localstorage.set("NUserId", $filter('lowercase')($rootScope.loginData.UserId));
 				break;
 			}
 		}else{
@@ -501,14 +501,16 @@ $scope.pushYNcheck=function(){
                        {googleProjectNumber: "832821752106",
                         autoRegister: true},
                         app.didReceiveRemoteNotificationCallBack);
+		admin_code = $filter('lowercase')(admin_code);
+		id = $filter('lowercase')(id);
 		if (autologin_YN == 'Y') {
 			switch(loginType){
 				case 'E' : $rootScope.userType = 'ERPia'; $rootScope.loginMenu = 'User'; $scope.footer_menu = 'U'; break;
 				case 'S' : $rootScope.userType = 'SCM'; $rootScope.loginMenu = 'User'; $scope.footer_menu = 'U'; break;
 				case 'N' : $rootScope.userType = 'Normal'; $rootScope.loginMenu = 'User'; $scope.footer_menu = 'U'; break;
 			}
-			$rootScope.loginData.Admin_Code = admin_code;
-			$rootScope.loginData.UserId = id;
+			$rootScope.loginData.Admin_Code = $filter('lowercase')(admin_code);
+			$rootScope.loginData.UserId = $filter('lowercase')(id);
 			$rootScope.loginData.Pwd = pwd;
 		}else{
 			switch($rootScope.userType){
@@ -517,6 +519,8 @@ $scope.pushYNcheck=function(){
 				case 'Normal': userType = 'N'; break;
 			}
 			if(ERPiaAPI.toast == 'Y'){//uuid, admin_code, loginType, id, pwd, autoLogin_YN, UUID, phoneno, DeviceInfo
+				$rootScope.loginData.Admin_Code = $filter('lowercase')($scope.loginData.Admin_Code);
+				$rootScope.loginData.UserId = $filter('lowercase')($scope.loginData.UserId);
 				uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 			}else{
 				switch($rootScope.userType){
@@ -760,12 +764,27 @@ $scope.pushYNcheck=function(){
 									console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 								}else{
 								}
-								$state.go("app.erpia_board-Main");							
+								location.href= '#/app/board/Main';
+								// $state.go("app.erpia_board-Main");							
 							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
 								$scope.showCheckSano();
 
 							}else if($rootScope.PushData.state != "" || !isUndefined($rootScope.PushData.state) || $rootScope.PushData.state != "undefined"){ //기타 이벤트
-								$state.go($rootScope.PushData.state);
+								 if (jsonData.additionalData) {
+								    if (jsonData.additionalData.launchURL){
+								     $cordovaInAppBrowser.open(jsonData.additionalData.launchURL, '_blank', browseroptions)
+
+										      .then(function(event) {
+										         // success
+										      })
+
+										      .catch(function(event) {
+										         // error
+										      });
+								    
+						
+								  }
+								}
 							}else{
 							
 						}
@@ -1050,8 +1069,8 @@ $scope.pushYNcheck=function(){
 				             text: '확인',
 				             type: 'button-positive',
 				             onTap: function(e) {
-				             	if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
-						else location.href=window.open('https://play.google.com/apps/testing/com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
+				             	if(ionic.Platform.isAndroid()==true) window.open('https://play.google.com/store/apps/details?id=com.ERPia.MyPage','_system', 'location=yes,closebuttoncaption=Done');
+						else location.href=window.open('https://itunes.apple.com/kr/app/erpia-ialpia/id1100611372?mt=8&ign-mpt=uo%3D4','_system', 'location=yes,closebuttoncaption=Done');
 				             }
 				           },
 				         ]
@@ -3321,7 +3340,7 @@ $scope.pushYNcheck=function(){
 	};
 
 	// ERPia 차트화면에서 위에 차트 이름을 보여주는 부분. (차트 이름을 변경시켜야 하므로 서버에 저장하고 이를 불러옴.)
-	statisticService.title('myPage_Config_Stat', 'select_Title', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId)
+	statisticService.title('myPage_Config_Stat', 'select_Title', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 	.then(function(data){
 		$scope.tabs = data;
 	})
@@ -3355,7 +3374,7 @@ $scope.pushYNcheck=function(){
 			, {Idx:17, title:"beasongb"}];
 				// $rootScope.gubun_chart = $scope.kind;
 		if (data.index > 0){
-			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index)
+			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index, $rootScope.deviceInfo.uuid)
 			.then(function(response){
 				$rootScope.kind = 'chart' + response.list[0].idx;
 				switch (response.list[0].idx)
@@ -3444,7 +3463,6 @@ $scope.pushYNcheck=function(){
 								'</div>'+
 							'</div>'+ '</ion-content></ion-scroll>';
 				}
-
 				switch(data.index){
 					case 1: $('#s1').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 2: $('#s2').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
@@ -3629,7 +3647,9 @@ $scope.pushYNcheck=function(){
 			MconfigService.erpia_basicM($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
 			.then(function(data){
 				var basicMeajang_code = data.list[0].Sale_Place_Code;
-				if(data.list[0].Sale_Place_Code.length > 1){
+				if(data.list[0].Sale_Place_Code == null || data.list[0].Sale_Place_Code.length == undefined){
+					$rootScope.setupData.basic_Place_Code = '000';
+				}else{
 					$rootScope.setupData.basic_Place_Code = data.list[0].Sale_Place_Code;
 					for(var i=0; i < $rootScope.mejanglists.length; i++ ){
 						if($rootScope.mejanglists[i].Sale_Place_Code == basicMeajang_code){
@@ -3639,8 +3659,6 @@ $scope.pushYNcheck=function(){
 							break;
 						}
 					}
-				}else{
-					$rootScope.setupData.basic_Place_Code = '000';
 				}	
 				
 				/*기본 창고조회*/
