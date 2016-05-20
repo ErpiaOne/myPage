@@ -624,7 +624,7 @@ return{
 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 	return{
 		select : function(kind, Admin_Code, loginType, G_Id, mac){
-			var data = 'Value_Kind=list&Kind=Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id +'&mac=' + mac;
+			var data = 'Value_Kind=list&Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id +'&mac=' + mac;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					console.log('response', response);

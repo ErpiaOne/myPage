@@ -22,7 +22,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	toast:'Y'
 })
 
-.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast) {
+.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast, $ionicSlideBoxDelegate) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -53,7 +53,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			if($rootScope.PushData && $rootScope.loginState =='E'){
 			//$rootScope.PushData.state 푸시에서 명시한 로드될 화면
 			if($rootScope.PushData.state == "app.erpia_board-Main"){
-				// alert("tab.chats");
 				$state.go($rootScope.PushData.state);
 				$rootScope.boardIndex = $rootScope.PushData.state;
 				if($rootScope.PushData.BoardParam == "0"){
@@ -68,9 +67,11 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				}else if($rootScope.PushData.BoardParam == "3"){
 					$rootScope.boardIndex = 3;
 					console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
-				}							
+				}
+				//$ionicSlideBoxDelegate.slide($rootScope.boardIndex, 500);							
 			}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
 				$state.go("app.tradeList");
+				location.href='#/app/tradeList';
 			}else if($rootScope.PushData.state != "" || $rootScope.PushData.state != undefined || $rootScope.PushData.state != "undefined"){ //기타 이벤트
 				$state.go($rootScope.PushData.state);
 			}else{
@@ -83,7 +84,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	  window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
 	                                 {googleProjectNumber: "832821752106"},
 	                                   notificationOpenedCallback);
-	  
+	  // window.plugins.OneSignal.enableNotificationsWhenActive(true);
 	  // Show an alert box if a notification comes in when the user is in your app.
 	  window.plugins.OneSignal.enableInAppAlertNotification(false);
 
