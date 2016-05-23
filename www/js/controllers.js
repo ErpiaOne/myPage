@@ -31,7 +31,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	   };
 
 	$rootScope.version={
-   		Android_version : '0.2.4', //업데이트시 필수로 변경!!
+   		Android_version : '0.2.5', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -3385,19 +3385,18 @@ $scope.pushYNcheck=function(){
 					case '2' : $scope.kind = titles[2].title; break;
 					case '3' : $scope.kind = titles[3].title; break;
 					case '4' : $scope.kind = titles[4].title; break;
-					case '5' : $scope.kind = titles[5].title; break;
-					case '6' : $scope.kind = titles[6].title; break;
-					case '7' : $scope.kind = titles[7].title; break;
-					case '8' : $scope.kind = titles[8].title; break;
-					case '9' : $scope.kind = titles[9].title; break;
-					case '10' : $scope.kind = titles[10].title; break;
-					case '11' : $scope.kind = titles[11].title; break;
-					case '12' : $scope.kind = titles[12].title; break;
-					case '13' : $scope.kind = titles[13].title; break;
-					case '14' : $scope.kind = titles[14].title; break;
-					case '15' : $scope.kind = titles[15].title; break;
-					case '16' : $scope.kind = titles[16].title; break;
-					case '17' : $scope.kind = titles[17].title; break;
+					case '6' : $scope.kind = titles[5].title; break;
+					case '7' : $scope.kind = titles[6].title; break;
+					case '8' : $scope.kind = titles[7].title; break;
+					case '9' : $scope.kind = titles[8].title; break;
+					case '10' : $scope.kind = titles[9].title; break;
+					case '11' : $scope.kind = titles[10].title; break;
+					case '12' : $scope.kind = titles[11].title; break;
+					case '13' : $scope.kind = titles[12].title; break;
+					case '14' : $scope.kind = titles[13].title; break;
+					case '15' : $scope.kind = titles[14].title; break;
+					case '16' : $scope.kind = titles[15].title; break;
+					case '17' : $scope.kind = titles[16].title; break;
 				}
 
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
