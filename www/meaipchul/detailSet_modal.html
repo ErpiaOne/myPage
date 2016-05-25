@@ -32,8 +32,8 @@
 									<div style="float: left; width:70%;">
 										<input type="text" ng-click='company_lately()' ng-model="company.username" placeholder="거래처명 입력" style="width: 100%; height: 30px; border:0; border-bottom: 1px solid #e0e0e0;" ng-change="company_auto()">
 
-										<li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code,x.G_GDamdang)">{{x.G_Name}}</li>
-										<li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code,x.G_GDamdang)">{{x.Search_Ger_Name}}</li>
+										<li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code,x.G_Damdang)">{{x.G_Name}}</li>
+										<li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code,x.G_Damdang)">{{x.Search_Ger_Name}}</li>
 									</div>
 									<div style="float: left; width:10%;">
 										<i class='ion-close-circled' style='margin-left:-40px; padding-right:10px; vertical-align:middle; font-size:1.8em; color:#000' ng-click='clearcompany()'></i>
@@ -49,7 +49,7 @@
 								</div>
 
 								<div  style="clear: both; width:100%; padding-top:20px;">
-									<div style="float: left; width:20%; padding-top:6px; text-align: left;">매장지정 </div>
+									<div style="float: left; width:20%; padding-top:6px; text-align: left;">매장지정</div>
 									<div style="float: left; width:80%;">
 										<select style="width:100%; height: 30px;" ng-model="detail.Place_Code">
 											<option value='0' ng-selected="detail.Place_Code == 0">선택안함</option>
@@ -60,11 +60,11 @@
 								</div>
 
 								<div  style="clear: both; width:100%; padding-top:20px;">
-									<div style="float: left; width:20%; padding-top:6px; text-align: left;">담당자 </div>
+									<div style="float: left; width:20%; padding-top:6px; text-align: left;">담당자</div>
 									<div style="float: left; width:80%;">
-										<select style="width:100%; height: 30px;">
-											<option value='0' ng-selected="company.dam == 0">선택안함</option>
-											<option value='company.dam' ng-selected="company.dam != 0" ng-if='company.dam != 0'>{{company.dam}}</option>
+										<select style="width:100%; height: 30px;" ng-model='company.damid' ng-change="clearcompany();dam(damdanglist)">
+											<option value='0' ng-selected="company.damid == 0">선택안함</option>
+											<option ng-repeat="x in damdanglist" value="{{x.user_id}}" ng-selected="{{company.damid}} == {{x.user_id}}">{{x.user_name}}</option>
 										</select>
 									</div>
 								</div>

@@ -1176,6 +1176,7 @@ return{
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_Ger_Date&GerName='+ escape(gername) +'&pageCnt='+ pageCnt + '&pageRow='+ row +'&sDate='+ sedata.sDate +'&eDate='+ sedata.eDate;
+				console.log('chit_lookup=',url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1204,7 +1205,7 @@ return{
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_Before_Amt&sDate=' + sedata.sDate +'&eDate='+ sedata.eDate + '&GerCode=' + gercode;
-				
+				console.log('eMoon=',url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1297,15 +1298,35 @@ return{
 					}, function(response){
 						return $q.reject(response.data);
 					})
+		}, damdang: function(admin_code){
+				console.log("MLookupService and damdang");
+
+				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Delete_Goods';
+				else var kind = 'ERPia_Select_OptSet_Damdang';
+
+				var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp';
+				var data = 'Admin_Code=' + admin_code + '&Kind=' + kind;
+				console.log('damdang =>', url, '?', data);
+				return $http.get(url + '?' + data)
+					.then(function(response){
+						if(typeof response == 'object'){
+							return response.data;
+						}else{
+							return $q.reject(response.data);
+						}
+					}, function(response){
+						return $q.reject(response.data);
+					})
 		}, detailSet: function(admin_code, userid, date, ger, mejang, pageCnt, todate){
 				console.log("MLookupService and detailSet", ger);
 				if(todate == date.eDate) date.eDate = 'today';
 				if(todate == date.sDate) date.sDate = 'today';
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
-				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
+				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid);
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';				
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind;
+				console.log('Select_OptSe=>', url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1342,7 +1363,8 @@ return{
 				else var kind = 'ERPia_Sale_Select_OptSet';
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind + '&Mode=' + mode + '&GerCode=' + escape(ger.code) + '&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang;
+				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind + '&Mode=' + mode + '&GerCode=' + escape(ger.code) + '&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + ger.damid;
+				console.log(mode,'=>', url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1361,6 +1383,7 @@ return{
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=' + kind;
+				console.log('최근검색내역 조회=>', url, '?', data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1410,6 +1433,7 @@ return{
 				
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Sel_GerGoods_Search_Lately&G_Gubun=' + gubun;
+				console.log('url =>', url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1432,6 +1456,7 @@ return{
 				
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Reg_Select_GerGoods_Search_Lately&G_Gubun=' + gubun + '&G_Gubun_Value=' + gername + '&GerCode=' + code;
+				console.log('companyAndgoods_latelysave=',url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1451,6 +1476,7 @@ return{
 				
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_Hangul&GerName=' + com_name + '&pageCnt=1&pageRow=5';
+				console.log(url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
