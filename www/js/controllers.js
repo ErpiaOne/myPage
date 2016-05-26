@@ -1189,21 +1189,14 @@ $scope.pushYNcheck=function(){
 	}
 
 	$scope.refresh_time = function(){
-
-	    var nday = new Date();  //오늘 날짜..
-	    nday.setDate(nday.getDate()); //오늘 날짜에서 days만큼을 뒤로 이동
-	    var yy = nday.getFullYear();
-	    var mm = nday.getMonth()+1;
-	    var dd = nday.getDate();
-
-	    var hh = nday.getHours();
-	    var mm = nday.getMinutes();
-	    var tt = nday.getSeconds();
-
-	    if( mm<10) mm="0"+mm;
-	    if( dd<10) dd="0"+dd;
-
-	    $scope.nowtime = yy+"-"+mm+"-"+dd+"/"+hh+":"+mm+":"+tt;
+	  var d= new Date();
+	  var month = d.getMonth() + 1;
+	  var day = d.getDate();
+	  var nowTime = (d.getHours() < 10 ? '0':'') + d.getHours() + ":"
+	  nowTime += (d.getMinutes() < 10 ? '0':'') + d.getMinutes() + ":";
+	  nowTime += (d.getSeconds() < 10 ? '0':'') + d.getSeconds();
+	  var nowday = d.getFullYear() + '-' + (month<10 ? '0':'') + month + '-' + (day<10 ? '0' : '') + day;
+	  $scope.nowtime =  nowday + ' ' + nowTime;
 	}
 
 	$scope.refresh_time();
@@ -1604,7 +1597,8 @@ $scope.pushYNcheck=function(){
 				$scope.detail_items = response.list;
 				$rootScope.trade_Detail_Modal.show();
 			})
-		if($scope.userType != "ERPia") tradeDetailService.chkRead($scope.loginData.Admin_Code, $rootScope.Sl_No, $scope.loginData.UserId) // 읽었으면!
+		console.log($rootScope.loginState);
+		if($scope.userType != "ERPia") tradeDetailService.chkRead($scope.loginData.Admin_Code, $rootScope.Sl_No, $scope.loginData.UserId, $rootScope.loginState) // 읽었으면!
 	}
 	 /*거래명세표 사업자 번호 입력 모달 닫기*/
 	$scope.close_sano = function(){
@@ -3965,6 +3959,9 @@ $scope.pushYNcheck=function(){
 		       		if($scope.company.damid == $scope.damdanglist[i].user_id){
 		       			$scope.company.dam = $scope.damdanglist[i].user_name;
 		       			break;
+		       		}else if(i == $scope.damdanglist.length-1 && $scope.company.damid != $scope.damdanglist[i].user_id){
+		       			$scope.company.dam = '0';
+					$scope.company.damid = '0';
 		       		}
 		       	}
 		}
@@ -4420,11 +4417,11 @@ $scope.pushYNcheck=function(){
     }
 	$scope.OptsetList =[];
 	$scope.Select_OptSet = function(mode) {
-		MLookupService.Select_OptSet($scope.loginData.Admin_Code, $scope.loginData.UserId, mode)
+		MLookupService.Select_OptSet($scope.loginData.Admin_Code, $scope.loginData.UserId, mode, $scope.damdanglist)
 		.then(function(data){
 			$scope.OptsetList = data.list;
 		})
-    }
+    	}
 
     $scope.quickdetail = function(){
     	MLookupService.lqdetail_set($scope.loginData.Admin_Code, $scope.loginData.UserId,$scope.reqparams,$scope.company,$scope.detail.Place_Code,2,$scope.todate)
@@ -4468,7 +4465,15 @@ $scope.pushYNcheck=function(){
 			$scope.company.username = $scope.OptsetList[index].sel_Ger_Name;
 			$scope.company.name = $scope.OptsetList[index].sel_Ger_Name;
 			$scope.company.code = $scope.OptsetList[index].sel_Ger_Code;
-			$scope.company.dam = $scope.OptsetList[index].sel_Damdang;
+			/*담당자 지정하는 부분*/
+			for(var i = 0; i < $scope.damdanglist.length; i++){
+				if($scope.OptsetList[index].sel_Damdang == $scope.damdanglist[i].user_name){
+					$scope.company.dam = $scope.damdanglist[i].user_name;
+					$scope.company.damid = $scope.damdanglist[i].user_id;
+					break;
+				}
+			}
+
 			$scope.detail.Place_Code = $scope.OptsetList[index].sel_Place_Code;
 	}
 

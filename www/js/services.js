@@ -135,6 +135,7 @@ return{
 		if(kind == 'scm_login'){
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
 			var data = 'kind=Login_Scm&loginType=S&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+			console.log('SCM로그인 ->', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -177,11 +178,10 @@ return{
 		}else if(kind == 'ERPia_Ger_Login'){
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
 			var data = 'kind=Login_Normal&loginType=N&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
-			console.log(url,'?',data);
+			console.log('erpia=>',url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
-						console.log('데이터 확인(ERPia_Ger_Login) =>', response);
 						for(var i=0; i < response.data.list.length; i++){
 							if(response.data.list[i].cntNotRead == null){
 								response.data.list[i].cntNotRead = 0;
@@ -317,6 +317,7 @@ return{
 		tradeList: function(Admin_Code, GerCode){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Kind=select_Trade' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode;
+			console.log('음 리스트 조회?=', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -348,6 +349,7 @@ return{
 
 			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Meaip&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
 			else var data = 'Kind=select_Trade_Detail' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
+
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -431,8 +433,9 @@ return{
 					return $q.reject(response.data);
 				})
 		}, getCntNotRead: function(Admin_Code, checkNotRead){
-			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
+			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
 			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead;
+			console.log('여긴?=>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -443,9 +446,11 @@ return{
 				}, function(response){
 					return $q.reject(response.data);
 				})
-		}, chkRead: function(Admin_Code, Sl_No, user_id){
+		}, chkRead: function(Admin_Code, Sl_No, user_id, loginType){
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Kind=read_Trade_Detail&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No + '&user_id=' + user_id;
+			var data = 'Kind=read_Trade_Detail&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No + '&user_id=' + user_id + '&login_Type=' + loginType;
+
+			console.log('너 여기오니 ?=>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -581,23 +586,23 @@ return{
 					if(typeof response.data == 'object'){
 						for(var i=0; i<response.data.list.length; i++){
 							switch(response.data.list[i].Idx){
-								case "0": response.data.list[i].title = titles[0].title; break;
-								case "1": response.data.list[i].title = titles[1].title; break;
-								case "2": response.data.list[i].title = titles[2].title; break;
-								case "3": response.data.list[i].title = titles[3].title; break;
-								case "4": response.data.list[i].title = titles[4].title; break;
-								case "6": response.data.list[i].title = titles[5].title; break;
-								case "7": response.data.list[i].title = titles[6].title; break;
-								case "8": response.data.list[i].title = titles[7].title; break;
-								case "9": response.data.list[i].title = titles[8].title; break;
-								case "10": response.data.list[i].title = titles[9].title; break;
-								case "11": response.data.list[i].title = titles[10].title; break;
-								case "12": response.data.list[i].title = titles[11].title; break;
-								case "13": response.data.list[i].title = titles[12].title; break;
-								case "14": response.data.list[i].title = titles[13].title; break;
-								case "15": response.data.list[i].title = titles[14].title; break;
-								case "16": response.data.list[i].title = titles[15].title; break;
-								case "17": response.data.list[i].title = titles[16].title; break;
+								case "0": response.data.list[i].title = titles[0].title; response.data.list[i].icon = 'ion-home'; break;
+								case "1": response.data.list[i].title = titles[1].title; response.data.list[i].icon = 'ion-home'; break;
+								case "2": response.data.list[i].title = titles[2].title; response.data.list[i].icon = 'ion-monitor'; break;
+								case "3": response.data.list[i].title = titles[3].title; response.data.list[i].icon = 'ion-pricetags'; break;
+								case "4": response.data.list[i].title = titles[4].title; response.data.list[i].icon = 'ion-cube'; break;
+								case "6": response.data.list[i].title = titles[5].title; response.data.list[i].icon = 'ion-stats-bars'; break;
+								case "7": response.data.list[i].title = titles[6].title; response.data.list[i].icon = 'ion-clipboard'; break;
+								case "8": response.data.list[i].title = titles[7].title; response.data.list[i].icon = 'ion-ios-cloud-upload'; break;
+								case "9": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-android-cloud-done'; break;
+								case "10": response.data.list[i].title = titles[9].title; response.data.list[i].icon = 'ion-android-bus'; break;
+								case "11": response.data.list[i].title = titles[10].title; response.data.list[i].icon = 'ion-pie-graph'; break;
+								case "12": response.data.list[i].title = titles[11].title; response.data.list[i].icon = 'ion-arrow-swap'; break;
+								case "13": response.data.list[i].title = titles[12].title; response.data.list[i].icon = 'ion-log-out'; break;
+								case "14": response.data.list[i].title = titles[13].title; response.data.list[i].icon = 'ion-person-stalker'; break;
+								case "15": response.data.list[i].title = titles[14].title; response.data.list[i].icon = 'ion-log-in'; break;
+								case "16": response.data.list[i].title = titles[15].title; response.data.list[i].icon = 'ion-loop'; break;
+								case "17": response.data.list[i].title = titles[16].title; response.data.list[i].icon = 'ion-plane';break;
 							}
 						}
 						return response.data.list;	
@@ -1301,12 +1306,12 @@ return{
 		}, damdang: function(admin_code){
 				console.log("MLookupService and damdang");
 
-				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Delete_Goods';
+				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Select_OptSet_Damdang';
 				else var kind = 'ERPia_Select_OptSet_Damdang';
 
 				var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp';
 				var data = 'Admin_Code=' + admin_code + '&Kind=' + kind;
-				console.log('damdang =>', url, '?', data);
+				console.log('????=>', url,'?',data);
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1321,12 +1326,12 @@ return{
 				console.log("MLookupService and detailSet", ger);
 				if(todate == date.eDate) date.eDate = 'today';
 				if(todate == date.sDate) date.sDate = 'today';
-				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.dam);
+				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid);
 				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid);
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';				
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind;
-				console.log('Select_OptSe=>', url,'?',data);
+
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1364,7 +1369,7 @@ return{
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind + '&Mode=' + mode + '&GerCode=' + escape(ger.code) + '&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + ger.damid;
-				console.log(mode,'=>', url,'?',data);
+
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1375,7 +1380,7 @@ return{
 					}, function(response){
 						return $q.reject(response.data);
 					})
-		}, Select_OptSet: function(Admin_Code, UserId, RL_Gubun){
+		}, Select_OptSet: function(Admin_Code, UserId, RL_Gubun, damlist){
 				console.log("MLookupService and Select_OptSet");
 
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_OptSet&Mode=Select_OptSet_List&RL_Gubun=' + RL_Gubun;
@@ -1383,7 +1388,7 @@ return{
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=' + kind;
-				console.log('최근검색내역 조회=>', url, '?', data);
+
 				return $http.get(url + '?' + data)
 					.then(function(response){
 						if(typeof response == 'object'){
@@ -1391,6 +1396,13 @@ return{
 								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 								else alert('조회된 데이터가 없습니다.');
 							}else{
+								for(var i =0; i < response.data.list.length; i++){
+									for(var j = 0; j < damlist.length; j++){
+										if(response.data.list[i].sel_Damdang == damlist[j].user_id){
+											response.data.list[i].sel_Damdang = damlist[j].user_name;
+										}
+									}
+								}
 							}	
 							return response.data;
 						}else{
