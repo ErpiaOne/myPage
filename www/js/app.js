@@ -42,7 +42,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	  //   });
 
 
-
 /*새로 추가된 푸수*/
 
 	  var notificationOpenedCallback = function(jsonData) {
@@ -365,7 +364,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		switch($rootScope.userType){
 			case 'ERPia': location.href = '#/app/slidingtab'; break;
 			case 'SCM' : location.href = '#/app/scmhome'; break;
-			case 'Geust': location.href = '#/app/sample/Main'; break;
+			case 'Guest': location.href = '#/app/slidingtab'; break;
 			default : location.href = '#/app/main'; break;
 		} 
 		     $rootScope.backButtonPressedOnceToExit = true;
@@ -435,36 +434,86 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		switch($rootScope.userType){
 			case 'ERPia': location.href = '#/app/slidingtab'; break;
 			case 'SCM' : location.href = '#/app/scmhome'; break;
-			case 'Geust': location.href = '#/app/sample/Main'; break;
+			case 'Guest': location.href = '#/app/slidingtab'; break;
 			case 'Normal': location.href = '#/app/sample/Main'; break;
 		} 
 	}
 	$rootScope.goto_with_clearHistory = function(goto_Href){
-		var no = 'Y'; // 매입&매출 백버튼 이슈사항 때문에 두번눌렸을 경우의 구분을 짓는 변수
-		$ionicHistory.clearCache();
-		$ionicHistory.clearHistory();
-		$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-		if(goto_Href == '#app/meachul_page'){
-			if($rootScope.distinction == 'meachul') var no = 'N';
-			else $rootScope.distinction = 'meachul';
-		} 
-		else if(goto_Href == '#app/meaip_page'){
-			if($rootScope.distinction == 'meaip') var no = 'N';
-			else $rootScope.distinction = 'meaip';
-		}else if(goto_Href=='#app/config'){
-			if($rootScope.distinction == 'config') var no = 'N';
-			else $rootScope.distinction = 'config';
-		}
-		// 
-		if(no == 'N'){
-			if($rootScope.distinction == 'meaip') $state.go('app.meaip_page', {}, {reload: true});
-			else if($rootScope.distinction == 'meachul') $state.go('app.meachul_page', {}, {reload: true});
-			else $state.go('app.config', {}, {reload: true});
-		}else{
-			location.href = goto_Href;
-		}
-		
+		if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){
+	    		 $ionicPopup.show({
+			         title: '경고',
+			         subTitle: '',
+			         content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
+			         buttons: [
+			           { text: 'No',
+			            onTap: function(e){
+			            	
+			            }},
+			           {
+			             text: 'Yes',
+			             type: 'button-positive',
+			             onTap: function(e) {
+							var no = 'Y'; // 매입&매출 백버튼 이슈사항 때문에 두번눌렸을 경우의 구분을 짓는 변수
+							$ionicHistory.clearCache();
+							$ionicHistory.clearHistory();
+							$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+
+
+							if(goto_Href == '#app/meachul_page'){
+								if($rootScope.distinction == 'meachul') var no = 'N';
+								else $rootScope.distinction = 'meachul';
+							} 
+							else if(goto_Href == '#app/meaip_page'){
+								if($rootScope.distinction == 'meaip') var no = 'N';
+								else $rootScope.distinction = 'meaip';
+							}else if(goto_Href=='#app/config'){
+								if($rootScope.distinction == 'config') var no = 'N';
+								else $rootScope.distinction = 'config';
+							}
+							// 
+							if(no == 'N'){
+								if($rootScope.distinction == 'meaip') $state.go('app.meaip_page', {}, {reload: true});
+								else if($rootScope.distinction == 'meachul') $state.go('app.meachul_page', {}, {reload: true});
+								else $state.go('app.config', {}, {reload: true});
+							}else{
+								location.href = goto_Href;
+							}
+
+			             }
+			           },
+			         ]
+			        })
+	    	}else{
+	    			var no = 'Y'; // 매입&매출 백버튼 이슈사항 때문에 두번눌렸을 경우의 구분을 짓는 변수
+				$ionicHistory.clearCache();
+				$ionicHistory.clearHistory();
+				$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+
+
+				if(goto_Href == '#app/meachul_page'){
+					if($rootScope.distinction == 'meachul') var no = 'N';
+					else $rootScope.distinction = 'meachul';
+				} 
+				else if(goto_Href == '#app/meaip_page'){
+					if($rootScope.distinction == 'meaip') var no = 'N';
+					else $rootScope.distinction = 'meaip';
+				}else if(goto_Href=='#app/config'){
+					if($rootScope.distinction == 'config') var no = 'N';
+					else $rootScope.distinction = 'config';
+				}
+				// 
+				if(no == 'N'){
+					if($rootScope.distinction == 'meaip') $state.go('app.meaip_page', {}, {reload: true});
+					else if($rootScope.distinction == 'meachul') $state.go('app.meachul_page', {}, {reload: true});
+					else $state.go('app.config', {}, {reload: true});
+				}else{
+					location.href = goto_Href;
+				}
+
+	    	}		
 	}
+
+	
 	$rootScope.goto_with_backButton = function(goto_Href){
 		$ionicHistory.clearCache();
 		$ionicHistory.clearHistory();
@@ -495,11 +544,10 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		dev_push: false // 실적용시
 	});
 }])
-// .config(function($ionicConfigProvider) {
-// 	$ionicConfigProvider.views.maxCache(5);
-// 	// note that you can also chain configs
-// 	$ionicConfigProvider.backButton.text('Go Back').icon('ion-chevron-left');
-// })
+
+.config(function($ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position("bottom");
+})
 
 .config(['fcsaNumberConfigProvider', function(fcsaNumberConfigProvider) { // input에 숫자입력시 천자리마다 콤마를 찍어주는 플러그인 기본옵션부분
   fcsaNumberConfigProvider.setDefaultOptions({
@@ -517,6 +565,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		templateUrl : 'side/menu.html',
 		controller : 'AppCtrl'
 	})
+
 
 	.state('app.erpia_main', {
 		url : '/main',
@@ -663,12 +712,23 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
+	/*로그인전 ERPIA_소개*/
 	.state('app.erpia_introduce', {
 		url : '/introduce',
 		views : {
 			'menuContent' : {
 				templateUrl : 'erpia_introduce/erpiaIntroduce.html',
 				// controller : 'CsCtrl'
+			}
+		}
+	})
+
+	/*로그인전 ERPIA_HOME_PAGE*/
+	.state('app.erpia_homepage', {
+		url : '/homepage',
+		views : {
+			'menuContent' : {
+				templateUrl : 'erpia_introduce/erpia_homepage.html',
 			}
 		}
 	})
@@ -738,6 +798,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			}
 		}
 	})
+	/* 환경설정 -> 자동로그인 설정 */
 	.state('app.config-loginConfig', {
 		url : '/config/loginConfig',
 		views : {
@@ -748,14 +809,14 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 	/////////////////////////////////////tab////////////////////////////////////
-	.state('app.tab', {
-		url : '/tab',
-		views : {
-			'menuContent' : {
-				templateUrl : 'tab/tabs.html'				 
-			}
-		}
-	})
+	// .state('app.tab', {
+	// 	url : '/tab',
+	// 	views : {
+	// 		'menuContent' : {
+	// 			templateUrl : 'tab/tabs.html'				 
+	// 		}
+	// 	}
+	// })
  // 	.state('app.tab.dash', {
 	// 	url : '/dash',
 	// 	views : {

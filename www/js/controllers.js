@@ -21,9 +21,8 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter){
+	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService){
 	$rootScope.PushData = {};
-
 	   var browseroptions = {
 	      location: 'yes',
 	      clearcache: 'yes',
@@ -31,7 +30,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	   };
 
 	$rootScope.version={
-   		Android_version : '0.2.51', //업데이트시 필수로 변경!!
+   		Android_version : '0.2.6', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -63,11 +62,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$ionicPlatform.ready();
 
 	// 로그인 모달창
-	$ionicModal.fromTemplateUrl('erpia_login/login.html', {
-		scope : $scope
-	}).then(function(modal) {
-		$scope.loginModal = modal;
-	});
+	// $ionicModal.fromTemplateUrl('erpia_login/login.html', {
+	// 	scope : $scope
+	// }).then(function(modal) {
+	// 	$scope.loginModal = modal;
+	// });
 	// 이용약관 모달창
 	$ionicModal.fromTemplateUrl('side/agreement.html',{
 		scope : $scope
@@ -89,7 +88,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.check_sano_Modal = modal;
 	});
 
-
+//웹수주 실행
+	// $scope.scmwebsuju = function(){
+	// 	location.href = ERPiaAPI.url2+'/ERPiaSCM/order/erpia_order.asp';
+	// }
 /*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15*/
 $scope.pushYNcheck=function(){
 		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
@@ -198,21 +200,33 @@ $scope.pushYNcheck=function(){
 			$rootScope.userType = "";
 			$rootScope.autoLoginYN = "N";
 			$localstorage.set("autoLoginYN", $rootScope.autoLoginYN);
+
+			$timeout(function(){
+				$ionicLoading.hide();
+				$rootScope.loginData = {};
+				$scope.userData = {};
+				$scope.dashBoard = {};
+
+				$rootScope.goto_with_clearHistory('#/app/main');
+				// $ionicHistory.clearCache();
+				// $ionicHistory.clearHistory();
+				// $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+				$state.go('app.erpia_main');
+			}, 1000);
 		}else{
 			$scope.icon_home = "ion-home";
-		}
-		$timeout(function(){
-			$ionicLoading.hide();
-			$rootScope.loginData = {};
-			$scope.userData = {};
-			$scope.dashBoard = {};
+			$timeout(function(){
+				$ionicLoading.hide();
+				$rootScope.loginData = {};
+				$scope.userData = {};
+				$scope.dashBoard = {};
 
-			$rootScope.goto_with_clearHistory('#/app/main');
-			// $ionicHistory.clearCache();
-			// $ionicHistory.clearHistory();
-			// $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-			$state.go('app.erpia_main');
-		}, 1000);
+				// $ionicHistory.clearCache();
+				// $ionicHistory.clearHistory();
+				// $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+			}, 1000);
+		}
+		
 	}
 ///////////////////////////////////////--------------푸쉬유저체크 - 없으면 insert ----------------------------
 
@@ -256,7 +270,7 @@ $scope.pushYNcheck=function(){
 		$ionicHistory.nextViewOptions({
 			disableBack: true
 		});
-		$scope.loginModal.hide();
+		// $scope.loginModal.hide();
 		if($rootScope.mobile_Certify_YN == 'Y'){	 // 모바일 아이디 인증이 되어있다면!!  각자 LOGIN TYPE에 맞는 메인으로 이동
 			if($rootScope.loginState == "S"){
 		        $state.go("app.erpia_scmhome");
@@ -307,6 +321,8 @@ $scope.pushYNcheck=function(){
 	};
 		// Open the login modal
 	$scope.login = function() {
+		$scope.userType='ERPia';
+		$rootScope.loginData.loginType = 'E';
 		$scope.logindata2.EAdminCode = $filter('lowercase')($localstorage.get("EAdminCode"));
 		$scope.logindata2.EUserId = 	$filter('lowercase')($localstorage.get("EUserId"));
 		$scope.logindata2.EPwd = $localstorage.get("EPwd")
@@ -318,16 +334,19 @@ $scope.pushYNcheck=function(){
 		$scope.logindata2.NPwd = $localstorage.get("NPwd");
 		$rootScope.loginMenu = 'selectUser';
 		if($rootScope.loginState == 'R'){
-			$scope.loginModal.show();
+			// $scope.loginModal.show();
+			console.log("R");
 			$scope.init('login');
+			$rootScope.goto_with_clearHistory('#/app/login');
 		}else{
 			$scope.footer_menu = 'G';
 			$scope.init('logout');
-		};
+		}
 	};
 
 	$rootScope.loginMenu = "selectUser";	//사용자 선택화면
 	$scope.selectType = function(userType){
+		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 		$timeout(function(){
 				if(userType == 'ERPia'){
 				$rootScope.loginMenu = 'User'; 
@@ -399,12 +418,13 @@ $scope.pushYNcheck=function(){
 						}
 				}else if(userType == 'Guest'){
 						$rootScope.loginMenu = 'User'; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
-						$scope.loginModal.hide();
+						// $scope.loginModal.hide();
 						$scope.doLogin();
 				}else{
 						$rootScope.loginMenu = 'selectUser';
 				}
-		}, 500);
+				$ionicLoading.hide();
+		}, 1000);
 
 	}
 	
@@ -593,7 +613,15 @@ $scope.pushYNcheck=function(){
 							uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId);
 						}
 					}
-
+					/*scm 웹수주 세션로그인 ( 추후 추가예정)*/
+					// SCMService.scmlogin($scope.loginData.Admin_Code, $scope.userData.G_Code, $scope.userData.GerName)
+					//  .then(function(pushInfo){
+					//  		console.log("loginsucceed");
+					    	
+					//     },function(){
+					// 		alert(' fail');
+					// 	});
+					 /*scm 웹수주 세션로그인 끝*/
 					$timeout(function() {
 						$ionicLoading.hide();
 						$scope.closeLogin();
@@ -710,7 +738,7 @@ $scope.pushYNcheck=function(){
 
 						$rootScope.loginState = "E";
 
-						tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'Y')
+						tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'Y', $rootScope.loginState)
 						.then(function(response){
 								$scope.userData.cntNotRead = response.list[0].cntNotRead;
 
@@ -879,7 +907,10 @@ $scope.pushYNcheck=function(){
 			$scope.userData.cntNotRead = 10;	//계산서 미수신건
 			$scope.userData.expire_date = '2016-04-31'; //"2015년<br>8월20일";
 			$scope.userData.expire_days = 50;
-			$state.go('app.sample_Main');
+			$ionicHistory.nextViewOptions({
+				disableBack: true
+			});
+			$rootScope.goto_with_clearHistory('#/app/slidingtab');
 		}
 		$scope.LoginAdminCodeCK($rootScope.userType);
 		$scope.LoginPwdCK($rootScope.userType);
@@ -953,7 +984,7 @@ $scope.pushYNcheck=function(){
 	// 홈버튼 클릭 함수
 	$scope.click_home = function(){
 		if($rootScope.userType == 'ERPia') $location.href = '#/slidingtab'; //$state.go('app.slidingtab');
-		else if($rootScope.userType == 'Guest') $location.href = '#/sample/Main'; //$state.go('app.sample_Main');
+		else if($rootScope.userType == 'Guest') $location.href = '#/slidingtab'; //$state.go('app.sample_Main');
 	}
 	// 인증 모달 닫기 함수
 	$scope.close_cert = function(){
@@ -1100,15 +1131,19 @@ $scope.pushYNcheck=function(){
 		$rootScope.loginData.autologin_YN = $localstorage.get("autoLoginYN");
 
 		console.log('autoLogin_YN' ,$localstorage.get("autoLoginYN"));
+
 			if($localstorage.get("autoLoginYN")=="Y"){
 			$rootScope.loginData.Admin_Code = $localstorage.get("autoAdmin_Code");
 			$rootScope.loginData.loginType = $localstorage.get("autologinType");
 			if($localstorage.get("autologinType") == 'ERPia'){
 				$rootScope.loginData.loginType = 'E';
+				$rootScope.userType = 'ERPia';
 			}else if($localstorage.get("autologinType") == 'SCM'){
 				$rootScope.loginData.loginType = 'S';
+				$rootScope.userType ='SCM';
 			}else if($localstorage.get("autologinType") == 'Normal'){
 				$rootScope.loginData.loginType = 'N';
+				$rootScope.userType ='Normal';
 			}
 			
 			$rootScope.loginData.User_Id = $localstorage.get("autoUser_Id");
@@ -1161,7 +1196,12 @@ $scope.pushYNcheck=function(){
 		$scope.tradeList.MeaipMeachul = '매출일';
 		$scope.tradeList.Publisher = '발행처';
 		$scope.tradeList.isRead = '열람';
-		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode)
+		if($rootScope.userType == 'SCM'){
+			var type = 'S';
+		}else{
+			var type = 'N';
+		}
+		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode, type)
 			.then(function(response){
 				if(response.list.length == 0) {
 					$scope.haveList = 'N';
@@ -1171,11 +1211,12 @@ $scope.pushYNcheck=function(){
 				}
 			})
 	}else if($rootScope.userType == 'ERPia'){
+		var type = 'E';
 		$scope.tradeList.Title = '매출거래처 발송 내역';
 		$scope.tradeList.MeaipMeachul = '매입일';
 		$scope.tradeList.Publisher = '발송처';
 		$scope.tradeList.isRead = '수신확인';
-		tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N')
+		tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N', type)
 			.then(function(response){
 				if(response.list.length == 0) {
 					$scope.haveList = 'N';
@@ -2219,7 +2260,6 @@ $scope.pushYNcheck=function(){
         window.open('http://blog.naver.com/zzata');
     }
 })
-
 .controller('CsCtrl', function($rootScope, $scope, $ionicModal, $ionicPopup, $timeout, $stateParams, $location, $http, csInfoService, TestService, $ionicHistory, ERPiaAPI, $cordovaToast, app){
 
 	$scope.csData = {
@@ -4336,7 +4376,9 @@ $scope.pushYNcheck=function(){
     	$scope.company.name = '';
     	$scope.company.code = 0;
     	$scope.company.dam = '0';
+    	$scope.company.damid = '0';
     	$scope.detail.Place_Code = '0';
+
 
         	$scope.detailSet_modal.show();
         	/*기본 매장조회*/
@@ -4356,6 +4398,9 @@ $scope.pushYNcheck=function(){
     	$scope.searchmode='detail';
     	if($scope.company.dam == '0'){
     		$scope.company.dam = '';
+    	}
+    	if($scope.company.damid == '0'){
+    		$scope.company.damid = '';
     	}
     	if($scope.detail.Place_Code == '0'){
     		$scope.detail.Place_Code = '';
