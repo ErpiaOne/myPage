@@ -1,5 +1,40 @@
 <ion-side-menus enable-menu-with-back-views="true">
 	<ion-side-menu-content>
+		<div ng-switch="loginState">
+			<div class="tabs" style="height:55px" name="main_side" ng-switch-when="R">
+				  <span class="tab-item" ng-click="login()" ng-bind-html="loginHTML">
+				  </span>
+				  <span class="tab-item" ng-click="goto_with_clearHistory('#/app/introduce')">
+				    ERPia소개
+				  </span>
+				  <span class="tab-item" ng-click="goto_with_clearHistory('#/app/cs')">
+				    가입상담
+				  </span>
+				  <!-- <a class="tab-item" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"> -->
+				  <span class="tab-item" ng-click="goto_with_clearHistory('#/app/homepage')">
+				    홈페이지
+				  </span>
+			</div>
+
+			<div class="tabs" style="height:55px" name="main_side" ng-switch-when="E">
+				  <span class="tab-item" ng-click="goto_with_clearHistory('#/app/slidingtab')">
+				    홈
+				  </span>
+				  <span class="tab-item" ng-click='goto_with_clearHistory("#app/meaip_page")'>
+				    매입
+				  </span>
+				  <span class="tab-item" ng-click='goto_with_clearHistory("#app/meachul_page")'>
+				    매출
+				  </span>
+				  <span class="tab-item">
+				    재고현황
+				  </span>
+				  <span class="tab-item">
+				           <i class="icon ion-more"></i>
+				  </span>
+			</div>
+		</div>
+
 		<ion-nav-bar class="bar-dark">
 			<ion-nav-back-button></ion-nav-back-button>
 
@@ -9,7 +44,6 @@
 		</ion-nav-bar>
 		<ion-nav-view name="menuContent"></ion-nav-view>
 	</ion-side-menu-content>
-
 	<ion-side-menu side="left">
 
 		<div class="bar-header psm_left_top">
@@ -49,6 +83,8 @@
 					<a class="button psm_left_mediv psm_left_box4" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/cs')"><img src="./img/icon_sang.png" class="psm_left_img4"><br>가입상담</a>
 					<a class="button psm_left_mediv psm_left_box5" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/push')"><img src="./img/icon_push.png" class="psm_left_img4"><br>알림</a>
 					<a class="button psm_left_mediv psm_left_box6" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img4"><br>홈페이지</a>
+					<!-- <a class="button psm_left_mediv psm_left_box6" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/ERPiaSCM/order/erpia_order.asp','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img4"><br>웹수주</a> -->
+
 				</div>
 
 				<div ng-switch-when="S">
@@ -102,6 +138,9 @@
 					</a>
 					<a class="item item-icon-left navi-item">
 						<i class="icon"><span class="psm_uplist psm_upcolor4 ion-ios-calculator-outline"></span><span class="navi-item-leftText">월 관리비<br>결제일</span><span class="navi-item-rightText" ng-bind-html="userData.expire_date"></span></i>
+					</a>
+					<a class="item item-icon-left navi-item">
+						<i class="icon"><span class="psm_uplist psm_upcolor4 ion-ios-calculator-outline"></span><span class="navi-item-leftText">사용 만료일</span><span class="navi-item-rightText" ng-bind-html="userData.expire_date"></span></i>
 					</a>
 					<!-- <a class="item item-icon-left navi-item" ng-href="#">
 						<i class="icon"><span class="psm_uplist psm_upcolor1 ion-ios-copy-outline"></span><span class="navi-item-leftText">월 관리비</span><span class="navi-item-rightText" ng-bind-html="management_bill"></span></i>
@@ -173,10 +212,20 @@
 					</a>
 				</div>
 				<div ng-switch-when="N"><img src="./img/left_add.jpg" width="100%"style="margin-bottom: -10px;"></div>
+
 				<div class="button-bar">
-					<a class="button button-light psm_left_mediv" style="border-radius: 0;" menu-close ng-click="login()"><img src="./img/icon-onoff.png" class="psm_left_img2"><br><span class="psm_left_mespan" ng-bind-html="loginHTML"></span></a>
-					<a class="button button-light psm_left_mediv" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home.png" class="psm_left_img2"><br>홈페이지</a>
-					<a class="button button-light psm_left_mediv" style="border-radius: 0;" menu-close ng-click='goto_with_clearHistory("#app/config")' ng-if="loginData.isLogin == 'Y' && loginData.Admin_Code!='ERPMobile'"><img src="./img/icon_setting.png" class="psm_left_img2"><br>설정</a>
+					<a class="button button-light psm_left_mediv" style="border-radius: 0;" menu-close ng-click="login()">
+						<img src="./img/icon-onoff.png" class="psm_left_img2"><br>
+						<span class="psm_left_mespan" ng-bind-html="loginHTML"></span>
+					</a>
+					<a class="button button-light psm_left_mediv" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank">
+						<i class="ion-android-share" style="font-size: 25px; font-align:middle;"></i><br>
+						공유하기
+					</a>
+					<a class="button button-light psm_left_mediv" style="border-radius: 0;" menu-close ng-click='goto_with_clearHistory("#app/config")' ng-if="loginData.isLogin == 'Y' && loginData.Admin_Code!='ERPMobile'">
+						<img src="./img/icon_setting.png" class="psm_left_img2"><br>
+						설정
+					</a>
 					<!-- <a class="button button-light psm_left_mediv" menu-close ng-click='goto_with_clearHistory("#app/pushTest")'><img src="./img/icon_setting.png" class="psm_left_img2"><br>테스트</a> -->
 				</div>
 				<!-- // 일반 거래처 로그인 -->

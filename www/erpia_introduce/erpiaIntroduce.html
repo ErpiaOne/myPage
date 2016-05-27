@@ -1,9 +1,41 @@
 <ion-view view-title="ERPia 소개">
 	<ion-nav-back-button></ion-nav-back-button>
-	<ion-nav-buttons side="right" ng-show="false">
-		<button class="button button-icon button-clear {{icon_home}}" menu-close ng-click="goHome()"></button>
-	</ion-nav-buttons>
 	<ion-content class="">
-		<img src="./img/img_erpia.jpg" width="100%">
+		<!-- <img src="./img/img_erpia.jpg" width="100%"> -->
+		<tab-slide-box>
+			<div class="tsb-icons"> <!-- class건들이면 안되요..ㅠㅠ -->
+				<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
+					<ion-scroll direction="x" class="tsb-hscroll">
+						<a href="javascript:;">ERPia란?</a>
+						<a href="javascript:;">서비스 구성</a>
+						<a href="javascript:;">부가서비스</a>
+					</ion-scroll>
+				</div>
+			</div>
+
+			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index);" style="border-top: 1px solid #e0e0e0; padding-bottom: 100px;">
+				<!-- ERPia란? -->
+				<ion-slide>
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<img src="./img/img_erpia.jpg" width="100%">
+					</ion-scroll>
+				</ion-slide>
+
+				<!-- 서비스 구성 -->
+				<!-- 이건 홈페이지에 있는 이미지 캡쳐 떠온겁니다! 화질이 않좋다면 후에 변경해주세요! -->
+				<ion-slide>
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<img src="./img/img_service.png" width="100%">
+					</ion-scroll>
+				</ion-slide>
+
+				<!-- 부가서비스 -->
+				<ion-slide>
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<img src="./img/img_pos_m.jpg" width="100%">
+					</ion-scroll>
+				</ion-slide>
+			</ion-slide-box>
+		</tab-slide-box>
 	</ion-content>
 </ion-view>

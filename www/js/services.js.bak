@@ -1939,26 +1939,5 @@ return{
 	
 	}
 	};
-})
-.factory('SCMService', function($http, ERPiaAPI, $q, $cordovaToast, $rootScope){
-return{
-	scmlogin: function(admin_code, g_code, ger_name){
-				var url = ERPiaAPI.url2 +'/ERPiaSCM/Mobile_loginChk.asp';
-				var data = 'hidAdmin_Code=' + admin_code +'&hidGerCode=' + g_code + '&hidGerName='+ escape(ger_name);
-				return $http.get(url + '?' + data)
-					.then(function(response){
-						if(typeof response == 'object'){
-							return response.data;
-						}else{
-							return $q.reject(response.data);
-						}
-						
-					}, function(response){
-						return $q.reject(response.data);
-					})
-					
-	
-	}
-	};
 });
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

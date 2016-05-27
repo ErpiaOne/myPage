@@ -26,7 +26,7 @@ div.col4{width:30%; color: #fff;}
 		<button menu-toggle="right" ng-click="meaipchul_i()" class="button button-small button-psm00">등록</button>
 	</ion-nav-buttons>
 
-	<ion-content style="background: #dce0e1">
+	<ion-content style="background: #dce0e1;">
 		<div class="item" style="background: #5e6472; border:0; padding-top:15px;">
 			<div  style="clear: both; width:100%">
 				<div style="float: left; width:14%; padding-top:6px; color: #fff;"> 검 색 </div>
@@ -59,7 +59,7 @@ div.col4{width:30%; color: #fff;}
 			<button class="button button-small button-psm03" ng-click="sear_day(30)" style="width:30%">1개월</button>
 		</div>
 
-		<div class="padding" style="padding-bottom: 20px;">
+		<div class="padding" style="padding-bottom: 100px;">
 			<table style="border-top: 1px solid #e0e0e0; background: #fff; font-size: 0.9em;">
 				<thead>
 					<th style="width:10%; padding-top:5px; padding-bottom:5px;" align="center">No</th>
@@ -93,12 +93,12 @@ div.col4{width:30%; color: #fff;}
 		</div>
 	</ion-content>
 
-	<div style="position: fixed; right: 10px; bottom: 100px;">
+	<div style="position: fixed; right: 10px; bottom: 115px;">
 		<i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='quickReg()'></i>&nbsp;&nbsp;
 		<i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:3em; color: #6c5e72;" ng-click='scrollTop()'></i>&nbsp;&nbsp;
 	</div>
 
-	<ion-footer-bar align-title="left" style="background: #736777; height: 50px;" width="100%">
+	<ion-footer-bar align-title="left" style="background: #736777; height: 20px; padding-bottom: 100px;" width="100%">
 		<div class="col1" >기간<br>현황</div>
 		<div class="col2">&nbsp;</div>
 		<div class="col3" style="font-size:12px;">매출액 {{money.meaipchulsum | number:0}}원<br><any ng-if='balance == true'>입금액 {{chit_atmSum | number:0}}원</any></div>

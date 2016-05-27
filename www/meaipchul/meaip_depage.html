@@ -24,7 +24,7 @@
 </ion-nav-bar>
 <ion-content>
 
-<div class="list list-inset" style="color: #444444; padding-bottom: 20px;">
+<div class="list list-inset" style="color: #444444; padding-bottom: 110px;">
   <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
 
   <label class="item item-input" style="padding-right: 10px;">
@@ -107,10 +107,10 @@
   <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;관리비고 </i></span>
   <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">{{x.Remk}}</any>
   </label>
-  <div style="height: 15px; background: #dce0e1;" ></div>
+<!--   <div style="height: 15px; background: #dce0e1;" ></div> -->
 </div>
 </ion-content>
-<ion-footer-bar align-title="left"  style="background: #736777;">
+<ion-footer-bar align-title="left"  style="background: #736777; padding-bottom: 100px">
 <div align="center" class="footerdiv">
   <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
   <i class="button button-icon button-clear {{ionstar}} starbtn" menu-close ng-click="m_quick(x.iL_No,ionstar)"  style="font-size:50px;align:left; color: #fff;"></i>
