@@ -229,6 +229,7 @@ return{
 	var dashBoard = function(kind, Admin_Code, sDate, eDate){
 		var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
 		var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&sDate=' + sDate + '&eDate=' + eDate;
+		console.log('dashBoard =>', url,'?',data);
 		return $http.get(url + '?' + data)
 			.then(function(response){
 				if(typeof response.data == 'object'){
@@ -313,10 +314,9 @@ return{
 })
 .factory('tradeDetailService', function($http, $q, ERPiaAPI, $rootScope) {
 	return{
-		tradeList: function(Admin_Code, GerCode, ty){
+		tradeList: function(Admin_Code, GerCode, type, pg){
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
-			var data = 'Kind=select_Trade_list' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode  + '&loginType=' + ty;
-			console.log('음 리스트 조회?=', url,'?',data);
+			var data = 'Kind=select_Trade_list' + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode  + '&loginType=' + type + '&pg=' + pg + '&pg_line=' + 10;
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -431,10 +431,13 @@ return{
 				}, function(response){
 					return $q.reject(response.data);
 				})
-		}, getCntNotRead: function(Admin_Code, checkNotRead, loginType){
+		}, getCntNotRead: function(Admin_Code, checkNotRead, loginType, pg){
+			if(checkNotRead == 'Y'){
+				pg = 1;
+			}
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
-			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead + '&loginType=' + loginType;
-			console.log('여긴?=>', url,'?',data);
+			var data = 'Kind=select_Trade_Admin&Admin_Code=' + Admin_Code + '&checkNotRead=' + checkNotRead + '&loginType=' + loginType + '&pg=' + pg + '&pg_line=10';
+			console.log('erpia거래명세서 확인 url=>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -1020,7 +1023,7 @@ return{
 				var goods = '';
 				for(var i=0; i < goodsdata.length; i++){
 					var ii = i+1;
-					var goodstemporary = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ meaipdata.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ atc.subulkind +'</subul_kind><G_Code>'+ goodsdata[i].code +'</G_Code><G_name><![CDATA['+ escape(goodsdata[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goodsdata[i].goodsprice +'</G_Price><G_Qty>'+ goodsdata[i].num +'</G_Qty><G_vat>'+ parseInt(goodsdata[i].goodsprice)*1.1 +'</G_vat></item>';
+					var goodstemporary = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ meaipdata.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ atc.subulkind +'</subul_kind><G_Code>'+ goodsdata[i].code +'</G_Code><G_name><![CDATA['+ escape(goodsdata[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goodsdata[i].goodsprice +'</G_Price><G_Qty>'+ goodsdata[i].num +'</G_Qty><G_vat>'+ parseInt(goodsdata[i].goodsprice)/1.1 +'</G_vat></item>';
 					var goods = goods + goodstemporary;
 				}
 				var middel = '</MeaipT><IpJi>';
@@ -1323,8 +1326,8 @@ return{
 					})
 		}, detailSet: function(admin_code, userid, date, ger, mejang, pageCnt, todate){
 				console.log("MLookupService and detailSet", ger);
-				if(todate == date.eDate) date.eDate = 'today';
-				if(todate == date.sDate) date.sDate = 'today';
+				// if(todate == date.eDate) date.eDate = 'today';
+				// if(todate == date.sDate) date.sDate = 'today';
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid);
 				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid);
 
@@ -1730,7 +1733,7 @@ return{
 				// 상품
 				for(var i = 0; i < goods.length; i++){
 					var ii = i+1;
-					var meaipgoods = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><G_vat>'+ parseInt(goods[i].goodsprice)*1.1 +'</G_vat></item>';
+					var meaipgoods = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><G_vat>'+ parseInt(goods[i].goodsprice)/1.1 +'</G_vat></item>';
 					var goods_xml = goods_xml + meaipgoods;
 				}
 				if(pay.gubun == 4){
@@ -1759,7 +1762,7 @@ return{
 				// 상품
 				for(var i = 0; i < goods.length; i++){
 					var ii = i+1;
-					var meachulgoods = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><PanMeaDanGa>'+ parseInt(goods[i].goodsprice)*1.1 +'</PanMeaDanGa></item>';
+					var meachulgoods = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><PanMeaDanGa>'+ parseInt(goods[i].goodsprice)/1.1 +'</PanMeaDanGa></item>';
 					var goods_xml = goods_xml + meachulgoods;
 				}
 				if(pay.gubun == 4){
@@ -1801,7 +1804,7 @@ return{
 				// 상품
 				for(var i = 0; i < goods.length; i++){
 					var ii = i+1;
-					var meaipgoods = '<item><seq>'+ goods[i].goods_seq + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><G_vat>'+ parseInt(goods[i].goodsprice)*1.1 +'</G_vat><In_Or_Up>' + goods[i].state + '</In_Or_Up><localSeq>' + ii + '</localSeq></item>';
+					var meaipgoods = '<item><seq>'+ goods[i].goods_seq + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><G_vat>'+ parseInt(goods[i].goodsprice)/1.1 +'</G_vat><In_Or_Up>' + goods[i].state + '</In_Or_Up><localSeq>' + ii + '</localSeq></item>';
 					var goods_xml = goods_xml + meaipgoods;
 				}
 				if(pay.gubun == 4){
@@ -1830,7 +1833,7 @@ return{
 				// 상품
 				for(var i = 0; i < goods.length; i++){
 					var ii = i+1;
-					var meachulgoods = '<item><seq>'+ goods[i].goods_seq + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><PanMeaDanGa>'+ parseInt(goods[i].goodsprice)*1.1 +'</PanMeaDanGa><In_Or_Up>' + goods[i].state + '</In_Or_Up><localSeq>' + ii + '</localSeq></item>';
+					var meachulgoods = '<item><seq>'+ goods[i].goods_seq + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><PanMeaDanGa>'+ parseInt(goods[i].goodsprice)/1.1 +'</PanMeaDanGa><In_Or_Up>' + goods[i].state + '</In_Or_Up><localSeq>' + ii + '</localSeq></item>';
 					var goods_xml = goods_xml + meachulgoods;
 				}
 				if(pay.gubun == 4){

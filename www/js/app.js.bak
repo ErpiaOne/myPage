@@ -364,7 +364,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		switch($rootScope.userType){
 			case 'ERPia': location.href = '#/app/slidingtab'; break;
 			case 'SCM' : location.href = '#/app/scmhome'; break;
-			case 'Geust': location.href = '#/app/sample/Main'; break;
+			case 'Guest': location.href = '#/app/slidingtab'; break;
 			default : location.href = '#/app/main'; break;
 		} 
 		     $rootScope.backButtonPressedOnceToExit = true;
@@ -434,7 +434,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		switch($rootScope.userType){
 			case 'ERPia': location.href = '#/app/slidingtab'; break;
 			case 'SCM' : location.href = '#/app/scmhome'; break;
-			case 'Geust': location.href = '#/app/sample/Main'; break;
+			case 'Guest': location.href = '#/app/slidingtab'; break;
 			case 'Normal': location.href = '#/app/sample/Main'; break;
 		} 
 	}

@@ -5,27 +5,25 @@
 	<ion-content style="background: #d9dfdf">
 		<div style="padding-bottom: 80px">
 			<div class="ss">
-				<div class="psm_login_logo"><img src="./img/logo.png" class="logo-image" ng-click='selectType("login")'></div>
+				<p style="float:right">Ver. 베타</p>
+				<div class="psm_login_logo"><img src="./img/logo.png" class="logo-image" ng-click='selectType("login")'>
+				<i class="ion-ios-help" style="font-size:20pt; float:right; margin-right:10%" ng-click="loginhelper()"></i></div>
 			</div>
 			<div>
-				<div class="button-bar" style="width: 100%">
-					<a class="button" ng-click='selectType("ERPia")' ng-if="userType!='ERPia'">ERPia</a>
+				<span class="button-bar" style="margin:0px 10% 0px 10%; background-color: transparent; width:80%">
+					<a class="button" ng-click='selectType("ERPia")' ng-if="userType!='ERPia'" style="font-size:6pt;">ERPia</a>
 					<a class="button button-energized" ng-click='selectType("ERPia")' ng-if="userType&&userType=='ERPia'" style="color:'yellow'">ERPia</a>
-					<a class="button" ng-click='selectType("SCM")' ng-if="userType!='SCM'">SCM</a>
+					<a class="button" ng-click='selectType("SCM")' ng-if="userType!='SCM'" style="font-size:7pt">SCM</a>
 					<a class="button button-energized" ng-click='selectType("SCM")' ng-if="userType&&userType=='SCM'" style="color:'yellow'">SCM</a>
-					<a class="button"  ng-click='selectType("Normal")' ng-if="userType!='Normal'" style="font-size:'8px'">거래처</a>
-					<a class="button button-energized"  ng-click='selectType("Normal")' ng-if="userType&&userType=='Normal'" style="color:'yellow'">거래처</a>
-					<a class="button"  ng-click='selectType("Guest")'>체험하기</a>
-				<!-- <i class="ion-ios-help"></i> -->
-				</div>
+					<a class="button"  ng-click='selectType("Normal")' ng-if="userType!='Normal'" style="font-size:6pt">거래명세서</a>
+					<a class="button button-energized"  ng-click='selectType("Normal")' ng-if="userType&&userType=='Normal'" style="color:'yellow'; font-size:8pt ">거래명세서</a>
+					<a class="button"  ng-click='selectType("Guest")' style="font-size:7pt">체험하기</a>
+				</span>
+					
 				<br>
 				<div name='selectUserType'>
 					<form ng-submit="doLogin()">
-						<center>
-							<h4 ng-if="userType&&userType=='ERPia'">이알피아Login</h4>
-							<h4 ng-if="userType&&userType=='SCM'">SCMLogin</h4>
-							<h4 ng-if="userType&&userType=='Normal'">거래처Login</h4>
-						</center>
+						
 						<div class="list list-inset" style="margin:0px 10% 0px 10%; background-color:transparent">
 							<label class="item item-input" style="padding: 0;"><span class="psm_login1 ion-ios-paper-outline"></span>
 								<input style="font-size:100%; padding-left: 15px; text-transform: lowercase" type="text" ng-model="loginData.Admin_Code" placeholder="업체코드">

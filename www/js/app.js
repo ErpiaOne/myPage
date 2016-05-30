@@ -135,7 +135,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 
 		// Listen for offline event
 		$rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-		if ($location.url()=='/app/main') { 
+		if ($location.url()=='/app/login') { 
 		         $ionicPopup.show({
 
 		            title: "휴대폰의 데이터를 켜주시기바랍니다.",
@@ -251,7 +251,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 //----------------뒤로가기 마지막페이지일때 ....----
 		$ionicPlatform.registerBackButtonAction(function(e){
 		$ionicSideMenuDelegate.canDragContent(true);
-		    if ($location.url()=='/app/main' ||  $location.url()=='/app/slidingtab'  || $location.url() == '/app/scmhome'  || $location.url() == '/app/sample/Main') { //현재 페이지 url이 메인일 때,
+		    if ($location.url()=='/app/login' ||  $location.url()=='/app/slidingtab'  || $location.url() == '/app/scmhome'  || $location.url() == '/app/sample/Main') { //현재 페이지 url이 메인일 때,
 		      $ionicPopup.show({
 				title: '경고',
 				subTitle: '',
@@ -352,7 +352,12 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		      		$rootScope.backButtonPressedOnceToExit = false;	
 		    }else{ // 현재페이지가 메인이 아니면서 더이상 뒤로갈 곳이 없을 때
 		      $rootScope.backButtonPressedOnceToExit = false;
-			   
+			if($rootScope.loginState = "R"){   
+				 $ionicHistory.clearCache();
+				 $ionicHistory.clearHistory();
+				 $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+				 location.href = '#/app/login';
+			}else{
 		      window.plugins.toast.showShortCenter(
 		        "메인으로 이동합니다.",function(a){},function(b){}
 		      );
@@ -360,13 +365,16 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		     	$ionicHistory.clearCache();
 			 $ionicHistory.clearHistory();
 			 $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-		     
-		switch($rootScope.userType){
-			case 'ERPia': location.href = '#/app/slidingtab'; break;
-			case 'SCM' : location.href = '#/app/scmhome'; break;
-			case 'Guest': location.href = '#/app/slidingtab'; break;
-			default : location.href = '#/app/main'; break;
-		} 
+		
+
+		
+			switch($rootScope.userType){
+				case 'ERPia': location.href = '#/app/slidingtab'; break;
+				case 'SCM' : location.href = '#/app/scmhome'; break;
+				case 'Guest': location.href = '#/app/slidingtab'; break;
+				default : location.href = '#/app/login'; break;
+			} 
+		}
 		     $rootScope.backButtonPressedOnceToExit = true;
 		      // setTimeout(function(){
 		      	
