@@ -87,100 +87,107 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}).then(function(modal){
 		$scope.check_sano_Modal = modal;
 	});
-
-//웹수주 실행
-	// $scope.scmwebsuju = function(){
-	// 	location.href = ERPiaAPI.url2+'/ERPiaSCM/order/erpia_order.asp';
-	// }
-/*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15*/
-$scope.pushYNcheck=function(){
-		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
-                               {googleProjectNumber: "832821752106",
-                                autoRegister: true},
-                                app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
-		// window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});	 //푸쉬봇 선언
-		var cntList = 6;
-		alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
-			.then(function(data){
-				if(data != '<!--Parameter Check-->'){
-					$scope.settingsList = data.list;
-				var cntList = data.list.length;
-				for(var i=1; i<cntList; i++){
-					switch(data.list[i].idx){
-						case 1: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-							data.list[i].name = '공지사항';
-							// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("1"); 
-							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key1", "1");
-							// else window.plugins.PushbotsPlugin.untag("1");
-							else window.plugins.OneSignal.deleteTags(["key1"]);
-							break;
-						case 2: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-							data.list[i].name = '업데이트 현황';
-							// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("2");
-							// else window.plugins.PushbotsPlugin.untag("2");
-							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key2", "2");
-							else window.plugins.OneSignal.deleteTags(["key2"]);
-							break;
-						case 3: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-							data.list[i].name = '지식 나눔방';
-							// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("3");
-							// else window.plugins.PushbotsPlugin.untag("3");
-							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key3", "3");
-							else window.plugins.OneSignal.deleteTags(["key3"]);
-							break;
-						case 4: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-							// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("4");
-							// else window.plugins.PushbotsPlugin.untag("4");
-							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key4", "4");
-							else window.plugins.OneSignal.deleteTags(["key4"]);
-							data.list[i].name = '업체문의 Q&A(답변)';
-							break;
-						case 5: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-							data.list[i].name = '거래명세서 도착';
-							// if(data.list[i].checked == true) {
-							// 	window.plugins.PushbotsPlugin.tag("5");
-							// 	console.log("여기돌았다1");
-							// }
-							// else {window.plugins.PushbotsPlugin.untag("5");
-							// 	console.log("여기돌았다");
-							// }
-							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key5", "5");
-							else window.plugins.OneSignal.deleteTags(["key5"]);
-							break;
-						case 6: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-							data.list[i].name = '기타 이벤트';
-							// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("6");
-							// else window.plugins.PushbotsPlugin.untag("6");
-							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key6", "6");
-							else window.plugins.OneSignal.deleteTags(["key6"]);
-							break;
-					}
-				}
-						// if(data.list[0].alarm == 'F'){
-						// 	tagnum = tagnum.toString();
-						// 	window.plugins.PushbotsPlugin.untag(tagnum);
-							
-						// 	console.log("untag" + tagnum);
-
-						// }else{
-						// 	var tagnum = i+1;
-						// 	tagnum = tagnum.toString();
-						// 	window.plugins.PushbotsPlugin.tag(tagnum);
-							
-						// 	console.log("tag", tagnum);
-						// }
-					
-
-	}else{
-					var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
-					var results = rsltList.match(/\^T\^/g);
-					alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
-					$scope.fnAlarm('checkAll');
-					// window.plugins.PushbotsPlugin.tag("all");
-						window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
-				}
-			});
+	
+	$scope.loginhelper = function(){
+		 $ionicPopup.alert({
+			         title: '로그인도움말',
+			         subTitle: '',
+			         content: '1.ERPia<br> ERPia 고객사 접속 경로입니다.<br><br>2.SCM<br> ERPia의 Web SCM 사용 거래처 접속 경로입니다.<br><br>3.거래명세서<br> ERPia 고객사의 거래처 접속 경로입니다.<br><br>4.체험하기<br> 모바일 ERPia를 체험해볼 수 있습니다.'
+		 })
 	}
+	//웹수주 실행
+		// $scope.scmwebsuju = function(){
+		// 	location.href = ERPiaAPI.url2+'/ERPiaSCM/order/erpia_order.asp';
+		// }
+	/*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15*/
+	$scope.pushYNcheck=function(){
+			window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
+	                               {googleProjectNumber: "832821752106",
+	                                autoRegister: true},
+	                                app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
+			// window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});	 //푸쉬봇 선언
+			var cntList = 6;
+			alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+				.then(function(data){
+					if(data != '<!--Parameter Check-->'){
+						$scope.settingsList = data.list;
+					var cntList = data.list.length;
+					for(var i=1; i<cntList; i++){
+						switch(data.list[i].idx){
+							case 1: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '공지사항';
+								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("1"); 
+								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key1", "1");
+								// else window.plugins.PushbotsPlugin.untag("1");
+								else window.plugins.OneSignal.deleteTags(["key1"]);
+								break;
+							case 2: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '업데이트 현황';
+								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("2");
+								// else window.plugins.PushbotsPlugin.untag("2");
+								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key2", "2");
+								else window.plugins.OneSignal.deleteTags(["key2"]);
+								break;
+							case 3: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '지식 나눔방';
+								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("3");
+								// else window.plugins.PushbotsPlugin.untag("3");
+								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key3", "3");
+								else window.plugins.OneSignal.deleteTags(["key3"]);
+								break;
+							case 4: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("4");
+								// else window.plugins.PushbotsPlugin.untag("4");
+								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key4", "4");
+								else window.plugins.OneSignal.deleteTags(["key4"]);
+								data.list[i].name = '업체문의 Q&A(답변)';
+								break;
+							case 5: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '거래명세서 도착';
+								// if(data.list[i].checked == true) {
+								// 	window.plugins.PushbotsPlugin.tag("5");
+								// 	console.log("여기돌았다1");
+								// }
+								// else {window.plugins.PushbotsPlugin.untag("5");
+								// 	console.log("여기돌았다");
+								// }
+								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key5", "5");
+								else window.plugins.OneSignal.deleteTags(["key5"]);
+								break;
+							case 6: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+								data.list[i].name = '기타 이벤트';
+								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("6");
+								// else window.plugins.PushbotsPlugin.untag("6");
+								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key6", "6");
+								else window.plugins.OneSignal.deleteTags(["key6"]);
+								break;
+						}
+					}
+							// if(data.list[0].alarm == 'F'){
+							// 	tagnum = tagnum.toString();
+							// 	window.plugins.PushbotsPlugin.untag(tagnum);
+								
+							// 	console.log("untag" + tagnum);
+
+							// }else{
+							// 	var tagnum = i+1;
+							// 	tagnum = tagnum.toString();
+							// 	window.plugins.PushbotsPlugin.tag(tagnum);
+								
+							// 	console.log("tag", tagnum);
+							// }
+						
+
+		}else{
+						var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
+						var results = rsltList.match(/\^T\^/g);
+						alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
+						$scope.fnAlarm('checkAll');
+						// window.plugins.PushbotsPlugin.tag("all");
+							window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
+					}
+				});
+		}
 /*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15 -- 끝*/
 
 //초기화 함수
@@ -207,11 +214,11 @@ $scope.pushYNcheck=function(){
 				$scope.userData = {};
 				$scope.dashBoard = {};
 
-				$rootScope.goto_with_clearHistory('#/app/main');
+				$rootScope.goto_with_clearHistory('#/app/login');
 				// $ionicHistory.clearCache();
 				// $ionicHistory.clearHistory();
 				// $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-				$state.go('app.erpia_main');
+				$scope.login();
 			}, 1000);
 		}else{
 			$scope.icon_home = "ion-home";
@@ -312,7 +319,7 @@ $scope.pushYNcheck=function(){
 	      });
 	   }
 /*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스*/
-
+	
 	//로그인 체크박스
 	$scope.loginckbox={
 		AdminCodeCK : false,
@@ -321,8 +328,8 @@ $scope.pushYNcheck=function(){
 	};
 		// Open the login modal
 	$scope.login = function() {
-		$scope.userType='ERPia';
-		$rootScope.loginData.loginType = 'E';
+		// $scope.userType='ERPia';
+		// $rootScope.loginData.loginType = 'E';
 		$scope.logindata2.EAdminCode = $filter('lowercase')($localstorage.get("EAdminCode"));
 		$scope.logindata2.EUserId = 	$filter('lowercase')($localstorage.get("EUserId"));
 		$scope.logindata2.EPwd = $localstorage.get("EPwd")
@@ -349,7 +356,8 @@ $scope.pushYNcheck=function(){
 		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 		$timeout(function(){
 				if(userType == 'ERPia'){
-				$rootScope.loginMenu = 'User'; 
+				console.log("이알피아입니까")
+				$rootScope.loginMenu = "selectUser"; 
 				$rootScope.userType = 'ERPia'; 
 				$scope.footer_menu = 'U'; 
 				if($localstorage.get("EAdminCode") == '' || $localstorage.get("EAdminCode") == undefined){
@@ -371,7 +379,7 @@ $scope.pushYNcheck=function(){
 					$rootScope.loginData.Pwd = $scope.logindata2.EPwd;
 				}
 				}else if(userType =='SCM'){
-						$rootScope.loginMenu = 'User'; 
+						$rootScope.loginMenu = "selectUser"; 
 						$rootScope.userType = 'SCM'; 
 						$scope.footer_menu = 'U'; 
 						if($localstorage.get("SAdminCode") == '' || $localstorage.get("SAdminCode") == undefined){
@@ -394,7 +402,7 @@ $scope.pushYNcheck=function(){
 							$scope.loginckbox.PwdCK = true;
 						}
 				}else if(userType == 'Normal'){ 
-						$rootScope.loginMenu = 'User'; 
+						$rootScope.loginMenu = "selectUser"; 
 						$rootScope.userType = 'Normal'; 
 						$scope.footer_menu = 'U'; 
 						if($localstorage.get("NAdminCode") == '' || $scope.logindata2.NAdminCode == undefined){
@@ -417,7 +425,7 @@ $scope.pushYNcheck=function(){
 							$scope.loginckbox.PwdCK = true;	
 						}
 				}else if(userType == 'Guest'){
-						$rootScope.loginMenu = 'User'; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
+						$rootScope.loginMenu = "selectUser"; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
 						// $scope.loginModal.hide();
 						$scope.doLogin();
 				}else{
@@ -427,7 +435,37 @@ $scope.pushYNcheck=function(){
 		}, 1000);
 
 	}
-	
+		// Open the login modal
+	$scope.login = function() {
+		// $scope.userType='ERPia';
+		// $rootScope.loginData.loginType = 'E';
+		$scope.logindata2.EAdminCode = $filter('lowercase')($localstorage.get("EAdminCode"));
+		$scope.logindata2.EUserId = 	$filter('lowercase')($localstorage.get("EUserId"));
+		$scope.logindata2.EPwd = $localstorage.get("EPwd")
+		$scope.logindata2.SAdminCode = $filter('lowercase')($localstorage.get("SAdminCode"));
+		$scope.logindata2.SUserId = $filter('lowercase')($localstorage.get("SUserId"));
+		$scope.logindata2.SPwd = $localstorage.get("SPwd")
+		$scope.logindata2.NAdminCode = $filter('lowercase')($localstorage.get("NAdminCode"));
+		$scope.logindata2.NUserId = $filter('lowercase')($localstorage.get("NUserId"));
+		$scope.logindata2.NPwd = $localstorage.get("NPwd");
+		$rootScope.loginMenu = 'selectUser';
+		if($rootScope.loginState == 'R'){
+			// $scope.loginModal.show();
+			console.log("R");
+			$scope.init('login');
+			$rootScope.goto_with_clearHistory('#/app/login');
+			if($rootScope.userType == "" || $rootScope.userType == undefined){
+				$scope.selectType("ERPia");
+			}else{
+				$scope.selectType($rootScope.userType);
+			}
+		}else{
+			$scope.footer_menu = 'G';
+			$scope.init('logout');
+		}
+	};
+
+
 
 	// 업체코드, 아이디, 패스워드 저장하기..
 	$scope.LoginAdminCodeCK=function(userType){
@@ -581,6 +619,7 @@ $scope.pushYNcheck=function(){
 					}else{
 						$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
 					}
+					$rootScope.loginMenu = 'User'; 
 					$scope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
 					$rootScope.loginState = "S";
@@ -657,7 +696,7 @@ $scope.pushYNcheck=function(){
 					$rootScope.mobile_Certify_YN = comInfo.data.list[0].mobile_CertifyYN;
 
 					$scope.loginData.isLogin = 'Y';
-
+					$rootScope.loginMenu = 'User'; 
 					loginService.comInfo('ComInfo_Erpia', $scope.loginData.Admin_Code)
 					.then(function(comTax){
 						var d= new Date();
@@ -850,6 +889,7 @@ $scope.pushYNcheck=function(){
 					$scope.userData.GerCode = comInfo.data.list[0].G_code;
 					$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
 
+					$rootScope.loginMenu = 'User'; 
 					$scope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
 					$rootScope.loginState = "N";
@@ -900,6 +940,7 @@ $scope.pushYNcheck=function(){
 			$scope.loginData.UserId = 'ERPMobile';
 			$scope.loginData.isLogin = 'Y';
 
+			$rootScope.loginMenu = 'User'; 
 			$scope.userData.package = 'Professional';
 			$scope.userData.cnt_user = '5 명';
 			$scope.userData.cnt_site = '10 개';
@@ -1165,6 +1206,10 @@ $scope.pushYNcheck=function(){
 	}else{
 		$rootScope.autoLogin = false;
 		$rootScope.loginData.chkAutoLogin=false;
+		if($rootScope.loginMenu == "selectUser"){
+			console.log("로그인돌아랏!!!!");
+			$scope.login();
+		}
 	}
 
 	 }, false);
@@ -1174,7 +1219,6 @@ $scope.pushYNcheck=function(){
 // 거래명세표 컨트롤러
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
 	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer, $ionicPopup, app){
-
 	$scope.email ={
 		toemail : ''
 	};
@@ -1186,7 +1230,7 @@ $scope.pushYNcheck=function(){
 	});
 	$scope.check = {};
 	$scope.tradeList = {};
-
+	$scope.pg = 1; // 거래명세서 페이징
 	$scope.YNcheck='all';
 
 	$scope.reload_tradelist = function(){
@@ -1201,28 +1245,64 @@ $scope.pushYNcheck=function(){
 		}else{
 			var type = 'N';
 		}
-		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode, type)
-			.then(function(response){
-				if(response.list.length == 0) {
+		$scope.pg = 1;
+		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode, type, $scope.pg)
+		.then(function(response){
+			if(response.list.length == 0) {
 					$scope.haveList = 'N';
+					$scope.moreloading=1;
 				}else{
 					$scope.haveList = 'Y';
 					$scope.items = response.list;
+					if($scope.YNcheck == 'not'){
+						for(var i =0; i < $scope.items.length; i++){
+							if($scope.items[i].readYN == 'N'){	
+								$scope.items.splice(i, 1)
+							}
+						}
+					}
+
+					if(response.list.length < 10){
+						$scope.maxover = 1;
+					}else{
+						$scope.maxover=0;
+					}
+				    	$scope.pageCnt=1;
+				    	$scope.maxover=0;
 				}
-			})
+		})
 	}else if($rootScope.userType == 'ERPia'){
 		var type = 'E';
 		$scope.tradeList.Title = '매출거래처 발송 내역';
 		$scope.tradeList.MeaipMeachul = '매입일';
 		$scope.tradeList.Publisher = '발송처';
 		$scope.tradeList.isRead = '수신확인';
-		tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N', type)
+		// if($scope.pg != 1){
+		// 	$scope.pg = parseInt($scope.pg) + 1;
+		// }
+		$scope.pg = 1;
+		tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N', type, $scope.pg)
 			.then(function(response){
 				if(response.list.length == 0) {
 					$scope.haveList = 'N';
+					$scope.moreloading=1;
 				}else{
 					$scope.haveList = 'Y';
 					$scope.items = response.list;
+					if($scope.YNcheck == 'not'){
+						for(var i =0; i < $scope.items.length; i++){
+							if($scope.items[i].readYN == 'N'){	
+								$scope.items.splice(i, 1)
+							}
+						}
+					}
+					if(response.list.length < 10){
+						$scope.maxover = 1;
+					}else{
+						$scope.maxovers=0;
+					}
+				    	$scope.pageCnt=1;
+				    	$scope.maxover=0;
 				}
 			})
 	}
@@ -1247,6 +1327,89 @@ $scope.pushYNcheck=function(){
 		$scope.refresh_time();
 		$scope.reload_tradelist(); 
 		$scope.loadingani();
+	}
+
+	/*거래명세서 더보기*/
+	$scope.search_more = function(){
+		if($rootScope.userType == 'SCM' || $rootScope.userType == "Normal"){
+			if($rootScope.userType == 'SCM'){
+				var type = 'S';
+			}else{
+				var type = 'N';
+			}
+
+			$scope.pg = parseInt($scope.pg) + 1;
+
+			tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode, type, $scope.pg)
+			.then(function(response){
+				if(response.list.length < 10) {
+					for(var i = 0; i < response.list.length; i++){
+						$scope.items.push(response.list[i]);
+					}
+					$scope.maxover=1;
+					$scope.haveList = 'Y';
+					$scope.moreloading=0;
+
+				}else if(response.list.length == 0) {
+					$scope.haveList = 'Y';
+					$scope.moreloading=0;
+					$scope.maxover=1;
+				}else{
+					for(var i = 0; i < response.list.length; i++){
+						$scope.items.push(response.list[i]);
+					}
+					$scope.haveList = 'Y';
+					$scope.moreloading=0;
+				    	$scope.pageCnt=1;
+				    	$scope.maxover=0;
+				}
+
+				if($scope.YNcheck == 'not'){
+					for(var i =0; i < $scope.items.length; i++){
+						if($scope.items[i].readYN == 'Y'){	
+							$scope.items.splice(i, 1)
+						}
+					}
+				}
+			})
+		}else if($rootScope.userType == 'ERPia'){
+			var type = 'E';
+			if($scope.maxover != 1){
+				$scope.pg = parseInt($scope.pg) + 1;
+				tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N', type, $scope.pg)
+				.then(function(response){
+					if(response.list.length < 10) {
+						for(var i = 0; i < response.list.length; i++){
+							$scope.items.push(response.list[i]);
+						}
+						$scope.maxover=1;
+						$scope.haveList = 'Y';
+						$scope.moreloading=0;
+
+					}else if(response.list.length == 0) {
+						$scope.haveList = 'Y';
+						$scope.moreloading=0;
+						$scope.maxover=1;
+					}else{
+						for(var i = 0; i < response.list.length; i++){
+							$scope.items.push(response.list[i]);
+						}
+						$scope.haveList = 'Y';
+						$scope.moreloading=0;
+					    	$scope.pageCnt=1;
+					    	$scope.maxover=0;
+					}
+
+					if($scope.YNcheck == 'not'){
+						for(var i =0; i < $scope.items.length; i++){
+							if($scope.items[i].readYN == 'Y'){	
+								$scope.items.splice(i, 1)
+							}
+						}
+					}
+				})		
+			}
+		}
 	}
 
 	$scope.reload_tradelist(); 
@@ -2395,7 +2558,7 @@ $scope.pushYNcheck=function(){
 		    .then(function(csInfo){
 		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 성공하였습니다.', 'long', 'center');
 			else alert('등록이 성공하였습니다.');
-			$rootScope.goto_with_clearHistory('#/app/main');
+			$rootScope.goto_with_clearHistory('#/app/login');
 		    },function(){
 		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 실패하였습니다.', 'long', 'center');
 			else alert('등록이 성공하였습니다.');
@@ -4409,11 +4572,14 @@ $scope.pushYNcheck=function(){
     	MLookupService.detailSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams,$scope.company, $scope.detail.Place_Code, 1, $scope.todate)
 		.then(function(data){
 			MLookupService.lqdetail_set($scope.loginData.Admin_Code, $scope.loginData.UserId,$scope.reqparams,$scope.company,$scope.detail.Place_Code,1)
-				.then(function(data){
-				})
+			.then(function(data){
+			})
+
 			if(data == '<!--Parameter Check-->'){
-				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 결과가 없습니다.', 'short', 'center');
-				else alert('조회된 결과가 없습니다.');
+				console.log('조회된 결과 없음.');
+			    		$scope.company.dam = '0';
+			    		$scope.company.damid = '0';
+			    		$scope.detail.Place_Code = '0';
 			}else{
 				$scope.chit_lists = [];//조회배열 초기화
 				for(var m = 0; m < data.list.length; m++){
@@ -4424,37 +4590,42 @@ $scope.pushYNcheck=function(){
 						$scope.money.meaipchulsum = $scope.money.meaipchulsum + parseInt(data.list[m].MeaChul_Amt);
 					}
 				}
-			if($scope.company.code !=  0){
-				MLookupService.eMoon($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams, $scope.company.code)
-				.then(function(data){
-					$scope.balance = true;
-					$scope.money.emoon = data.list[0].Jan_Amt;
-					if(data.list[0].All_Amt != null && data.list[0].All_Amt != undefined){
-						$scope.money.hap = data.list[0].All_Amt;
-					}else{
-						$scope.money.hap = 0;
-					}
-					if(data.list[0].JiGup_Amt != null && data.list[0].JiGup_Amt != undefined){
-						$scope.chit_jiSum = data.list[0].JiGup_Amt;
-					}else{
-						$scope.chit_jiSum = 0;
-					}
-					
-					if( data.list[0].IpKum_Amt != null &&  data.list[0].IpKum_Amt != undefined){
-						$scope.chit_atmSum = data.list[0].IpKum_Amt;
-					}else{
-						$scope.chit_atmSum = 0;
-					}
-					
-					
-				})
-			}else{
-				$scope.balance = false;
-				$scope.money.emoon = 0;
-				$scope.money.hap = 0;
-				$scope.chit_atmSum = 0;
-				$scope.chit_jiSum = 0;
-			}
+				if($scope.company.code !=  0){
+					MLookupService.eMoon($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams, $scope.company.code)
+					.then(function(data){
+						$scope.balance = true;
+						
+						if(data.list[0].Jan_Amt != null && data.list[0].Jan_Amt != undefined){
+							$scope.money.emoon = data.list[0].Jan_Amt;
+						}else{
+							$scope.money.emoon = 0;
+						}
+						if(data.list[0].All_Amt != null && data.list[0].All_Amt != undefined){
+							$scope.money.hap = data.list[0].All_Amt;
+						}else{
+							$scope.money.hap = 0;
+						}
+						if(data.list[0].JiGup_Amt != null && data.list[0].JiGup_Amt != undefined){
+							$scope.chit_jiSum = data.list[0].JiGup_Amt;
+						}else{
+							$scope.chit_jiSum = 0;
+						}
+						
+						if( data.list[0].IpKum_Amt != null &&  data.list[0].IpKum_Amt != undefined){
+							$scope.chit_atmSum = data.list[0].IpKum_Amt;
+						}else{
+							$scope.chit_atmSum = 0;
+						}
+						
+						
+					})
+				}else{
+					$scope.balance = false;
+					$scope.money.emoon = 0;
+					$scope.money.hap = 0;
+					$scope.chit_atmSum = 0;
+					$scope.chit_jiSum = 0;
+				}
 				$scope.detailSet_modal.hide();
 				//최근등록
 			}
