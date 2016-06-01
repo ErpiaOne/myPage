@@ -21,7 +21,7 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService){
+	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, $cordovaSocialSharing){
 	$rootScope.PushData = {};
 	   var browseroptions = {
 	      location: 'yes',
@@ -1065,7 +1065,32 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 사이드 메뉴 - URL 공유하기 */
 	$scope.shareURL = function(){
-		console.log('여기오니??????');
+		$ionicPopup.show({
+			title: 'URL공유',
+			subTitle: '',
+			content: 'ERPIA_Mobile 설치 URL을 공유하시겠습니까?',
+			buttons: [
+				{ text: 'No',
+					onTap: function(e){
+						console.log('취소');
+					}
+				},
+				{
+					text: 'Yes',
+					type: 'button-positive',
+					onTap: function(e) {
+						var url = 'https://play.google.com/store/apps/details?id=com.ERPia.MyPage';
+						if(where == 'kakao'){
+							$cordovaSocialSharing.shareVia("[ERPiaMobile 설치URL] "+ url);
+						}else if(where == 'sms'){
+							$cordovaSocialSharing.shareViaSMS("[ERPiaMobile 설치URL] "+ url);
+						}else{
+							$cordovaSocialSharing.shareViaEmail("[ERPiaMobile 설치URL] "+ url);
+						}
+					}
+				},
+			]
+		})
 	}
 
 })
