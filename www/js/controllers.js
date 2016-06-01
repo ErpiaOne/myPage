@@ -37,8 +37,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
    	/* 로딩화면 */
 	$rootScope.loadingani=function(){
 		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-	         $timeout(function(){
-	         $ionicLoading.hide();
+		$timeout(function(){
+		$ionicLoading.hide();
 	      }, 500);
 	}
 	$scope.logindata2 = {};
@@ -61,51 +61,42 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	$ionicPlatform.ready();
 
-	// 로그인 모달창
-	// $ionicModal.fromTemplateUrl('erpia_login/login.html', {
-	// 	scope : $scope
-	// }).then(function(modal) {
-	// 	$scope.loginModal = modal;
-	// });
-	// 이용약관 모달창
+	/* 이용약관 모달창 */
 	$ionicModal.fromTemplateUrl('side/agreement.html',{
 		scope : $scope
 	}).then(function(modal){
 		$scope.agreeModal = modal;
 		$scope.agreeModal.hardwareBackButtonClose = false;
 	});
-	// 인증 모달창
+	/* 인증 모달창 */
 	$ionicModal.fromTemplateUrl('side/certification.html',{
 		scope : $scope
 	}).then(function(modal){
 		$scope.certificationModal = modal;
 		$scope.certificationModal.hardwareBackButtonClose = false;
 	});
-	// 거래명세표 조회시 뜨는 모달창
+	/* 거래명세표 조회시 뜨는 모달창 */
 	$ionicModal.fromTemplateUrl('side/check_Sano.html',{
 		scope : $scope
 	}).then(function(modal){
 		$scope.check_sano_Modal = modal;
 	});
 	
+	/* 로그인 설명 */
 	$scope.loginhelper = function(){
 		 $ionicPopup.alert({
-			         title: '로그인도움말',
-			         subTitle: '',
-			         content: '1.ERPia<br> ERPia 고객사 접속 경로입니다.<br><br>2.SCM<br> ERPia의 Web SCM 사용 거래처 접속 경로입니다.<br><br>3.거래명세서<br> ERPia 고객사의 거래처 접속 경로입니다.<br><br>4.체험하기<br> 모바일 ERPia를 체험해볼 수 있습니다.'
+		         title: '로그인도움말',
+		         subTitle: '',
+		         content: '1.ERPia<br> ERPia 고객사 접속 경로입니다.<br><br>2.SCM<br> ERPia의 Web SCM 사용 거래처 접속 경로입니다.<br><br>3.거래명세서<br> ERPia 고객사의 거래처 접속 경로입니다.<br><br>4.체험하기<br> 모바일 ERPia를 체험해볼 수 있습니다.'
 		 })
 	}
-	//웹수주 실행
-		// $scope.scmwebsuju = function(){
-		// 	location.href = ERPiaAPI.url2+'/ERPiaSCM/order/erpia_order.asp';
-		// }
+	
 	/*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15*/
 	$scope.pushYNcheck=function(){
 			window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
 	                               {googleProjectNumber: "832821752106",
 	                                autoRegister: true},
 	                                app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
-			// window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});	 //푸쉬봇 선언
 			var cntList = 6;
 			alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 				.then(function(data){
@@ -116,87 +107,53 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						switch(data.list[i].idx){
 							case 1: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
 								data.list[i].name = '공지사항';
-								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("1"); 
 								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key1", "1");
-								// else window.plugins.PushbotsPlugin.untag("1");
 								else window.plugins.OneSignal.deleteTags(["key1"]);
 								break;
 							case 2: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
 								data.list[i].name = '업데이트 현황';
-								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("2");
-								// else window.plugins.PushbotsPlugin.untag("2");
 								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key2", "2");
 								else window.plugins.OneSignal.deleteTags(["key2"]);
 								break;
 							case 3: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
 								data.list[i].name = '지식 나눔방';
-								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("3");
-								// else window.plugins.PushbotsPlugin.untag("3");
 								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key3", "3");
 								else window.plugins.OneSignal.deleteTags(["key3"]);
 								break;
 							case 4: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("4");
-								// else window.plugins.PushbotsPlugin.untag("4");
 								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key4", "4");
 								else window.plugins.OneSignal.deleteTags(["key4"]);
 								data.list[i].name = '업체문의 Q&A(답변)';
 								break;
 							case 5: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
 								data.list[i].name = '거래명세서 도착';
-								// if(data.list[i].checked == true) {
-								// 	window.plugins.PushbotsPlugin.tag("5");
-								// 	console.log("여기돌았다1");
-								// }
-								// else {window.plugins.PushbotsPlugin.untag("5");
-								// 	console.log("여기돌았다");
-								// }
 								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key5", "5");
 								else window.plugins.OneSignal.deleteTags(["key5"]);
 								break;
 							case 6: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
 								data.list[i].name = '기타 이벤트';
-								// if(data.list[i].checked == true) window.plugins.PushbotsPlugin.tag("6");
-								// else window.plugins.PushbotsPlugin.untag("6");
 								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key6", "6");
 								else window.plugins.OneSignal.deleteTags(["key6"]);
 								break;
 						}
 					}
-							// if(data.list[0].alarm == 'F'){
-							// 	tagnum = tagnum.toString();
-							// 	window.plugins.PushbotsPlugin.untag(tagnum);
-								
-							// 	console.log("untag" + tagnum);
-
-							// }else{
-							// 	var tagnum = i+1;
-							// 	tagnum = tagnum.toString();
-							// 	window.plugins.PushbotsPlugin.tag(tagnum);
-								
-							// 	console.log("tag", tagnum);
-							// }
-						
-
 		}else{
 						var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
 						var results = rsltList.match(/\^T\^/g);
 						alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
 						$scope.fnAlarm('checkAll');
-						// window.plugins.PushbotsPlugin.tag("all");
-							window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
+						window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
 					}
 				});
 		}
-/*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15 -- 끝*/
+	/*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15 -- 끝*/
 
-//초기화 함수
+	/* 초기화 함수 */
 	$scope.init = function(loginType){
 		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
                                {googleProjectNumber: "832821752106",
                                 autoRegister: true},
                                 app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
-		// window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 		if(loginType == 'logout') {
 			window.plugins.OneSignal.deleteTags(["key1", "key2", "key3", "key4", "key5", "key6"]);
 			$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
@@ -213,11 +170,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.loginData = {};
 				$scope.userData = {};
 				$scope.dashBoard = {};
-
 				$rootScope.goto_with_clearHistory('#/app/login');
-				// $ionicHistory.clearCache();
-				// $ionicHistory.clearHistory();
-				// $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 				$scope.login();
 			}, 1000);
 		}else{
@@ -227,78 +180,64 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.loginData = {};
 				$scope.userData = {};
 				$scope.dashBoard = {};
-
-				// $ionicHistory.clearCache();
-				// $ionicHistory.clearHistory();
-				// $ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 			}, 1000);
 		}
 		
 	}
-///////////////////////////////////////--------------푸쉬유저체크 - 없으면 insert ----------------------------
 
-			$scope.pushUserCheck = function() {
-				var PushInsertCheck = '';
-				var PushInsertCheck2 = "";
-			pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SELECT_InsertCheck', $rootScope.UserKey, $rootScope.token, '', '', '', '')
-		    .then(function(pushInfo){
-		    	if(pushInfo.data.list.length != 0){
-		    		PushInsertCheck = pushInfo.data.list[0].token;
-		    	}
-		    	if(PushInsertCheck == $rootScope.token){
-		    		PushInsertCheck2 = "duplication";
-		    	}else{
-		    		PushInsertCheck2 = "NewToken";
-	    			if(PushInsertCheck2 == "NewToken"){
-						$scope.pushUserRegist();
-					};
-		    	}
-		    },function(){
-				alert('pushUserCheck fail')
-			});
-		};
+	/* 푸쉬유저체크 - 없으면 insert  */
+	$scope.pushUserCheck = function() {
+		var PushInsertCheck = '';
+		var PushInsertCheck2 = "";
+		pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SELECT_InsertCheck', $rootScope.UserKey, $rootScope.token, '', '', '', '')
+		.then(function(pushInfo){
+			if(pushInfo.data.list.length != 0){
+				PushInsertCheck = pushInfo.data.list[0].token;
+			}
+			if(PushInsertCheck == $rootScope.token){
+				PushInsertCheck2 = "duplication";
+			}else{
+				PushInsertCheck2 = "NewToken";
+				if(PushInsertCheck2 == "NewToken"){
+					$scope.pushUserRegist();
+				};
+			}
+		},function(){
+		alert('pushUserCheck fail')
+		});
+	};
 
-		$scope.pushUserRegist = function() {
-			pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SAVE', $rootScope.UserKey, $rootScope.token, $rootScope.loginState, 'A', '', '')
-		    .then(function(pushInfo){
-		    },function(){
-				/*alert('pushUserRegist fail')*/
-			});
-		};
-///////////////////////////////////////--------------푸쉬유저체크 - 없으면 insert 끝 ----------------------------
-	// 로그인창 닫기 함수
+	$scope.pushUserRegist = function() {
+		pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SAVE', $rootScope.UserKey, $rootScope.token, $rootScope.loginState, 'A', '', '')
+		.then(function(pushInfo){
+		},function(){
+		/*alert('pushUserRegist fail')*/
+		});
+	};
+	/* 푸쉬유저체크 - 없으면 insert 끝 */
+	/* 로그인창 닫기 함수 */ 
 	$scope.closeLogin = function() {
 		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
                                {googleProjectNumber: "832821752106",
                                 autoRegister: true},
                                 app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
 		window.plugins.OneSignal.sendTags({"mac": $rootScope.deviceInfo.uuid});
- 		 // window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
 		$ionicHistory.nextViewOptions({
 			disableBack: true
 		});
-		// $scope.loginModal.hide();
 		if($rootScope.mobile_Certify_YN == 'Y'){	 // 모바일 아이디 인증이 되어있다면!!  각자 LOGIN TYPE에 맞는 메인으로 이동
 			if($rootScope.loginState == "S"){
-		        $state.go("app.erpia_scmhome");
+		           	$state.go("app.erpia_scmhome");
 			}else if($rootScope.loginState == "E"){
-				//$state.go("app.erpia_main");
-				// $scope.onSlideMove
-		     	  $state.go("app.slidingtab");
+		     		$state.go("app.slidingtab");
 			}else if($rootScope.loginState == 'N'){ 
 				$state.go("app.erpia_main");
 			}
-			// window.plugins.PushbotsPlugin.updateAlias($rootScope.loginData.Admin_Code+"^"+$rootScope.loginData.UserId+"^"+$rootScope.deviceInfo2.phoneNo+"^"+$rootScope.deviceInfo.uuid);
-			// console.log("updateAlias");
-			// else if($rootScope.userType == 'Guest'){
-			// 	$location.href = '#/app/slidingtab';
-			// }
 		}else if($rootScope.loginState != "R") {	 // logintype이 "R"(Ready) 이 아니라면 인증동의 창이 띄워지도록한다. 
 			$scope.agree_1.checked = false;
 			$scope.agree_2.checked = false;
 			$scope.SMSData.rspnText = '';
 			$scope.agreeModal.show();
-			
 		}
 
 
@@ -309,27 +248,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	   $scope.gohomepage = function() {
 	      $cordovaInAppBrowser.open('http://www.erpia.net', '_blank', browseroptions)
-
 	      .then(function(event) {
 	         // success
-	      })
-
-	      .catch(function(event) {
+	      }).catch(function(event) {
 	         // error
 	      });
 	   }
-/*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스*/
-	
-	//로그인 체크박스
+
+	/*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스*/
+	/* 로그인 체크박스 */
 	$scope.loginckbox={
 		AdminCodeCK : false,
 		UserIdCK : false,
 		PwdCK : false
 	};
-		// Open the login modal
+
 	$scope.login = function() {
-		// $scope.userType='ERPia';
-		// $rootScope.loginData.loginType = 'E';
 		$scope.logindata2.EAdminCode = $filter('lowercase')($localstorage.get("EAdminCode"));
 		$scope.logindata2.EUserId = 	$filter('lowercase')($localstorage.get("EUserId"));
 		$scope.logindata2.EPwd = $localstorage.get("EPwd")
@@ -341,7 +275,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.logindata2.NPwd = $localstorage.get("NPwd");
 		$rootScope.loginMenu = 'selectUser';
 		if($rootScope.loginState == 'R'){
-			// $scope.loginModal.show();
 			console.log("R");
 			$scope.init('login');
 			$rootScope.goto_with_clearHistory('#/app/login');
@@ -435,10 +368,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}, 1000);
 
 	}
-		// Open the login modal
+
 	$scope.login = function() {
-		// $scope.userType='ERPia';
-		// $rootScope.loginData.loginType = 'E';
 		$scope.logindata2.EAdminCode = $filter('lowercase')($localstorage.get("EAdminCode"));
 		$scope.logindata2.EUserId = 	$filter('lowercase')($localstorage.get("EUserId"));
 		$scope.logindata2.EPwd = $localstorage.get("EPwd")
@@ -552,8 +483,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 	};
 
-/*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스 끝*/ 	
-// 로그인 함수
+	/*김형석 수정 2016-04-13~2016-04-20 // 로그인 체크박스 끝*/ 	
+	/* 로그인 함수 */
 	$scope.doLogin = function(admin_code, loginType, id, pwd, autologin_YN) {
 		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
                        {googleProjectNumber: "832821752106",
@@ -581,6 +512,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.loginData.UserId = $filter('lowercase')($scope.loginData.UserId);
 				uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 			}else{
+				/* 테스트시  */
 				switch($rootScope.userType){
 					case 'SCM':
 						// $scope.loginData.Admin_Code = 'onz';
@@ -601,6 +533,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}
 			}
 		}
+
 		//SCM 로그인
 		if ($rootScope.userType == 'SCM') {
 			loginService.comInfo('scm_login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
@@ -652,15 +585,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId);
 						}
 					}
-					/*scm 웹수주 세션로그인 ( 추후 추가예정)*/
-					// SCMService.scmlogin($scope.loginData.Admin_Code, $scope.userData.G_Code, $scope.userData.GerName)
-					//  .then(function(pushInfo){
-					//  		console.log("loginsucceed");
-					    	
-					//     },function(){
-					// 		alert(' fail');
-					// 	});
-					 /*scm 웹수주 세션로그인 끝*/
 					$timeout(function() {
 						$ionicLoading.hide();
 						$scope.closeLogin();
@@ -675,7 +599,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					else alert('login error');
 			});
 		}else if ($rootScope.userType == 'ERPia'){
-			console.log("여기왔니?",'ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid);
 			//ERPia 로그인
 			loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
 			.then(function(comInfo){
@@ -719,7 +642,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								{
 									if (Pay_Ex_Days >= 0)
 									{
-										//G_Expire_Days = DateDiff("D", Now_Date, DateAdd("M", 1, Max_Pay_YM & "-01")) + CInt(Pay_Day) + CInt(Pay_Ex_Days) - 1
 										Max_Pay_Y = Max_Pay_YM.split('-')[0];
 										Max_Pay_M = Max_Pay_YM.split('-')[1];
 										var d1 = new Date(Max_Pay_Y, Max_Pay_M, Pay_Day);
@@ -748,9 +670,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										{
 											G_Expire_Days = "0"
 											G_Expire_Date = "기간만료"
-										}else{
-											//G_Expire_Days = DateDiff("D", Now_Date, DateAdd("D", CInt(Pay_Day) + CInt(Pay_Ex_Days) - 1, DateAdd("M", 1, Last_Pay_YM & "-01")))
-											//G_Expire_Date = DateAdd("D", CInt(Pay_Day) + CInt(Pay_Ex_Days) - 1, DateAdd("M", 1, Last_Pay_YM & "-01"))
 										}
 									}
 								}
@@ -764,8 +683,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								G_Expire_Date = CLng(IO_Amt) + CLng(Point_Ex_Amt) - CLng(Point_Out_StandBy_Amt)
 							}
 						}
-
-						//$scope.userData.cntNotRead = data.list[0].CNT_Tax_No_Read;	//계산서 미수신건
 						$scope.userData.expire_date = G_Expire_Date; //"2015년<br>8월20일";
 						$scope.userData.expire_days = G_Expire_Days;
 
@@ -813,7 +730,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							$ionicLoading.hide();
 							$scope.closeLogin();
 							$scope.pushYNcheck();
-////-------------------------------------여기가 푸쉬받은 주소 이동할지 말지 결정 ----------------------------------------------------------------------////
+						/* 여기가 푸쉬받은 주소 이동할지 말지 결정 */
 						if($rootScope.PushData.state == "app.erpia_board-Main"){
 							// alert("tab.chats");
 							$rootScope.boardIndex = $rootScope.PushData.state;
@@ -831,8 +748,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 								}else{
 								}
-								location.href= '#/app/board/Main';
-								// $state.go("app.erpia_board-Main");							
+								location.href= '#/app/board/Main';					
 							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
 								$scope.showCheckSano();
 
@@ -840,22 +756,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								 if (jsonData.additionalData) {
 								    if (jsonData.additionalData.launchURL){
 								     $cordovaInAppBrowser.open(jsonData.additionalData.launchURL, '_blank', browseroptions)
-
-										      .then(function(event) {
-										         // success
-										      })
-
-										      .catch(function(event) {
-										         // error
-										      });
-								    
-						
+								      .then(function(event) {
+								         // success
+								      }).catch(function(event) {
+								         // error
+								      });
 								  }
 								}
 							}else{
 							
 						}
-////-------------------------------------여기가 푸쉬받은 주소 이동할지 말지 결정 ----------------------------------------------------------------------////
 						}, 1000);
 					},
 					function(){
@@ -960,17 +870,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
   	$scope.loginHTML = "로그인";
 
-  	// 약관 동의 클릭 이벤트
- //  	$scope.click_agreement = function(agrees){
- //  		console.log('???->>>>',agrees.agree_2);
-	// 	if(agrees.agree_1 && agrees.agree_2){
-	// 		$scope.agreeModal.hide();
-	// 		$scope.certificationModal.show();
-	// 	}else{
-	// 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('약관에 동의해 주시기 바랍니다.', 'long', 'center');
-	// 		else alert('약관에 동의해 주시기 바랍니다.');
-	// 	}
-	// }
 	$scope.click_agreement = function(){
 		if($scope.agree_1.checked == true && $scope.agree_2.checked == true){
 			$scope.agreeModal.hide();
@@ -981,7 +880,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 	}
 
-	// 약관 동의 취소 클릭 이벤트
+	/* 약관 동의 취소 클릭 이벤트 */
 	$scope.click_cancel = function(){
 		$scope.agreeModal.hide(); //모달 닫을 때 동의체크, 인증번호 초기화
 		$scope.agree_1.checked = false;
@@ -989,7 +888,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.SMSData.rspnText = '';
 		$scope.init('logout');
 	}
-	// 인증번호 전송 버튼 클릭 이벤트
+	/* 인증번호 전송 버튼 클릭 이벤트 */
 	$scope.click_Certification = function(){
 		if($scope.SMSData.recUserTel == '' || $scope.SMSData.recUserTel == undefined || $scope.SMSData.recUserTel == 'undefined'){
 			$cordovaToast.show('핸드폰번호를 입력하세요.', 'long', 'center');
@@ -999,7 +898,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		else alert('인증번호를 발송했습니다.');
 		}
 	}
-	// 인증번호 입력 버튼 클릭 이벤트
+	/* 인증번호 입력 버튼 클릭 이벤트 */
 	$scope.click_responseText = function(){
 		if($rootScope.rndNum == $scope.SMSData.rspnText){
 			CertifyService.check($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.userData.G_Code, $scope.SMSData.rspnText, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)//수정 4.22
@@ -1013,21 +912,21 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			return false;
 		}
 	}
-	// 모달창을 띄워주는 함수
+	/* 모달창을 띄워주는 함수 */
 	$scope.showCheckSano = function(){
 		$rootScope.distinction = '';
 		$scope.check_sano_Modal.show();
 	}
-	// 로그인 화면에서 이알피아 아이콘을 클릭하면 사용자 선택화면으로 돌아간다.
+	/* 로그인 화면에서 이알피아 아이콘을 클릭하면 사용자 선택화면으로 돌아간다. */
 	$scope.login_back = function(){
 		$rootScope.loginMenu = "selectUser";
 	}
-	// 홈버튼 클릭 함수
+	/* 홈버튼 클릭 함수 */
 	$scope.click_home = function(){
 		if($rootScope.userType == 'ERPia') $location.href = '#/slidingtab'; //$state.go('app.slidingtab');
 		else if($rootScope.userType == 'Guest') $location.href = '#/slidingtab'; //$state.go('app.sample_Main');
 	}
-	// 인증 모달 닫기 함수
+	/* 인증 모달 닫기 함수 */
 	$scope.close_cert = function(){
 		$scope.certificationModal.hide();
 		$scope.SMSData.rspnText = '';
@@ -1037,35 +936,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 	$rootScope.deviceInfo2={};
 
-	// function autoHypenPhone(str){
-	// str = str.replace(/[^0-9]/g, '');
-	// var tmp = '';
-	// 	if( str.length < 4){
-	// 		return str;
-	// 	}else if(str.length < 7){
-	// 		tmp += str.substr(0, 3);
-	// 		tmp += '-';
-	// 		tmp += str.substr(3);
-	// 		return tmp;
-	// 	}else if(str.length < 11){
-	// 		tmp += str.substr(0, 3);
-	// 		tmp += '-';
-	// 		tmp += str.substr(3, 3);
-	// 		tmp += '-';
-	// 		tmp += str.substr(6);
-	// 		return tmp;
-	// 	}else{				
-	// 		tmp += str.substr(0, 3);
-	// 		tmp += '-';
-	// 		tmp += str.substr(3, 4);
-	// 		tmp += '-';
-	// 		tmp += str.substr(7);
-	// 		return tmp;
-	// 	}
-	// 	return str;
-	// }
-
-	// 단말기로 접속시 UUID의 정보를 불러와서 자동로그인 여부를 체크한 후 자동 로그인 시켜준다.
+	/* 단말기로 접속시 UUID의 정보를 불러와서 자동로그인 여부를 체크한 후 자동 로그인 시켜준다. */
 	 document.addEventListener("deviceready", function () {
 		$rootScope.loginState = 'R';
 	 	var deviceInfo = cordova.require("cordova/plugin/DeviceInformation");
@@ -1073,13 +944,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		        $rootScope.deviceInfo2 = JSON.parse(result);
 		        var phoneNo=$rootScope.deviceInfo2.phoneNo;
 		        if(phoneNo.substring(0,1)=="+"){
-		         // $rootScope.deviceInfo2.phoneNo.replace(\+82, 00);
 		         $rootScope.deviceInfo2.phoneNo=phoneNo.toString().replace("+82", "0");
 		    }else{	    
 		    }
 		   	$scope.SMSData.recUserTel =  $rootScope.deviceInfo2.phoneNo;
 		    }, function() {
-		    });
+		});
 		$rootScope.deviceInfo.device = $cordovaDevice.getDevice();
 		$rootScope.deviceInfo.cordova = $cordovaDevice.getCordova();
 		$rootScope.deviceInfo.model = $cordovaDevice.getModel();
@@ -1091,8 +961,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	   	$scope.thisversion='';
 	   	$scope.currentversion='';
 	   	$rootScope.loginData.autologin_YN = 'N';
-		VersionCKService.currentVersion()
-		.then(function(data){
+		VersionCKService.currentVersion().then(function(data){
 			$timeout(function(){
 				if(data != '<!--Parameter Check-->'){
 					$rootScope.ckversion = data;
@@ -1149,26 +1018,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				         ]
 				        })
 			}
-		// uuidService.getUUID($rootScope.deviceInfo.uuid)
-		// .then(function(response){
-		// 	if(response.list[0].result == '1'){
-		// 		$rootScope.loginData.Admin_Code = response.list[0].admin_code;
-		// 		$rootScope.loginData.loginType = response.list[0].loginType;
-		// 		$rootScope.loginData.User_Id = response.list[0].ID;
-		// 		$rootScope.loginData.Pwd = response.list[0].pwd;
-		// 		$rootScope.loginData.autologin_YN = response.list[0].autoLogin_YN;
-		// 		$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
-		// 		console.log("getUUID")
-		// 	}
-		// 	if($rootScope.loginData.autologin_YN=='Y'){
-		// 		$rootScope.autoLogin = true;
-		// 		$rootScope.loginData.chkAutoLogin=true;
-		// 		$scope.doLogin($scope.loginData.Admin_Code, $scope.loginData.loginType, $scope.loginData.User_Id, $scope.loginData.Pwd, $scope.loginData.autologin_YN);
-		// 	}else{
-		// 		$rootScope.autoLogin = false;
-		// 		$rootScope.loginData.chkAutoLogin=false;
-		// 	}
-		// })
 		$rootScope.loginData.autologin_YN = $localstorage.get("autoLoginYN");
 
 		console.log('autoLogin_YN' ,$localstorage.get("autoLoginYN"));
@@ -1214,6 +1063,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	 }, false);
 
+	/* 사이드 메뉴 - URL 공유하기 */
+	$scope.shareURL = function(){
+		console.log('여기오니??????');
+	}
 
 })
 // 거래명세표 컨트롤러

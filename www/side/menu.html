@@ -48,7 +48,7 @@
 		<div class="bar-header psm_left_top">
 			<table border="0" cellpadding="0" cellspacing="0" class="psm_left_topta">
 				<tr>
-					<td class="psm_left_toptd1"><a menu-close ng-click="goto_with_clearHistory('#/app/main')"><img src="./img/erpia_logo.png" class="psm_left_img1"></a></td>
+					<td class="psm_left_toptd1"><a menu-close ng-click="goHome()"><img src="./img/erpia_logo.png" class="psm_left_img1"></a></td>
 					<td class="psm_left_toptd2"><a menu-close ng-click="login()" ng-bind-html="loginHTML"></a></td>
 					<td menu-close class="psm_left_toptd3"><img src="./img/icon_close.png" class="psm_left_img3"></td>
 				</tr>
@@ -110,14 +110,9 @@
 
 				<!-- erpia 로그인 -->
 				<div name="erpia_side" class="button-bar" ng-switch-when="E">
-					<a class="button psm_left_mediv psm_left_box1" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/slidingtab')"><img src="./img/icon_home1.png" class="psm_left_img2"><br>HOME</a>
-					<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/board')"><img src="./img/icon_board.png" class="psm_left_img2"><br>고객센터</a>
+					<a class="button psm_left_mediv psm_left_box1" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/board')"><img src="./img/icon_board.png" class="psm_left_img2"><br>고객센터</a>
+					<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img4"><br>홈페이지</a>
 					<a class="button psm_left_mediv psm_left_box3" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/push')"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</a>
-				</div>
-				<div name="erpia_side" class="button-bar" ng-switch-when="E">
-					<a class="button psm_left_mediv  psm_left_box4" style="border-radius: 0;" menu-close ng-click='goto_with_clearHistory("#app/meaip_page")'><img src="./img/icon_meip.png" class="psm_left_img4"><br>매입</a>
-					<a class="button psm_left_mediv  psm_left_box5" style="border-radius: 0;" menu-close ng-click='goto_with_clearHistory("#app/meachul_page")'><img src="./img/icon_mecul.png" class="psm_left_img4"><br>매출</a>
-					<a class="button psm_left_mediv psm_left_box6" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img4"><br>홈페이지</a>
 				</div>
 
 				<div ng-switch-when="E">
@@ -217,7 +212,7 @@
 						<img src="./img/icon-onoff.png" class="psm_left_img2"><br>
 						<span class="psm_left_mespan" ng-bind-html="loginHTML"></span>
 					</a>
-					<a class="button button-light psm_left_mediv" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank">
+					<a class="button button-light psm_left_mediv" style="border-radius: 0;" ng-click='shareURL()'>
 						<i class="ion-android-share" style="font-size: 25px; font-align:middle;"></i><br>
 						공유하기
 					</a>

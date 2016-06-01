@@ -574,6 +574,16 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		controller : 'AppCtrl'
 	})
 
+	.state('app.erpia_login', {
+		url : '/login',
+		views : {
+			'menuContent' : {
+				templateUrl : 'erpia_login/login.html',
+				controller : 'AppCtrl'
+			}
+		}
+	})
+
 
 	.state('app.erpia_main', {
 		url : '/main',
@@ -585,14 +595,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
-	.state('app.erpia_login', {
-		url : '/login',
-		views : {
-			'menuContent' : {
-				templateUrl : 'erpia_login/login.html'
-			}
-		}
-	})
   
 	.state('app.erpia_scmhome', {
 		url : '/scmhome',
@@ -976,6 +978,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	}
 });
 
-	$urlRouterProvider.otherwise('/app/main');
+	$urlRouterProvider.otherwise('/app/login');
 });
 
