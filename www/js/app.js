@@ -553,10 +553,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	});
 }])
 
-.config(function($ionicConfigProvider) {
-  $ionicConfigProvider.tabs.position("bottom");
-})
-
 .config(['fcsaNumberConfigProvider', function(fcsaNumberConfigProvider) { // input에 숫자입력시 천자리마다 콤마를 찍어주는 플러그인 기본옵션부분
   fcsaNumberConfigProvider.setDefaultOptions({
     min: 0

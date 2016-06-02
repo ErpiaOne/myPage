@@ -1,36 +1,38 @@
 <ion-side-menus enable-menu-with-back-views="true">
 	<ion-side-menu-content>
-		<div ng-switch="loginState">
-			<div class="tabs" style="height:55px" name="main_side" ng-switch-when="R">
-				  <span class="tab-item" ng-click="login()" ng-bind-html="loginHTML">
-				  </span>
-				  <span class="tab-item" ng-click="goto_with_clearHistory('#/app/introduce')">
-				    ERPia소개
-				  </span>
-				  <span class="tab-item" ng-click="goto_with_clearHistory('#/app/cs')">
-				    가입상담
-				  </span>
-				  <span class="tab-item" ng-click="goto_with_clearHistory('#/app/homepage')">
-				    홈페이지
-				  </span>
-			</div>
-
-			<div class="tabs" style="height:55px" name="main_side" ng-switch-when="E">
-				  <span class="tab-item" ng-click="goto_with_clearHistory('#/app/slidingtab')">
-				    홈
-				  </span>
-				  <span class="tab-item" ng-click='goto_with_clearHistory("#app/meaip_page")'>
-				    매입
-				  </span>
-				  <span class="tab-item" ng-click='goto_with_clearHistory("#app/meachul_page")'>
-				    매출
-				  </span>
-				  <span class="tab-item">
-				    재고현황
-				  </span>
-				  <span class="tab-item">
-				           <i class="icon ion-more"></i>
-				  </span>
+		<div ng-switch="tabitem.gubun">
+		<!-- style="{{tabitem.tab2}}" -->
+			<div class="tabs-striped tabs-background-dark tabs-color-energized">
+				<div class="tabs" style="height:55px" name="main_side" ng-switch-when="loginout">
+					<span class="{{tabitem.tab1}}" ng-click="login(); sidetab('tab1')">
+					</span>
+					<span class="{{tabitem.tab2}}" ng-click="goto_with_clearHistory('#/app/introduce'); sidetab('tab2')">
+						ERPia소개
+					</span>
+					<span class="{{tabitem.tab3}}" ng-click="goto_with_clearHistory('#/app/cs'); sidetab('tab3');">
+						가입상담
+					</span>
+					<span class="{{tabitem.tab4}}" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4')">
+						홈페이지
+					</span>
+				</div>
+				<div class="tabs" style="height:55px" name="main_side" ng-switch-when="elogin">
+					<a class="{{tabitem.tab1}}" ng-click="goto_with_clearHistory('#/app/slidingtab'); sidetab('tab1')">
+						홈
+					</a>
+					<a class="{{tabitem.tab2}}" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'>
+						매입
+					</a>
+					<a class="{{tabitem.tab3}}" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3")'>
+						매출
+					</a>
+					<a class="{{tabitem.tab4}}" ng-click='jego();'>
+						재고현황
+					</a>
+					<a class="{{tabitem.tab4}}">
+						<i class="icon ion-more"></i>
+					</a>
+				</div>
 			</div>
 		</div>
 

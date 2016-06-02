@@ -28,6 +28,46 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	      clearcache: 'yes',
 	      toolbar: 'yes'
 	   };
+	$rootScope.tabitem = {
+		gubun: 'loginout', // erpia로그인시 탭 - show면 보여주고 hidden이면 안보여줌.
+		tab1: 'tab-item active',
+		tab2: 'tab-item',
+		tab3: 'tab-item',
+		tab4: 'tab-item'
+	}
+	$scope.sidetab= function(tabgubun){
+		switch (tabgubun) {
+			case 'tab1' :
+				$rootScope.tabitem.tab1 = 'tab-item active';
+				$rootScope.tabitem.tab2 = 'tab-item';
+				$rootScope.tabitem.tab3 = 'tab-item';
+				$rootScope.tabitem.tab4 = 'tab-item';
+				break;
+			case 'tab2' :
+				$rootScope.tabitem.tab1 = 'tab-item';
+				$rootScope.tabitem.tab2 = 'tab-item active';
+				$rootScope.tabitem.tab3 = 'tab-item';
+				$rootScope.tabitem.tab4 = 'tab-item';
+				break;
+			case 'tab3' :
+				$rootScope.tabitem.tab1 = 'tab-item';
+				$rootScope.tabitem.tab2 = 'tab-item';
+				$rootScope.tabitem.tab3 = 'tab-item active';
+				$rootScope.tabitem.tab4 = 'tab-item';
+				break;
+			case 'tab4' :
+				$rootScope.tabitem.tab1 = 'tab-item';
+				$rootScope.tabitem.tab2 = 'tab-item';
+				$rootScope.tabitem.tab3 = 'tab-item';
+				$rootScope.tabitem.tab4 = 'tab-item active';
+				break;
+		}
+	}
+
+	$scope.jego = function(){
+		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('준비중입니다.', 'long', 'center');
+		else alert('준비중입니다.');
+	}
 
 	$rootScope.version={
    		Android_version : '0.2.6', //업데이트시 필수로 변경!!
@@ -48,7 +88,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.ion_login = "ion-power active";  // 로그인/로그아웃 시 변경되는 CSS
 	// 각각의 변수를 담아두는 공간. 초기화를 쉽게 하기 위해 만들었음.
 	$rootScope.loginData = {};
-	$scope.userData = {};
+	$rootScope.userData = {};
 	$scope.SMSData = {};
 
 	/* 동의화면 체크박스 초기화값 설정 -> 체크안되있게 */
@@ -87,7 +127,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		 $ionicPopup.alert({
 		         title: '로그인도움말',
 		         subTitle: '',
-		         content: '1.ERPia<br> ERPia 고객사 접속 경로입니다.<br><br>2.SCM<br> ERPia의 Web SCM 사용 거래처 접속 경로입니다.<br><br>3.거래명세서<br> ERPia 고객사의 거래처 접속 경로입니다.<br><br>4.체험하기<br> 모바일 ERPia를 체험해볼 수 있습니다.'
+		         content: '1.[ERPia]<br> ERPia 고객사 접속 경로입니다.<br><br>2.[SCM]<br> ERPia의 Web SCM 사용 거래처 접속 경로입니다.<br><br>3.[거래명세서]<br> ERPia 고객사의 거래처 접속 경로입니다.<br><br>4.[체험하기]<br> 모바일 ERPia를 체험해볼 수 있습니다.'
 		 })
 	}
 	
@@ -158,17 +198,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			window.plugins.OneSignal.deleteTags(["key1", "key2", "key3", "key4", "key5", "key6"]);
 			$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 			$rootScope.loginState = "R";
-			$scope.loginHTML = "로그인";
+			$rootScope.loginHTML = "로그인";
 			$scope.ion_login = "ion-power active";
 			$scope.icon_home = "";
 			$rootScope.userType = "";
 			$rootScope.autoLoginYN = "N";
+			$rootScope.tabitem.gubun = 'loginout';
 			$localstorage.set("autoLoginYN", $rootScope.autoLoginYN);
 
 			$timeout(function(){
 				$ionicLoading.hide();
 				$rootScope.loginData = {};
-				$scope.userData = {};
+				$rootScope.userData = {};
 				$scope.dashBoard = {};
 				$rootScope.goto_with_clearHistory('#/app/login');
 				$scope.login();
@@ -178,7 +219,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$timeout(function(){
 				$ionicLoading.hide();
 				$rootScope.loginData = {};
-				$scope.userData = {};
+				$rootScope.userData = {};
 				$scope.dashBoard = {};
 			}, 1000);
 		}
@@ -229,6 +270,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			if($rootScope.loginState == "S"){
 		           	$state.go("app.erpia_scmhome");
 			}else if($rootScope.loginState == "E"){
+				$rootScope.tabitem.gubun = 'elogin';
+				$rootScope.tabitem.tab1 = 'tab-item active';
+				$rootScope.tabitem.tab2 = 'tab-item';
+				$rootScope.tabitem.tab3 = 'tab-item';
+				$rootScope.tabitem.tab4 = 'tab-item';
 		     		$state.go("app.slidingtab");
 			}else if($rootScope.loginState == 'N'){ 
 				$state.go("app.erpia_main");
@@ -543,17 +589,17 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					window.plugins.OneSignal.sendTag("usertype", "S");
 					window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
 					window.plugins.OneSignal.sendTag("gercode", comInfo.data.list[0].G_code);
-					$scope.userData.GerName = comInfo.data.list[0].G_Name + '<br>(' + comInfo.data.list[0].G_code + ')';
-					$scope.userData.G_Code = comInfo.data.list[0].G_code;
-					$scope.userData.G_Sano = comInfo.data.list[0].Sano;
-					$scope.userData.GerCode = comInfo.data.list[0].G_code;
+					$rootScope.userData.GerName = comInfo.data.list[0].G_Name + '<br>(' + comInfo.data.list[0].G_code + ')';
+					$rootScope.userData.G_Code = comInfo.data.list[0].G_code;
+					$rootScope.userData.G_Sano = comInfo.data.list[0].Sano;
+					$rootScope.userData.GerCode = comInfo.data.list[0].G_code;
 					if(comInfo.data.list[0].cntNotRead == null){
-						$scope.userData.cntNotRead = 0;
+						$rootScope.userData.cntNotRead = 0;
 					}else{
-						$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
+						$rootScope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
 					}
 					$rootScope.loginMenu = 'User'; 
-					$scope.loginHTML = "로그아웃";
+					$rootScope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
 					$rootScope.loginState = "S";
 					$rootScope.mobile_Certify_YN = comInfo.data.list[0].mobile_CertifyYN;
@@ -604,17 +650,17 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			.then(function(comInfo){
 				if(comInfo.data.list[0].Result=='1'){
 					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-					$scope.loginHTML = "로그아웃";
+					$rootScope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
 					window.plugins.OneSignal.sendTag("id", $scope.loginData.UserId);
 					window.plugins.OneSignal.sendTag("usertype", "E");
 					window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
 					window.plugins.OneSignal.sendTag("gercode", "");
-					$scope.userData.Com_Code = comInfo.data.list[0].Com_Code;
-					$scope.userData.Com_Name = comInfo.data.list[0].Com_Name + '<br>(' + comInfo.data.list[0].Com_Code + ')';
-					$scope.userData.package = comInfo.data.list[0].Pack_Name;
-					$scope.userData.cnt_user = comInfo.data.list[0].User_Count + ' 명';
-					$scope.userData.cnt_site = comInfo.data.list[0].Mall_ID_Count + ' 개';
+					$rootScope.userData.Com_Code = comInfo.data.list[0].Com_Code;
+					$rootScope.userData.Com_Name = comInfo.data.list[0].Com_Name + '<br>(' + comInfo.data.list[0].Com_Code + ')';
+					$rootScope.userData.package = comInfo.data.list[0].Pack_Name;
+					$rootScope.userData.cnt_user = comInfo.data.list[0].User_Count + ' 명';
+					$rootScope.userData.cnt_site = comInfo.data.list[0].Mall_ID_Count + ' 개';
 
 					$rootScope.mobile_Certify_YN = comInfo.data.list[0].mobile_CertifyYN;
 
@@ -683,8 +729,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								G_Expire_Date = CLng(IO_Amt) + CLng(Point_Ex_Amt) - CLng(Point_Out_StandBy_Amt)
 							}
 						}
-						$scope.userData.expire_date = G_Expire_Date; //"2015년<br>8월20일";
-						$scope.userData.expire_days = G_Expire_Days;
+						$rootScope.userData.expire_date = G_Expire_Date; //"2015년<br>8월20일";
+						$rootScope.userData.expire_days = G_Expire_Days;
 
 						$scope.management_bill = "330,000원	<br><small>(VAT 포함)</small>";
 						$scope.sms = "15000 개<br><small>(건당 19원)</small>";
@@ -696,7 +742,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 						tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'Y', $rootScope.loginState)
 						.then(function(response){
-								$scope.userData.cntNotRead = response.list[0].cntNotRead;
+								$rootScope.userData.cntNotRead = response.list[0].cntNotRead;
 
 						})
 
@@ -793,14 +839,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 					$scope.loginData.UserId = comInfo.data.list[0].user_id;
 
-					$scope.userData.GerName = comInfo.data.list[0].G_Name + '<br>(' + comInfo.data.list[0].G_code + ')';
-					$scope.userData.G_Code = comInfo.data.list[0].G_code;
-					$scope.userData.G_Sano = comInfo.data.list[0].Sano;
-					$scope.userData.GerCode = comInfo.data.list[0].G_code;
-					$scope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
+					$rootScope.userData.GerName = comInfo.data.list[0].G_Name + '<br>(' + comInfo.data.list[0].G_code + ')';
+					$rootScope.userData.G_Code = comInfo.data.list[0].G_code;
+					$rootScope.userData.G_Sano = comInfo.data.list[0].Sano;
+					$rootScope.userData.GerCode = comInfo.data.list[0].G_code;
+					$rootScope.userData.cntNotRead = comInfo.data.list[0].cntNotRead;
 
 					$rootScope.loginMenu = 'User'; 
-					$scope.loginHTML = "로그아웃";
+					$rootScope.loginHTML = "로그아웃";
 					$scope.ion_login = "ion-power";
 					$rootScope.loginState = "N";
 					$rootScope.mobile_Certify_YN = comInfo.data.list[0].mobile_CertifyYN;
@@ -843,21 +889,21 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			})
 		}else if($rootScope.userType == 'Guest'){
 			$rootScope.loginState = "E"
-			$scope.loginHTML = "로그아웃"; //<br>(" + comInfo.data.list[0].Com_Code + ")";
+			$rootScope.loginHTML = "로그아웃"; //<br>(" + comInfo.data.list[0].Com_Code + ")";
 			$scope.ion_login = "ion-power";
-			$scope.userData.Com_Name = '테스트용계정' + '<br>(' + 'ERPMobile' + ')';
+			$rootScope.userData.Com_Name = '테스트용계정' + '<br>(' + 'ERPMobile' + ')';
 			$scope.loginData.Admin_Code = 'ERPMobile';
 			$scope.loginData.UserId = 'ERPMobile';
 			$scope.loginData.isLogin = 'Y';
 
 			$rootScope.loginMenu = 'User'; 
-			$scope.userData.package = 'Professional';
-			$scope.userData.cnt_user = '5 명';
-			$scope.userData.cnt_site = '10 개';
+			$rootScope.userData.package = 'Professional';
+			$rootScope.userData.cnt_user = '5 명';
+			$rootScope.userData.cnt_site = '10 개';
 
-			$scope.userData.cntNotRead = 10;	//계산서 미수신건
-			$scope.userData.expire_date = '2016-04-31'; //"2015년<br>8월20일";
-			$scope.userData.expire_days = 50;
+			$rootScope.userData.cntNotRead = 10;	//계산서 미수신건
+			$rootScope.userData.expire_date = '2016-04-31'; //"2015년<br>8월20일";
+			$rootScope.userData.expire_days = 50;
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});
@@ -868,7 +914,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.LoginUserIdCK($rootScope.userType);
 	};
 
-  	$scope.loginHTML = "로그인";
+  	$rootScope.loginHTML = "로그인";
 
 	$scope.click_agreement = function(){
 		if($scope.agree_1.checked == true && $scope.agree_2.checked == true){
@@ -893,7 +939,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		if($scope.SMSData.recUserTel == '' || $scope.SMSData.recUserTel == undefined || $scope.SMSData.recUserTel == 'undefined'){
 			$cordovaToast.show('핸드폰번호를 입력하세요.', 'long', 'center');
 		}else{ //Admin_Code, loginType, ID, G_Code, sms_id, sms_pwd, sendNum, rec_num, UUID, phoneno, DeviceInfo
-		CertifyService.certify($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.userData.G_Code, 'erpia', 'a12345', '070-7012-3071', $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo)//수정 4.22
+		CertifyService.certify($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $rootScope.userData.G_Code, 'erpia', 'a12345', '070-7012-3071', $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo)//수정 4.22
 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증번호를 발송했습니다.', 'long', 'center');
 		else alert('인증번호를 발송했습니다.');
 		}
@@ -901,7 +947,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 인증번호 입력 버튼 클릭 이벤트 */
 	$scope.click_responseText = function(){
 		if($rootScope.rndNum == $scope.SMSData.rspnText){
-			CertifyService.check($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.userData.G_Code, $scope.SMSData.rspnText, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)//수정 4.22
+			CertifyService.check($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $rootScope.userData.G_Code, $scope.SMSData.rspnText, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)//수정 4.22
 			.then(function(response){
 				$scope.certificationModal.hide();
 				$scope.SMSData.rspnText = '';
@@ -1063,34 +1109,43 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	 }, false);
 
-	/* 사이드 메뉴 - URL 공유하기 */
 	$scope.shareURL = function(){
 		$ionicPopup.show({
 			title: 'URL공유',
 			subTitle: '',
-			content: 'ERPIA_Mobile 설치 URL을 공유하시겠습니까?',
+			content: 'ERPIA_Mobile 설치 URL을 공유합니다.',
 			buttons: [
-				{ text: 'No',
+				{ text: '카카오톡',
 					onTap: function(e){
-						console.log('취소');
+						var url = 'https://play.google.com/store/apps/details?id=com.ERPia.MyPage';
+						$cordovaSocialSharing.shareVia("com.kakao.talk","[ERPiaMobile 설치URL] " + url);
 					}
 				},
-				{
-					text: 'Yes',
-					type: 'button-positive',
-					onTap: function(e) {
+				{ text: 'SMS',
+					onTap: function(e){
 						var url = 'https://play.google.com/store/apps/details?id=com.ERPia.MyPage';
-						if(where == 'kakao'){
-							$cordovaSocialSharing.shareVia("[ERPiaMobile 설치URL] "+ url);
-						}else if(where == 'sms'){
-							$cordovaSocialSharing.shareViaSMS("[ERPiaMobile 설치URL] "+ url);
-						}else{
-							$cordovaSocialSharing.shareViaEmail("[ERPiaMobile 설치URL] "+ url);
-						}
+						$cordovaSocialSharing.shareViaSMS("[ERPiaMobile 설치URL] "+ url);
+					}
+				},
+				{ text: '이메일',
+					onTap: function(e){
+						var url = 'https://play.google.com/store/apps/details?id=com.ERPia.MyPage';
+						$cordovaSocialSharing.shareViaEmail("[ERPiaMobile 설치URL] "+ url);
 					}
 				},
 			]
 		})
+	}
+
+	$scope.shareAnywhere = function(url, where,Mutual) {
+	       if(where == 'kakao'){
+	       	$cordovaSocialSharing.shareVia("com.kakao.talk","[Erpia 거래명세표] "+'('+Mutual+')'+url);
+	       }else if(where == 'sms'){
+	        	$cordovaSocialSharing.shareViaSMS("[Erpia 거래명세표] "+'('+Mutual+')'+url);
+	       }else{
+                   $cordovaSocialSharing.shareViaEmail("[Erpia 거래명세표] "+'('+Mutual+')'+url, "[Erpia 거래명세표] "+'('+Mutual+')');
+	       }
+	       $scope.toemail ='';
 	}
 
 })
@@ -1124,7 +1179,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			var type = 'N';
 		}
 		$scope.pg = 1;
-		tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode, type, $scope.pg)
+		tradeDetailService.tradeList($scope.loginData.Admin_Code, $rootScope.userData.GerCode, type, $scope.pg)
 		.then(function(response){
 			if(response.list.length == 0) {
 					$scope.haveList = 'N';
@@ -1218,7 +1273,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 			$scope.pg = parseInt($scope.pg) + 1;
 
-			tradeDetailService.tradeList($scope.loginData.Admin_Code, $scope.userData.GerCode, type, $scope.pg)
+			tradeDetailService.tradeList($scope.loginData.Admin_Code, $rootScope.userData.GerCode, type, $scope.pg)
 			.then(function(response){
 				if(response.list.length < 10) {
 					for(var i = 0; i < response.list.length; i++){
@@ -1707,19 +1762,19 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	$scope.check_Sano = function(){
 		if($rootScope.userType == "SCM" || $rootScope.userType == "Normal" ){
-			if($scope.userData.G_Sano.substring($scope.userData.G_Sano.lastIndexOf('-') + 1) == $scope.userData.Sano){
+			if($rootScope.userData.G_Sano.substring($rootScope.userData.G_Sano.lastIndexOf('-') + 1) == $rootScope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
 					disableBack: true
 				});
-				$scope.userData.Sano = '';
+				$rootScope.userData.Sano = '';
 				$state.go('app.tradeList');
 			}else{
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('사업자 번호와 일치하지 않습니다.', 'long', 'center');
 				else alert('사업자 번호와 일치하지 않습니다.');
 			}
 		}else if($rootScope.userType == "ERPia"){
-			if($scope.loginData.Pwd == $scope.userData.Sano){
+			if($scope.loginData.Pwd == $rootScope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
 					disableBack: true
@@ -1796,7 +1851,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     };
 
 })// 공지사항 컨트롤러
-.controller('configCtrl_Notice', function($scope, $ionicPopup, $ionicHistory, NoticeService, $timeout, $cordovaToast, $ionicScrollDelegate, $ionicLoading, app) {
+.controller('configCtrl_Notice', function($scope, $rootScope, $ionicPopup, $ionicHistory, NoticeService, $timeout, $cordovaToast, $ionicScrollDelegate, $ionicLoading, app) {
 	$scope.items=[];
 	$scope.myGoBack = function() {
 		$ionicHistory.goBack();
@@ -2183,7 +2238,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.ScmBaseData();
 	//scm 차트
 	$scope.load_scm_chart = function(){
-	    AmChart_Service.scm_Chart('scm', 'scm', $scope.loginData.Admin_Code, 3, $scope.userData.G_Code)
+	    AmChart_Service.scm_Chart('scm', 'scm', $scope.loginData.Admin_Code, 3, $rootScope.userData.G_Code)
 	    .then(function(response){
 	    	var chartData = response;
 	    	if(chartData.length == 0){
@@ -3608,7 +3663,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							$('div[name=gridBody]').css('display','block');
 							$('#' + $scope.kind).css('display', 'none');
 							$scope.gu = $("input[name=gu_hidden]").val();
-							AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $scope.userData.GerCode, "gridInfo");
+							AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $rootScope.userData.GerCode, "gridInfo");
 						} else {
 							$("div[name=gridBody]").css('display', 'none');
 							$('#' + $scope.kind).css('display', 'block');
