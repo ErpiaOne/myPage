@@ -24,23 +24,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 
 .run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast, $ionicSlideBoxDelegate) {
 	$ionicPlatform.ready(function() {
-		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-		// for form inputs)
-
-	  // window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
-
-	  //   // Should be called once the device is registered successfully with Apple or Google servers
-	  //  window.plugins.PushbotsPlugin.on("registered", function(token){
-	  //     console.log("registered" + token);
-	  //     // alert("registered" + token);
-	  //     $rootScope.token = token;
-	  //   });
-	  //  window.plugins.PushbotsPlugin.getRegistrationId(function(token){
-	  //       // alert("Registration Id:" + token);
-	  //       console.log("Registration Id:" + token);
-	  //       $rootScope.token = token;
-	  //   });
-
 
 /*새로 추가된 푸수*/
 
@@ -83,21 +66,10 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	  window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
 	                                 {googleProjectNumber: "832821752106"},
 	                                   notificationOpenedCallback);
-	  // window.plugins.OneSignal.enableNotificationsWhenActive(true);
-	  // Show an alert box if a notification comes in when the user is in your app.
 	  window.plugins.OneSignal.enableInAppAlertNotification(false);
 
 	//푸쉬 등록
 	window.plugins.OneSignal.registerForPushNotifications();
-
-
-	//푸쉬토큰을 불러와서 rootScope.token변수 에 저장
-	// window.plugins.PushbotsPlugin.getRegistrationId(function(token){
-	//     console.log("Registration Id:" + token);
-
-	//      $rootScope.token = token;
-	//      $rootScope.UserKey = token;
-	// });
 
 	window.plugins.OneSignal.getIds(function(ids) {
 	  console.log('getIds: ' + ids.userId, ids.pushToken);
@@ -117,49 +89,32 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			}
 		}
 
-/*-----------------------------------*/
-		// // //★push regist
-		// console.log('Ionic Push: Registering user');
-		// var user = $ionicUser.get();
-		// if(!user.user_id) {
-		// 	// Set your user_id here, or generate a random one.
-		// 	user.user_id = $ionicUser.generateGUID();
-		// 	$rootScope.UserKey = user.user_id;
-		// };
-		// Metadata
-		// angular.extend(user, {
-		// 	name: 'ERPiaUser',
-		// 	bio: 'ERPiaPush'
-		// });
-		// console.log('this is app');
-
-		// Listen for offline event
 		$rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-		if ($location.url()=='/app/login') { 
-		         $ionicPopup.show({
+			if ($location.url()=='/app/login') { 
+				$ionicPopup.show({
 
-		            title: "휴대폰의 데이터를 켜주시기바랍니다.",
+					title: "휴대폰의 데이터를 켜주시기바랍니다.",
 
-		            content: "앱을 종료합니다.",
+					content: "앱을 종료합니다.",
 
-			   buttons: [
-				{
-					text: '확인',
-					type: 'button-positive',
-					onTap: function(e) {
-					 ionic.Platform.exitApp();
+					buttons: [
+					{
+						text: '확인',
+						type: 'button-positive',
+						onTap: function(e) {
+							ionic.Platform.exitApp();
+						}
 					}
-				}
-			]
-		})
-		}else{
-		  	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경 불안정합니다. 데이터/와이파이접속을 확인해주세요.', 'short', 'center');
+					]
+				})
+			}else{
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경 불안정합니다. 데이터/와이파이접속을 확인해주세요.', 'short', 'center');
 			else alert('네트워크환경 불안정합니다. 데이터접속을 확인해주세요.');
-		}
+			}
 		})
 
 		$rootScope.$on('$cordovaNetwork:online', function(event, networkState){
-		 	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('데이터접속이 정상입니다.', 'short', 'center');
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('데이터접속이 정상입니다.', 'short', 'center');
 			else alert('네트워크가 정상으로 돌아왔습니다.');
 		})
 //-------------------푸쉬도착 메시지 이벤트처리(앱이 켜져있을 때)

@@ -12,10 +12,12 @@
 						<a ng-href="javascript:;" class="{{tab.icon}}" style='font-size:25px;' ng-repeat="tab in tabs" on-finish-render="test()"></a>
 					</ion-scroll>
 
-
-					<div style="background: #ccc; width: 50%; position: relative; z-index: 2 ; margin-top: -10px; margin-bottom: -10px;">
+					<ion-scroll style="width: 30%; position: relative; z-index: 2 ; margin-top: -10px; margin-bottom: -10px;">
+						<i class="ion-arrow-down-b" style='font-size:30px; vertical-align:middle;' ng-click='chrtlistF()'></i>
+					</ion-scroll>
+					<!-- <div style="background: #ccc; width: 50%; position: relative; z-index: 2 ; margin-top: -10px; margin-bottom: -10px;">
 						<i class='ion-arrow-down-b' style='padding-top:40px; text-align: center; vertical-align:middle; font-size:35px; color: #000;' ng-click='chrtlistF()' on-finish-render="test()"></i>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<!-- 탭 리스트 -->
@@ -34,85 +36,146 @@
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index);slideChanged(index)" style="border-top: 1px solid #e0e0e0;">
 				<ion-slide>
 					<ion-content overflow-scroll="false">
-						<!-- <p ng-bind-html="login_alert"></p> -->
+						<p ng-bind-html="login_alert"></p>
 						<div style="height:100%;" >
 							<!-- 컨텐츠 상단 (정보)-->
-							<!-- <link ng-href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
-							<link ng-href="./css/AdminLTE.css" rel="stylesheet" type="text/css" /> -->
-							<span class="psm_home05" ng-bind-html='nowTime' ng-click="ERPiaBaseData()"></span> 
-							<span class="psm_home06 ion-ios-loop-strong" ng-click="ERPiaBaseData()"></span>
+							<link ng-href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+							<link ng-href="./css/AdminLTE.css" rel="stylesheet" type="text/css" />
 
 
-							<!-- <div class="row psm_home30"> -->
-							<!-- 컨텐츠 상단 (미처리 조회)-->
+
 							<div class="row psm_home30">
-
-								<!-- 신규주문 -->
-								<div class="col-xs-psm psm_home17 psm_home18" style="width: 19.2%;">
-									<div class="psm_home11"><img src="./img/icon_sin.png" class="psm_home12"></div>
-									<div class="psm-box">
-										<div class="inner psm_home11">
-											<p class="psm_home14">신규 주문</p>
-											<h1 class="psm_home15" ng-bind-html='dashBoard.E_NewOrder'></h1>
-										</div>
-									</div>
+								<!-- 사용만료일 -->
+								<div class=" col-xs-psm3" style="width:33%; padding-right: 2px;">
+									<div class="info-box" style="background: #716674; color: #fff;">
+										<span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
+										<div class="info-box-content">
+											<span class="info-box-text">사용만료일</span>
+											<span class="info-box-number" ng-bind-html="userData.expire_date"></span>
+											<div class="progress">
+												<div class="progress-bar" style="width: 30%"></div>
+											</div>
+											<span class="progress-description">31일 중 10일 사용.</span>
+										</div><!-- /.info-box-content -->
+									</div><!-- /.info-box -->
 								</div>
 
-								<div class="col-xs-psm2 psm_home16" style="width: 1%;"></div>
-
-								<div class="col-xs-psm psm_home17 psm_home19" style="width: 19.2%;">
-									<div class="psm_home11"><img src="./img/icon_mul.png" class="psm_home12"></div>
-									<div class="psm-box">
-										<div class="inner psm_home11">
-											<p class="psm_home14">물류 처리</p>
-											<h1 class="psm_home15" ng-bind-html='dashBoard.E_BsComplete'></h1>
-										</div>
-									</div>
+								<!-- 남은기간 -->
+								<div class=" col-xs-psm3"  style="width:33%;  padding-left: 2px;  padding-right: 2px;">
+									<div class="info-box"  style="background: #dd8369; color: #fff;">
+										<span class="info-box-icon"><i class="ion ion-ios-clock-outline"></i></span>
+										<div class="info-box-content">
+											<span class="info-box-text">남은기간(일)</span>
+											<span class="info-box-number" ng-bind-html="userData.expire_days"></span>
+											<div class="progress">
+												<div class="progress-bar" style="width: 30%"></div>
+											</div>
+											<span class="progress-description">만료일 까지 {{userData.expire_days}}일 남음.</span>
+										</div><!-- /.info-box-content -->
+									</div><!-- /.info-box -->
 								</div>
 
-								<div class="col-xs-psm2 psm_home16" style="width: 1%;"></div>
-
-								<div class="col-xs-psm psm_home17 psm_home20" style="width: 19.2%;">
-									<div class="psm_home11"><img src="./img/icon_songin.png" class="psm_home12"></div>
-									<div class="psm-box">
-										<div class="inner psm_home11">
-											<p class="psm_home14">송장 입력</p>
-											<h1 class="psm_home15" ng-bind-html='dashBoard.E_InputMno'></h1>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-xs-psm2 psm_home16" style="width: 1%;"></div>
-
-								<div class="col-xs-psm psm_home17 psm_home21" style="width: 19.2%;">
-									<div class="psm_home11"><img src="./img/icon_bei.png" class="psm_home12"></div>
-									<div class="psm-box">
-										<div class="inner psm_home11">
-											<p class="psm_home14">출고 처리</p>
-											<h1 class="psm_home15" ng-bind-html='dashBoard.E_CgComplete'></h1>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-xs-psm2 psm_home16" style="width: 1%;"></div>
-
-								<div class="col-xs-psm psm_home17 psm_home22" style="width: 19.2%;">
-									<div class="psm_home11"><img src="./img/icon_songout.png" class="psm_home12"></div>
-									<div class="psm-box">
-										<div class="inner psm_home11">
-											<p class="psm_home14">송장 전송</p>
-											<h1 class="psm_home15" ng-bind-html='dashBoard.E_RegistMno'></h1>
-										</div>
-									</div>
+								<!-- 계산서 미수신건 -->
+								<div class=" col-xs-psm3"  style="width:33%; padding-left: 2px; ">
+									<div class="info-box"  style="background: #eec45f; color: #fff;">
+										<span class="info-box-icon"><i class="ion ion-ios-paper-outline"></i></span>
+										<div class="info-box-content">
+											<span class="info-box-text">계산서 미수신건</span>
+											<span class="info-box-number" ng-bind-html="userData.cntNotRead"></span>
+											<div class="progress">
+												<div class="progress-bar" style="width: 80%;"></div>
+											</div>
+											<span class="progress-description">계산서 100중 80개 처리</span>
+										</div><!-- /.info-box-content -->
+									</div><!-- /.info-box -->
 								</div>
 
 							</div>
-								
-							<div class="psm_home14">금일 매출액</div>
-							<hr>
-							<div class="psm_home14">전일 매출액</div>
-							<hr>
-							<div class="psm_home14">그래프 들어갈자리</div>
+							<!-- // 컨텐츠 상단 (정보)-->
+
+							<div class="psm_home01">
+
+								<section>
+									<table class="psm_home02">
+										<tr>
+											<td class="psm_home03">미처리 조회</td>
+										</tr>
+									</table>
+								</section>
+
+								<section>
+									<table class="psm_home04">
+										<tr>
+											<td class="psm_home05" ng-bind-html='nowTime' ng-click="ERPiaBaseData()"></td>
+											<td class="psm_home06 ion-ios-loop-strong" ng-click="ERPiaBaseData()"></td>
+										</tr>
+									</table>
+								</section>
+
+								<!-- 컨텐츠 상단 (미처리 조회)-->
+								<div class="row psm_home10">
+
+									<!-- 신규주문 -->
+									<div class="col-xs-psm psm_home17 psm_home18" style="width: 19.2%;">
+										<div class="psm_home11"><img src="./img/icon_sin.png" class="psm_home12"></div>
+										<div class="psm-box">
+											<div class="inner psm_home11">
+												<p class="psm_home14">신규 주문</p>
+												<h1 class="psm_home15" ng-bind-html='dashBoard.E_NewOrder'></h1>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-xs-psm2 psm_home16" style="width: 1%;"></div>
+
+									<div class="col-xs-psm psm_home17 psm_home19" style="width: 19.2%;">
+										<div class="psm_home11"><img src="./img/icon_mul.png" class="psm_home12"></div>
+										<div class="psm-box">
+											<div class="inner psm_home11">
+												<p class="psm_home14">물류 처리</p>
+												<h1 class="psm_home15" ng-bind-html='dashBoard.E_BsComplete'></h1>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-xs-psm2 psm_home16" style="width: 1%;"></div>
+
+									<div class="col-xs-psm psm_home17 psm_home20" style="width: 19.2%;">
+										<div class="psm_home11"><img src="./img/icon_songin.png" class="psm_home12"></div>
+										<div class="psm-box">
+											<div class="inner psm_home11">
+												<p class="psm_home14">송장 입력</p>
+												<h1 class="psm_home15" ng-bind-html='dashBoard.E_InputMno'></h1>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-xs-psm2 psm_home16" style="width: 1%;"></div>
+
+									<div class="col-xs-psm psm_home17 psm_home21" style="width: 19.2%;">
+										<div class="psm_home11"><img src="./img/icon_bei.png" class="psm_home12"></div>
+										<div class="psm-box">
+											<div class="inner psm_home11">
+												<p class="psm_home14">출고 처리</p>
+												<h1 class="psm_home15" ng-bind-html='dashBoard.E_CgComplete'></h1>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-xs-psm2 psm_home16" style="width: 1%;"></div>
+
+									<div class="col-xs-psm psm_home17 psm_home22" style="width: 19.2%;">
+										<div class="psm_home11"><img src="./img/icon_songout.png" class="psm_home12"></div>
+										<div class="psm-box">
+											<div class="inner psm_home11">
+												<p class="psm_home14">송장 전송</p>
+												<h1 class="psm_home15" ng-bind-html='dashBoard.E_RegistMno'></h1>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
 						</div>
 					</ion-content>
 				</ion-slide>
@@ -137,4 +200,3 @@
 		</tab-slide-box>
 	</ion-content>
 </ion-view>
-

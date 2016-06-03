@@ -21,7 +21,7 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, $cordovaSocialSharing){
+	, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, $cordovaSocialSharing){
 	$rootScope.PushData = {};
 	   var browseroptions = {
 	      location: 'yes',
@@ -645,6 +645,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					else alert('login error');
 			});
 		}else if ($rootScope.userType == 'ERPia'){
+
+			/*금일 / 전일 매출액 조회*/
+			IndexService.meachulamt($scope.loginData.Admin_Code)
+			.then(function(response){
+				$scope.dashBoard.M_today = response.list[0].today;
+				$scope.dashBoard.M_before = response.list[0].before;
+			})
 			//ERPia 로그인
 			loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
 			.then(function(comInfo){
@@ -1798,7 +1805,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	// 기본정보를 디폴트 값으로 넣었다.
 	$scope.ckversion={};
    	$scope.thisversioncurrent='Y';
-   	$scope.thisversion='';
+   	$scope.thisversion='0.2.7';
    	$scope.currentversion='';
 	VersionCKService.currentVersion()
 	.then(function(data){
@@ -3147,6 +3154,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	$scope.ERPiaBaseData = function(){
 		$scope.loadingani();
+		/*금일 / 전일 매출액 조회*/
+		IndexService.meachulamt($scope.loginData.Admin_Code)
+		.then(function(response){
+			$scope.dashBoard.M_today = response.list[0].today;
+			$scope.dashBoard.M_before = response.list[0].before;
+		})
+
 		IndexService.dashBoard('erpia_dashBoard', $scope.loginData.Admin_Code, aWeekAgo, nowday)
 		.then(function(processInfo){
 			console.log('erpia_dashBoard', processInfo);

@@ -147,7 +147,6 @@ return{
 					return $q.reject(response);
 				});
 		}else if(kind == 'ERPiaLogin'){// }else if(kind == 'ERPiaLogin'){  //수정됨 
-			//  http://www.erpia.net/include/JSon_Proc_Mobile_Erpia.asp?kind=Login_ERPia&Admin_Code=phj9775&id=Phj9775&pwd=1234&hp=01030641526&mac=ba8e205a02d20e66
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
 			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			return $http.get(url + '?' + data)
@@ -226,24 +225,38 @@ return{
 	}
 })
 .factory('IndexService', function($http, $q, ERPiaAPI){
-	var dashBoard = function(kind, Admin_Code, sDate, eDate){
-		var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-		var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&sDate=' + sDate + '&eDate=' + eDate;
-		console.log('dashBoard =>', url,'?',data);
-		return $http.get(url + '?' + data)
-			.then(function(response){
-				if(typeof response.data == 'object'){
-					return response;
-				}else{
-					return $q.reject(response);
-				}
-			},function(response){
-				return $q.reject(response);
-			});
-	}
 	return{
-		dashBoard: dashBoard
-	}
+		dashBoard : function(kind, Admin_Code, sDate, eDate){
+			var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
+			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&sDate=' + sDate + '&eDate=' + eDate;
+			console.log('dashBoard =>', url,'?',data);
+			return $http.get(url + '?' + data)
+				.then(function(response){
+					if(typeof response.data == 'object'){
+						return response;
+					}else{
+						return $q.reject(response);
+					}
+				},function(response){
+					return $q.reject(response);
+				});
+		}, meachulamt : function(Admin_Code){
+			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
+			var data = 'Kind=Meachul_sum' + '&Admin_Code=' + Admin_Code;
+			console.log('meachulamt =>', url,'?',data);
+			return $http.get(url + '?' + data)
+				.then(function(response){
+					if(typeof response.data == 'object'){
+						return response.data;
+					}else{
+						return $q.reject(response);
+					}
+				},function(response){
+					return $q.reject(response);
+				});
+		}
+
+	};
 })
 .factory('CertifyService', function($http, $cordovaToast, $rootScope, ERPiaAPI){
 	var url = ERPiaAPI.url + '/Json_Proc_Mobile.asp';
