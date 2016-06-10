@@ -1,0 +1,34 @@
+<!-- 관심항목 체크 모달 -->
+<ion-modal-view title="">
+  <ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
+    <h1 class="title" style="color: #fff;">관심항목</h1>
+  </ion-header-bar>
+
+  <ion-content style="background: #dce0e1">
+      <table width="100%" style="text-align:center; background: #dce0e1">
+        <tr>
+          <td colspan="4"><hr></td>
+        </tr>
+      </table>
+      <any ng-repeat="x in interestTopiclist">
+        <table style="width:  100%; background: #dce0e1">
+          <tr>
+            <td style="width:  100%; background: #fff; font-size: 0.9em;">
+              <ion-checkbox ng-model="x.checked" ng-checked='x.checked' ng-change="Interests_Save()">
+                {{x.value}}
+              </ion-checkbox>
+            </td>
+          </tr>
+        </table>
+      </any>
+    </div>
+  <br><br>
+  </ion-content>
+
+  <ion-footer-bar align-title="left" class="bar-assertive" style="background: #988e9a; border: 0;">
+    <h1 class="title"></h1>
+    <div class="buttons" ng-click="Interests_Modalclose()"><button class="button button-psm01">확인</button></div>
+  </ion-footer-bar>
+</ion-modal-view>
+
+

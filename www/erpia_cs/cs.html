@@ -1,4 +1,4 @@
-<ion-view view-title="상담하기">
+<ion-view view-title="상담하기" hide-nav-bar={{sideMenuHide}}>
 	<ion-nav-back-button></ion-nav-back-button>
 	<ion-nav-buttons side="right" ng-show="false">
 		<button class="button button-icon button-clear {{icon_home}}" menu-close ng-click="goHome()"></button>
@@ -22,43 +22,30 @@
 			</label>
 			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*연락처 : </span>
-				<input type="tel" placeholder="-제외 입력하세요" ng-model="csData.tel"><br>
+				<input type="tel" placeholder="-제외 입력하세요" ng-model="csData.tel"> 
+				<button style="font-size:8pt" > 인증번호발송</button><br>
+			</label>
+			<label class="item item-input" style="padding: 0">
+				<span class="input-label psm_sang_01">*인증번호 : </span>
+				<input type="text" placeholder="인증번호발송을 눌러주세요" ng-model="csData.cs_certify_no"> 
 			</label>
 			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*업종 : </span>
 				<select ng-model="csData.sectors" class="psm_sang_02">
-					<option ng-if='csData.sectors == "no"' value='no' ng-selected="csData.sectors == no">필수사항입니다.</option>
+					<option ng-if='csData.sectors == ""' value='' ng-selected="csData.sectors == ''">필수사항입니다.</option>
 					<option ng-repeat="item in sectorslist" ng-value="item.value">{{item.value}}</option>
 				</select>
 			</label>
-			<label class="item item-input" style="padding: 0">
-				<span class="input-label psm_sang_01">*관심항목1 : </span>
-				<select ng-model="csData.interestTopic1" class="psm_sang_02">
-					<option ng-if='csData.interestTopic1 == "no"' value='no' ng-selected="csData.interestTopic1 == no">필수사항입니다.</option>
-					<option ng-repeat="item in interestTopiclist" ng-value="item.value">{{item.value}}</option>
-				</select>
-				<br>
-			</label>
-			<label class="item item-input" style="padding: 0">
-				<span class="input-label psm_sang_01">*관심항목2 : </span>
-				<select ng-model="csData.interestTopic2" class="psm_sang_02">
-					<option value='no' ng-selected="csData.interestTopic2 == no">선택안함</option>
-					<option ng-repeat="item in interestTopiclist" ng-value="item.value">{{item.value}}</option>
-				</select>
-				<br>
-			</label>
-			<label class="item item-input" style="padding: 0">
-				<span class="input-label psm_sang_01">*관심항목3 : </span>
-				<select ng-model="csData.interestTopic3" class="psm_sang_02">
-					<option value='no' ng-selected="csData.interestTopic3 == no">선택안함</option>
-					<option ng-repeat="item in interestTopiclist" ng-value="item.value">{{item.value}}</option>
-				</select>
+			<label class="item item-input" style="padding: 0" ng-click="Interests_Modalopen()">
+				<span class="input-label psm_sang_01">*관심항목 : </span>
+					<a ng-if='csData.interestTopic == ""' >관심항목 선택(*필수)</a>
+					<a ng-if='csData.interestTopic != ""'  >{{csData.interestTopic1}}</a>
 				<br>
 			</label>
 			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*유입경로 : </span>
 				<select ng-model="csData.inflowRoute" class="psm_sang_02">
-					<option ng-if='csData.inflowRoute == "no"' value='no' ng-selected="csData.inflowRoute == no">필수사항입니다.</option>
+					<option ng-if='csData.inflowRoute == ""' value='' ng-selected="csData.inflowRoute == ''">선택안함(필수x)</option>
 					<option ng-repeat="item in inflowRoutelist" ng-value="item.value">{{item.value}}</option>
 				</select>
 			</label>

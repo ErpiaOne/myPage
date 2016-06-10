@@ -23,8 +23,6 @@ angular.module('starter.services', [])
 
 .factory('app', function($rootScope, $state, $ionicPopup, $cordovaInAppBrowser, $ionicSlideBoxDelegate){
 return{
-
-
 	     didReceiveRemoteNotificationCallBack : function(jsonData) {
 	        var browseroptions = {
 		      location: 'yes',
@@ -553,22 +551,23 @@ return{
 					if(typeof response.data == 'object'){
 						for(var i=0; i<response.data.list.length; i++){
 							switch(response.data.list[i].Idx){
+								case "0": response.data.list[i].title = titles[0].title; break;
 								case "1": response.data.list[i].title = titles[1].title; break;
 								case "2": response.data.list[i].title = titles[2].title; break;
 								case "3": response.data.list[i].title = titles[3].title; break;
 								case "4": response.data.list[i].title = titles[4].title; break;
-								case "6": response.data.list[i].title = titles[5].title; break;
-								case "7": response.data.list[i].title = titles[6].title; break;
-								case "8": response.data.list[i].title = titles[7].title; break;
-								case "9": response.data.list[i].title = titles[8].title; break;
-								case "10": response.data.list[i].title = titles[9].title; break;
-								case "11": response.data.list[i].title = titles[10].title; break;
-								case "12": response.data.list[i].title = titles[11].title; break;
-								case "13": response.data.list[i].title = titles[12].title; break;
-								case "14": response.data.list[i].title = titles[13].title; break;
-								case "15": response.data.list[i].title = titles[14].title; break;
-								case "16": response.data.list[i].title = titles[15].title; break;
-								case "17": response.data.list[i].title = titles[16].title; break;
+								case "5": response.data.list[i].title = titles[5].title; break;
+								case "6": response.data.list[i].title = titles[6].title; break;
+								case "7": response.data.list[i].title = titles[7].title; break;
+								case "8": response.data.list[i].title = titles[8].title; break;
+								case "9": response.data.list[i].title = titles[9].title; break;
+								case "10": response.data.list[i].title = titles[10].title; break;
+								case "11": response.data.list[i].title = titles[11].title; break;
+								case "12": response.data.list[i].title = titles[12].title; break;
+								case "13": response.data.list[i].title = titles[13].title; break;
+								case "14": response.data.list[i].title = titles[14].title; break;
+								case "15": response.data.list[i].title = titles[15].title; break;
+								case "16": response.data.list[i].title = titles[16].title; break;
 							}
 						}
 						return response.data.list;	
@@ -602,22 +601,22 @@ return{
 						for(var i=0; i<response.data.list.length; i++){
 							switch(response.data.list[i].Idx){
 								case "0": response.data.list[i].title = titles[0].title; response.data.list[i].icon = 'ion-home'; break;
-								case "1": response.data.list[i].title = titles[1].title; response.data.list[i].icon = 'ion-home'; break;
+								case "1": response.data.list[i].title = titles[1].title; response.data.list[i].icon = 'ion-earth'; break;
 								case "2": response.data.list[i].title = titles[2].title; response.data.list[i].icon = 'ion-monitor'; break;
 								case "3": response.data.list[i].title = titles[3].title; response.data.list[i].icon = 'ion-pricetags'; break;
 								case "4": response.data.list[i].title = titles[4].title; response.data.list[i].icon = 'ion-cube'; break;
-								case "6": response.data.list[i].title = titles[5].title; response.data.list[i].icon = 'ion-stats-bars'; break;
-								case "7": response.data.list[i].title = titles[6].title; response.data.list[i].icon = 'ion-clipboard'; break;
-								case "8": response.data.list[i].title = titles[7].title; response.data.list[i].icon = 'ion-ios-cloud-upload'; break;
-								case "9": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-android-cloud-done'; break;
-								case "10": response.data.list[i].title = titles[9].title; response.data.list[i].icon = 'ion-android-bus'; break;
-								case "11": response.data.list[i].title = titles[10].title; response.data.list[i].icon = 'ion-pie-graph'; break;
-								case "12": response.data.list[i].title = titles[11].title; response.data.list[i].icon = 'ion-arrow-swap'; break;
-								case "13": response.data.list[i].title = titles[12].title; response.data.list[i].icon = 'ion-log-out'; break;
-								case "14": response.data.list[i].title = titles[13].title; response.data.list[i].icon = 'ion-person-stalker'; break;
-								case "15": response.data.list[i].title = titles[14].title; response.data.list[i].icon = 'ion-log-in'; break;
-								case "16": response.data.list[i].title = titles[15].title; response.data.list[i].icon = 'ion-loop'; break;
-								case "17": response.data.list[i].title = titles[16].title; response.data.list[i].icon = 'ion-plane';break;
+								case "5": response.data.list[i].title = titles[5].title; response.data.list[i].icon = 'ion-stats-bars'; break;
+								case "6": response.data.list[i].title = titles[6].title; response.data.list[i].icon = 'ion-clipboard'; break;
+								case "7": response.data.list[i].title = titles[7].title; response.data.list[i].icon = 'ion-ios-cloud-upload'; break;
+								case "8": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-android-cloud-done'; break;
+								case "9": response.data.list[i].title = titles[9].title; response.data.list[i].icon = 'ion-android-bus'; break;
+								case "10": response.data.list[i].title = titles[10].title; response.data.list[i].icon = 'ion-pie-graph'; break;
+								case "11": response.data.list[i].title = titles[11].title; response.data.list[i].icon = 'ion-arrow-swap'; break;
+								case "12": response.data.list[i].title = titles[12].title; response.data.list[i].icon = 'ion-log-out'; break;
+								case "13": response.data.list[i].title = titles[13].title; response.data.list[i].icon = 'ion-person-stalker'; break;
+								case "14": response.data.list[i].title = titles[14].title; response.data.list[i].icon = 'ion-log-in'; break;
+								case "15": response.data.list[i].title = titles[15].title; response.data.list[i].icon = 'ion-loop'; break;
+								case "16": response.data.list[i].title = titles[16].title; response.data.list[i].icon = 'ion-plane';break;
 							}
 						}
 						return response.data.list;	
@@ -689,11 +688,11 @@ return{
 	}
 })
 .factory('csInfoService', function($http, ERPiaAPI){
-	var csInfo = function(Admin_Code, UserId, kind, chkAdmin, comName, writer, subject, tel, sectors, interestTopic1,interestTopic2, interestTopic3, inflowRoute, contents){
+	var csInfo = function(Admin_Code, UserId, kind, chkAdmin, comName, writer, subject, tel, sectors, interestTopic, inflowRoute, contents){
 		var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 		var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&kind=' + kind + '&chkAdmin=' + chkAdmin + '&comName=' + comName 
-		data += '&writer=' + writer + '&subject=' + subject + '&tel=' + tel + '&sectors=' + sectors + '&interestTopic1=' + interestTopic1
-		data += '&interestTopic2=' + interestTopic2 + '&interestTopic3=' + interestTopic3 + '&inflowRoute=' + inflowRoute + '&contents=' + contents 
+		data += '&writer=' + writer + '&subject=' + subject + '&tel=' + tel + '&sectors=' + sectors + '&interestTopic=' + interestTopic
+		data += '&inflowRoute=' + inflowRoute + '&contents=' + contents;
 		console.log(url + '?' + data)
 		return $http.get(url + '?' + data);
 	}

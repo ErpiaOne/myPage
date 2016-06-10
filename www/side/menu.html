@@ -18,7 +18,7 @@
 					</span>
 				</div>
 				<div class="tabs" style="height:55px" name="main_side" ng-switch-when="elogin">
-					<a class="{{tabitem.tab1}}" ng-click="goto_with_clearHistory('#/app/slidingtab'); sidetab('tab1')">
+					<a class="{{tabitem.tab1}}" ng-click="goHome(); sidetab('tab1')">
 						홈
 					</a>
 					<a class="{{tabitem.tab2}}" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'>
@@ -33,6 +33,23 @@
 					<a class="{{tabitem.tab4}}">
 						<i class="icon ion-more"></i>
 					</a>
+				</div>
+				<div class="tabs" style="height:55px" name="main_side" ng-switch-default>
+					<a class="{{tabitem.tab1}}" ng-click="goHome(); sidetab('tab1')">
+						홈
+					</a>
+					<span class="{{tabitem.tab2}}" ng-click="showCheckSano(); sidetab('tab2')" ng-if="loginState=='E'||loginState=='N'">
+						거래명세표
+					</span>
+					<span class="{{tabitem.tab2}}" ng-click="goto_with_clearHistory('#/app/introduce'); sidetab('tab2')" ng-if="loginState=='S'">
+						ERPia소개
+					</span>
+					<span class="{{tabitem.tab3}}" ng-click="goto_with_clearHistory('#/app/cs'); sidetab('tab3');">
+						가입상담
+					</span>
+					<span class="{{tabitem.tab4}}" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4')">
+						홈페이지
+					</span>
 				</div>
 			</div>
 		</div>

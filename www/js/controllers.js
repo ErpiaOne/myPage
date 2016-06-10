@@ -21,7 +21,7 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location
-	, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, $cordovaSocialSharing){
+	, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, $cordovaSocialSharing, $ionicSideMenuDelegate){
 	$rootScope.PushData = {};
 	   var browseroptions = {
 	      location: 'yes',
@@ -70,7 +70,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 
 	$rootScope.version={
-   		Android_version : '0.2.6', //업데이트시 필수로 변경!!
+   		Android_version : '0.2.7', //업데이트시 필수로 변경!!내이럴줄알았음
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -204,6 +204,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$rootScope.userType = "";
 			$rootScope.autoLoginYN = "N";
 			$rootScope.tabitem.gubun = 'loginout';
+			$rootScope.loginMenu = "selectUser";
+			$rootScope.sideMenuHide = 'true';
 			$localstorage.set("autoLoginYN", $rootScope.autoLoginYN);
 
 			$timeout(function(){
@@ -269,6 +271,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		if($rootScope.mobile_Certify_YN == 'Y'){	 // 모바일 아이디 인증이 되어있다면!!  각자 LOGIN TYPE에 맞는 메인으로 이동
 			if($rootScope.loginState == "S"){
 		           	$state.go("app.erpia_scmhome");
+		           	$rootScope.tabitem.gubun = 'slogin';
 			}else if($rootScope.loginState == "E"){
 				$rootScope.tabitem.gubun = 'elogin';
 				$rootScope.tabitem.tab1 = 'tab-item active';
@@ -277,8 +280,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.tabitem.tab4 = 'tab-item';
 		     		$state.go("app.slidingtab");
 			}else if($rootScope.loginState == 'N'){ 
-				$state.go("app.erpia_main");
+				$rootScope.tabitem.gubun = 'nlogin';
+				$state.go("app.erpia_introduce");
 			}
+			$rootScope.sideMenuHide = 'false';
 		}else if($rootScope.loginState != "R") {	 // logintype이 "R"(Ready) 이 아니라면 인증동의 창이 띄워지도록한다. 
 			$scope.agree_1.checked = false;
 			$scope.agree_2.checked = false;
@@ -335,7 +340,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 		$timeout(function(){
 				if(userType == 'ERPia'){
-				console.log("이알피아입니까")
 				$rootScope.loginMenu = "selectUser"; 
 				$rootScope.userType = 'ERPia'; 
 				$scope.footer_menu = 'U'; 
@@ -538,6 +542,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
                         app.didReceiveRemoteNotificationCallBack);
 		admin_code = $filter('lowercase')(admin_code);
 		id = $filter('lowercase')(id);
+		$ionicSideMenuDelegate.canDragContent(true);
 		if (autologin_YN == 'Y') {
 			switch(loginType){
 				case 'E' : $rootScope.userType = 'ERPia'; $rootScope.loginMenu = 'User'; $scope.footer_menu = 'U'; break;
@@ -1014,6 +1019,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	   	$scope.thisversion='';
 	   	$scope.currentversion='';
 	   	$rootScope.loginData.autologin_YN = 'N';
+	   	$rootScope.sideMenuHide = 'true';
+	   	$ionicSideMenuDelegate.canDragContent(false);
 		VersionCKService.currentVersion().then(function(data){
 			$timeout(function(){
 				if(data != '<!--Parameter Check-->'){
@@ -1805,7 +1812,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	// 기본정보를 디폴트 값으로 넣었다.
 	$scope.ckversion={};
    	$scope.thisversioncurrent='Y';
-   	$scope.thisversion='0.2.7';
+   	$scope.thisversion='';
    	$scope.currentversion='';
 	VersionCKService.currentVersion()
 	.then(function(data){
@@ -1894,17 +1901,33 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 })
 // 통계리포트 설정 컨트롤러
 .controller('configCtrl_statistics', function($scope, $rootScope, statisticService, publicFunction, app){
-	statisticService.all('myPage_Config_Stat', 'select_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+
+	$scope.titleall = function(){
+		statisticService.all('myPage_Config_Stat', 'select_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 		.then(function(data){
 			$scope.items = data;
 		})
+	}
+	$scope.titleall();
 
+	$scope.backno = function(){
+		if($scope.data.showReorder != false){
+			$scope.data.showReorder = false;
+			$scope.titleall();
+		}
+	}
+	
+
+	$scope.data = {
+		showReorder: false
+	}
+	$scope.rslist = 'X';
 	// 아이템을 옮길때마다 내용을 서버에 저장시켜둔다.
 	$scope.moveItem = function(item, fromIndex, toIndex) {
 	/*호경선배님이 만드셨던 대칭 순서바꾸기 */
 		// $scope.shouldShowDelete = false;
- 	// 	$scope.shouldShowReorder = false;
- 	// 	$scope.listCanSwipe = true
+	 	// $scope.shouldShowReorder = false;
+	 	// $scope.listCanSwipe = true
 
 		// fromIdx = $scope.items[fromIndex].Idx;
 		// fromTitle = $scope.items[fromIndex].title;
@@ -1921,25 +1944,33 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		// $scope.items[toIndex].Idx = fromIdx;
 		// $scope.items[toIndex].title = fromTitle;
 		// $scope.items[toIndex].visible = fromVisible;
-
+		$scope.rslist = 'O';
 		$scope.items.splice(fromIndex, 1);
     		$scope.items.splice(toIndex, 0, item);
 
-		var rsltList = '';
+		$scope.rsltList = '';
 		console.log($scope.items);
 		for(var i = 0; i < $scope.items.length; i++){
 			$scope.items[i].cntOrder = i+1;
-			rsltList += $scope.items[i].cntOrder + '^';
-			rsltList += $scope.items[i].Idx + '^';
-			rsltList += $scope.items[i].visible + '^|';
+			$scope.rsltList += $scope.items[i].cntOrder + '^';
+			$scope.rsltList += $scope.items[i].Idx + '^';
+			$scope.rsltList += $scope.items[i].visible + '^|';
 		}
-		console.log(rsltList);
-		statisticService.save('myPage_Config_Stat', 'save_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
+		console.log($scope.rsltList);
+		
 	};
+	/*순서저장*/
+	$scope.movesave = function(){
+		if($scope.rslist != 'X'){
+			$scope.rslist = 'X';
+			statisticService.save('myPage_Config_Stat', 'save_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $scope.rsltList, $rootScope.deviceInfo.uuid);
+		}
+	}
 	// 지우려고 만들었는데 2차 업데이트로 넘김.
 	$scope.onItemDelete = function(item) {
 		$scope.items.splice($scope.items.indexOf(item), 1);
 	};
+
 }) //알림설정 컨트롤러
 .controller('configCtrl_alarm', function($scope, $rootScope, $location, alarmService, app){
 	// window.plugins.PushbotsPlugin.initialize("56fb66a04a9efa4f9a8b4569",{"android":{"sender_id":"832821752106"}});
@@ -2363,14 +2394,24 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
         window.open('http://blog.naver.com/zzata');
     }
 })
-.controller('CsCtrl', function($rootScope, $scope, $ionicModal, $ionicPopup, $timeout, $stateParams, $location, $http, csInfoService, TestService, $ionicHistory, ERPiaAPI, $cordovaToast, app){
-
+.controller('CsCtrl', function($rootScope, $scope, $ionicModal, $ionicPopup, $timeout, $stateParams, $location, $http, csInfoService, TestService, $ionicHistory, ERPiaAPI, $cordovaToast, app, $ionicSideMenuDelegate){
+	if($rootScope.sideMenuHide == 'true'){
+		$ionicSideMenuDelegate.canDragContent(false);
+	}else{
+		$ionicSideMenuDelegate.canDragContent(true);
+	}
 	$scope.csData = {
-		interestTopic1 : 'no',
-		interestTopic2 : 'no',
-		interestTopic3 : 'no',
-		sectors: 'no',
-		inflowRoute: 'no'
+		comName: ''
+		,writer: ''
+		,subject: ''
+		,tel: ''
+		,sectors: ''
+		,interestTopic : ''
+		,contents: ''
+		,inflowRoute: ''
+		,cs_certify_no:''
+		,cs_certify_ok:''
+		,interestTopic1: ''
 	};
 	$scope.cscustomagree = false;
 
@@ -2382,42 +2423,57 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	    	$scope.csagreeModal = modal;
 	    });
 
-    $scope.csagree=function(){
-    	if($scope.cscustomagree == false) $scope.cscustomagree =true;
-    	else $scope.cscustomagree = false;
-    }
-    $scope.csagreemodalopen=function(){
-    	$scope.csagreeModal.show();
-     }
-    $scope.csagreemodalclose=function(){
-     	$scope.csagreeModal.hide();
-     }
-    $scope.dialNumber = function(number) {
-        window.open('tel:' + number, '_system');
-    }
+	$ionicModal.fromTemplateUrl('erpia_cs/cs_interestsModal.html', {
+    		scope: $scope
+   	 }).then(function(modal) {
+    		$scope.Cs_Interests_Modal = modal;
+	});
 
-    $scope.sectorslist = [
-	    { id: 1, value: "제조업" },
-	    { id: 2, value: "유통업" },
-	    { id: 3, value: "프랜차이즈" },
-	    { id: 4, value: "서비스" },
-	    { id: 5, value: "비영리" },
-	    { id: 6, value: "건설업" },
-	    { id: 7, value: "기타" }
-  	];
+	$scope.csagree=function(){
+		if($scope.cscustomagree == false) $scope.cscustomagree =true;
+		else $scope.cscustomagree = false;
+	}
+	$scope.csagreemodalopen=function(){
+		$scope.csagreeModal.show();
+	}
+	$scope.csagreemodalclose=function(){
+		$scope.csagreeModal.hide();
+	}
+
+	$scope.Interests_Modalopen = function(){
+		$scope.Cs_Interests_Modal.show();
+		console.log("열려라!!!")
+	}
+
+	$scope.Interests_Modalclose = function(){
+		$scope.Cs_Interests_Modal.hide();
+	}
+	$scope.dialNumber = function(number) {
+		window.open('tel:' + number, '_system');
+	}
+
+	$scope.sectorslist = [
+	{ id: 1, value: "제조업" },
+	{ id: 2, value: "유통업" },
+	{ id: 3, value: "프랜차이즈" },
+	{ id: 4, value: "서비스" },
+	{ id: 5, value: "비영리" },
+	{ id: 6, value: "건설업" },
+	{ id: 7, value: "기타" }
+	];
 
   	$scope.interestTopiclist = [
-	    { id: 1, value: "재고관리" },
-	    { id: 2, value: "물류관리" },
-	    { id: 3, value: "온라인관리" },
-	    { id: 4, value: "매장관리" },
-	    { id: 5, value: "회계&장부관리" },
-	    { id: 6, value: "판매관리" },
-	    { id: 7, value: "해외판매" },
-	    { id: 8, value: "정산관리" },
-	    { id: 9, value: "미수관리" },
-	    { id: 10, value: "발주관리" },
-	    { id: 11, value: "그룹사관리" }
+	    { id: 1, value: "재고관리", checked : false },
+	    { id: 2, value: "물류관리", checked : false },
+	    { id: 3, value: "온라인관리", checked : false },
+	    { id: 4, value: "매장관리", checked : false },
+	    { id: 5, value: "회계&장부관리", checked : false },
+	    { id: 6, value: "판매관리", checked : false },
+	    { id: 7, value: "해외판매", checked : false },
+	    { id: 8, value: "정산관리", checked : false },
+	    { id: 9, value: "미수관리", checked : false },
+	    { id: 10, value: "발주관리", checked : false },
+	    { id: 11, value: "그룹사관리", checked : false }
   	];
 
   	$scope.inflowRoutelist = [
@@ -2432,22 +2488,28 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
   	$scope.csRegist = function() {
   		var errMsg = "";
-  		if($scope.csData.interestTopic1 != 'no' && $scope.csData.interestTopic2 == 'no' && $scope.cscustomagree != false){
-  			$scope.csData.interestTopic2 = '';
-  		}
-  		if($scope.csData.interestTopic1 != 'no' && $scope.csData.interestTopic3 == 'no' && $scope.cscustomagree != false){
-  			$scope.csData.interestTopic3 = '.';
-  		}
+
   		csResigtData[0] = $scope.csData.comName;
 	  	csResigtData[1] = $scope.csData.writer;
 	  	csResigtData[2] = $scope.csData.subject;
 	  	csResigtData[3] = $scope.csData.tel;
 	  	csResigtData[4] = $scope.csData.sectors;
-	  	csResigtData[5] = $scope.csData.interestTopic1;
-	  	csResigtData[6] = $scope.csData.interestTopic2;
-	  	csResigtData[7] = $scope.csData.interestTopic3;
-	  	csResigtData[8] = $scope.csData.inflowRoute;
-	  	csResigtData[9] = $scope.csData.contents;
+	  	csResigtData[5] = $scope.csData.interestTopic;
+	  	csResigtData[6] = $scope.csData.inflowRoute;
+	  	csResigtData[7] = $scope.csData.contents;
+
+	  	csResigtData[8] = $scope.csData.cs_certify_no;
+	  	csResigtData[9] = $scope.csData.cs_certify_ok;
+  		// csResigtData[0] = $scope.csData.comName;
+	  	// csResigtData[1] = $scope.csData.writer;
+	  	// csResigtData[2] = $scope.csData.subject;
+	  	// csResigtData[3] = $scope.csData.tel;
+	  	// csResigtData[4] = $scope.csData.sectors;
+	  	// csResigtData[5] = $scope.csData.interestTopic1;
+	  	// csResigtData[6] = $scope.csData.interestTopic2;
+	  	// csResigtData[7] = $scope.csData.interestTopic3;
+	  	// csResigtData[8] = $scope.csData.inflowRoute;
+	  	// csResigtData[9] = $scope.csData.contents;
 
 	  	if(!$scope.csData.comName != ''){
 	  		errMsg += "회사명";
@@ -2458,14 +2520,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	  	if(!$scope.csData.tel != ''){
 	  		errMsg += "/연락처";
 	  	}
-	  	if($scope.csData.sectors == 'no'){
+	  	if($scope.csData.sectors == ''){
 	  		errMsg += "/업종"
 	  	}
-	  	if(csResigtData[5] == 'no'){
+	  	if($scope.csData.interestTopic == ''){
 	  		errMsg += "/관심항목";
-	  	}
-	  	if($scope.csData.inflowRoute == 'no'){
-	  		errMsg += "/유입경로";
 	  	}
 	  	if(!$scope.csData.contents != ''){
 	  		errMsg += "/문의사항";
@@ -2485,16 +2544,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			        subTitle: '',
 			        template: '개인정보이용 및 활용동의(필수)를 해주시기 바랍니다.'
 	    		})
-	  	}else if($scope.csData.interestTopic1 == $scope.csData.interestTopic2 || $scope.csData.interestTopic1 == $scope.csData.interestTopic3 || $scope.csData.interestTopic2 == $scope.csData.interestTopic3){
-	  		$ionicPopup.alert({
-			        title: '<b>경고</b>',
-			        subTitle: '',
-			        template: '관심항목을 다르게 선택해주세요.'
-	    		})
 	  	}else{
 			csInfoService.csInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_CS_Save', $rootScope.loginState, escape(csResigtData[0]),
 								 escape(csResigtData[1]), escape(csResigtData[2]), escape(csResigtData[3]), escape(csResigtData[4]), escape(csResigtData[5]),
-								 escape(csResigtData[6]), escape(csResigtData[7]), escape(csResigtData[8]), escape(csResigtData[9]))
+								 escape(csResigtData[6]), escape(csResigtData[7]))
 		    .then(function(csInfo){
 		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 성공하였습니다.', 'long', 'center');
 			else alert('등록이 성공하였습니다.');
@@ -2507,11 +2560,26 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	};
 
 	$scope.interestTopicRemove = function() {
-		$scope.interestTopic1 = "";
-		$scope.interestTopic2 = "";
-		$scope.interestTopic3 = "";
+		$scope.csData.interestTopic = "";
+		$scope.csData.interestTopic1 = '';
 		// $scope.interestTopicRemoveYN = "N";
 		updated = 0;
+	}
+
+	$scope.Interests_Save = function(){
+		$scope.csData.interestTopic1 = '';
+		$scope.csData.interestTopic = '';
+		for(i=0 ; i<$scope.interestTopiclist.length; i++){
+			console.log($scope.interestTopiclist.length)
+			if($scope.interestTopiclist[i].checked == true){
+					$scope.csData.interestTopic +=   $scope.interestTopiclist[i].value+'^';
+					$scope.csData.interestTopic1 +=  $scope.interestTopiclist[i].value+',';
+
+			}else{
+
+			}
+		}
+
 	}
 })
 
@@ -3103,11 +3171,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 })
 // ERPia 차트 컨트롤러
-.controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, ERPiaAPI, statisticService, IndexService, $cordovaToast, $ionicSlideBoxDelegate, app) {
-	$scope.myStyle = {
-	    "width" : "100%",
-	    "height" : "100%"
-	};
+.controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, ERPiaAPI, statisticService, IndexService, $cordovaToast, $ionicSlideBoxDelegate, app, $ionicLoading) {
+
 	/*차트 리스트 목록관련*/
 	$scope.chartlist = false;
 	$scope.chrtlistF = function(){
@@ -3117,6 +3182,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$scope.chartlist = false;
 		}
 	}
+	/*차트 현재 선택된 인덱스 저장*/
+	$scope.chart_index = 0;
 	/*차트 슬라이드 관련*/
 	$scope.onTouch = function(){
 		$ionicSlideBoxDelegate.enableSlide(false);
@@ -3262,7 +3329,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				strSubject = "매출 실적 추이" + strSubgu;
 				break;
 			case "meaip_7" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "매입 현황" + strSubgu;
 				break;
 			case "beasonga" :
@@ -3425,6 +3492,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	// AmCharts에서 Json 데이터를 불러오는 함수
 	AmCharts.loadJSON = function(url, load_kind) {
+		console.log('url==>',url);
+		console.log('load_kind==>', load_kind);
 		// create the request
 		if (window.XMLHttpRequest) {
 		// IE7+, Firefox, Chrome, Opera, Safari
@@ -3437,7 +3506,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		request.open('POST', url, false);
 		request.send();
-		var tmpAlert = "최근갱신일 : <br>";
+		if(load_kind != 'home'){
+			var tmpAlert = "최근갱신일 : <br>";
+		}else if(load_kind == 'home'){
+			response = eval(request.responseText);
+		}
+		
 
 		if (load_kind == "refresh")
 		{	$scope.loadingani();
@@ -3451,7 +3525,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		/*상세 표 보기!*/
 		if (load_kind == "gridInfo")
-		{
+		{	
 			response = eval(request.responseText);
 			$.each(response[0], function(index, jsonData){
 				tmpAlert += jsonData;
@@ -3461,35 +3535,91 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 
 		if(load_kind == undefined){
-					if(request.response.length < 5){
-						// $("#loading2").css("display","block");
-						$('div[name=loading2]').css('display','block');
-					}else{
-						// $("#loading2").css("display","none");
-						$('div[name=loading2]').css('display','none');
-						if(request.readyState == 1 || request.readyState == 2 || request.readyState == 3)
-						{
-							$("#loading").css("display","block");
-						}
-						else if(request.readyState == 4)
-						{
-							 if (request.status == 200)
-							{
-								$("#loading").css("display","none");
-							}
-						}
+			if(request.response.length < 5){
+				// $("#loading2").css("display","block");
+				$('div[name=loading2]').css('display','block');
+			}else{
+				// $("#loading2").css("display","none");
+				$('div[name=loading2]').css('display','none');
+				if(request.readyState == 1 || request.readyState == 2 || request.readyState == 3)
+				{
+					$("#loading").css("display","block");
+				}
+				else if(request.readyState == 4)
+				{
+					 if (request.status == 200)
+					{
+						$("#loading").css("display","none");
 					}
+				}
+			}
 		}
 		return eval(request.responseText);
 		// request.onreadystatechange = callback;
-
-
-
-
-
-
-
 	};
+
+	$scope.load_home_chart = function(){
+		var chartData = "";
+		chartData = AmCharts.loadJSON(ERPiaAPI.url+ "/JSon_Proc_graph.asp?kind=Meachul_halfyear&value_kind=Meachul_halfyear&admin_code=" + $scope.loginData.Admin_Code, 'home')
+		console.log('====>', chartData);
+		var chart = AmCharts.makeChart("chart0",
+		{
+			"type": "serial",
+			"categoryField": "category",
+			"startDuration": 0,
+			"categoryAxis": {
+				"gridPosition": "start"
+			},
+			"trendLines": [],
+			"graphs": [
+				{
+					"balloonText": "[[title]] of [[category]]:[[value]]",
+					"fillAlphas": 1,
+					"fillColors": "#3434B5",
+					"id": "AmGraph-1",
+					"lineColor": "#A85A5A",
+					"title": "온라인 매출액",
+					"type": "column",
+					"valueField": "c_on"
+				},
+				{
+					"balloonText": "[[title]] of [[category]]:[[value]]",
+					"fillAlphas": 1,
+					"fillColors": "#F4820D",
+					"id": "AmGraph-2",
+					"title": "오프라인 매출액",
+					"type": "column",
+					"valueField": "c_off"
+				},
+				{
+					"id": "AmGraph-6",
+					"lineColor": "#0000FF",
+					"valueField": "c_line"
+				}
+			],
+				"guides": [],
+				"allLabels": [],
+				"balloon": {},
+				"legend": {
+					"enabled": true,
+					"align": "center",
+					"spacing": 11,
+					"top": -4,
+					"useGraphSettings": true
+				},
+				"titles": [
+					{
+						"id": "Title-1",
+						"size": 15,
+						"text": "최근 6개월 매출액"
+					}
+				],
+				"dataProvider": chartData
+			}
+		);
+		console.log('+++++++++++++++++>', chart);
+	}
+
 
 	$scope.slideC= function(index) {
 		var num = parseInt(index);
@@ -3502,6 +3632,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	.then(function(data){
 		$scope.tabs = data;
 	})
+
+	// $scope.load_home_chart();
+	
 	$scope.kind= '', $scope.htmlCode= '';
 
 	// 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함.
@@ -3510,65 +3643,76 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			data.index = parseInt(data.index);
 			$scope.chartlist = false;
 		}
+		/*홈 차트*/
 		console.log("You have selected " + data.index + " tab");
+		$scope.chart_index = data.index;
 		$scope.loadingani();
 		var titles =  [{Idx:0, title:"홈"}
-			, {Idx:1, title:"meaip_jem"}
-			, {Idx:2, title:"meachul_jem"}
-			, {Idx:3, title:"brand_top5"}
-			// , {Idx:4, title:"scm"}
-			, {Idx:4, title:"meachul_top5"}
-			, {Idx:6, title:"Meachul_ik"}
-			, {Idx:7, title:"meachul_7"}
-			, {Idx:8, title:"meaip_7"}
-			, {Idx:9, title:"beasonga"}
-			, {Idx:10, title:"beasong_gu"}
-			, {Idx:11, title:"meachul_onoff"}
-			, {Idx:12, title:"banpum"}
-			, {Idx:13, title:"banpum_top5"}
-			, {Idx:14, title:"meachul_cs"}
-			, {Idx:15, title:"meaip_commgoods"}
-			, {Idx:16, title:"JeGo_TurnOver"}
-			, {Idx:17, title:"beasongb"}];
+			, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10'}
+			, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율'}
+			, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5'}
+			, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5'}
+			, {Idx:5, title:"Meachul_ik", name:'매출이익증감율'}
+			, {Idx:6, title:"meachul_7", name:'매출 실적 추이'}
+			, {Idx:7, title:"meaip_7", name:'매입 현황'}
+			, {Idx:8, title:"beasonga", name:'금일 출고 현황'}
+			, {Idx:9, title:"beasong_gu", name:'택배사별 구분 건수 통계'}
+			, {Idx:10, title:"meachul_onoff", name:'온오프라인 비교 매출'}
+			, {Idx:11, title:"banpum", name:'매출반품현황'}
+			, {Idx:12, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5'}
+			, {Idx:13, title:"meachul_cs", name:'CS 컴플레인 현황'}
+			, {Idx:14, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5'}
+			, {Idx:15, title:"JeGo_TurnOver", name:'재고회전율TOP5'}
+			, {Idx:16, title:"beasongb", name:'출고현황'}];
 				// $rootScope.gubun_chart = $scope.kind;
+		if(data.index == 0){
+			$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+			$timeout(function(){
+			$scope.load_home_chart();
+			$ionicLoading.hide();
+			}, 1000);
+		}
 		if (data.index > 0){
 			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index, $rootScope.deviceInfo.uuid)
 			.then(function(response){
 				$rootScope.kind = 'chart' + response.list[0].idx;
+				var idxnum = response.list[0].idx;
 				switch (response.list[0].idx)
 				{
+					case '0' : $scope.kind = titles[0].title; break;
 					case '1' : $scope.kind = titles[1].title; break;
 					case '2' : $scope.kind = titles[2].title; break;
 					case '3' : $scope.kind = titles[3].title; break;
 					case '4' : $scope.kind = titles[4].title; break;
-					case '6' : $scope.kind = titles[5].title; break;
-					case '7' : $scope.kind = titles[6].title; break;
-					case '8' : $scope.kind = titles[7].title; break;
-					case '9' : $scope.kind = titles[8].title; break;
-					case '10' : $scope.kind = titles[9].title; break;
-					case '11' : $scope.kind = titles[10].title; break;
-					case '12' : $scope.kind = titles[11].title; break;
-					case '13' : $scope.kind = titles[12].title; break;
-					case '14' : $scope.kind = titles[13].title; break;
-					case '15' : $scope.kind = titles[14].title; break;
-					case '16' : $scope.kind = titles[15].title; break;
-					case '17' : $scope.kind = titles[16].title; break;
+					case '5' : $scope.kind = titles[5].title; break;
+					case '6' : $scope.kind = titles[6].title; break;
+					case '7' : $scope.kind = titles[7].title; break;
+					case '8' : $scope.kind = titles[8].title; break;
+					case '9' : $scope.kind = titles[9].title; break;
+					case '10' : $scope.kind = titles[10].title; break;
+					case '11' : $scope.kind = titles[11].title; break;
+					case '12' : $scope.kind = titles[12].title; break;
+					case '13' : $scope.kind = titles[13].title; break;
+					case '14' : $scope.kind = titles[14].title; break;
+					case '15' : $scope.kind = titles[15].title; break;
+					case '16' : $scope.kind = titles[16].title; break;
 				}
 
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
 				if($scope.kind === "beasonga"){
 					$scope.htmlCode = 
-						'<ion-content>'	+
+						'<ion-content>' +
+							'<div class="box-title" style="color:#fff; padding-top:15px;">'+
+								titles[idxnum].name+
+							'</div>'+
 							'<input type="hidden" name="gu_hidden">' +
-							'<div class="direct-chat" style="padding-top:20px;">'+
+							'<div class="direct-chat" style="padding-top:5px;">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; vertical-align: top;">'+
-									'<button class="fa fa-refresh" name="refreshW" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
+									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
 									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>'+
 									'<div class="pull-right">'+
 										'<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
-									// '<div name="loading">로딩중...</div>'+
-									// '<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -3589,8 +3733,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							'</div>' + 
 						'</ion-content>';
 				}else{
-					$scope.htmlCode = '<ion-content>'	+'<input type="hidden" name="gu_hidden">' +
-							'<div class="direct-chat" style="padding-top:20px;">'+
+					$scope.htmlCode = '<ion-content>'	+
+							'<div class="box-title" style="color:#fff; padding-top:15px;">'+
+								titles[idxnum].name+
+							'</div>'+
+							'<input type="hidden" name="gu_hidden">' +
+							'<div class="direct-chat" style="padding-top:5px;">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; vertical-align: top;">'+
 									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
 									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>'+
@@ -3600,7 +3748,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
 										'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
-									// '<div name="loading2" style="position: absolute; top: 130px; left:10%; z-index: 50; width:80%; height:150px;  color: #fff; background: #9687a1; text-align: center; padding-top: 60px;">조회할 데이터가 없습니다.</div>'+
 								'</div>'+
 
 								'<div class="box-body" style="padding:10px 0px;">'+
@@ -3692,6 +3839,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			})
 		}
     };
+    $scope.movezero = function(){
+    	var data = {
+    		index:0
+    	}
+    	$scope.onSlideMove(data);
+    }
+    $scope.movezero();
+    
 })
 
 .controller('PushCtrl', function($scope, $rootScope, $ionicUser, $ionicPush, app) {
