@@ -64,13 +64,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 	}
 
+	/* 재고관리 */
 	$scope.jego = function(){
 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('준비중입니다.', 'long', 'center');
 		else alert('준비중입니다.');
 	}
 
+	/* 버전관리 */
 	$rootScope.version={
-   		Android_version : '0.2.7', //업데이트시 필수로 변경!!내이럴줄알았음
+   		Android_version : '0.2.7', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -83,10 +85,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 	$scope.logindata2 = {};
 
-	$rootScope.loginState = "R"; //R: READY, E: ERPIA LOGIN TRUE, S: SCM LOGIN TRUE
+	$rootScope.loginState = "R"; // R: READY, E: ERPIA LOGIN TRUE, S: SCM LOGIN TRUE
 	$rootScope.deviceInfo = {};  // Device 정보를 담아두는 변수
 	$scope.ion_login = "ion-power active";  // 로그인/로그아웃 시 변경되는 CSS
-	// 각각의 변수를 담아두는 공간. 초기화를 쉽게 하기 위해 만들었음.
+
+	/* 각각의 변수를 담아두는 공간. 초기화를 쉽게 하기 위해 만들었음 */
 	$rootScope.loginData = {};
 	$rootScope.userData = {};
 	$scope.SMSData = {};
@@ -115,6 +118,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.certificationModal = modal;
 		$scope.certificationModal.hardwareBackButtonClose = false;
 	});
+
 	/* 거래명세표 조회시 뜨는 모달창 */
 	$ionicModal.fromTemplateUrl('side/check_Sano.html',{
 		scope : $scope
@@ -131,61 +135,61 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		 })
 	}
 	
-	/*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15*/
+	/* 김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15 */
 	$scope.pushYNcheck=function(){
-			window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
-	                               {googleProjectNumber: "832821752106",
-	                                autoRegister: true},
-	                                app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
-			var cntList = 6;
-			alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
-				.then(function(data){
-					if(data != '<!--Parameter Check-->'){
-						$scope.settingsList = data.list;
-					var cntList = data.list.length;
-					for(var i=1; i<cntList; i++){
-						switch(data.list[i].idx){
-							case 1: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '공지사항';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key1", "1");
-								else window.plugins.OneSignal.deleteTags(["key1"]);
-								break;
-							case 2: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '업데이트 현황';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key2", "2");
-								else window.plugins.OneSignal.deleteTags(["key2"]);
-								break;
-							case 3: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '지식 나눔방';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key3", "3");
-								else window.plugins.OneSignal.deleteTags(["key3"]);
-								break;
-							case 4: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key4", "4");
-								else window.plugins.OneSignal.deleteTags(["key4"]);
-								data.list[i].name = '업체문의 Q&A(답변)';
-								break;
-							case 5: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '거래명세서 도착';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key5", "5");
-								else window.plugins.OneSignal.deleteTags(["key5"]);
-								break;
-							case 6: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '기타 이벤트';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key6", "6");
-								else window.plugins.OneSignal.deleteTags(["key6"]);
-								break;
-						}
+		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
+                               {googleProjectNumber: "832821752106",
+                                autoRegister: true},
+                                app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
+		var cntList = 6;
+		alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+		.then(function(data){
+			if(data != '<!--Parameter Check-->'){
+				$scope.settingsList = data.list;
+				var cntList = data.list.length;
+				for(var i=1; i<cntList; i++){
+					switch(data.list[i].idx){
+						case 1: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '공지사항';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key1", "1");
+							else window.plugins.OneSignal.deleteTags(["key1"]);
+							break;
+						case 2: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '업데이트 현황';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key2", "2");
+							else window.plugins.OneSignal.deleteTags(["key2"]);
+							break;
+						case 3: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '지식 나눔방';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key3", "3");
+							else window.plugins.OneSignal.deleteTags(["key3"]);
+							break;
+						case 4: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key4", "4");
+							else window.plugins.OneSignal.deleteTags(["key4"]);
+							data.list[i].name = '업체문의 Q&A(답변)';
+							break;
+						case 5: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '거래명세서 도착';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key5", "5");
+							else window.plugins.OneSignal.deleteTags(["key5"]);
+							break;
+						case 6: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '기타 이벤트';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key6", "6");
+							else window.plugins.OneSignal.deleteTags(["key6"]);
+							break;
 					}
-		}else{
-						var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
-						var results = rsltList.match(/\^T\^/g);
-						alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
-						$scope.fnAlarm('checkAll');
-						window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
-					}
-				});
-		}
+				}
+			}else{
+				var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
+				var results = rsltList.match(/\^T\^/g);
+				alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
+				$scope.fnAlarm('checkAll');
+				window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
+			}
+		});
+	}
 	/*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15 -- 끝*/
 
 	/* 초기화 함수 */
@@ -900,7 +904,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}
 			})
 		}else if($rootScope.userType == 'Guest'){
-			$rootScope.loginState = "E"
+			$rootScope.loginState = "E";
 			$rootScope.loginHTML = "로그아웃"; //<br>(" + comInfo.data.list[0].Com_Code + ")";
 			$scope.ion_login = "ion-power";
 			$rootScope.userData.Com_Name = '테스트용계정' + '<br>(' + 'ERPMobile' + ')';
@@ -1116,50 +1120,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$rootScope.autoLogin = false;
 		$rootScope.loginData.chkAutoLogin=false;
 		if($rootScope.loginMenu == "selectUser"){
-			console.log("로그인돌아랏!!!!");
 			$scope.login();
 		}
 	}
 
 	 }, false);
 
+	/* ERPIA URL 공유 */
 	$scope.shareURL = function(){
-		$ionicPopup.show({
-			title: 'URL공유',
-			subTitle: '',
-			content: 'ERPIA_Mobile 설치 URL을 공유합니다.',
-			buttons: [
-				{ text: '카카오톡',
-					onTap: function(e){
-						var url = 'https://play.google.com/store/apps/details?id=com.ERPia.MyPage';
-						$cordovaSocialSharing.shareVia("com.kakao.talk","[ERPiaMobile 설치URL] " + url);
-					}
-				},
-				{ text: 'SMS',
-					onTap: function(e){
-						var url = 'https://play.google.com/store/apps/details?id=com.ERPia.MyPage';
-						$cordovaSocialSharing.shareViaSMS("[ERPiaMobile 설치URL] "+ url);
-					}
-				},
-				{ text: '이메일',
-					onTap: function(e){
-						var url = 'https://play.google.com/store/apps/details?id=com.ERPia.MyPage';
-						$cordovaSocialSharing.shareViaEmail("[ERPiaMobile 설치URL] "+ url);
-					}
-				},
-			]
-		})
-	}
-
-	$scope.shareAnywhere = function(url, where,Mutual) {
-	       if(where == 'kakao'){
-	       	$cordovaSocialSharing.shareVia("com.kakao.talk","[Erpia 거래명세표] "+'('+Mutual+')'+url);
-	       }else if(where == 'sms'){
-	        	$cordovaSocialSharing.shareViaSMS("[Erpia 거래명세표] "+'('+Mutual+')'+url);
-	       }else{
-                   $cordovaSocialSharing.shareViaEmail("[Erpia 거래명세표] "+'('+Mutual+')'+url, "[Erpia 거래명세표] "+'('+Mutual+')');
-	       }
-	       $scope.toemail ='';
+		var url = 'https://play.google.com/store/apps/details?id=com.ERPia.MyPage';
+		$cordovaSocialSharing.share('ERPIA_Mobile' , '[ERPiaMobile 설치URL 공유]', null, url);
 	}
 
 })
