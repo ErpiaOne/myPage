@@ -696,17 +696,8 @@ return{
 		console.log(url + '?' + data)
 		return $http.get(url + '?' + data);
 	}
-		
-	var cs_certify = function(rndNum,phoneno){
-		var url = ERPiaAPI.url + '/SCP.asp';
-		var data = 'sms_id=erpia&sms_pwd=a12345&send_num=070-7012-3071&rec_num=' + phoneno;
-		data += '&rndNum=' + rndNum + '&SendType=mobile_Certification';
-		return $http.get(url + '?' + data);
-	}
-
 	return{
-		csInfo: csInfo,
-		cs_certify: cs_certify
+		csInfo: csInfo
 	}
 })
 .factory('uuidService', function($http, $q, $rootScope, ERPiaAPI, $cordovaToast){

@@ -35,7 +35,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		tab3: 'tab-item',
 		tab4: 'tab-item'
 	}
-	$ionicSideMenuDelegate.canDragContent(true);
 	$scope.sidetab= function(tabgubun){
 		switch (tabgubun) {
 			case 'tab1' :
@@ -73,7 +72,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 */
 	$rootScope.version={
-   		Android_version : '0.2.8', //업데이트시 필수로 변경!!
+   		Android_version : '0.2.7', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -138,59 +137,59 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	
 	/* 김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15 */
 	$scope.pushYNcheck=function(){
-			window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
-	                               {googleProjectNumber: "832821752106",
-	                                autoRegister: true},
-	                                app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
-			var cntList = 6;
-			alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
-				.then(function(data){
-					if(data != '<!--Parameter Check-->'){
-						$scope.settingsList = data.list;
-					var cntList = data.list.length;
-					for(var i=1; i<cntList; i++){
-						switch(data.list[i].idx){
-							case 1: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '공지사항';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key1", "1");
-								else window.plugins.OneSignal.deleteTags(["key1"]);
-								break;
-							case 2: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '업데이트 현황';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key2", "2");
-								else window.plugins.OneSignal.deleteTags(["key2"]);
-								break;
-							case 3: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '지식 나눔방';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key3", "3");
-								else window.plugins.OneSignal.deleteTags(["key3"]);
-								break;
-							case 4: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key4", "4");
-								else window.plugins.OneSignal.deleteTags(["key4"]);
-								data.list[i].name = '업체문의 Q&A(답변)';
-								break;
-							case 5: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '거래명세서 도착';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key5", "5");
-								else window.plugins.OneSignal.deleteTags(["key5"]);
-								break;
-							case 6: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
-								data.list[i].name = '기타 이벤트';
-								if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key6", "6");
-								else window.plugins.OneSignal.deleteTags(["key6"]);
-								break;
-						}
+		window.plugins.OneSignal.init("881eee43-1f8a-4f60-9595-15b9aa7056b2",
+                               {googleProjectNumber: "832821752106",
+                                autoRegister: true},
+                                app.didReceiveRemoteNotificationCallBack); //푸쉬 선언
+		var cntList = 6;
+		alarmService.select('select_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+		.then(function(data){
+			if(data != '<!--Parameter Check-->'){
+				$scope.settingsList = data.list;
+				var cntList = data.list.length;
+				for(var i=1; i<cntList; i++){
+					switch(data.list[i].idx){
+						case 1: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '공지사항';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key1", "1");
+							else window.plugins.OneSignal.deleteTags(["key1"]);
+							break;
+						case 2: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '업데이트 현황';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key2", "2");
+							else window.plugins.OneSignal.deleteTags(["key2"]);
+							break;
+						case 3: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '지식 나눔방';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key3", "3");
+							else window.plugins.OneSignal.deleteTags(["key3"]);
+							break;
+						case 4: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key4", "4");
+							else window.plugins.OneSignal.deleteTags(["key4"]);
+							data.list[i].name = '업체문의 Q&A(답변)';
+							break;
+						case 5: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '거래명세서 도착';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key5", "5");
+							else window.plugins.OneSignal.deleteTags(["key5"]);
+							break;
+						case 6: data.list[i].checked = (data.list[i].checked == 'T')?true:false;
+							data.list[i].name = '기타 이벤트';
+							if(data.list[i].checked == true) window.plugins.OneSignal.sendTag("key6", "6");
+							else window.plugins.OneSignal.deleteTags(["key6"]);
+							break;
 					}
-		}else{
-						var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
-						var results = rsltList.match(/\^T\^/g);
-						alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
-						$scope.fnAlarm('checkAll');
-						window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
-					}
-				});
-		}
+				}
+			}else{
+				var rsltList = '0^T^|1^T^|2^T^|3^T^|4^T^|5^T^|6^T^|';
+				var results = rsltList.match(/\^T\^/g);
+				alarmService.save('save_Alarm', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, rsltList, $rootScope.deviceInfo.uuid);
+				$scope.fnAlarm('checkAll');
+				window.plugins.OneSignal.sendTags({key1: "1", key2: "2", key3: "3", key4: "4", key5: "5", key6: "6"});
+			}
+		});
+	}
 	/*김형석 수정 (푸쉬 태그 언태그부분 ) 2016-04-15 -- 끝*/
 
 	/* 초기화 함수 */
@@ -237,7 +236,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.pushUserCheck = function() {
 		var PushInsertCheck = '';
 		var PushInsertCheck2 = "";
-		pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SELECT', $rootScope.UserKey, $rootScope.token, '', '', '', '')
+		pushInfoService.pushInfo($scope.loginData.Admin_Code, $scope.loginData.UserId, 'Mobile_Push_Token', 'SELECT_InsertCheck', $rootScope.UserKey, $rootScope.token, '', '', '', '')
 		.then(function(pushInfo){
 			if(pushInfo.data.list.length != 0){
 				PushInsertCheck = pushInfo.data.list[0].token;
@@ -2381,8 +2380,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		,contents: ''
 		,inflowRoute: ''
 		,cs_certify_no:''
-		,cs_certify_click: false
-		,cs_certify_ok: false
+		,cs_certify_ok:''
 		,interestTopic1: ''
 	};
 	$scope.cscustomagree = false;
@@ -2492,9 +2490,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	  	if(!$scope.csData.tel != ''){
 	  		errMsg += "/연락처";
 	  	}
-	  	if(!$scope.csData.cs_certify_no != ''){
-	  		errMsg += "/휴대폰인증";
-	  	}
 	  	if($scope.csData.sectors == ''){
 	  		errMsg += "/업종"
 	  	}
@@ -2531,7 +2526,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		    	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 실패하였습니다.', 'long', 'center');
 			else alert('등록이 성공하였습니다.');
 			});
-		}
+		};
 	};
 
 	$scope.interestTopicRemove = function() {
@@ -2539,90 +2534,23 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.csData.interestTopic1 = '';
 		// $scope.interestTopicRemoveYN = "N";
 		updated = 0;
-	};
+	}
 
 	$scope.Interests_Save = function(){
 		$scope.csData.interestTopic1 = '';
 		$scope.csData.interestTopic = '';
-		var commacount = 0;
-		for(var i=0 ; i<$scope.interestTopiclist.length; i++){
+		for(i=0 ; i<$scope.interestTopiclist.length; i++){
 			console.log($scope.interestTopiclist.length)
 			if($scope.interestTopiclist[i].checked == true){
-					commacount++;
 					$scope.csData.interestTopic +=   $scope.interestTopiclist[i].value+'^';
 					$scope.csData.interestTopic1 +=  $scope.interestTopiclist[i].value+',';
-					if(commacount == 3 || commacount == 6 || commacount == 9){
-						$scope.csData.interestTopic1 += '\n';
-					}else{}
 
 			}else{
-				
+
 			}
 		}
 
-		 $scope.csData.interestTopic1= $scope.csData.interestTopic1.slice(0, $scope.csData.interestTopic1.length-1);
-		console.log($scope.csData.interestTopic1);
-
-	};
-
-
-	$scope.cs_certify_click_fn = function(phoneno){
-		console.log("돌아라!")
-		if(phoneno == null || phoneno == undefined|| phoneno == '' || phoneno.length<10){
-			$ionicPopup.alert({
-			         title: '경고',
-			         subTitle: '',
-			         content: '핸드폰번호를 입력해주세요'
-			 })
-		}else{
-			$rootScope.rndNum = Math.floor(Math.random() * 1000000) + 1;
-			if ($rootScope.rndNum < 100000) $rootScope.rndNum = '0' + $rootScope.rndNum;
-
-			csInfoService.cs_certify($rootScope.rndNum, $scope.SMSData.recUserTel).then(function(response){
-				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증번호를 발송했습니다.', 'long', 'center');
-				else alert('인증번호를 발송했습니다.');
-				$scope.certificationModal.hide();
-				$scope.csData.cs_certify_no= '';
-				$scope.csData.cs_certify_click = true;
-			})//수정 4.22
-
-
-
-
-	
-		}
-
-
-	};
-
-	$scope.cs_certify_Check_fn = function(certify_no){
-		if(certify_no == null || certify_no == undefined|| certify_no == '' || certify_no.length<5){
-			$ionicPopup.alert({
-			         title: '경고',
-			         subTitle: '',
-			         content: '인증번호를 정확히 입력해주세요'
-			 })
-		}else if(certify_no == $rootScope.rndNum){
-			$scope.csData.cs_certify_ok = true;
-			$rootScope.rndNum = '';
-			$ionicPopup.alert({
-			         title: '인증성공!',
-			         subTitle: '',
-			         content: '인증에 성공하였습니다.'
-			 })
-
-		}else{
-			$ionicPopup.alert({
-			         title: '인증번호가 일치하지 않습니다.',
-			         subTitle: '',
-			         content: '다시 입력해주세요.'
-			 })
-		}
-	};
-
-
-
-
+	}
 })
 
 .controller('BoardSelectCtrl', function($rootScope, $scope, $state, app){
