@@ -3666,6 +3666,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.slideC= function(index) {
 		var num = parseInt(index);
 		$ionicSlideBoxDelegate.slide(num, 500);
+		$scope.chartlist = false;
 		$scope.loadingani();
 	};
 
@@ -3681,6 +3682,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	// 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함.
 	$scope.onSlideMove = function(data) {
+		$scope.sn = 1;
 		if($scope.chartlist != false){
 			data.index = parseInt(data.index);
 			$scope.chartlist = false;
@@ -3743,7 +3745,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.)
 				if($scope.kind === "beasonga"){
 					$scope.htmlCode = 
-						'<ion-content>' +
 							'<div class="box-title" style="color:#fff; padding-top:15px;">'+
 								titles[idxnum].name+
 							'</div>'+
@@ -3772,17 +3773,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>' + 
-						'</ion-content>';
+							'</div>';
 				}else{
-					$scope.htmlCode = '<ion-content>'	+
+					$scope.htmlCode =
 							'<div class="box-title" style="color:#fff; padding-top:15px;">'+
 								titles[idxnum].name+
 							'</div>'+
 							'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat" style="padding-top:5px;">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; vertical-align: top;">'+
-									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
+									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="makeCharts(\''+ $scope.kind +$scope.sn+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
 									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>'+
 									'<div class="pull-right">'+
 										'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
@@ -3807,7 +3807,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-							'</div>'+ '</ion-content></ion-scroll>';
+							'</div>';
 				}
 				switch(data.index){
 					case 1: $('#s1').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
@@ -3827,24 +3827,44 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					case 15: $('#s15').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 16: $('#s16').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 				}
-
+				/*새로고침 버튼 클릭시*/
+				$("button[name=refreshW]").click(function() {
+					$scope.loadingani();
+					$("div[name=gridBody]").css('display', 'none');
+					$('#' + $scope.kind).css('display', 'block');
+					$scope.btn();
+					if($scope.sn == 1){
+						$("button[name=btnW]").click();
+					}else if($scope.sn == 2){
+						$("button[name=btnM]").click();
+					}else if($scope.sn == 3){
+						$("button[name=btnY]").click();
+					}
+					
+				});
+				/*주간버튼 클릭시*/
 				$("button[name=btnW]").click(function() {
-					$scope.loadingani();
+					$scope.sn = 1;
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
 					$scope.btn();
+					$scope.loadingani();
 				});
+				/*월간버튼 클릭시*/
 				$("button[name=btnM]").click(function() {
-					$scope.loadingani();
+					$scope.sn = 2;
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
 					$scope.btn();
+					$scope.loadingani();
 				});
+				/*연간버튼 클릭시*/
 				$("button[name=btnY]").click(function() {
-					$scope.loadingani();
+					$scope.sn = 3;
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
 					$scope.btn();
+					$scope.loadingani();
 				});
 
 				$scope.btn = function(){

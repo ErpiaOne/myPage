@@ -1,6 +1,6 @@
-
-	<ion-view view-title="MY PAGE" cache-view="false">
-	<ion-content >
+<ion-view view-title="MY PAGE" cache-view="false">
+	<ion-content class="">
+		<!-- <img src="./img/img_erpia.jpg" width="100%"> -->
 		<tab-slide-box>
 			<div class="tsb-icons"> <!-- class건들이면 안되요..ㅠㅠ -->
 				<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
@@ -31,9 +31,10 @@
 					</span>
 				</ion-scroll>
 			</div>
-			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index);slideChanged(index)" style="border-top: 1px solid #e0e0e0;">
+			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index);slideChanged(index)" style="border-top: 1px solid #e0e0e0; padding-bottom: 100px;">
+				<!-- ERPia 메인화면 -->
 				<ion-slide>
-					<ion-content overflow-scroll="false">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
 						<div style="height:100%;" >
 							<!-- 컨텐츠 상단 (정보)-->
 							<span class="psm_home05" ng-bind-html='nowTime' ng-click="ERPiaBaseData()"></span> 
@@ -109,27 +110,106 @@
 							<hr>
 							<p ng-bind-html="login_alert"></p>
 							<div id="chart0" name='chart0' style="width: 100%; height: 300px;"></div>
-							<!-- <div id="chart0" style="width: 100%; height: 300px; background: #4f4f5e; margin-top: -18px; padding-top: 5px; position: relative; top: 0;">amChart</div> -->
 						</div>
-					</ion-content>
+					</ion-scroll>
 				</ion-slide>
 
-				<ion-slide id="s1" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s2" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s3" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s4" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s5" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s6" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s7" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s8" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s9" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s10" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s11" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s12" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s13" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s14" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s15" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
-				<ion-slide id="s16" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 213px;"></ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s1'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s2'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s3'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s4'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s5'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s6'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s7'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s8'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s9'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s10'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s11'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s12'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s13'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s14'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s15'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;">
+					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<div style="height:100%;"  id='s16'>
+						</div>
+					</ion-scroll>
+				</ion-slide>
 			</ion-slide-box>
 		</tab-slide-box>
 	</ion-content>
