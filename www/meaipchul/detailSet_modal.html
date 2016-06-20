@@ -36,7 +36,6 @@
 									</div>
 									<div style="float: left; width:10%;">
 										<i class='ion-close-circled' style='margin-left:-40px; padding-right:10px; vertical-align:middle; font-size:1.8em; color:#000' ng-click='clearcompany()'></i>
-										<button ng-click="detailset_up()" class="button button-small button-psm00 ion-search" style="margin-top: -5px; height: 30px;  font-size:2em;"></button>
 									</div>
 								</div>
 
@@ -52,7 +51,6 @@
 									<div style="float: left; width:80%;">
 										<select style="width:100%; height: 30px;" ng-model="detail.Place_Code">
 											<option value='0' ng-selected="detail.Place_Code == 0">매장미지정</option>
-											<!-- <option value='000' ng-selected="x.Sale_Place_Code == 000">매장미지정</option> -->
 											<option ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}">{{x.Sale_Place_Name}}</option>
 										</select>
 									</div>
@@ -69,7 +67,8 @@
 								</div>
 
 								<div  style="clear: both; width:100%; padding-top:40px;">
-									<button class="button button-small button-psm02" ng-click="quickdetail()" style="width:50%">빠른검색 등록</button>
+									<button class="button button-small button-psm02" ng-click="quickdetail()" style="width:20%; align: left;">빠른검색 등록</button>
+									<button ng-click="detailset_up()" class="button button-small button-psm00 ion-search" style="margin-top: -5px; height: 30px;  font-size:2em; align-content: right;"></button>
 								</div>
 
 							</div>
@@ -79,7 +78,7 @@
 				<!-- 최근검색 -->
 				<ion-slide>
 						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
-							<div align="center" style="background: #dce0e1; height:auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
+							<div align="center" style="background: #dce0e1; height: 100%; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
 
 								<div style="padding: 10px 0 55px 0;">
 

@@ -93,12 +93,12 @@ div.col4{width:30%; color: #fff;}
 		</div>
 	</ion-content>
 
-	<div style="position: fixed; right: 10px; bottom: 115px;">
+	<div class="hide-on-keyboard-open" style="position: fixed; right: 10px; bottom: 115px;">
 		<i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='quickReg()'></i>&nbsp;&nbsp;
 		<i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:3em; color: #6c5e72;" ng-click='scrollTop()'></i>&nbsp;&nbsp;
 	</div>
 
-	<ion-footer-bar align-title="left" style="background: #736777; height: 20px; padding-bottom: 100px;" width="100%">
+	<ion-footer-bar class="hide-on-keyboard-open" align-title="left" style="background: #736777; height: 20px; padding-bottom: 100px;" width="100%">
 		<div class="col1" >기간<br>현황</div>
 		<div class="col2">&nbsp;</div>
 		<div class="col3" style="font-size:12px;">매출액 {{money.meaipchulsum | number:0}}원<br><any ng-if='balance == true'>입금액 {{chit_atmSum | number:0}}원</any></div>

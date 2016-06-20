@@ -17,7 +17,7 @@
 		</div>
 	</div>
 	<div class="list list-inset" style="padding: 10px; margin-top: 10px; text-align: left;">
-		<div ng-click="Next()"><i class="{{upAnddown}}"></i> &nbsp;&nbsp; 매출정보</div>
+		<div ng-click="Next()" style="text-align: right;"><i class="{{upAnddown}}"></i> &nbsp;&nbsp; 매출정보</div>
 		<div ng-if="basictype" style="align:center; padding-top:15px">
 			<table width="100%" class=""style="align:center;vertical-align:middle;">
 				<tr>
@@ -77,7 +77,7 @@
 	</div>
 
 	<div class="list list-inset" align="left" style="padding: 10px;">
-		<div ng-click="Next2()"><i class="{{upAnddown2}}"></i> &nbsp;&nbsp; 상품</div>
+		<div ng-click="Next2()" style="text-align: right;"><i class="{{upAnddown2}}"></i> &nbsp;&nbsp; 상품</div>
 		<div ng-if="basic2type">
 			<div class="list list-inset" style="align:center;" >
 				<table width="100%" ng-if="sbu == false">
@@ -131,7 +131,7 @@
 	</div>
 
 	<div class="list list-inset" style="padding: 10px;" align="left">
-		<div ng-click='Next3()' style="width: 100%;"><i class="{{upAnddown3}}"></i> &nbsp;&nbsp; 관리비고</div>
+		<div ng-click='Next3()' style="width: 100%; text-align: right;"><i class="{{upAnddown3}}"></i> &nbsp;&nbsp; 관리비고</div>
 		<div ng-if="basic3type" class="list list-inset">
 			<label class="item item-input item-stacked-label">
 			<textarea placeholder="관리자비고란 입니다." rows="8" cols="10" ng-model="datas.remk"></textarea>
@@ -141,10 +141,10 @@
 </div>
 <br><br>
 </ion-content>
-
-<ion-footer-bar align-title="left" class="bar-assertive" ng-click='ijmodal_function()' style="background: #52bcae; border: 0; height: 10px; padding-bottom: 100px;">
+<!-- hide-on-keyboard-open => 키보드 열릴때 하단바 숨김 -->
+<ion-footer-bar align-title="left" class="hide-on-keyboard-open bar-assertive" ng-click='ijmodal_function()' style="background: #52bcae; border: 0; height: 10px; padding-bottom: 100px;">
 <div class="buttons"></div>
-<h1 class="title">다음<h1>
+<h1 class="title">다음</h1>
 <div class="buttons"></div>
 </ion-footer-bar>
 </ion-view>
