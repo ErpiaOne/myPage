@@ -1,67 +1,32 @@
-<ion-modal-view class="psm_login_body">
-	<!--div style="position:absolute; bottom:0px; z-index:1;">
-		<img src="./img/banner_event1.jpg" width="100%">
-	</div-->
-	<ion-header-bar class="bar-dark">
-		<div class="buttons">
-			<button class="button button-icon icon ion-navicon" ng-click="closeLogin()"></button>
-		</div>
-		<h1 class="title ">Login</h1>
-	</ion-header-bar>
+<ion-view class="psm_login_body" hide-nav-bar="true">
+<ion-nav-bar>
+</ion-nav-bar>
 	<ion-content style="background: #d9dfdf">
-			<div>
-				<div class="ss">
-					<div class="psm_login_logo"><img src="./img/logo.png" class="logo-image" ng-click='selectType("login")'></div>
+		<div style="padding-bottom: 80px">
+			<div class="ss">
+				<p style="float:right">Ver. 베타 </p>
+				<div class="psm_login_logo">
+				<img src="./img/logo.png" class="logo-image" ng-click='selectType("login")'>
 				</div>
+			</div>
+			<div>
+				<div class="row" style="margin:0px 10% 0px 10%; background-color;">
+					<button class="button button-light" ng-click='selectType("ERPia")' ng-if="userType!='ERPia'" style="font-size:8pt; height: 30px;">ERPia</button>
+					<button class="button button-royal" ng-click='selectType("ERPia")' ng-if="userType&&userType=='ERPia'" style="font-size:8pt; height: 30px;">ERPia</button>
 
-				<div ng-switch='loginMenu'>
-					<table border="0" cellpadding="0" cellspacing="0" name='selectUserType' ng-switch-when='selectUser' class="psm_login_ile">
-						<tr>
-							<td class="psm_login_qwc1" ng-click='selectType("ERPia")'><img src="./img/icon_erp.png"><br>ERPia<br>(이알피아회원)</td>
-							<td class="psm_login_qwc2" ng-click='selectType("SCM")'><img src="./img/icon_scm.png"><br>SCM<br>(SCM회원)</td>
-						</tr>
-						<tr>
-							<td class="psm_login_qwc3" ng-click='selectType("Normal")'><img src="./img/icon_nor.png"><br>Normal<br>(거래처회원)</td>
-							<td class="psm_login_qwc4" ng-click='selectType("Guest")'><img src="./img/icon_guest.png"><br>Guest</td>
-						</tr>
-					</table>
+					<button class="button button-light" ng-click='selectType("SCM")' ng-if="userType!='SCM'" style="font-size:8pt; height: 30px;">SCM</button>
+					<button class="button button-royal" ng-click='selectType("SCM")' ng-if="userType&&userType=='SCM'" style="font-size:8pt; height: 30px;">SCM</button>
 
+					<button class="button button-light"  ng-click='selectType("Normal")' ng-if="userType!='Normal'"style="font-size:8pt; height: 30px;">거래명세서</button>
+					<button class="button button-royal" ng-click='selectType("Normal")' ng-if="userType&&userType=='Normal'" style="font-size:8pt; height: 30px;">거래명세서</button>
 
-					<div name='selectUserType' ng-switch-when='User' >
-						<!-- <label class="item item-input psm_login_pci1">
-							<span class="input-label psm_login_pci3">업체코드</span>
-							<input type="text" ng-model="loginData.Admin_Code" style="color:#fff; background:#331632; padding:0 10px">
-						</label>
-						<label class="item item-input psm_login_pci2">
-							<span class="input-label psm_login_pci3">아이디</span>
-							<input type="text" ng-model="loginData.UserId" style="color:#fff; background:#331632; padding:0 10px">
-						</label>
-						<label class="item item-input psm_login_pci2">
-							<span class="input-label psm_login_pci3">비밀번호</span>
-							<input type="password" ng-model="loginData.Pwd" style="color:#fff; background:#331632; padding:0 10px">
-						</label> -->
-
-						<!-- <div>
-					    	<label class="checkbox c">
-					    		<span class="input-label" style="color:#6f747a;">SCM USER</span>
-								<input type="checkbox" ng-model="loginData.SCM_Use_YN" style="color:#fff; background:#22242c">
-							</label>
-							<label class="checkbox c" style="border:0px"> <span class="input-label" style="color:#fff;">AUTO LOGIN</span>
-								<input type="checkbox" ng-model="loginData.Auto_Login" style="color:#fff;">
-							</label>
-					    </div> -->
-
-						<!-- <div class="item item-toggle c">
-					    	<span style="color:#fff;">자동로그인</span>
-					    <label class="toggle toggle-assertive">
-							<input type="checkbox">
-								<div class="track">
-									<div class="handle"></div>
-								</div>
-					     </label>
-						</div> -->
-						<form ng-submit="doLogin()">
-						<center><h4 ng-if="userType&&userType=='ERPia'">이알피아Login</h4><h4 ng-if="userType&&userType=='SCM'">SCMLogin</h4><h4 ng-if="userType&&userType=='Normal'">거래처Login</h4></center>
+					<button class="button button-light"  ng-click='selectType("Guest")' style="font-size:8pt; height: 30px;">체험하기</button>
+				  	<i class="ion-ios-help" style="font-size:30pt; margin-left:2%; margin-right:10%;" ng-click="loginhelper()"></i>
+				</div>
+					
+				<br>
+				<div name='selectUserType'>
+					<form ng-submit="doLogin()">
 						<div class="list list-inset" style="margin:0px 10% 0px 10%; background-color:transparent">
 							<label class="item item-input" style="padding: 0;"><span class="psm_login1 ion-ios-paper-outline"></span>
 								<input style="font-size:100%; padding-left: 15px; text-transform: lowercase" type="text" ng-model="loginData.Admin_Code" placeholder="업체코드">
@@ -84,13 +49,10 @@
 							</div>
 							<button class="button button-block button-balanced" type="submit" style="border: 0; background: #6c5e72">Log in</button>
 						</div>
-
-						<!-- <label class="item psm_login_pci4">
-							<button class="button button-block psm_login_ink" type="submit">Log in</button>
-						</label> -->
-					</div>
+					</form>
 				</div>
 			</div>
-		</form>
+		</div>
+		
 	</ion-content>
-</ion-modal-view>
+</ion-view>

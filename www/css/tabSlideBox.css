@@ -20,9 +20,9 @@
 
 .tabbed-slidebox .tsb-icons {
     text-align: center;
-    margin: 10px 0;
+    margin: 0px 0;
     position: relative;
-	background-color:#fff;
+	background-color:#EAEAEA;
 }
 
 .tabbed-slidebox .tsb-ic-wrp {
@@ -36,8 +36,16 @@
     display: inline-block;
     width: 54px;
     font-size: 2.5em;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(255,0,0,0.2);
 	-webkit-transform:translate3d(0,8px,0);
+}
+
+.tabbed-slidebox .tsb-icons i {
+    display: inline-block;
+    width: 54px;
+    font-size: 2.5em;
+    color: rgba(0, 0, 0, 0.5);
+    -webkit-transform:translate3d(0,8px,0);
 }
 
 .tabbed-slidebox .tsb-icons a.active {
@@ -88,4 +96,13 @@
 	font-size: 1em;
     color: #cc9995;
 	border-bottom: 3px solid #cc9995;
+}
+
+.tabbed-slidebox .tsb-icons .scroll i{
+    width:auto;
+    font-size: 1em;
+    line-height: 2em;
+    text-decoration: none;
+    margin: 0 15px;
+    border-bottom: 3px solid transparent;
 }

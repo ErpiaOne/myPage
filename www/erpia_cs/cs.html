@@ -1,4 +1,4 @@
-<ion-view view-title="상담하기">
+<ion-view view-title="상담하기" hide-nav-bar={{sideMenuHide}}>
 	<ion-nav-back-button></ion-nav-back-button>
 	<ion-nav-buttons side="right" ng-show="false">
 		<button class="button button-icon button-clear {{icon_home}}" menu-close ng-click="goHome()"></button>
@@ -6,7 +6,7 @@
 	<ion-content>
 		<!-- <a href="tel:070-7012-3071" class="button button-positive"> call me</a> -->
 
-		<div class="list list-inset" style="margin-top:10px; padding-bottom: 10px;">
+		<div class="list list-inset" style="margin-top:10px; padding-bottom: 100px;">
 			<img src="./img/img_junhwa.jpg" width="100%; margin-bottom:-10px;" ng-click="dialNumber(' 07070123071')">
 			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*회사명 : </span>
@@ -20,45 +20,38 @@
 				<span class="input-label psm_sang_01">*제목 : </span>
 				<input type="text" placeholder="제목" ng-model="csData.subject"><br>
 			</label>
-			<label class="item item-input" style="padding: 0">
+			<div class="item item-input-inset" style="padding: 0">
 				<span class="input-label psm_sang_01">*연락처 : </span>
-				<input type="tel" placeholder="-제외 입력하세요" ng-model="csData.tel"><br>
-			</label>
+				<input type="tel" placeholder="-제외 입력하세요" ng-model="csData.tel" size="18" ng-disabled='csData.cs_certify_ok'/> 
+			
+				<button style="font-size:8pt" ng-click="cs_certify_click_fn(csData.tel)" ng-if="csData.cs_certify_ok==false"> 인증번호발송</button>
+			</div>
+			<div class="item item-input-inset" style="padding: 0">
+				<span class="input-label psm_sang_01">*인증번호 : </span>
+				<input type="text" placeholder="인증번호입력" ng-model="csData.cs_certify_no" size="18" ng-disabled='csData.cs_certify_ok'/> 
+			
+				<button style="font-size:8pt" ng-if="csData.cs_certify_click == true && csData.cs_certify_ok == false" ng-click="cs_certify_Check_fn(csData.cs_certify_no)"> 인증완료</button>
+			</div>
 			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*업종 : </span>
 				<select ng-model="csData.sectors" class="psm_sang_02">
-					<option ng-if='csData.sectors == "no"' value='no' ng-selected="csData.sectors == no">필수사항입니다.</option>
+					<option ng-if='csData.sectors == ""' value='' ng-selected="csData.sectors == ''">필수사항입니다.</option>
 					<option ng-repeat="item in sectorslist" ng-value="item.value">{{item.value}}</option>
 				</select>
 			</label>
-			<label class="item item-input" style="padding: 0">
-				<span class="input-label psm_sang_01">*관심항목1 : </span>
-				<select ng-model="csData.interestTopic1" class="psm_sang_02">
-					<option ng-if='csData.interestTopic1 == "no"' value='no' ng-selected="csData.interestTopic1 == no">필수사항입니다.</option>
-					<option ng-repeat="item in interestTopiclist" ng-value="item.value">{{item.value}}</option>
-				</select>
-				<br>
+			<label class="item item-input" style="padding: 0" >
+				<span class="input-label psm_sang_01">*관심항목 : </span>
+				<button class="icon-right ion-chevron-right" ng-click="Interests_Modalopen()">관심항목선택(필수*)</button>
 			</label>
-			<label class="item item-input" style="padding: 0">
-				<span class="input-label psm_sang_01">*관심항목2 : </span>
-				<select ng-model="csData.interestTopic2" class="psm_sang_02">
-					<option value='no' ng-selected="csData.interestTopic2 == no">선택안함</option>
-					<option ng-repeat="item in interestTopiclist" ng-value="item.value">{{item.value}}</option>
-				</select>
-				<br>
+			<label class="item item-input" style="padding: 0" ng-if='csData.interestTopic != ""'>
+				<span class="input-label psm_sang_01" style="height: 100px"></span>
+				<textarea  class="psm_sang_03" ng-model="csData.interestTopic1" ng-disabled='true' style="height: 100px" ></textarea>
 			</label>
+			
 			<label class="item item-input" style="padding: 0">
-				<span class="input-label psm_sang_01">*관심항목3 : </span>
-				<select ng-model="csData.interestTopic3" class="psm_sang_02">
-					<option value='no' ng-selected="csData.interestTopic3 == no">선택안함</option>
-					<option ng-repeat="item in interestTopiclist" ng-value="item.value">{{item.value}}</option>
-				</select>
-				<br>
-			</label>
-			<label class="item item-input" style="padding: 0">
-				<span class="input-label psm_sang_01">*유입경로 : </span>
+				<span class="input-label psm_sang_01" >*유입경로 : </span>
 				<select ng-model="csData.inflowRoute" class="psm_sang_02">
-					<option ng-if='csData.inflowRoute == "no"' value='no' ng-selected="csData.inflowRoute == no">필수사항입니다.</option>
+					<option ng-if='csData.inflowRoute == ""' value='' ng-selected="csData.inflowRoute == ''">선택안함(필수x)</option>
 					<option ng-repeat="item in inflowRoutelist" ng-value="item.value">{{item.value}}</option>
 				</select>
 			</label>

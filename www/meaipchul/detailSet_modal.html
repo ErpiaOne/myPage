@@ -22,7 +22,6 @@
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index);slideChanged(index)" style="border-top: 1px solid #e0e0e0;">
 				<!-- 조회조건 -->
 				<ion-slide>
-					<!-- <ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()"> -->
 						<div class="item" style="border:0; height:100%; padding: 10px; background: #dce0e1; font-size: 0.9em; color: #444444;">
 
 							<div style="background: #fff; padding: 40px 10px 30px 10px;">
@@ -32,8 +31,8 @@
 									<div style="float: left; width:70%;">
 										<input type="text" ng-click='company_lately()' ng-model="company.username" placeholder="거래처명 입력" style="width: 100%; height: 30px; border:0; border-bottom: 1px solid #e0e0e0;" ng-change="company_auto()">
 
-										<li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code,x.G_GDamdang)">{{x.G_Name}}</li>
-										<li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code,x.G_GDamdang)">{{x.Search_Ger_Name}}</li>
+										<li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code,x.G_Damdang)">{{x.G_Name}}</li>
+										<li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code,x.G_Damdang)">{{x.Search_Ger_Name}}</li>
 									</div>
 									<div style="float: left; width:10%;">
 										<i class='ion-close-circled' style='margin-left:-40px; padding-right:10px; vertical-align:middle; font-size:1.8em; color:#000' ng-click='clearcompany()'></i>
@@ -49,22 +48,22 @@
 								</div>
 
 								<div  style="clear: both; width:100%; padding-top:20px;">
-									<div style="float: left; width:20%; padding-top:6px; text-align: left;">매장지정 </div>
+									<div style="float: left; width:20%; padding-top:6px; text-align: left;">매장지정{{detail.Place_Code}}</div>
 									<div style="float: left; width:80%;">
 										<select style="width:100%; height: 30px;" ng-model="detail.Place_Code">
-											<option value='0' ng-selected="detail.Place_Code == 0">선택안함</option>
-											<option value='000' ng-selected="x.Sale_Place_Code == 000">매장미지정</option>
+											<option value='0' ng-selected="detail.Place_Code == 0">매장미지정</option>
+											<!-- <option value='000' ng-selected="x.Sale_Place_Code == 000">매장미지정</option> -->
 											<option ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}">{{x.Sale_Place_Name}}</option>
 										</select>
 									</div>
 								</div>
 
 								<div  style="clear: both; width:100%; padding-top:20px;">
-									<div style="float: left; width:20%; padding-top:6px; text-align: left;">담당자 </div>
+									<div style="float: left; width:20%; padding-top:6px; text-align: left;">담당자</div>
 									<div style="float: left; width:80%;">
-										<select style="width:100%; height: 30px;">
-											<option value='0' ng-selected="company.dam == 0">선택안함</option>
-											<option value='company.dam' ng-selected="company.dam != 0" ng-if='company.dam != 0'>{{company.dam}}</option>
+										<select style="width:100%; height: 30px;" ng-model='company.damid' ng-change="clearcompany();dam(damdanglist)">
+											<option value='0' ng-selected="company.damid == 0">선택안함</option>
+											<option ng-repeat="x in damdanglist" value="{{x.user_id}}" ng-selected="{{company.damid}} == {{x.user_id}}">{{x.user_name}}</option>
 										</select>
 									</div>
 								</div>
@@ -74,21 +73,18 @@
 								</div>
 
 							</div>
-
 						</div>
-					<!-- </ion-content> -->
 				</ion-slide>
 
 				<!-- 최근검색 -->
 				<ion-slide>
-					<!-- <ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()"> -->
 						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
-							<div align="center" style="background: #dce0e1; height:100%; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
+							<div align="center" style="background: #dce0e1; height:auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
 
 								<div style="padding: 10px 0 55px 0;">
 
 									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;" ng-repeat="y in OptsetList" ng-click="OpsetScopeCarry($index)">
-										<tr>
+										<tr >
 											<td rowspan="2" style="vertical-align:middle; text-align: left; width: 40%; padding: 8px 15px;">
 												<span ng-if="y.sel_Ger_Name!=null&&y.sel_Ger_Name!=''">{{y.sel_Ger_Name}}</span>
 												<span ng-if="y.sel_Ger_Name==null||y.sel_Ger_Name==''">미지정</span>
@@ -111,31 +107,29 @@
 
 							</div>
 						</ion-scroll>
-					<!-- </ion-content> -->
 				</ion-slide>
 
 				<!-- 빠른검색 -->
 				<ion-slide disable-scroll="true">
-					<!-- <ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()"> -->
 						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
 
-							<div align="center" style="background: #dce0e1; height:100%; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
+							<div align="center" style="background: #dce0e1; height:auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
 
 								<div style="padding: 10px 0 55px 0;">
 
 									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;" ng-repeat="y in OptsetList">
-									<tr ng-click="OpsetScopeCarry($index)">
+									<tr>
 										<td rowspan="2" style="vertical-align:middle; text-align: left; width: 40%; padding: 8px 15px;">
-											<span ng-if="y.sel_Ger_Name!=null&&y.sel_Ger_Name!=''">{{y.sel_Ger_Name}}</span>
-											<span ng-if="y.sel_Ger_Name==null||y.sel_Ger_Name==''">미지정</span>
+											<span ng-if="y.sel_Ger_Name!=null&&y.sel_Ger_Name!=''"  ng-click="OpsetScopeCarry($index)">{{y.sel_Ger_Name}}</span>
+											<span ng-if="y.sel_Ger_Name==null||y.sel_Ger_Name==''"  ng-click="OpsetScopeCarry($index)">미지정</span>
 										</td>
-										<td colspan="3" style="vertical-align:middle; text-align: left; width: 60%; padding-top: 8px;">{{y.sel_Sdate}} ~ {{y.sel_Edate}}</td>
+										<td colspan="3" style="vertical-align:middle; text-align: left; width: 60%; padding-top: 8px;"  ng-click="OpsetScopeCarry($index)">{{y.sel_Sdate}} ~ {{y.sel_Edate}}</td>
 										<td rowspan="2"  style="vertical-align:middle; text-align: left; width: 10%; padding: 8px;"><i class='ion-close-circled' style="font-size: 2em;" ng-click='detailSet_Delete($index)'></i></td>
 									</tr>
 									<tr>
-										<td style="vertical-align:middle; text-align: left; width: 25%; padding:0 0 8px 0;" colspan="2" ng-click="OpsetScopeCarry($index)">
-											<span ng-if="y.sel_Place_Name!=null&&y.sel_Place_Name!=''">{{y.sel_Place_Name}}</span>
-											<span ng-if="y.sel_Place_Name==null||y.sel_Place_Name==''">미지정</span>
+										<td style="vertical-align:middle; text-align: left; width: 25%; padding:0 0 8px 0;" colspan="2">
+											<span ng-if="y.sel_Place_Name!=null&&y.sel_Place_Name!=''"  ng-click="OpsetScopeCarry($index)">{{y.sel_Place_Name}}</span>
+											<span ng-if="y.sel_Place_Name==null||y.sel_Place_Name==''"  ng-click="OpsetScopeCarry($index)">미지정</span>
 										</td>
 										<td style="vertical-align:middle; text-align: left; width: 25%; padding: 0 0 8px 0;">
 											<span ng-if="y.sel_Damdang!=null&&y.sel_Damdang!='0'" ng-click="OpsetScopeCarry($index)">{{y.sel_Damdang}}</span>
@@ -146,7 +140,6 @@
 								</div>
 							</div>
 						</ion-scroll>
-<!-- 					</ion-content> -->
 				</ion-slide>
 			</ion-slide-box>
 		</tab-slide-box>

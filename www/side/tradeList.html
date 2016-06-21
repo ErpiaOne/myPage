@@ -6,11 +6,11 @@
 	<ion-content class="padding" style="width:100%; background: #dce0e1">
 		<!-- <a ng-href="tel:070-7012-3071" class="button button-positive"> call me</a> -->
 		<link ng-href="css/lhkTradeDetail.css" rel="stylesheet">
-		<div class="psm_segum11">
-			<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+		<div>
+			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td class="psm_segum31"><i class="ion-android-refresh" ng-click="trade_refresh()"></i></td>
-					<td class="psm_segum33">최근조회시간 : {{nowtime}}</td>
+					<td><button class="button icon ion-android-refresh" ng-click="trade_refresh()"></button></td>
+					<td>최근조회시간 : {{nowtime}}</td>
 				</tr>
 			</table>
 		</div>
@@ -24,43 +24,59 @@
 				</tr>
 			</table>
 		</div>
-		<div ng-switch='haveList' style="padding-bottom: 20px;">
+		<div ng-switch='haveList' style="padding-bottom: 80px;">
 			<div ng-switch-when='Y'>
 				<ion-list>
 					<ion-item ng-repeat="item in items" style="padding:0px;">
 					<any ng-if="YNcheck =='not'">
 						<div ng-if="item.readYN == 'N'" ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
-							<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
-								<tr>
-									<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
-									<td class="psm_segum19">{{item.in_date}}</td>
-									<td class="psm_segum35" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
-									<td class="psm_segum35" ng-if="userType == 'ERPia'">
-									{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
-									</td>
-									<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? 'O' : 'X')}}</td>
-								</tr>
-								<tr>
-									<td colspan="2" class="psm_segum22">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
-								</tr>
-							</table>
+								<table on-swipe-up="search_more()" border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+									<tbody>
+										<tr>
+											<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
+											<td class="psm_segum19">{{item.in_date}}</td>
+											<td class="psm_segum35" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
+											<td class="psm_segum35" ng-if="userType == 'ERPia'">
+											{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
+											</td>
+											<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? 'O' : 'X')}}</td>
+										</tr>
+										<tr>
+											<td colspan="2" class="psm_segum22">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
+										</tr>
+									</tbody>
+										<tr ng-if="moreloading==0&&maxover==0&&$last">
+											<td colspan="4" align="center" style="padding: 5px 0; background: #ded1d1; font-size: 0.85em;"><b>더 보기를 하시려면 위로 쓸어올려주세요.</b></td>
+										</tr>
+										<tr ng-if="moreloading==1&&$last">
+											<td colspan="4" align="center"><ion-spinner icon="spiral" ></ion-spinner></td>
+										</tr>
+								</table>
 						</div>
 					</any>
 					<any ng-if="YNcheck =='all'">
 						<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
-							<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
-								<tr>
-									<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
-									<td class="psm_segum19">{{item.in_date}}</td>
-									<td class="psm_segum35" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
-									<td class="psm_segum35" ng-if="userType == 'ERPia'">
-									{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
-									</td>
-									<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? 'O' : 'X')}}</td>
-								</tr>
-								<tr>
-									<td colspan="2" class="psm_segum22">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
-								</tr>
+							<table on-swipe-up="search_more()" border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+								<tbody>
+									<tr>
+										<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
+										<td class="psm_segum19">{{item.in_date}}</td>
+										<td class="psm_segum35" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
+										<td class="psm_segum35" ng-if="userType == 'ERPia'">
+										{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
+										</td>
+										<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? 'O' : 'X')}}</td>
+									</tr>
+									<tr>
+										<td colspan="2" class="psm_segum22">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
+									</tr>
+								</tbody>
+									<tr ng-if="moreloading==0&&maxover==0&&$last">
+										<td colspan="4" align="center" style="padding: 5px 0; background: #ded1d1; font-size: 0.85em;"><b>더 보기를 하시려면 위로 쓸어올려주세요.</b></td>
+									</tr>
+									<tr ng-if="moreloading==1&&$last">
+										<td colspan="4" align="center"><ion-spinner icon="spiral" >끝</ion-spinner></td>
+									</tr>
 							</table>
 						</div>
 					</any>
