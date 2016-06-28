@@ -17,10 +17,10 @@ angular.module('starter.services', [])
 	};
 })
 
-/* ???관련 - 김형석[2015-12] */
+/* 플러그인(원시그널 푸쉬) 관련 설정 - 김형석[2015-12] */
 .factory('app', function($rootScope, $state, $ionicPopup, $cordovaInAppBrowser, $ionicSlideBoxDelegate){
 	return{
-		didReceiveRemoteNotificationCallBack : function(jsonData) {		// ???
+		didReceiveRemoteNotificationCallBack : function(jsonData) {		// 푸쉬알림을 받았을 때 발생하는 콜백 이벤트
 			var browseroptions = {
 				location: 'yes',
 				clearcache: 'yes',
@@ -84,19 +84,19 @@ angular.module('starter.services', [])
 	}
 })
 
-/* ???관련 - 김형석[2015-12] */
+/* 플러그인 관련 설정(로컬스토리지) - 김형석[2015-12] */
 .factory('$localstorage', ['$window', function($window) {
 	return {
-		set: function(key, value) {			// ???
+		set: function(key, value) {			// 로컬스토리지에 저장시 $localstorage.set(키, 저장할 내용 값)로 쓴다. 
 			$window.localStorage[key] = value;
 		},
-		get: function(key, defaultValue) {		// ???
+		get: function(key, defaultValue) {		// 로컬스토리지에서 불러올 때  $localstorage.get(키, 기본값)로 쓴다. 
 			return $window.localStorage[key] || defaultValue;
 		},
-		setObject: function(key, value) {		// ???
+		setObject: function(key, value) {		// 로컬스토리지에 배열처럼 쓰이는 오브젝트 저장시 $localstorage.setObject(키, 저장할 내용 값)로 쓴다. 
 			$window.localStorage[key] = JSON.stringify(value);
 		},
-		getObject: function(key) {			// ???
+		getObject: function(key) {			// 로컬스토리지에서 배열처럼 쓰이는 오브젝트를 불러올 때  $localstorage.getObject(키, 기본값)로 쓴다. 
 			return JSON.parse($window.localStorage[key] || '{}');
 		}
 	}
@@ -131,9 +131,10 @@ angular.module('starter.services', [])
 				return $q.reject(response);
 			});
 
-		}else if(kind == 'ComInfo_Erpia'){		// ???
+		}else if(kind == 'ComInfo_Erpia'){		// 이알피아 사용자 회사계정정보  불러오기
 			var url = ERPiaAPI.url + '/Json_Proc_Mobile_Erpia.asp';
 			var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code;
+			console.log(url, data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response;
@@ -144,7 +145,7 @@ angular.module('starter.services', [])
 				return $q.reject(response);
 			});
 
-		}else if(kind == 'ERPia_Ger_Login'){	// ???
+		}else if(kind == 'ERPia_Ger_Login'){	// 거래처모드(거래명세서모드) 로그인
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
 			var data = 'kind=Login_Normal&loginType=N&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			return $http.get(url + '?' + data).then(function(response){
@@ -172,21 +173,21 @@ angular.module('starter.services', [])
 	}
 })
 
-/* 필요없을껄 */
-// .factory('ERPiaInfoService', function($http, ERPiaAPI){
-// 	var ERPiaInfo = function(kind, Admin_Code, sDate, eDate){		// ???
-// 		var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
-// 		var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&sDate=' + sDate + '&eDate=' + eDate;
-// 		return $http.get(url + '?' + data);
-// 	}
-// 	return{
-// 		ERPiaInfo: ERPiaInfo
-// 	}
-// })
+/* 이알피아계정정보 관련Service - 김형석[2015-12] */
+.factory('ERPiaInfoService', function($http, ERPiaAPI){
+	var ERPiaInfo = function(kind, Admin_Code, sDate, eDate){		// 이알피아 계정정보 불러오기 
+		var url = ERPiaAPI.url + '/Json_Proc_MyPage_Scm.asp';
+		var data = 'kind=' + kind + '&Admin_Code=' + Admin_Code + '&sDate=' + sDate + '&eDate=' + eDate;
+		return $http.get(url + '?' + data);
+	}
+	return{
+		ERPiaInfo: ERPiaInfo
+	}
+})
 
-/* ???관련Service - 김형석[2015-12] */
+/*로그인 할 때  SCM계정정보  관련Service - 김형석[2015-12]*/
 .factory('scmInfoService', function($http, ERPiaAPI){
-	var scmInfo = function(kind, BaljuMode, Admin_Code, GerCode, FDate, TDate){			// ???
+	var scmInfo = function(kind, BaljuMode, Admin_Code, GerCode, FDate, TDate){			//SCM계정정보 불러오기 
 		var url = ERPiaAPI.url + '/JSon_Proc_Multi_Lhk.asp';
 		var data = 'Value_Kind=list&kind=' + kind + '&BaljuMode=' + BaljuMode + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode;
 		data += '&FDate=' + FDate + '&TDate=' + TDate;
@@ -233,7 +234,7 @@ angular.module('starter.services', [])
 .factory('CertifyService', function($http, $cordovaToast, $rootScope, ERPiaAPI){
 	var url = ERPiaAPI.url + '/Json_Proc_Mobile.asp';
 
-	/* ??? - 김형석 */
+	/* 인증코드요청시  - 김형석 */
 	var certify = function(Admin_Code, loginType, ID, G_Code, sms_id, sms_pwd, sendNum, rec_num, UUID, phoneno, DeviceInfo){
 		$rootScope.rndNum = Math.floor(Math.random() * 1000000) + 1;
 
@@ -252,7 +253,7 @@ angular.module('starter.services', [])
 		return $http.get(url + '?' + data).success(function(response){
 			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증코드를 전송했습니다.', 'long', 'center');
 
-			if (response.list[0].Result == '1'){
+			if (response.list[0].Result == '1'){ //사용자 정보 및 인증코드 디비에 저장 후 
 				var url = ERPiaAPI.url + '/SCP.asp';
 				var data = 'sms_id=' + sms_id + '&sms_pwd=' + sms_pwd + '&send_num=' + sendNum + '&rec_num=' + rec_num;
 				data += '&rndNum=' + $rootScope.rndNum + '&SendType=mobile_Certification';
@@ -447,10 +448,10 @@ angular.module('starter.services', [])
 	};
 })
 
-/* ???관련Service - 김형석 */
+/* 환경설정-공지사항 관련Service - 김형석 */
 .factory('NoticeService', function($http, $q, ERPiaAPI){
 	return{
-		getList: function(){		// ???
+		getList: function(){		// 공지사항 리스트불러오기
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 			var data = 'kind=myPage_Notice';
 			return $http.get(url + '?' + data).then(function(response){
@@ -584,11 +585,11 @@ angular.module('starter.services', [])
 	}
 })
 
-/* 알람관련Service - 김형석[2016-03] */
+/* 환경설정-푸쉬알림 설정 Service - 김형석[2016-03] */
 .factory('alarmService', function($http, $q, ERPiaAPI){
 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 	return{
-		select : function(kind, Admin_Code, loginType, G_Id, mac){		// ???
+		select : function(kind, Admin_Code, loginType, G_Id, mac){		// 푸쉬알림설정값 불러오기
 			var data = 'Value_Kind=list&Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id +'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -600,7 +601,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 
-		}, save : function(kind, Admin_Code, loginType, G_Id, alarm, mac){	// ???
+		}, save : function(kind, Admin_Code, loginType, G_Id, alarm, mac){	// 푸쉬알림 설정값 저장하기
 			var data = 'Value_Kind=list&Kind=' + kind + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + G_Id + '&alarm=' + alarm + '&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -615,9 +616,9 @@ angular.module('starter.services', [])
 	}
 })
 
-/* PUSH관련 Service - 김형석[2016-04] */
+/* 푸쉬유저체크 Service - 김형석[2016-04] */
 .factory('pushInfoService', function($http, ERPiaAPI){
-	var pushInfo = function(Admin_Code, UserId, kind, Mode, UserKey, Token, ChkAdmin, DeviceOS, sDate, eDate){ 			// ???
+	var pushInfo = function(Admin_Code, UserId, kind, Mode, UserKey, Token, ChkAdmin, DeviceOS, sDate, eDate){ 			// 기존에 저장되어있는 푸쉬유저정보 있나  불러오기
 		var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 		var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&kind=' + kind + '&Mode=' + Mode + '&UserKey=' + UserKey + '&Token=' + Token 
 		data += '&ChkAdmin=' + ChkAdmin + '&DeviceOS=' + DeviceOS + '&sDate=' + sDate + '&eDate=' + eDate;
@@ -631,7 +632,7 @@ angular.module('starter.services', [])
 
 /* CS관련 Service - 김형석[2016-04] */
 .factory('csInfoService', function($http, ERPiaAPI){
-	var csInfo = function(Admin_Code, UserId, kind, chkAdmin, comName, writer, subject, tel, sectors, interestTopic, inflowRoute, contents){		// ???
+	var csInfo = function(Admin_Code, UserId, kind, chkAdmin, comName, writer, subject, tel, sectors, interestTopic, inflowRoute, contents){		// 상담문의하기 정보 저장하기 
 		console.log('csInfoService AND csInfo');
 		var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 		var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&kind=' + kind + '&chkAdmin=' + chkAdmin + '&comName=' + comName 
@@ -640,12 +641,11 @@ angular.module('starter.services', [])
 		return $http.get(url + '?' + data);
 	}
 		
-	var cs_certify = function(rndNum,phoneno){			// ???
+	var cs_certify = function(rndNum,phoneno){			// 상담문의 모바일 인증번호 보내기 
 		console.log('csInfoService AND cs_certify');
 		var url = ERPiaAPI.url + '/SCP.asp';
 		var data = 'sms_id=erpia&sms_pwd=a12345&send_num=070-7012-3071&rec_num=' + phoneno;
 		data += '&rndNum=' + rndNum + '&SendType=mobile_Certification';
-		// http://
 		return $http.get(url + '?' + data);
 	}
 	return{
@@ -657,7 +657,7 @@ angular.module('starter.services', [])
 /* 로그인단말기 정보관련 Service - 김형석[2016-02] */
 .factory('uuidService', function($http, $q, $rootScope, ERPiaAPI, $cordovaToast){
 	return{
-		get_Log : function(uuid){			// ???
+		get_Log : function(uuid){			// 로그인 로그정보 불러오기 (나중에 리스트 뿌릴 때 사용할 예정 )
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
 			var data = 'Kind=get_Log&Mac=' + uuid;
 			return $http.get(url + '?' + data).then(function(response){
@@ -670,7 +670,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 
-		}, save_Log : function(uuid, admin_code, loginType, id, phoneno, DeviceInfo){			// ???
+		}, save_Log : function(uuid, admin_code, loginType, id, phoneno, DeviceInfo){			// 로그인 로그정보저장
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
 			var data = 'Kind=save_Log&Mac=' + uuid + '&admin_code=' + admin_code + '&loginType=' + loginType + '&id=' + id;
 			data += '&model=' + DeviceInfo.model + '&platform=' + DeviceInfo.platform + '&originalhp=' + phoneno;
@@ -690,7 +690,7 @@ angular.module('starter.services', [])
 /* 게시판관련Service - 김형석[2016-03] */
 .factory('BoardService', function($http, $q, ERPiaAPI, $cordovaToast){
 	return{
-		BoardInfo : function(Admin_Code, UserId, kind, pageCnt){						// ???
+		BoardInfo : function(Admin_Code, UserId, kind, pageCnt){						// 게시판 정보 불러오기(기본)
 			var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
 			var data = 'kind='+kind+'&Admin_Code='+Admin_Code+'&pageCnt='+pageCnt+'&pageRow=5';
 			return $http.get(url + '?' + data).then(function(response){
@@ -714,7 +714,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 
-		}, Board_sear : function(Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt){	// ???
+		}, Board_sear : function(Admin_Code, SearchKind, SearchMode, SearchValue, pageCnt){	// 게시판 정보 불러오기(검색어로  검색 시)
 			var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
 			var data = 'Admin_Code='+Admin_Code+'&kind=ERPia_Mypage_Board_Request_Search&Mode=search&SearchKind=' + SearchKind+ '&SearchMode='+SearchMode+'&SearchValue='+ escape(SearchValue)+'&pageCnt='+pageCnt+'&pageRow=5'
 			return $http.get(url + '?' + data).then(function(response){
@@ -740,7 +740,7 @@ angular.module('starter.services', [])
 					return $q.reject(response.data);
 			})
 
-		}, QnAinsert : function(Admin_Code, UserId, Subject, Content, pwd){				// ???
+		}, QnAinsert : function(Admin_Code, UserId, Subject, Content, pwd){				// 업체별 문의사항 저장
 			var url = ERPiaAPI.url+'/JSon_Proc_MyPage_Scm_Manage.asp';
 			var data = 'Admin_Code='+Admin_Code+'&UserId=' + UserId + '&Kind=ERPia_Mypage_Board_Request_insert&Mode=insert&bSubject='+ escape(Subject)+'&bContent='+escape(Content)+'&bPwd='+pwd;
 			return $http.get(url + '?' + data).then(function(response){
@@ -765,7 +765,7 @@ angular.module('starter.services', [])
 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 	var PushList = [];
 	return{
-		select : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, mac){					// ???
+		select : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, mac){					// 유저가 받은 푸쉬리스트 출력
 			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId +'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -778,7 +778,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 
-		}, save : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, alarm, mac){			// ???
+		}, save : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, alarm, mac){			// 유저에게 보낸 푸쉬 저장(-이제는 웹에서 쓰일 것임 )
 			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId + '&alarm=' + alarm +'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -790,7 +790,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 
-		}, view : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, idx, mac){				// ???
+		}, view : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, idx, mac){				// 유저에게 보낸 푸쉬  상세내용 보기
 			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId + '&idx=' + idx +'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -802,7 +802,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 
-		}, delete : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, idx, mac){			// ???
+		}, delete : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, idx, mac){			// 유저에게 보낸 푸쉬  삭제
 			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId + '&idx=' + idx +'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -814,7 +814,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 
-		},getData : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, Seq, mac) {			// ???
+		},getData : function(Kind, Mode, Admin_Code, ChkAdmin, UserId, Seq, mac) {			// 푸쉬리스트 출력
 			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&Admin_Code=' + Admin_Code + '&ChkAdmin=' + ChkAdmin + '&UserId=' + UserId +'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -900,10 +900,10 @@ angular.module('starter.services', [])
 	ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_jem&value_kind=meaip_jem&admin_code=" + admin_code + "&swm_gu=" + gu
 })
 
-/* ???관련 - 김형석[2016-03] */
+/* 없어도 될듯????*/
 .factory('publicFunction', function($ionicHistory){
 	return{
-		goHome: function(userType){		// ???
+		goHome: function(userType){		// 홈으로
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});
@@ -1022,23 +1022,29 @@ angular.module('starter.services', [])
 							basic_Dn_Meaip : response.data.list[0].basic_Dn_Meaip,
 							basic_Subul_Sale : response.data.list[0].basic_Subul_Sale,
 							basic_Subul_Meaip : response.data.list[0].basic_Subul_Meaip,
-							basic_Subul_Meaip_Before : response.data.list[0].basic_Subul_Meaip_Before
+							basic_Subul_Meaip_Before : response.data.list[0].basic_Subul_Meaip_Before,
+							basic_Subul_Sale_Before : response.data.list[0].basic_Subul_Sale_Before
 						};
 						return data;
 					}else{ 				//조회된 환경설정이 없을경우.
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되어있는 초기값이 없습니다.', 'short', 'center');
-						else console.log('저장되어있는 초기값이 없습니다.');
-
-						var data = {
-							state : 1,
-							basic_Place_Code : '000',//기본매장코드('000'-매장미지정)
-							basic_Ch_Code : 101,//기본창고코드
-							basic_Dn_Sale : 0, //기본매출(거래처등록지정)
-							basic_Dn_Meaip : 0, //기본매입(거래처등록지정)
-							basic_Subul_Sale : 1, //기본매출등록수불
-							basic_Subul_Meaip : 1, //기본매입등록수불
-							basic_Subul_Meaip_Before : 'N'
-						};
+						// if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되어있는 초기값이 없습니다.', 'short', 'center');
+						// else console.log('저장되어있는 초기값이 없습니다.');
+						var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+						var datas = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=insert&basic_Ch_Code=101&basic_Place_Code=000&basic_Dn_Meaip=0&basic_Dn_Sale=0&basic_Subul_Sale=1&basic_Subul_Sale_Before=N&basic_Subul_Meaip=1&basic_Subul_Meaip_Before=N';
+						return $http.get(url + '?' + datas).then(function(response){
+							var data = {
+								state : 0,
+								basic_Place_Code : '000',//기본매장코드('000'-매장미지정)
+								basic_Ch_Code : '101',//기본창고코드
+								basic_Dn_Sale : 0, //기본매출(거래처등록지정)
+								basic_Dn_Meaip : 0, //기본매입(거래처등록지정)
+								basic_Subul_Sale : 1, //기본매출등록수불
+								basic_Subul_Meaip : 1, //기본매입등록수불
+								basic_Subul_Meaip_Before : 'N',
+								basic_Subul_Sale_Before : 'N'
+							};
+							return data;
+						})
 						return data;
 					}
 				}else{
@@ -1117,35 +1123,60 @@ angular.module('starter.services', [])
 	return{
 		chit_lookup: function(admin_code, userid, sedata, gername, pageCnt){		// 전표조회
 			console.log("MLookupService and chit_lookup");
-			if(pageCnt == 1) var row = 6;
-			else var row = 5;
+			// if(pageCnt == 1) var row = 6;
+			// else var row = 5;
 
 			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master';
 			else var kind = 'ERPia_Sale_Select_Master';
 
-			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-			var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_Ger_Date&GerName='+ escape(gername) +'&pageCnt='+ pageCnt + '&pageRow='+ row +'&sDate='+ sedata.sDate +'&eDate='+ sedata.eDate;
+			if(pageCnt == -1){
+				var gubun = 'Y'; // 총 매출&매입액 조회
+			}else {
+				var gubun = 'N'; // 전표조회
+			}
 
-			return $http.get(url + '?' + data).then(function(response){
-				if(typeof response == 'object'){
-					if(response.data == '<!--Parameter Check-->'){
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-						else alert('조회된 데이터가 없습니다.');
-					}else{
-						for(var i=0; i<response.data.list.length; i++){
-							if(response.data.list[i].G_Name.length>=10||response.data.list[i].GerName.length>=7){
-								response.data.list[i].G_Name=response.data.list[i].G_Name.substr(0,14)+'...';
-								response.data.list[i].GerName=response.data.list[i].GerName.substr(0,10)+'...';
+			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+			var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_Ger_Date&GerName='+ escape(gername) +'&pageCnt='+ pageCnt + '&pageRow='+ 5 +'&sDate='+ sedata.sDate +'&eDate='+ sedata.eDate + '&rslt_Amt=' + gubun ;
+			console.log('???->', url, '?', data);
+			if(gubun == 'N'){
+				return $http.get(url + '?' + data).then(function(response){
+					if(typeof response == 'object'){
+						if(response.data == '<!--Parameter Check-->'){
+							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+							else alert('조회된 데이터가 없습니다.');
+						}else{
+							for(var i=0; i<response.data.list.length; i++){
+								if(response.data.list[i].G_Name.length>=10||response.data.list[i].GerName.length>=7){
+									response.data.list[i].G_Name=response.data.list[i].G_Name.substr(0,14)+'...';
+									response.data.list[i].GerName=response.data.list[i].GerName.substr(0,10)+'...';
+								}
 							}
-						}
-					}	
-					return response.data;
-				}else{
+						}	
+						return response.data;
+					}else{
+						return $q.reject(response.data);
+					}
+				}, function(response){
 					return $q.reject(response.data);
-				}
-			}, function(response){
-				return $q.reject(response.data);
-			})
+				})
+			}else{
+				return $http.get(url + '?' + data).then(function(response){
+					if(typeof response == 'object'){
+						if(response.data == '<!--Parameter Check-->'){
+							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+							else alert('조회된 데이터가 없습니다.');
+						}else{
+							return response.data;
+						}	
+						return response.data;
+					}else{
+						return $q.reject(response.data);
+					}
+				}, function(response){
+					return $q.reject(response.data);
+				})
+			}
+			
 
 		}, eMoon: function(admin_code, userid, sedata, gercode){			// 이월데이터 조회
 				console.log("MLookupService and eMoon");
@@ -1266,35 +1297,54 @@ angular.module('starter.services', [])
 					return $q.reject(response.data);
 				})
 
-		}, detailSet: function(admin_code, userid, date, ger, mejang, pageCnt, todate){			// 상세조회셋 조회
+		}, detailSet: function(admin_code, userid, date, ger, mejang, pageCnt, todate, gubun){			// 상세조회셋 조회
 				console.log("MLookupService and detailSet", ger);
 
-				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid);
-				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid);
+				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid) + '&rslt_Amt=' + gubun;
+				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid) + '&rslt_Amt=' + gubun;
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';				
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind=' + kind;
-
-				return $http.get(url + '?' + data).then(function(response){
-					if(typeof response == 'object'){
-						if(response.data == '<!--Parameter Check-->'){
-							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
-							else alert('조회된 데이터가 없습니다.');
-						}else{
-							for(var i=0; i<response.data.list.length; i++){
-								if(response.data.list[i].G_Name.length>=10||response.data.list[i].GerName.length>=7){
-									response.data.list[i].G_Name=response.data.list[i].G_Name.substr(0,9)+'...';
-									response.data.list[i].GerName=response.data.list[i].GerName.substr(0,9)+'...';
+				console.log('디테일 조회셋 유알엘 =>', url,'?', data);
+				if(gubun == 'N'){
+					return $http.get(url + '?' + data).then(function(response){
+						if(typeof response == 'object'){
+							if(response.data == '<!--Parameter Check-->'){
+								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+								else alert('조회된 데이터가 없습니다.');
+							}else{
+								for(var i=0; i<response.data.list.length; i++){
+									if(response.data.list[i].G_Name.length>=10||response.data.list[i].GerName.length>=7){
+										response.data.list[i].G_Name=response.data.list[i].G_Name.substr(0,9)+'...';
+										response.data.list[i].GerName=response.data.list[i].GerName.substr(0,9)+'...';
+									}
 								}
-							}
-						}	
-						return response.data;
-					}else{
+							}	
+							return response.data;
+						}else{
+							return $q.reject(response.data);
+						}
+					}, function(response){
 						return $q.reject(response.data);
-					}
-				}, function(response){
-					return $q.reject(response.data);
-				})
+					})
+				}else{
+					return $http.get(url + '?' + data).then(function(response){
+						if(typeof response == 'object'){
+							if(response.data == '<!--Parameter Check-->'){
+								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
+								else alert('조회된 데이터가 없습니다.');
+							}else{
+								return response.data;
+							}	
+							return response.data;
+						}else{
+							return $q.reject(response.data);
+						}
+					}, function(response){
+						return $q.reject(response.data);
+					})
+				}
+				
 
 		}, lqdetail_set: function(admin_code, userid, date, ger, mejang, gubun, todate){			// 최근검색 & 빠른검색 등록
 			console.log("MLookupService and latelydetail_set");
@@ -1644,7 +1694,7 @@ angular.module('starter.services', [])
 			/*매입등록*/
 			if($rootScope.distinction == 'meaip'){
 				var kind = 'ERPia_Meaip_Insert_Goods';
-				var m_data = '<root><MeaipM><Admin_Code>'+ admin_code + '</Admin_Code><Meaip_Date>'+ date.todate +'</Meaip_Date><GuMeaCom_Code>'+ datas.GerCode +'</GuMeaCom_Code><Meaip_Amt>'+ datas.totalsumprices +'</Meaip_Amt><Sale_Place>'+ setup.basic_Place_Code +'</Sale_Place><Remk><![CDATA['+ escape(datas.remk) +']]></Remk></MeaipM><MeaipT>';
+				var m_data = '<root><MeaipM><Admin_Code>'+ admin_code + '</Admin_Code><Meaip_Date>'+ date.todate +'</Meaip_Date><GuMeaCom_Code>'+ datas.GerCode +'</GuMeaCom_Code><Meaip_Amt>'+ datas.totalsumprices +'</Meaip_Amt><Sale_Place>'+ setup.basic_Place_Code +'</Sale_Place><Remk><![CDATA['+ escape('[모바일]')+escape(datas.remk) +']]></Remk></MeaipM><MeaipT>';
 				var goods_xml = '';
 				var middel = '</MeaipT>';
 				// 상품
@@ -1671,7 +1721,7 @@ angular.module('starter.services', [])
 				else i_Cancel='B';
 
 				var kind = 'ERPia_Sale_Insert_Goods';
-				var m_data = '<root><MeaChulM><Admin_Code>'+ admin_code + '</Admin_Code><MeaChul_date>'+ date.todate +'</MeaChul_date><Comp_no>'+ datas.GerCode +'</Comp_no><MeaChul_Amt>'+ datas.totalsumprices +'</MeaChul_Amt><i_Cancel>'+i_Cancel+'</i_Cancel><Remk><![CDATA['+ escape(datas.remk) +']]></Remk></MeaChulM><MeaChulT>';
+				var m_data = '<root><MeaChulM><Admin_Code>'+ admin_code + '</Admin_Code><MeaChul_date>'+ date.todate +'</MeaChul_date><Comp_no>'+ datas.GerCode +'</Comp_no><MeaChul_Amt>'+ datas.totalsumprices +'</MeaChul_Amt><i_Cancel>'+i_Cancel+'</i_Cancel><Remk><![CDATA['+ escape('[모바일]') + escape(datas.remk) +']]></Remk></MeaChulM><MeaChulT>';
 				var goods_xml = '';
 				var middel = '</MeaChulT>';
 				// 상품

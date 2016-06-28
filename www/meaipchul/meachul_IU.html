@@ -91,7 +91,9 @@
 						<td style="width: 90px"><i class="ion-ios-barcode" style="font-size: 2.5em; padding-top: 15px; padding-left:10px; vertical-align:middle; text-align: right;" ng-click="scanBarcode()"></i></td>
 					</tr>
 					<tr>
-						<td><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; padding: 15px; border: 1px solid #e0e0e0;"></td>
+						<td>
+							<input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; padding: 15px; border: 1px solid #e0e0e0;">
+						</td>
 						<td>
 							<i class='ion-close-circled' style='text-align: left; margin-top:8px; padding-right:16px; padding-left:10px; vertical-align:middle; font-size: 2em;'  ng-if="sbu == false"ng-click='clear_goods()'></i>
 							<i class="ion-search" style="text-align: left; margin-top:8px; vertical-align:middle; font-size: 2.2em;" ng-click="goods_searchM(1)"></i>

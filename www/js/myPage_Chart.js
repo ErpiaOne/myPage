@@ -1515,10 +1515,10 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("JeGo_TurnOver", {
 				"type": "serial",
-			    	"startDuration": 0, //차트 애니메이션
-				"theme": "dark",
+				 "theme": "dark",
 				"categoryField": "name",
-				"rotate": true,	
+				"rotate": true,
+				"startDuration": 1,
 				
 				"categoryAxis": {
 					"gridPosition": "start",
@@ -1577,6 +1577,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"enabled": true
 				 }
 			});
+
 			break;
 
 		case "beasongb" :			//출고현황

@@ -7,21 +7,21 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	, 'starter.services'])
 
 /* 웹사용 */
- // .constant('ERPiaAPI',{
- // 	  url:'http://localhost:8100/include'
- // 	, url2:'http://localhost:8100'
- // 	, imgUrl:'http://localhost:8100/erpia_update/img'
- // 	, gurl:'http://168.126.146.37/20132354'
- // 	, toast:'N'
- // })
+ .constant('ERPiaAPI',{
+ 	  url:'http://localhost:8100/include'
+ 	, url2:'http://localhost:8100'
+ 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ 	, gurl:'http://168.126.146.37/20132354'
+ 	, toast:'N'
+ })
 
 /* 실제 사용 */
-.constant('ERPiaAPI',{
-	url:'http://www.erpia.net/include',
-	url2: 'http://www.erpia.net',
-	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-	toast:'Y'
-})
+// .constant('ERPiaAPI',{
+// 	url:'http://www.erpia.net/include',
+// 	url2: 'http://www.erpia.net',
+// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+// 	toast:'Y'
+// })
 
 /* 처음 실행 Ctrl - 김형석[2015-11]*/
 .run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast, $ionicSlideBoxDelegate) {
@@ -74,7 +74,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	}
 
-	/* ??? - 김형석[2016-04] */
+	/* 네트워크 상태 체크 - 김형석[2016-04] */
 	$rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
 		if ($location.url()=='/app/login') { 
 			$ionicPopup.show({
@@ -321,7 +321,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	$rootScope.rndNum = 0;	
 })
 
-/* ??? - 김형석[2016-04] */
+/* 아마 예전 아이오닉 푸쉬 사용했을 때 APP_ID 설정하려고 쓴것일듯  - 김형석[2016-04] */
 .config(['$ionicAppProvider', function($ionicAppProvider) {
 	$ionicAppProvider.identify({
 	      	app_id: 'b94db7cd', //app id
@@ -363,7 +363,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
-	/* ??? 화면 - 김형석 */
+	/* 이알피아 메인화면(지금은 안씀) - 김형석 */
 	.state('app.erpia_main', {
 		url : '/main',
 		views : {
