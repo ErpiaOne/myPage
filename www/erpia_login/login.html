@@ -1,58 +1,78 @@
 <ion-view class="psm_login_body" hide-nav-bar="true">
 <ion-nav-bar>
 </ion-nav-bar>
-	<ion-content style="background: #d9dfdf">
+	<ion-content style="background: #d7d3db">
 		<div style="padding-bottom: 80px">
 			<div class="ss">
-				<p style="float:right">Ver. 베타 </p>
+				<p style="text-align:right; padding: 10px 10px 0 0;">Ver. 베타 </p>
 				<div class="psm_login_logo">
 				<img src="./img/logo.png" class="logo-image" ng-click='selectType("login")'>
 				</div>
 			</div>
 			<div>
-				<div class="row" style="margin:0px 10% 0px 10%; background-color;">
-					<button class="button button-light" ng-click='selectType("ERPia")' ng-if="userType!='ERPia'" style="font-size:8pt; height: 30px;">ERPia</button>
-					<button class="button button-royal" ng-click='selectType("ERPia")' ng-if="userType&&userType=='ERPia'" style="font-size:8pt; height: 30px;">ERPia</button>
+				<div class="row" style="margin:0px 30px 0px 24px; vertical-align: middle; padding-bottom: 0;">
 
-					<button class="button button-light" ng-click='selectType("SCM")' ng-if="userType!='SCM'" style="font-size:8pt; height: 30px;">SCM</button>
-					<button class="button button-royal" ng-click='selectType("SCM")' ng-if="userType&&userType=='SCM'" style="font-size:8pt; height: 30px;">SCM</button>
+					<button class="button button-light2" ng-click='selectType("ERPia")' ng-if="userType!='ERPia'"
+						style="font-size:9pt; height: 30px; border-bottom: 0;">ERPia</button>
+					<button class="button button-psm04" ng-click='selectType("ERPia")' ng-if="userType&&userType=='ERPia'"
+						style="font-size:9pt; height: 30px; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px; border: 1px solid #d7d3db; border-bottom: 0;">ERPia</button>
 
-					<button class="button button-light"  ng-click='selectType("Normal")' ng-if="userType!='Normal'"style="font-size:8pt; height: 30px;">거래명세서</button>
-					<button class="button button-royal" ng-click='selectType("Normal")' ng-if="userType&&userType=='Normal'" style="font-size:8pt; height: 30px;">거래명세서</button>
+					<button class="button button-light2" ng-click='selectType("SCM")' ng-if="userType!='SCM'"
+						style="font-size:9pt; height: 30px; border-bottom: 0;">SCM</button>
+					<button class="button button-psm04" ng-click='selectType("SCM")' ng-if="userType&&userType=='SCM'"
+						style="font-size:9pt; height: 30px; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px; border: 1px solid #d7d3db; border-bottom: 0;">SCM</button>
 
-					<button class="button button-light"  ng-click='selectType("Guest")' style="font-size:8pt; height: 30px;">체험하기</button>
-				  	<i class="ion-ios-help" style="font-size:30pt; margin-left:2%; margin-right:10%;" ng-click="loginhelper()"></i>
+					<button class="button button-light2"  ng-click='selectType("Normal")' ng-if="userType!='Normal'"
+						style="font-size:9pt; height: 30px; border-bottom: 0;">거래명세서</button>
+					<button class="button button-psm04" ng-click='selectType("Normal")' ng-if="userType&&userType=='Normal'"
+						style="font-size:9pt; height: 30px; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px; border: 1px solid #d7d3db; border-bottom: 0;">거래명세서</button>
+
+					<button class="button button-light2"  ng-click='selectType("Guest")' style="font-size:9pt; height: 30px; border-bottom: 0;">체험하기</button>
+
+				  	<i class="ion-ios-help" style="font-size:30pt; margin-left:7px; color:#5b5b5b; margin-top:5px; " ng-click="loginhelper()"></i>
+
 				</div>
-					
-				<br>
+
+
 				<div name='selectUserType'>
 					<form ng-submit="doLogin()">
-						<div class="list list-inset" style="margin:0px 10% 0px 10%; background-color:transparent">
-							<label class="item item-input" style="padding: 0;"><span class="psm_login1 ion-ios-paper-outline"></span>
-								<input style="font-size:100%; padding-left: 15px; text-transform: lowercase" type="text" ng-model="loginData.Admin_Code" placeholder="업체코드">
-								<input type="checkbox" id="loginckbox.AdminCodeCK" class="checkbox-style" ng-model='loginckbox.AdminCodeCK'/>
-								<label for="loginckbox.AdminCodeCK" style="font-size:100%;">저장</label>
-							</label>
-							<label class="item item-input" style="padding: 0;"><span class="psm_login2 ion-ios-grid-view-outline"></span>
-								<input style="font-size:100%; padding-left: 15px; text-transform: lowercase" type="text" ng-model="loginData.UserId" placeholder="아이디">
-								<input type="checkbox" id="loginckbox.UserIdCK" class="checkbox-style" ng-model='loginckbox.UserIdCK' />
-								<label for="loginckbox.UserIdCK" style="font-size:100%;">저장</label>
-							</label>
-							<label class="item item-input" style="padding: 0;"><span class="psm_login3 ion-ios-locked-outline"></span>
-								<input style="font-size:100%; padding-left: 15px;" type="password" ng-model="loginData.Pwd" placeholder="비밀번호">
-								<input type="checkbox" id="loginckbox.PwdCK" class="checkbox-style" ng-model='loginckbox.PwdCK'/>
-								<label for="loginckbox.PwdCK" style="font-size:100%;">저장</label>
-							</label>
-							<div class="item item-text-wrap" style="padding:4%;">
-								<input type="checkbox" id="loginData.chkAutoLogin" class="checkbox-style" ng-model='loginData.chkAutoLogin'/>
-								<label for="loginData.chkAutoLogin" style="font-size:100%;">자동로그인</label>
+						<div style="margin:0px 30px 0px 30px; padding: 30px 0 10px 0; background: #aca5b5;">
+							<div class="list list-inset" style="margin:0px 20px 0px 20px; background-color:transparent;">
+
+								<label class="item item-input" style="padding: 0; border-top: 0; border-right: 0; border-left: 0; ">
+									<span class="psm_login1 ion-ios-paper-outline" style=""></span>
+									<input style="font-size:100%; padding-left: 15px; text-transform: lowercase;" type="text" ng-model="loginData.Admin_Code" placeholder="업체코드">
+									<input type="checkbox" id="loginckbox.AdminCodeCK" class="checkbox-style" ng-model='loginckbox.AdminCodeCK'/>
+									<label for="loginckbox.AdminCodeCK" style="font-size: 11pt;">저장</label>
+								</label>
+
+								<label class="item item-input" style="padding: 0; border-right: 0; border-left: 0;">
+									<span class="psm_login2 ion-ios-grid-view-outline"></span>
+									<input style="font-size:100%; padding-left: 15px; text-transform: lowercase;" type="text" ng-model="loginData.UserId" placeholder="아이디">
+									<input type="checkbox" id="loginckbox.UserIdCK" class="checkbox-style" ng-model='loginckbox.UserIdCK' />
+									<label for="loginckbox.UserIdCK" style="font-size: 11pt;">저장</label>
+								</label>
+
+								<label class="item item-input" style="padding: 0; border-right: 0; border-left: 0;">
+									<span class="psm_login3 ion-ios-locked-outline"></span>
+									<input style="font-size:100%; padding-left: 15px; text-transform: lowercase;" type="password" ng-model="loginData.Pwd" placeholder="비밀번호">
+									<input type="checkbox" id="loginckbox.PwdCK" class="checkbox-style" ng-model='loginckbox.PwdCK'/>
+									<label for="loginckbox.PwdCK" style="font-size: 11pt;">저장</label>
+								</label>
+
+								<div class="item item-text-wrap" style="padding:4%; border-right: 0; margin-bottom:20px;">
+									<input type="checkbox" id="loginData.chkAutoLogin" class="checkbox-style" ng-model='loginData.chkAutoLogin'/>
+									<label for="loginData.chkAutoLogin" style="font-size: 11pt;">자동로그인</label>
+								</div>
+
+								<button class="button button-block button-psm05" type="submit" style="border: 0;">Log in</button>
+
 							</div>
-							<button class="button button-block button-balanced" type="submit" style="border: 0; background: #6c5e72">Log in</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-		
+
 	</ion-content>
 </ion-view>

@@ -542,7 +542,7 @@ angular.module('starter.services', [])
 			return $http.get(url + '?' + data).then(function(response) {
 				if(typeof response.data == 'object'){
 					for(var i=0; i<response.data.list.length; i++){
-						switch(response.data.list[i].Idx){ 
+						switch(response.data.list[i].Idx){
 							case "0": response.data.list[i].title = titles[0].title; response.data.list[i].icon = 'ion-home'; break;
 							case "1": response.data.list[i].title = titles[1].title; response.data.list[i].icon = 'ion-earth'; break;
 							case "2": response.data.list[i].title = titles[2].title; response.data.list[i].icon = 'ion-monitor'; break;
@@ -551,7 +551,7 @@ angular.module('starter.services', [])
 							case "5": response.data.list[i].title = titles[5].title; response.data.list[i].icon = 'ion-stats-bars'; break;
 							case "6": response.data.list[i].title = titles[6].title; response.data.list[i].icon = 'ion-clipboard'; break;
 							case "7": response.data.list[i].title = titles[7].title; response.data.list[i].icon = 'ion-ios-cloud-upload'; break;
-							case "8": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-android-boat'; break;
+							case "8": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-android-cloud-done'; break;
 							case "9": response.data.list[i].title = titles[9].title; response.data.list[i].icon = 'ion-android-bus'; break;
 							case "10": response.data.list[i].title = titles[10].title; response.data.list[i].icon = 'ion-pie-graph'; break;
 							case "11": response.data.list[i].title = titles[11].title; response.data.list[i].icon = 'ion-arrow-swap'; break;
@@ -657,10 +657,9 @@ angular.module('starter.services', [])
 /* 로그인단말기 정보관련 Service - 김형석[2016-02] */
 .factory('uuidService', function($http, $q, $rootScope, ERPiaAPI, $cordovaToast){
 	return{
-			//http://www.erpia.net/include/JSon_Proc_Mobile_Erpia.asp?Kind=get_Log&Admin_Code=onz&loginType=E&id=khs239
-		get_Log : function(Admin_Code, loginType, id){			// 로그인 로그정보 불러오기 (나중에 리스트 뿌릴 때 사용할 예정 )
+		get_Log : function(uuid){			// 로그인 로그정보 불러오기 (나중에 리스트 뿌릴 때 사용할 예정 )
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'Kind=get_Log&Admin_Code=' + Admin_Code + 'loginType=' + loginType + '&id=' + id;
+			var data = 'Kind=get_Log&Mac=' + uuid;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;
@@ -1917,31 +1916,4 @@ angular.module('starter.services', [])
 			})
 		}
 	};
-
-})
-/* SCM/NORMAL모드 비밀번호변경 Service - 김형석[2016-06-22] */
-//http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=SCM_PassChange&loginType=N&Admin_Code=onz&GerCode=00926&ID=onz&pwd=onz&changePass=1234&mac=ba8e205a02d20e66
-//http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=Normal_PassChange&Admin_Code=onz&GerCode=00926&ID=aaaa&pwd=aaaaaaa!1&changePass=1234&mac=ba8e205a02d20e66
-
-.factory('PassChangeService', function($http, $q, $cordovaToast, ERPiaAPI){
-	var changepass = function(mode, Admin_Code, GerCode, UserID, G_Pass, changePass, UUID){
-			console.log(mode, Admin_Code, GerCode, UserID, G_Pass, changePass, UUID)
-			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
-			var data = 'kind=PassChange&mode='+ mode +'&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode + '&ID='+ UserID;
-			   data  += '&pwd='  +G_Pass + '&changePass=' + changePass + '&mac=' + UUID;
-			return $http.get(url + '?' + data).then(function(response){
-				if(typeof response.data == 'object'){
-					return response;
-				}else{
-					return $q.reject(response);
-				}
-			},function(response){
-				return $q.reject(response);
-			});
-
-		
-	}
-	return{
-		changepass: changepass
-	}
 });

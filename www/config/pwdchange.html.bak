@@ -1,0 +1,21 @@
+ <ion-view view-title="로그인 설정" style="background: #dce0e1; color: #fff">
+ <ion-content>
+	<div class="list list-inset">
+	 <label class="item item-input" style="padding: 0;">
+		<span class="input-label psm_sang_01" style="width: 42%; height: 50px; background: #8c8391; color: #fff; padding-top: 17px">
+		기존 비밀번호
+		</span>
+		<input type="password"  placeholder="기존비밀번호" ng-model="changepassdata.beforepwd" style="width: 70%; padding: 15px; border: 1px solid #e0e0e0;" >
+	 </label>
+	 <label class="item item-input" style="padding: 0;">
+		<span class="input-label psm_sang_01" style="width: 42%; height: 50px; background: #8c8391; color: #fff; padding-top: 17px">
+		변경할 비밀번호
+		</span>
+		<input type="password" placeholder="변경할 비밀번호" ng-model="changepassdata.changepass" style="width: 70%; padding: 15px; border: 1px solid #e0e0e0;" >
+	 </label>
+  	
+  		<button class="button button-full button-positive" ng-click="passChange()" >비밀번호 변경하기</button>
+  	 
+	</div>
+  </ion-content>
+  </ion-view>

@@ -1,12 +1,12 @@
-<ion-view view-title="상담하기" hide-nav-bar={{sideMenuHide}}>
-	<ion-nav-back-button></ion-nav-back-button>
-	<ion-nav-buttons side="right" ng-show="false">
-		<button class="button button-icon button-clear {{icon_home}}" menu-close ng-click="goHome()"></button>
+<ion-view view-title="상담하기" hide-nav-bar="{{sideMenuHide}}">
+	<ion-nav-buttons side="right">
+		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/introduce');" class="button button-small button-psm00" ng-if="userType == 'Guest' ">소개</button>
 	</ion-nav-buttons>
+	<ion-nav-back-button></ion-nav-back-button>
 	<ion-content>
 		<!-- <a href="tel:070-7012-3071" class="button button-positive"> call me</a> -->
 
-		<div class="list list-inset" style="margin-top:10px; padding-bottom: 100px;">
+		<div class="list list-inset" style="margin-top:10px; padding-bottom: 70px;">
 			<img src="./img/img_junhwa.jpg" width="100%; margin-bottom:-10px;" ng-click="dialNumber(' 07070123071')">
 			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*회사명 : </span>
@@ -20,38 +20,38 @@
 				<span class="input-label psm_sang_01">*제목 : </span>
 				<input type="text" placeholder="제목" ng-model="csData.subject"><br>
 			</label>
-			<div class="item item-input-inset" style="padding: 0">
+			<div class="item item-input-inset" style="padding: 0; position: relative;">
 				<span class="input-label psm_sang_01">*연락처 : </span>
-				<input type="tel" placeholder="-제외 입력하세요" ng-model="csData.tel" size="18" ng-disabled='csData.cs_certify_ok'/> 
-			
-				<button style="font-size:8pt" ng-click="cs_certify_click_fn(csData.tel)" ng-if="csData.cs_certify_ok==false"> 인증번호발송</button>
+				<input type="tel" placeholder="-제외 입력하세요" ng-model="csData.tel" size="15" ng-disabled='csData.cs_certify_ok'/>
+
+				<button style="font-size:8pt; position: absolute; top: 5px; right: 15px;" ng-click="cs_certify_click_fn(csData.tel)" ng-if="csData.cs_certify_ok==false" class="button button-small button-psm01"> 인증번호 발송</button>
 			</div>
 			<div class="item item-input-inset" style="padding: 0">
 				<span class="input-label psm_sang_01">*인증번호 : </span>
-				<input type="text" placeholder="인증번호입력" ng-model="csData.cs_certify_no" size="18" ng-disabled='csData.cs_certify_ok'/> 
-			
+				<input type="text" placeholder="인증번호입력" ng-model="csData.cs_certify_no" size="18" ng-disabled='csData.cs_certify_ok'/>
+
 				<button style="font-size:8pt" ng-if="csData.cs_certify_click == true && csData.cs_certify_ok == false" ng-click="cs_certify_Check_fn(csData.cs_certify_no)"> 인증완료</button>
 			</div>
 			<label class="item item-input" style="padding: 0">
 				<span class="input-label psm_sang_01">*업종 : </span>
-				<select ng-model="csData.sectors" class="psm_sang_02">
-					<option ng-if='csData.sectors == ""' value='' ng-selected="csData.sectors == ''">필수사항입니다.</option>
+				<select ng-model="csData.sectors" class="psm_sang_02" style="height: 30px;">
+					<option ng-if='csData.sectors == ""' value='' ng-selected="csData.sectors == ''">업종 선택</option>
 					<option ng-repeat="item in sectorslist" ng-value="item.value">{{item.value}}</option>
 				</select>
 			</label>
 			<label class="item item-input" style="padding: 0" >
 				<span class="input-label psm_sang_01">*관심항목 : </span>
-				<button class="icon-right ion-chevron-right" ng-click="Interests_Modalopen()">관심항목선택(필수*)</button>
+				<button class="icon-right ion-chevron-right button button-small button-psm02" ng-click="Interests_Modalopen()" style="width: 65%; text-align: left;">관심항목 선택</button>
 			</label>
 			<label class="item item-input" style="padding: 0" ng-if='csData.interestTopic != ""'>
 				<span class="input-label psm_sang_01" style="height: 100px"></span>
 				<textarea  class="psm_sang_03" ng-model="csData.interestTopic1" ng-disabled='true' style="height: 100px" ></textarea>
 			</label>
-			
+
 			<label class="item item-input" style="padding: 0">
-				<span class="input-label psm_sang_01" >*유입경로 : </span>
-				<select ng-model="csData.inflowRoute" class="psm_sang_02">
-					<option ng-if='csData.inflowRoute == ""' value='' ng-selected="csData.inflowRoute == ''">선택안함(필수x)</option>
+				<span class="input-label psm_sang_01" >&nbsp; 유입경로 : </span>
+				<select ng-model="csData.inflowRoute" class="psm_sang_02" style="height: 30px;">
+					<option ng-if='csData.inflowRoute == ""' value='' ng-selected="csData.inflowRoute == ''">유입경로 선택</option>
 					<option ng-repeat="item in inflowRoutelist" ng-value="item.value">{{item.value}}</option>
 				</select>
 			</label>
@@ -59,10 +59,10 @@
 				<span class="input-label psm_sang_01" style="margin-right: 0; height: 150px; padding-top: 60px;">*문의사항 : </span>
 				<textarea placeholder="내용을 입력하세요" class="psm_sang_03" ng-model="csData.contents"></textarea>
 			</label>
-			<div class="item item-divider" style="height:30%">
-			  <input type="checkbox" id="agree_2" class="checkbox-style" ng-model='cscustomagree' ng-click='csagree()'/>
-			  <label for="agree_2">개인정보 이용 및 활용동의</label>
-			  <button ng-click='csagreemodalopen()'>전문보기</button>
+			<div class="item item-divider" style="height:30%;">
+			  <input type="checkbox" id="agree_2" class="checkbox-style" ng-model='cscustomagree' ng-click='csagree()' style="padding-top: 6px;" />
+			  <label for="agree_2" style="padding-top: 6px;"> 개인정보 이용 및 활용동의</label>
+			  <button ng-click='csagreemodalopen()' class="button button-small button-psm04">전문보기</button>
 			</div>
 			<form ng-submit="csRegist()">
 				<button class="button button-block psm_login_ink" type="submit">등록</button>

@@ -1530,18 +1530,13 @@ a:focus {
   }
 }
 
+
+
+
 /*
  * psm-box
  * --------------------
  */
-
-
-
-
-
-
-
-
 
 .psm-box:hover {
   text-decoration: none;
@@ -1561,6 +1556,29 @@ a:focus {
     font-size: 12px;
   }
    .psm-box h1 {
+    font-size: 20px;
+  }
+}
+
+
+.psm-box2:hover {
+  text-decoration: none;
+  color: #fff;
+}
+.psm-box2:hover .icon {
+  font-size: 95px;
+}
+@media (max-width: 450px) {
+  .psm-box2 {
+    text-align: center;
+  }
+  .psm-box2 .icon {
+    display: none;
+  }
+  .psm-box2 p {
+    font-size: 12px;
+  }
+   .psm-box2 h1 {
     font-size: 20px;
   }
 }

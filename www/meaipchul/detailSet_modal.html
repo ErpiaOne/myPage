@@ -1,4 +1,4 @@
-﻿<!-- 상세조회모달 -->
+<!-- 상세조회모달 -->
 <ion-modal-view title="">
 	<ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
 		<div class="buttons">
@@ -9,7 +9,7 @@
 
 	<ion-content >
 		<tab-slide-box>
-			<div class="tsb-icons"> <!-- class건들이면 안되요..ㅠㅠ -->
+			<div class="tsb-icons" style="padding-top: 2px;"> <!-- class건들이면 안되요..ㅠㅠ -->
 				<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
 					<ion-scroll direction="x" class="tsb-hscroll">
 						<a href="javascript:;">조회조건</a>
@@ -26,24 +26,24 @@
 
 							<div style="background: #fff; padding: 40px 10px 30px 10px;">
 
-								<div  style="clear: both; width:100%;">
-									<div style="float: left; width:20%; padding-top: 7px; text-align: left;">검 색</div>
-									<div style="float: left; width:70%;">
-										<input type="text" ng-click='company_lately()' ng-model="company.username" placeholder="거래처명 입력" style="width: 100%; height: 30px; border:0; border-bottom: 1px solid #e0e0e0;" ng-change="company_auto()">
+								<div  style="clear: both; width:100%; position: relative;">
+									<div style="float: left; width:20%; padding-top: 13px; text-align: left;">검 색</div>
+									<div style="float: left; width:80%;">
+										<input type="text" ng-click='company_lately()' ng-model="company.username" placeholder="거래처명 입력" style="width: 100%; height: 40px; border:0; border: 1px solid #b1b1b1; padding-left: 10px; padding-right: 40px;" ng-change="company_auto()">
 
 										<li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code,x.G_Damdang)">{{x.G_Name}}</li>
 										<li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code,x.G_Damdang)">{{x.Search_Ger_Name}}</li>
 									</div>
-									<div style="float: left; width:10%;">
-										<i class='ion-close-circled' style='margin-left:-40px; padding-right:10px; vertical-align:middle; font-size:1.8em; color:#000' ng-click='clearcompany()'></i>
+									<div style="position: absolute; top:8px; right:0;">
+										<i class='ion-android-close' style='margin-left:-30px; padding-right:10px; vertical-align:middle; font-size:1.8em; color:#000' ng-click='clearcompany()'></i>
 									</div>
 								</div>
 
 								<div style="clear: both; width:100%; padding-top:20px;">
 									<div style="float: left; width:20%; padding-top:9px; text-align: left;">일 자</div>
-									<div style="float: left; width:38%;"><input type="date" ng-model="date.sDate1" ng-change="mydate1(date.sDate1)" style="width: 100%; height: 30px; border:0; border-bottom: 1px solid #e0e0e0; "></div>
+									<div style="float: left; width:38%;"><input type="date" ng-model="date.sDate1" ng-change="mydate1(date.sDate1)" style="width: 100%; height: 30px; border:0; border-bottom: 1px solid #b1b1b1; "></div>
 									<div style="float: left; width:4%; padding-top:5px; "> ~ </div>
-									<div style="float: left; width:38%;"><input type="date" ng-model="date.eDate1" ng-change="mydate2(date.eDate1)" style="width: 100%; height: 30px; border:0; border-bottom: 1px solid #e0e0e0; "></div>
+									<div style="float: left; width:38%;"><input type="date" ng-model="date.eDate1" ng-change="mydate2(date.eDate1)" style="width: 100%; height: 30px; border:0; border-bottom: 1px solid #b1b1b1; "></div>
 								</div>
 
 								<div  style="clear: both; width:100%; padding-top:20px;">
@@ -68,7 +68,7 @@
 
 								<div  style="clear: both; width:100%; padding-top:30px;">
 									<button class="button button-small button-psm02" ng-click="quickdetail()" style="width:40%; align: left;">빠른검색 등록</button>
-									<button class="button button-small button-psm02" ng-click="detailset_up()" style="width:20%; align: left;">검색</button>
+									<button class="button button-small button-psm05" ng-click="detailset_up()" style="width:20%; align: left;">검색</button>
 									<!-- <button ng-click="detailset_up()" class="button button-small button-psm00 ion-search" style="margin-top: -5px; height: 30px;  font-size:2em; align-content: right;"></button> -->
 								</div>
 
@@ -79,7 +79,7 @@
 				<!-- 최근검색 -->
 				<ion-slide>
 						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
-							<div align="center" style="background: #dce0e1; height:auto;  font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
+							<div align="center" style="background: #dce0e1; height: 100%; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
 
 								<div style="padding: 10px 0 55px 0;">
 
@@ -113,7 +113,7 @@
 				<ion-slide disable-scroll="true">
 						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
 
-							<div align="center" style="background: #dce0e1; height:auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
+							<div align="center" style="background: #dce0e1; height:100%; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
 
 								<div style="padding: 10px 0 55px 0;">
 

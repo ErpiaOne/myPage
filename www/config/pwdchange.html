@@ -1,16 +1,36 @@
- <ion-view view-title="로그인 설정" style="background: #dce0e1; color: #fff">
+<ion-modal-view  title="비밀번호 변경"  cache-view="false" style="color: #fff" class="bar-dark">
+	<ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
+		<div class="buttons">
+			<button class="button" ng-click="pwdchangeModal_close()">이전</button>
+		</div>
+		<h1 class="title" style="color: #fff;">비밀번호 변경</h1>
+	</ion-header-bar>
  <ion-content>
 	<div class="list list-inset">
+	 <label class="item item-input" style="padding: 0;">
+		<span class="input-label psm_sang_01" style="width: 42%; height: 50px; background: #8c8391; color: #fff; padding-top: 17px">
+		기존 비밀번호
+		</span>
+		<input type="password"  placeholder="기존비밀번호" ng-model="changepassdata.beforepwd" style="width: 70%; padding: 15px; border: 1px solid #e0e0e0;" >
+	 </label>
+	 <label class="item item-input" style="padding: 0;">
+		<span class="input-label psm_sang_01" style="width: 42%; height: 50px; background: #8c8391; color: #fff; padding-top: 17px">
+		변경 비밀번호
+		</span>
+		<input type="password" placeholder="변경 비밀번호" ng-model="changepassdata.changepass" style="width: 70%; padding: 15px; border: 1px solid #e0e0e0;" >
+	 </label>
 	  <label class="item item-input" style="padding: 0;">
-		<span class="input-label psm_sang_01" style="width: 42%; height: 50px; background: #8c8391; color: #fff; padding-top: 17px"><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; padding: 15px; border: 1px solid #e0e0e0;"></span>
-		<select ng-model="setupData.basic_Ch_Code" ng-change='Changosave()' style="height: 32px;">
-	  </label>
+		<span class="input-label psm_sang_01" style="width: 42%; height: 50px; background: #8c8391; color: #fff; padding-top: 17px">
+		변경 비밀번호 확인
+		</span>
+		<input type="password" placeholder="변경 비밀번호 확인" ng-model="changepassdata.check_changepass" style="width: 70%; padding: 15px; border: 1px solid #e0e0e0;" >
+	 </label>
+  	
+  	<br>
 
-	 	  <label class="item item-input" style="padding: 0;">
-		<span class="input-label psm_sang_01" style="width: 42%; height: 50px; background: #8c8391; color: #fff; padding-top: 17px"><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; padding: 15px; border: 1px solid #e0e0e0;"></span>
-		<select ng-model="setupData.basic_Ch_Code" ng-change='Changosave()' style="height: 32px;">
-	  </label>
-
+  	<span><font color="black">* 소중한 정보 보안을 위해 비밀번호는 8~12자 내 영문,숫자,특수문자를 조합하여 입력해주세요.</font></span>
+  		<button class="button button-full button-positive" ng-click="passChange()" >비밀번호 변경하기</button>
+  	 
 	</div>
   </ion-content>
-  </ion-view>
+  </ion-modal-view>

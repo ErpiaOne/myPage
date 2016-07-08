@@ -2,6 +2,7 @@
 	<ion-header-bar class="bar-dark">
 		<h1 class="title" ng-if="userType == 'ERPia'">수신함 확인 비밀번호 입력</h1>
 		<h1 class="title" ng-if="userType == 'SCM' || userType == 'Normal' ">수신함 확인 사업자번호 입력</h1>
+		<h1 class="title" ng-if="userType == 'Guest' ">수신함 확인 비밀번호 입력</h1>
 		<div class="buttons"><button class="button" ng-click="close_sano()" style="background: #fff; color: #444;">닫기</button></div>
 	</ion-header-bar>
 	<ion-content class="padding2">
@@ -10,6 +11,7 @@
 				<img src="./img/img_jam.png" width="100%" class="psm_segum02">
 				<div class="psm_segum03" ng-if="userType == 'ERPia'">정보 보호를 위해 암호화되어 있습니다.<br/>귀하의 비밀번호를 다시 한 번 입력해주세요.</div>
 				<div class="psm_segum03" ng-if="userType == 'SCM' || userType == 'Normal' ">정보 보호를 위해 암호화되어 있습니다.<br/>귀하의 사업자등록번호 뒤 5자리를 입력해주세요.</div>
+				<div class="psm_segum03" ng-if="userType == 'Guest' ">테스트아이디로 로그인하셨습니다. <br/>확인을 눌러주세요.</div>
 				<div class="psm_segum04">
 					<input type='password' class="psm_segum05"  ng-model='userData.Sano' ng-if='userType=="ERPia"' placeHolder='비밀번호 입력'/>
 					<input type='password' class="psm_segum05"  ng-model='userData.Sano' ng-if='userType=="SCM" || userType=="Normal" ' placeHolder='사업자번호 뒤 5자리'/>

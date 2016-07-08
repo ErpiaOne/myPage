@@ -3862,13 +3862,13 @@ a.subdued {
       top: 2px;
       opacity: 1; }
 .tabs-striped.tabs-color-energized .tab-item {
-  color: rgba(255, 201, 0, 0.4);
+  color: #fff;
   opacity: 1; }
   .tabs-striped.tabs-color-energized .tab-item .badge {
     opacity: 0.4; }
-  .tabs-striped.tabs-color-energized .tab-item.tab-item-active, .tabs-striped.tabs-color-energized .tab-item.active, .tabs-striped.tabs-color-energized .tab-item.activated {
+  .tabs-striped.tabs-color-energized .tab-item.tab-item-active, .tabs-striped.tabs-color-energized .tab-item.active, .tabs-striped.tabs-color-energized .tab-item.activated {background: #f6be5c;
     margin-top: -2px;
-    color: #ffc900;
+    color: #444444;
     border: 0 solid #ffc900;
     border-top-width: 2px; }
     .tabs-striped.tabs-color-energized .tab-item.tab-item-active .badge, .tabs-striped.tabs-color-energized .tab-item.active .badge, .tabs-striped.tabs-color-energized .tab-item.activated .badge {
@@ -6621,6 +6621,35 @@ progress {
         background-color: #ddd;
         box-shadow: none;
         color: #fff; }
+
+  .button.button-light2 {
+    border-color: #d7d3db;
+    background-color: #e9e7ea;
+    color: #444; }
+    .button.button-light2:hover {
+      color: #444;
+      text-decoration: none; }
+    .button.button-light2.active, .button.button-light2.activated {
+      border-color: #ccc;
+      background-color: #fafafa;
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
+    .button.button-light2.button-clear {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+      color: #ddd; }
+    .button.button-light2.button-icon {
+      border-color: transparent;
+      background: none; }
+    .button.button-light2.button-outline {
+      border-color: #ddd;
+      background: transparent;
+      color: #ddd; }
+      .button.button-light2.button-outline.active, .button.button-light2.button-outline.activated {
+        background-color: #ddd;
+        box-shadow: none;
+        color: #fff; }
+
   .button.button-stable {
     border-color: #b2b2b2;
     background-color: #f8f8f8;
@@ -6795,8 +6824,8 @@ progress {
       color: #fff;
       text-decoration: none; }
     .button.button-psm03.active, .button.button-psm03.activated {
-      border-color: #b59b41;
-      background-color: #b59b41;
+      border-color: #daa82f;
+      background-color: #daa82f;
       box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
     .button.button-psm03.button-clear {
       border-color: transparent;
@@ -6818,11 +6847,11 @@ progress {
     .button.button-psm04 {
     border-color: #aca5b5;
     background-color: #aca5b5;
-    color: #fff; }
+    color: #fff;}
     .button.button-psm04:hover {
       color: #fff;
       text-decoration: none; }
-    .button.button-psm04.active, .button.button-psm03.activated {
+    .button.button-psm04.active, .button.button-psm04.activated {
       border-color: #8d839b;
       background-color: #8d839b;
       box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
@@ -6838,8 +6867,37 @@ progress {
       border-color: #aca5b5;
       background: transparent;
       color: #aca5b5; }
-      .button.button-psm04.button-outline.active, .button.button-psm03.button-outline.activated {
+      .button.button-psm04.button-outline.active, .button.button-psm04.button-outline.activated {
         background-color: #aca5b5;
+        box-shadow: none;
+        color: #fff; }
+
+
+    .button.button-psm05 {
+    border-color: #6c5e72;
+    background-color: #6c5e72;
+    color: #fff;}
+    .button.button-psm05:hover {
+      color: #fff;
+      text-decoration: none; }
+    .button.button-psm05.active, .button.button-psm05.activated {
+      border-color: #4a3f50;
+      background-color: #4a3f50;
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
+    .button.button-psm05.button-clear {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+      color: #6c5e72; }
+    .button.button-psm05.button-icon {
+      border-color: transparent;
+      background: none; }
+    .button.button-psm05.button-outline {
+      border-color: #6c5e72;
+      background: transparent;
+      color: #6c5e72; }
+      .button.button-psm05.button-outline.active, .button.button-psm05.button-outline.activated {
+        background-color: #6c5e72;
         box-shadow: none;
         color: #fff; }
 
