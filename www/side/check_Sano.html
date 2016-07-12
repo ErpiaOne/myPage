@@ -1,9 +1,9 @@
 <ion-modal-view class="psm_login_body" ng-controller="tradeCtrl">
-	<ion-header-bar class="bar-dark">
-		<h1 class="title" ng-if="userType == 'ERPia'">수신함 확인 비밀번호 입력</h1>
-		<h1 class="title" ng-if="userType == 'SCM' || userType == 'Normal' ">수신함 확인 사업자번호 입력</h1>
-		<h1 class="title" ng-if="userType == 'Guest' ">수신함 확인 비밀번호 입력</h1>
-		<div class="buttons"><button class="button" ng-click="close_sano()" style="background: #fff; color: #444;">닫기</button></div>
+	<ion-header-bar class="bar-dark" title-align="center">
+		<div class="psmsmy_title_mo">모바일 보안인증</div>
+	   	<div class="buttons" style="position: absolute; right: 0px;">
+	      		<i ng-click="close_sano()"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
+	    	</div>
 	</ion-header-bar>
 	<ion-content class="padding2">
 		<body>

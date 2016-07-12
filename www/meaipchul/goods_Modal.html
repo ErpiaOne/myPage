@@ -1,7 +1,10 @@
 <!-- 매입/매출 상품조회 모달 -->
 <ion-modal-view title="">
-  <ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
-    <h1 class="title" style="color: #fff; text-align: center;">상품 검색</h1>
+  <ion-header-bar class="bar-dark" style="background: #8f6384; border:0;" title-align="center">
+    <div class="psmsmy_title_mo">상품 검색</div>
+      <div class="buttons" style="position: absolute; right: 0px;">
+            <i ng-click="goods_searchM_close()"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
+        </div>
   </ion-header-bar>
 
   <ion-header-bar class="bar bar-subheader" style="width: 100%; background: #fff; padding-bottom: 10px;">
@@ -56,9 +59,9 @@
   </ion-content>
 
   <ion-footer-bar align-title="left" class="hide-on-keyboard-open bar-assertive" style="background: #988e9a; border: 0;">
-    <div class="buttons" ng-click="goods_searchM_close()"><button class="button button-psm02">취소</button></div>
+    <div></div>
     <h1 class="title"></h1>
-    <div class="buttons" ng-click="checkdataSave()"><button class="button button-psm01">확인</button></div>
+    <div class="buttons" ng-click="checkdataSave()"><button class="button button-psm01">등록</button></div>
   </ion-footer-bar>
 </ion-modal-view>
 

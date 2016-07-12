@@ -1118,78 +1118,77 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.check = {};
 	$scope.tradeList = {};
 	$scope.pg = 1; // 거래명세서 페이징
-	$scope.YNcheck='all';
+	$scope.YNcheck='all'; // 전체보기 디폴트
 
 	/* 거래명세서정보 업로드 - 이경민[2015-12] */
 	$scope.reload_tradelist = function(){
-		if($rootScope.userType == 'SCM' || $rootScope.userType == "Normal"){ /* 각각의 로그인 타입별로 보여지는 화면을 다르게 표시 */
-			$scope.tradeList.Title = '매출거래처 수신함';
-			$scope.tradeList.MeaipMeachul = '매출일';
-			$scope.tradeList.Publisher = '발행처';
-			$scope.tradeList.isRead = '열람';
-			$scope.pg = 1;
+		$rootScope.loadingani();
+		if($scope.YNcheck == 'all'){
+			if($rootScope.userType == 'SCM' || $rootScope.userType == "Normal"){ /* 각각의 로그인 타입별로 보여지는 화면을 다르게 표시 */
+				$scope.tradeList.Title = '매출거래처 수신함';
+				$scope.tradeList.MeaipMeachul = '매출일';
+				$scope.tradeList.Publisher = '발행처';
+				$scope.tradeList.isRead = '열람';
+				$scope.pg = 1;
 
-			if($rootScope.userType == 'SCM') var type = 'S';
-			else var type = 'N';
+				if($rootScope.userType == 'SCM') var type = 'S';
+				else var type = 'N';
 
-			/* 거래명세서 리스트조회 - 이경민[2015-12] */
-			tradeDetailService.tradeList($scope.loginData.Admin_Code, $rootScope.userData.GerCode, type, $scope.pg)
-			.then(function(response){
-				if(response.list.length == 0) {
-					$scope.haveList = 'N';
-					$scope.moreloading=1;
-				}else{
-					$scope.haveList = 'Y';
-					$scope.items = response.list;
-					if($scope.YNcheck == 'not'){
-						for(var i =0; i < $scope.items.length; i++){
-							if($scope.items[i].readYN == 'N'){
-								$scope.items.splice(i, 1)
-							}
+				/* 거래명세서 리스트조회 - 이경민[2015-12] */
+				tradeDetailService.tradeList($scope.loginData.Admin_Code, $rootScope.userData.GerCode, type, $scope.pg)
+				.then(function(response){
+					if(response.list.length == 0) {
+						$scope.haveList = 'N';	// 확인할 명세서가 없습니다. <--구분
+						$scope.moreloading=1;
+						$scope.maxover=1;
+					}else{
+						$scope.haveList = 'Y';
+						$scope.moreloading=0;
+						$scope.pageCnt=1;
+						$scope.items = response.list;
+						if(response.list.length < 10){
+							$scope.maxover = 1;
+						}else{
+							$scope.maxover=0;
 						}
 					}
-					if(response.list.length < 10){
-						$scope.maxover = 1;
-					}else{
-						$scope.maxover=0;
-					}
-					$scope.pageCnt=1;
-					$scope.maxover=0;
-				}
-			})
-		}else if($rootScope.userType == 'ERPia' || $rootScope.userType == 'Guest'){
-			var type = 'E';
-			$scope.tradeList.Title = '매출거래처 발송 내역';
-			$scope.tradeList.MeaipMeachul = '매입일';
-			$scope.tradeList.Publisher = '발송처';
-			$scope.tradeList.isRead = '수신확인';
-			$scope.pg = 1;
+				})
+			}else if($rootScope.userType == 'ERPia' || $rootScope.userType == 'Guest'){
+				var type = 'E';
+				$scope.tradeList.Title = '매출거래처 발송 내역';
+				$scope.tradeList.MeaipMeachul = '매입일';
+				$scope.tradeList.Publisher = '발송처';
+				$scope.tradeList.isRead = '수신확인';
+				$scope.pg = 1;
 
-			/* ERPIA거래명세서 조회 - 이경민[2016-01] */
-			tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N', type, $scope.pg)
-			.then(function(response){
-				if(response.list.length == 0) {
-					$scope.haveList = 'N';
-					$scope.moreloading=1;
-				}else{
-					$scope.haveList = 'Y';
-					$scope.items = response.list;
-					if($scope.YNcheck == 'not'){
-						for(var i =0; i < $scope.items.length; i++){
-							if($scope.items[i].readYN == 'N'){
-								$scope.items.splice(i, 1)
-							}
+				/* ERPIA거래명세서 조회 - 이경민[2016-01] */
+				tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'N', type, $scope.pg)
+				.then(function(response){
+					if(response.list.length == 0) {
+						$scope.haveList = 'N';
+						$scope.moreloading=1;
+					}else{
+						$scope.haveList = 'Y';
+						$scope.items = response.list;
+						$scope.pageCnt=1;
+						$scope.moreloading=0;
+						if(response.list.length < 10){
+							$scope.maxover = 1;
+						}else{
+							$scope.maxover=0;
 						}
 					}
-					if(response.list.length < 10){
-						$scope.maxover = 1;
-					}else{
-						$scope.maxovers=0;
-					}
-					$scope.pageCnt=1;
-					$scope.maxover=0;
+				})
+			}
+		}else{
+			$scope.itemsN = [];
+			for(var i =0; i < $scope.items.length; i++){
+				if($scope.items[i].readYN != 'Y'){
+					$scope.itemsN.push($scope.items[i]);
 				}
-			})
+			}
+			$scope.items.splice(0, $scope.items.length-1);
+			$scope.items = $scope.itemsN;
 		}
 	}
 
@@ -1214,9 +1213,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 
 	/*거래명세서 더보기 - 이경민[2016-01] */
-	$scope.search_more = function(){
+	$scope.search_more = function(maxover, checkYN){
+		if(maxover == 0){
+			$rootScope.loadingani();
+		}
+		
 		if($rootScope.userType == 'SCM' || $rootScope.userType == "Normal"){
-
 			if($rootScope.userType == 'SCM')	var type = 'S';
 			else var type = 'N';
 			$scope.pg = parseInt($scope.pg) + 1;
@@ -1229,29 +1231,30 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					}
 					$scope.maxover=1;
 					$scope.haveList = 'Y';
-					$scope.moreloading=0;
 
 				}else if(response.list.length == 0) {
 					$scope.haveList = 'Y';
-					$scope.moreloading=0;
 					$scope.maxover=1;
 				}else{
 					for(var i = 0; i < response.list.length; i++){
 						$scope.items.push(response.list[i]);
 					}
 					$scope.haveList = 'Y';
-					$scope.moreloading=0;
 				    	$scope.pageCnt=1;
 				    	$scope.maxover=0;
 				}
 
-				if($scope.YNcheck == 'not'){
-					for(var i =0; i < $scope.items.length; i++){
-						if($scope.items[i].readYN == 'Y'){
-							$scope.items.splice(i, 1)
+
+				if(checkYN == 'not'){
+						$scope.itemsN = [];
+						for(var i =0; i < $scope.items.length; i++){
+							if($scope.items[i].readYN != 'Y'){
+								$scope.itemsN.push($scope.items[i]);
+							}
 						}
+						$scope.items.splice(0, $scope.items.length-1);
+						$scope.items = $scope.itemsN;
 					}
-				}
 			})
 		}else if($rootScope.userType == 'ERPia'){
 			var type = 'E';
@@ -1265,28 +1268,29 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						}
 						$scope.maxover=1;
 						$scope.haveList = 'Y';
-						$scope.moreloading=0;
 
 					}else if(response.list.length == 0) {
 						$scope.haveList = 'Y';
-						$scope.moreloading=0;
 						$scope.maxover=1;
 					}else{
 						for(var i = 0; i < response.list.length; i++){
 							$scope.items.push(response.list[i]);
 						}
 						$scope.haveList = 'Y';
-						$scope.moreloading=0;
 					    	$scope.pageCnt=1;
 					    	$scope.maxover=0;
 					}
 
-					if($scope.YNcheck == 'not'){
+
+					if(checkYN == 'not'){
+						$scope.itemsN = [];
 						for(var i =0; i < $scope.items.length; i++){
-							if($scope.items[i].readYN == 'Y'){
-								$scope.items.splice(i, 1)
+							if($scope.items[i].readYN != 'Y'){
+								$scope.itemsN.push($scope.items[i]);
 							}
 						}
+						$scope.items.splice(0, $scope.items.length-1);
+						$scope.items = $scope.itemsN;
 					}
 				})
 			}
@@ -1296,10 +1300,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 거래명세서 전체조회 & 미열람건조회 - 이경민[2016-01] */
 	$scope.tradechange = function(){
-		if($scope.YNcheck == 'not') $scope.YNcheck = 'all';
-		else $scope.YNcheck = "not";
-
-		$scope.reload_tradelist();
+		if($scope.YNcheck == 'not'){
+			$scope.YNcheck = 'all';
+			$scope.reload_tradelist();
+		}else{
+			$scope.YNcheck = "not";
+			$scope.reload_tradelist();
+		}
 		$scope.refresh_time();
 		$scope.loadingani();
 	}
@@ -1339,13 +1346,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}/* // ---- 공백이슈 통합 - 이경민[2016-01] */
 
 	/* 거래명세서  고유키값 채번 - 이경민[2016-01] */
-	$scope.tradenumber = function(detaillist, where){
+	$scope.tradenumber = function(detaillist){
 		$rootScope.detaillist = detaillist;
-		$rootScope.where = where;
 		tradeDetailService.readDetail_key($scope.loginData.Admin_Code, $rootScope.Sl_No)
 		.then(function(response){
 			$rootScope.Key_New_No = response.list[0].Key_New_No;
-			$scope.html3image($rootScope.detaillist, $rootScope.where);
+			$scope.html3image($rootScope.detaillist);
 		});
 	}
 
@@ -1427,7 +1433,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		var Mutual = detaillist[0].R_Snm;
 	    	var url = "http://www.erpia.net/mobile/GereaView_Certify.asp?admin_code=" + detail.Admin_Code + "&user_id=" + $scope.loginData.UserId + "&login_kind=" + login_kind + "&sl_no=" + $rootScope.Key_New_No + '_01';
-	    	$scope.shareAnywhere(url, where, Mutual);
+	    	$scope.shareAnywhere(url);
 	}
 
 	/* 거래명세서 이미지화된것 캔버스로 다시한번 떠서 크기 줄이고 asp로 파일전송 - 이경민[2016-01] */
@@ -1470,14 +1476,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		});
 	}
 
-	$scope.shareAnywhere = function(url, where,Mutual) {
-		if(where == 'kakao'){
-			$cordovaSocialSharing.shareVia("com.kakao.talk","[Erpia 거래명세표] "+'('+Mutual+')'+url);
-		}else if(where == 'sms'){
-			$cordovaSocialSharing.shareViaSMS("[Erpia 거래명세표] "+'('+Mutual+')'+url);
-		}else{
-			$cordovaSocialSharing.shareViaEmail("[Erpia 거래명세표] "+'('+Mutual+')'+url, "[Erpia 거래명세표] "+'('+Mutual+')');
-		}
+	$scope.shareAnywhere = function(url) {
+		// if(where == 'kakao'){
+		// 	$cordovaSocialSharing.shareVia("com.kakao.talk","[Erpia 거래명세표] "+'('+Mutual+')'+url);
+		// }else if(where == 'sms'){
+		// 	$cordovaSocialSharing.shareViaSMS("[Erpia 거래명세표] "+'('+Mutual+')'+url);
+		// }else{
+		// 	$cordovaSocialSharing.shareViaEmail("[Erpia 거래명세표] "+'('+Mutual+')'+url, "[Erpia 거래명세표] "+'('+Mutual+')');
+		// }
+		$cordovaSocialSharing.share('ERPIA_Mobile' , '[ERPia 거래명세표]', null, url);
 		$scope.toemail ='';
 	}
 
@@ -1711,7 +1718,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 거래명세서 인증모달창 인증확인 - 이경민[2016-01] */
 	$scope.check_Sano = function(){
 		if($rootScope.userType == "SCM" || $rootScope.userType == "Normal" ){
-			if($rootScope.userData.G_Sano.substring($rootScope.userData.G_Sano.lastIndexOf('-') + 1) == $rootScope.userData.Sano){
+			// if($rootScope.userData.G_Sano.substring($rootScope.userData.G_Sano.lastIndexOf('-') + 1) == $rootScope.userData.Sano){ =========== 수정하고 올릴것.
+			if($rootScope.userData.Sano== $rootScope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
 					disableBack: true
@@ -1723,6 +1731,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				else alert('사업자 번호와 일치하지 않습니다.');
 			}
 		}else if($rootScope.userType == "ERPia"){
+			$scope.loginData.Pwd = $rootScope.userData.Sano;	// ===========지우고 업데이트 할것.
 			if($scope.loginData.Pwd == $rootScope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
@@ -1754,6 +1763,28 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
    	$scope.thisversioncurrent='Y';
    	$scope.thisversion='';
    	$scope.currentversion='';
+
+   	/* 공지사항 세모표시 - 이경민[2016-07-12] */
+   	$scope.upAnddown = 'ion-arrow-up-b';
+	$scope.upAnddown2 = 'ion-arrow-up-b';
+
+	/* 세모아이콘 위로 아래로 - 이경민[2016-07-12] */
+	$scope.upAnddownF = function(num){
+		if(num == 1){
+			if($scope.upAnddown == 'ion-arrow-up-b'){
+				$scope.upAnddown = 'ion-arrow-down-b';
+			}else{
+				$scope.upAnddown = 'ion-arrow-up-b'
+			}
+		}else{
+			if($scope.upAnddown2 == 'ion-arrow-up-b'){
+				$scope.upAnddown2 = 'ion-arrow-down-b';
+			}else{
+				$scope.upAnddown2 = 'ion-arrow-up-b'
+			}
+		}
+	}
+
 	VersionCKService.currentVersion()
 	.then(function(data){
 		$timeout(function(){
@@ -1811,6 +1842,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 /* 공지사항 컨트롤러 - 김형석[2016-01] */
 .controller('configCtrl_Notice', function($scope, $rootScope, $ionicPopup, $ionicHistory, NoticeService, $timeout, $cordovaToast, $ionicScrollDelegate, $ionicLoading, app, ERPiaAPI) {
 	$scope.items=[];
+	
 	/* 뒤로가기 상단바에서 버튼 클릭시 이벤트 - 김형석[2016-01] */
 	$scope.myGoBack = function() {
 		$ionicHistory.goBack();

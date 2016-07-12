@@ -1,5 +1,8 @@
 <!-- 매입 등록/수정 페이지 -->
-<ion-view title="간편매입 {{mode}}" cache-view="false" style="color: #fff" class="bar-dark">
+<ion-view cache-view="false" style="color: #fff" class="bar-dark">
+<ion-nav-title>
+	<div class="psmsmy_title_co">간편매입 {{mode}}</div>
+</ion-nav-title>
 <ion-nav-bar>
 <ion-nav-back-button ng-click="backControll()">뒤로</ion-nav-back-button>
 </ion-nav-bar>
@@ -19,7 +22,7 @@
 
 	<!-- 매입정보 -->
 	<div class="list list-inset" style="padding: 10px; margin-top: 10px; text-align: left;">
-		<div ng-click="Next()" style="text-align: left;"><i class="{{upAnddown}}"></i> &nbsp;&nbsp; 매입정보</div>
+		<div ng-click="Next()" style="text-align: left;">매입정보<i class="{{upAnddown}} psmsmy_semo"></i></div>
 		<div ng-if="basictype" style="align:center; margin-top:15px; padding-top:25px; padding-bottom: 15px; border-top: 1px solid #6c5e72;">
 
 			<table width="100%" class=""style="align:center; vertical-align:middle;">
@@ -81,7 +84,7 @@
 
 	<!-- 상품정보 -->
 	<div class="list list-inset" align="left" style="padding: 10px;">
-		<div ng-click="Next2()" style="text-align: left;"><i class="{{upAnddown2}}"></i> &nbsp;&nbsp; 상품</div>
+		<div ng-click="Next2()" style="text-align: left;">상품<i class="{{upAnddown2}} psmsmy_semo"></i></div>
 		<div ng-if="basic2type" style="align:center; padding-top:15px; margin-top:15px; border-top: 1px solid #6c5e72;">
 			<div class="list list-inset" style="align:center;" >
 				<table width="100%" ng-if="sbu == false">
@@ -121,7 +124,7 @@
 						<td align="right" style="width:25%; padding:10px 1%; vertical-align:middle; border-bottom: 1px solid #e0e0e0;">
 							<input type="tel" ng-disabled="{{sbu}}" style="width:100%; border: 1px solid silver; text-align: right; padding: 0 5px;" ng-change="goods_totalprice1($index)" ng-model="y.goodsprice" fcsa-number="{ preventInvalidInput: true }" pattern="\d*"/>
 						</td>
-						<td style="width: 10%; vertical-align: middle; padding:10px 0; border-bottom: 1px solid #e0e0e0;"><i class="ion-android-remove-circle" ng-if="sbu == false" ng-click="goodsDelete($index);goods_totalprice1()" style="font-size: 2em; margin-top: 10px;  vertical-align: middle;"></i>&nbsp;</td>
+						<td style="width: 10%; vertical-align: middle; padding:10px 0; border-bottom: 1px solid #e0e0e0;"><i class="ion-close-circled" ng-if="sbu == false" ng-click="goodsDelete($index);goods_totalprice1()" style="font-size: 2em; margin-top: 10px;  vertical-align: middle;"></i>&nbsp;</td>
 					</tr>
 				</table>
 			</div>
@@ -133,20 +136,16 @@
 
 	<!-- 관리비고 사항 -->
 	<div class="list list-inset" style="padding: 10px;" align="left">
-		<div ng-click="Next3()" style="width: 100%; text-align: left;"><i class="{{upAnddown3}}"></i> &nbsp;&nbsp; 관리비고</div>
+		<div ng-click="Next3()" style="width: 100%; text-align: left;">관리비고<i class="{{upAnddown3}} psmsmy_semo"></i></div>
 		<div ng-if="basic3type" class="list list-inset" style="padding-bottom:15px;">
 			<label class="item item-input item-stacked-label">
 			<textarea placeholder="관리자비고란 입니다." rows="8" cols="10" ng-model="datas.remk"></textarea>
 			</label>
 		</div>
 	</div>
+	<div style="padding: 0 10px;"><button class="button button-block psm_login_ink"  ng-click='ijmodal_function()' style="background: #52bcae;">다음</button></div>
 </div>
 <br><br>
 </ion-content>
-<ion-footer-bar align-title="left" class="hide-on-keyboard-open bar-assertive" ng-click='ijmodal_function()' style="background: #52bcae; border: 0; height: 10px; padding-bottom: 100px;">
-	<div class="buttons"></div>
-		<h1 class="title">다음<h1>
-	<div class="buttons"></div>
-</ion-footer-bar>
 </ion-view>
 

@@ -353,3 +353,9 @@ select {-webkit-border-radius: 0; height: 35px;}
 .title {
 	text-align: center;
 }
+
+.psmsmy_title_co {position: fixed; left: 0; width: 100%; text-align: center; font-size: 16px;}
+.psmsmy_title_mo {position: fixed; left: 0; width: 100%; text-align: center; font-size: 16px; padding-top: 7px;}
+.psmsmy_close {margin-top: -4px;}
+
+.psmsmy_semo {display: inline-block; position: absolute; right: 10px;}

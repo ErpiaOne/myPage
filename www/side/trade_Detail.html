@@ -1,11 +1,9 @@
 <ion-modal-view class="psm_login_body">
-	<ion-header-bar style="background: #8f6384;">
-		<h1 class="title" style="color: #fff">거래명세표 (총 {{detail_items.length}}page)</h1>
-		<div class="buttons">
-			<button class="button" ng-click="close()">
-				닫기
-			</button>
-		</div>
+	<ion-header-bar class="bar-dark" style="background: #8f6384; border:0;" title-align="center">
+		<div class="psmsmy_title_mo">거래명세표 (총 {{detail_items.length}}page)</div>
+	   	<div class="buttons" style="position: absolute; right: 0px;">
+	      		<i ng-click="close()"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
+	    	</div>
 	</ion-header-bar>
 	<ion-content class="padding2">
 		<ion-scroll zooming="true" direction="xy" style="width:100%; height:100%;">
@@ -357,10 +355,7 @@
 	</ion-content>
 
  	<ion-footer-bar align-title="left" style="background: #736777; text-align: center; border: 0;">
-	    <button class='button button-psm04' ng-click='tradenumber(detail_items, "sms")'>SMS 공유</button>
-	    <button class='button button-psm02' ng-click='tradenumber(detail_items, "email")' style="margin-left: 5px;">email 공유</button>
-	    <button class='button button-psm03' ng-click='tradenumber(detail_items, "kakao");' style="margin-left: 5px;">카카오톡 공유</button>
-	    <!-- <button class='button button-psm01' ng-click='html3image(detail_items, "print")'>출력하기</button> -->
+	    <button class='button button-psm04' ng-click='tradenumber(detail_items);' style="margin-left: 5px;"><i class="ion-android-share-alt" style="font-size: 20px;"></i> 공유하기</button>
 	</ion-footer-bar>
 
 </ion-modal-view>
