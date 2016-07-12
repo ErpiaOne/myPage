@@ -1,7 +1,7 @@
 <ion-view view-title="MY PAGE" cache-view="false">
 	<ion-nav-buttons side="right">
-		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/introduce');" class="button button-small button-psm00" ng-if="userType == 'Guest' ">소개</button>&nbsp;
-		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/cs');" class="button button-small button-psm00" ng-if="userType == 'Guest' ">가입상담</button>
+		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/introduce');" class="button button-small button-psm00" ng-if="userType == 'Guest' " style="line-height: 12px;">ERPia<br>소개</button>&nbsp;
+		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/cs');" class="button button-small button-psm00" ng-if="userType == 'Guest' " style="line-height: 14px;">가입<br>상담</button>
 	</ion-nav-buttons>
 
 	<ion-content class="" >
@@ -115,12 +115,12 @@
 									<tr>
 										<td style="width: 50%; text-align: center; padding: 0px 3px 0px 5px;">
 											<div style="background: #c8bece; padding: 12px; font-weight: bold; color: #444;">금일 매출액
-												<div style="font-size: 1.5em; padding-top: 5px;">{{dashBoard.M_today | number:0}}</div>
+												<div style="font-size: 1.5em; padding-top: 5px;">{{dashBoard.M_today | number:0}}<font style="font-size: 0.7em;">원</font></div>
 											</div>
 										</td>
 										<td style="width: 50%; text-align: center; padding: 0px 5px 0px 2px;">
 											<div style="background: #c8bece; padding: 12px; font-weight: bold; color: #444;">전일 매출액
-												<div style="font-size: 1.5em; padding-top: 5px;">{{dashBoard.M_before | number:0}}</div>
+												<div style="font-size: 1.5em; padding-top: 5px;">{{dashBoard.M_before | number:0}}<font style="font-size: 0.7em;">원</font></div>
 											</div>
 										</td>
 									</tr>

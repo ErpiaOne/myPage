@@ -1104,7 +1104,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 /* 거래명세표 컨트롤러 - 이경민[2016-01] */
 .controller('tradeCtrl', function($scope, $rootScope, $state, $ionicSlideBoxDelegate, $cordovaToast, $ionicModal, $ionicHistory, $location
 	, tradeDetailService, ERPiaAPI, $cordovaSocialSharing, $cordovaFileTransfer, $ionicPopup, app){
-	console.log('여기옴?', $rootScope.userType);
 	$scope.email ={
 		toemail : ''
 	};

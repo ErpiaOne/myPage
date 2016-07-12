@@ -349,3 +349,7 @@ select {-webkit-border-radius: 0; height: 35px;}
 	font-size: 12pt;
 	background: whitesmoke;
 }
+
+.title {
+	text-align: center;
+}
