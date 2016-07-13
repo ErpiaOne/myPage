@@ -1,4 +1,7 @@
-<ion-view view-title="고객센터" style="color: #fff;">
+<ion-view style="color: #fff;">
+	<ion-nav-title>
+		<div class="psmsmy_title_co">고객센터</div>
+	</ion-nav-title>
 	<ion-nav-bar>
 		<ion-nav-back-button ng-click="backbtn()">뒤로</ion-nav-back-button style="color: #fff;">
 	</ion-nav-bar>
@@ -19,9 +22,6 @@
 			      <label style="font-size: 1em; padding-left: 30px;">
 			      <input type="radio"  ng-model="searchck.mode" value="Content" ng-click="searchckclick()" style="width: 2em; height: 1.3em; vertical-align: middle;"/>
 			      내용</label>
-<!-- 				      <label ng-if="boardIndex==3">
-			      <input type="radio"  ng-model="searchck.mode" value="Writer" ng-click="searchckclick()"/>
-			      업체명</label> -->
 			   </div>
 			    <div class="item item-divider item-input-inset" style="background: #fff">
 			    <label class="item-input-wrapper" style="background: #fff;">
@@ -35,7 +35,7 @@
 				<ion-slide>
 					<ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()" style="border: 0; border-bottom: -3px; padding: 0; margin: 0;">
 						<div style="text-align:left; padding: 0 15px; background: #ececed; padding-bottom:110px;">
-							<ion-list on-swipe-up="boards_more()">
+							<ion-list>
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item" style="border-bottom: 1px solid #d6562f; background: #f9f9f9;">
@@ -43,14 +43,9 @@
 										</li>
 									</ui>
 									<pre class="Content" style="padding:15px; font-size: 0.88em; border: 1px solid #d6562f;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
-									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" >
+									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" on-swipe-up="boards_more()">
 										<li class="item" style="padding: 5px 0; background: #ded1d1; font-size: 0.8em; text-align: center;">
 										<b>더 보기를 하시려면 위로 쓸어올려주세요.</b>
-										</li>
-									</ui>
-									<ui class="list" ng-if="moreloading==1&&$last" align="center" >
-										<li class="item">
-											 <ion-spinner icon="spiral" ></ion-spinner>
 										</li>
 									</ui>
 								</ion-item>
@@ -61,7 +56,7 @@
 				<ion-slide>
 					<ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()" style="border: 0; border-bottom: -3px; padding: 0; margin: 0;">
 						<div style="text-align:left; padding: 0 15px; background: #ececed; padding-bottom:110px;">
-							<ion-list on-swipe-up="boards_more()">
+							<ion-list>
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item" style="border-bottom: 1px solid #d6562f; background: #f9f9f9;">
@@ -69,14 +64,9 @@
 										</li>
 									</ui>
 									<pre class="Content" style="padding:15px; font-size: 0.88em; border: 1px solid #d6562f;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
-									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" >
+									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" on-swipe-up="boards_more()">
 										<li class="item" style="padding: 5px 0; background: #ded1d1; font-size: 0.8em; text-align: center;">
 										<b>더 보기를 하시려면 위로 쓸어올려주세요.</b>
-										</li>
-									</ui>
-									<ui class="list" ng-if="moreloading==1&&$last" align="center">
-										<li class="item">
-											 <ion-spinner icon="spiral" ></ion-spinner>
 										</li>
 									</ui>
 								</ion-item>
@@ -87,7 +77,7 @@
 				<ion-slide>
 					<ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()" style="border: 0; border-bottom: -3px; padding: 0; margin: 0;">
 						<div style="text-align:left; padding: 0 15px; background: #ececed; padding-bottom:110px;">
-							<ion-list on-swipe-up="boards_more()">
+							<ion-list>
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item" style="border-bottom: 1px solid #d6562f; background: #f9f9f9;">
@@ -95,14 +85,9 @@
 										</li>
 									</ui>
 									<pre class="Content" style="padding:15px; font-size: 0.88em; border: 1px solid #d6562f;" ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
-									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" >
+									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" on-swipe-up="boards_more()">
 										<li class="item" style="padding: 5px 0; background: #ded1d1; font-size: 0.8em; text-align: center;">
 										<b>더 보기를 하시려면 위로 쓸어올려주세요.</b>
-										</li>
-									</ui>
-									<ui class="list" ng-if="moreloading==1&&$last" align="center">
-										<li class="item">
-											 <ion-spinner icon="spiral" ></ion-spinner>
 										</li>
 									</ui>
 								</ion-item>
@@ -114,7 +99,7 @@
 				<ion-slide>
 					<ion-content on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()" style="border: 0; border-bottom: -3px; padding: 0; margin: 0;">
 						<div style="text-align:left; padding: 0 15px; background: #ececed; padding-bottom:110px;">
-							<ion-list on-swipe-up="boards_more()">
+							<ion-list >
 								<ion-item ng-repeat="item in items" style="padding:0px;">
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item" style="padding-top: 8px; padding-bottom: 8px; border-bottom: 1px solid #d6562f; background: #f9f9f9;">
@@ -125,14 +110,9 @@
 										</li>
 									</ui>
 									<pre class="Content" style="padding:15px; font-size: 0.88em; border: 1px solid #d6562f;"ng-show="toggle_{{item.key_id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
-									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" align="center">
+									<ui class="list" ng-if="moreloading==0&&maxover==0&&$last" align="center" on-swipe-up="boards_more()">
 										<li class="item" style="padding: 5px 0; background: #ded1d1; font-size: 0.8em; text-align: center;">
 											<b>더 보기를 하시려면 위로 쓸어올려주세요.</b>
-										</li>
-									</ui>
-									<ui class="list" ng-if="moreloading==1&&$last" align="center">
-										<li class="item">
-											 <ion-spinner icon="spiral" ></ion-spinner>
 										</li>
 									</ui>
 								</ion-item>

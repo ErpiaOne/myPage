@@ -1,4 +1,7 @@
-<ion-view view-title="상담하기" hide-nav-bar="{{sideMenuHide}}">
+<ion-view view hide-nav-bar="{{sideMenuHide}}">
+	<ion-nav-title>
+		<div class="psmsmy_title_co">상담하기</div>
+	</ion-nav-title>
 	<ion-nav-buttons side="right">
 		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/introduce');" class="button button-small button-psm00" ng-if="userType == 'Guest' ">소개</button>
 	</ion-nav-buttons>

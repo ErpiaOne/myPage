@@ -101,17 +101,10 @@
 				<!-- SCM 로그인 -->
 				<div  ng-switch-when="S">
 					<div name="scm_side" class="button-bar">
-						<a class="button psm_left_mediv psm_left_box1" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/scmhome')"><img src="./img/icon_home1.png" class="psm_left_img2"><br>HOME</a>
-						<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/introduce')"><img src="./img/icon_erpia.png" class="psm_left_img2"><br>ERPia 소개</a>
-						<a class="button psm_left_mediv psm_left_box3" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/servicelist')"><img src="./img/icon_buga.png" class="psm_left_img2"><br>부가서비스</a>
+						<a class="button psm_left_mediv psm_left_box1" style="border-radius: 0;" menu-close ng-click="goHome(); sidetab('tab1')"><img src="./img/icon_home1.png" class="psm_left_img2"><br>HOME</a>
+						<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/push')"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</a>
+						<a class="button psm_left_mediv psm_left_box3" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img2"><br>홈페이지</a>
 					</div>
-
-					<div name="scm_side" class="button-bar">
-						<a class="button psm_left_mediv psm_left_box4" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/cs')"><img src="./img/icon_sang.png" class="psm_left_img2"><br>가입상담</a>
-						<a class="button psm_left_mediv psm_left_box5" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/push')"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</a>
-						<a class="button psm_left_mediv psm_left_box6" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img2"><br>홈페이지</a>
-					</div>
-
 					<div>
 						<a class="item item-icon-left navi-item" menu-close ng-click="showCheckSano()">
 							<i class="icon"><span class="psm_uplist psm_upcolor1 ion-ios-copy-outline"></span><span class="navi-item-leftText">거래명세표<br>미열람건</span><span class="navi-item-rightText" style="color:#ff0000;">{{userData.cntNotRead}} 건</span></i>
@@ -177,14 +170,9 @@
 				<!-- 일반 거래처 로그인 -->
 				<div  ng-switch-when="N">
 					<div name="scm_side" class="button-bar">
-						<a class="button psm_left_mediv psm_left_box1" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/main')"><img src="./img/icon_home1.png" class="psm_left_img2"><br>HOME</a>
-						<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/introduce')"><img src="./img/icon_erpia.png" class="psm_left_img2"><br>ERPia 소개</a>
-						<a class="button psm_left_mediv psm_left_box3" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/servicelist')"><img src="./img/icon_buga.png" class="psm_left_img2"><br>부가서비스</a>
-					</div>
-					<div name="scm_side" class="button-bar">
-						<a class="button psm_left_mediv psm_left_box4" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/cs')"><img src="./img/icon_sang.png" class="psm_left_img2"><br>가입상담</a>
-						<a class="button psm_left_mediv psm_left_box5" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/push')"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</a>
-						<a class="button psm_left_mediv psm_left_box6" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img2"><br>홈페이지</a>
+						<a class="button psm_left_mediv psm_left_box1" style="border-radius: 0;" menu-close ng-click="goHome(); sidetab('tab1')"><img src="./img/icon_home1.png" class="psm_left_img2"><br>HOME</a>
+						<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/push')"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</a>
+						<a class="button psm_left_mediv psm_left_box3" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img2"><br>홈페이지</a>
 					</div>
 					<div>
 						<a class="item item-icon-left navi-item" menu-close ng-click="showCheckSano()">

@@ -1916,16 +1916,18 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 		}
+		
 	};
 
 })
 /* SCM/NORMAL모드 비밀번호변경 Service - 김형석[2016-06-22] */
 //http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=SCM_PassChange&loginType=N&Admin_Code=onz&GerCode=00926&ID=onz&pwd=onz&changePass=1234&mac=ba8e205a02d20e66
 //http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=Normal_PassChange&Admin_Code=onz&GerCode=00926&ID=aaaa&pwd=aaaaaaa!1&changePass=1234&mac=ba8e205a02d20e66
-
+/* 비밀번호 변경전 검사 - 이경민[2016-07-13] */
+//http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=pwdSet&Admin_Code=phj9775&id=555&pwd=555&loginType=S
 .factory('PassChangeService', function($http, $q, $cordovaToast, ERPiaAPI){
-	var changepass = function(mode, Admin_Code, GerCode, UserID, G_Pass, changePass, UUID){
-			console.log(mode, Admin_Code, GerCode, UserID, G_Pass, changePass, UUID)
+	return{
+		changepass: function(mode, Admin_Code, GerCode, UserID, G_Pass, changePass, UUID){
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
 			var data = 'kind=PassChange&mode='+ mode +'&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode + '&ID='+ UserID;
 			   data  += '&pwd='  +G_Pass + '&changePass=' + changePass + '&mac=' + UUID;
@@ -1938,10 +1940,20 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});
-
+		}, changepass_YN: function(Admin_Code, UserID, G_Pass, loginType){
+			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
+			var data = 'kind=pwdSet&Admin_Code='+ Admin_Code + '&id='+ UserID +'&pwd='+ G_Pass +'&loginType=' + loginType;
+			console.log(url, '?', data);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}
 		
-	}
-	return{
-		changepass: changepass
-	}
+	};
 });

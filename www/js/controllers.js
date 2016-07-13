@@ -423,10 +423,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
 			$rootScope.loginData.loginType = 'S'; //PC모드
-			$rootScope.loginData.UserId = '1111';
-			$rootScope.loginData.Pwd = '1234';
+			$rootScope.loginData.UserId = '555';
+			$rootScope.loginData.Pwd = '555';
 //test중 일때만.......................
 		}else if(userType == 'Normal'){
 			$rootScope.loginMenu = "selectUser";
@@ -2086,6 +2086,17 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	};
 	$scope.log_list = {};
 
+	PassChangeService.changepass_YN($rootScope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.loginData.Pwd, $rootScope.userType)
+	.then(function(result){
+		var check = result.list[0].setvalue;
+		if(check == 'N'){
+			$scope.change_YN = 'N';
+		}else if(check == undefined){
+			$scope.change_YN = 'Y';
+		}
+
+	})
+
 	$ionicModal.fromTemplateUrl('config/loginLog.html', {
 		scope: $scope
 	}).then(function(modal) {
@@ -2146,9 +2157,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 	$scope.passChange=function(){
 		if($scope.changepassdata.beforepwd == $rootScope.loginData.Pwd && $scope.changepassdata.changepass == $scope.changepassdata.check_changepass && $scope.changepassdata.changepass.length >= 8 && $scope.changepassdata.changepass.length <= 12){
-			if(ERPiaAPI.toast == 'Y') {
-
-			}else{
+			if(ERPiaAPI.toast != 'Y') {
 				$rootScope.deviceInfo.uuid = 'web';
 			}
 
@@ -2194,6 +2203,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show("변경비밀번호가 일치하지 않습니다.", 'short', 'center');
 				else alert("변경비밀번호가 일치하지 않습니다.");
 		}
+
+		/* 초기화추가 - 이경민[2016-07-12] */
+		$scope.changepassdata.beforepwd = '';
+		$scope.changepassdata.changepass = '';
+		$scope.changepassdata.check_changepass = '';
 	}
 
 	$scope.get_Logfn=function(){
@@ -3007,10 +3021,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	};
    	/* 게시판더보기 버튼 클릭시 - 김형석[2016-03] */
 	$scope.boards_more = function() {
+		$rootScope.loadingani();
 		if($scope.items.length>0){
 			if($scope.maxover==0){
 				$scope.pageCnt+=1;
-				$scope.moreloading=1;
 				if($scope.searchck.SearchValue1 == '' || $scope.searchck.SearchValue1 == undefined){
 					switch($rootScope.boardIndex){
 						case 0:
@@ -3025,10 +3039,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									}else{
 										if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 										else alert('조회된 데이터가 없습니다.');
-										$scope.moreloading=0;
 										$scope.maxover = 1;
 									}
-									$scope.moreloading=0;
 								}, 1000);
 							}); break;
 
@@ -3044,10 +3056,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									}else{
 										if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 										else alert('조회된 데이터가 없습니다.');
-										$scope.moreloading=0;
 										$scope.maxover = 1;
 									}
-									$scope.moreloading=0;
 								}, 1000);
 							}); break;
 
@@ -3063,10 +3073,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									}else{
 										if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 										else alert('조회된 데이터가 없습니다.');
-										$scope.moreloading=0;
 										$scope.maxover = 1;
 									}
-									$scope.moreloading=0;
 								}, 1000);
 							}); break;
 
@@ -3082,10 +3090,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									}else{
 										if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 										else alert('조회된 데이터가 없습니다.');
-										$scope.moreloading=0;
 										$scope.maxover = 1;
 									}
-									$scope.moreloading=0;
 								}, 1000);
 							}); break;
 					}
@@ -3105,10 +3111,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									}else{
 										if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 										else alert('조회된 데이터가 없습니다.');
-										$scope.moreloading=0;
 										$scope.maxover = 1;
 									}
-									$scope.moreloading=0;
 								}, 1000);
 							}); break;
 
@@ -3126,10 +3130,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								}else{
 									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 									else alert('조회된 데이터가 없습니다.');
-									$scope.moreloading=0;
 									$scope.maxover = 1;
 								}
-								$scope.moreloading=0;
 							}, 1000);
 						}); break;
 
@@ -3147,10 +3149,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								}else{
 									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 									else alert('조회된 데이터가 없습니다.');
-									$scope.moreloading=0;
 									$scope.maxover = 1;
 								}
-								$scope.moreloading=0;
 							}, 1000);
 						}); break;
 
@@ -3168,10 +3168,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								}else{
 									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 									else alert('조회된 데이터가 없습니다.');
-									$scope.moreloading=0;
 									$scope.maxover = 1;
 								}
-								$scope.moreloading=0;
 							}, 1000);
 						}); break;
 					}
@@ -3827,7 +3825,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							'<input type="hidden" name="gu_hidden">' +
 							'<div class="direct-chat">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 13px; vertical-align: top; background: #7a6e80;">'+
-									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="makeCharts(\''+ $scope.kind +$scope.sn+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
+									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
 									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>'+
 									'<div class="pull-right">'+
 										'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
@@ -4449,23 +4447,21 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/*전표 더보기 - 김형석[2015-11]*/
 	$scope.search_more = function() {
+		$rootScope.loadingani();
 		switch($scope.searchmode){
 			case 'normal' :
 				if($scope.chit_lists.length>0){
 			  		if($scope.maxover==0){
 						$scope.pageCnt+=1;
-						$scope.moreloading=1;
 
 						MLookupService.chit_lookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams, $scope.company.name, $scope.pageCnt)
 						.then(function(data){
 							$timeout(function(){
 								$scope.maxover=0;
 								if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
-									$scope.moreloading=0;
 									$scope.maxover = 1;
 								}else{
 									if(data.list.length < 5){
-										$scope.moreloading=0;
 										$scope.maxover = 1;
 										for(var m = 0; m < data.list.length; m++){
 											$scope.chit_lists.push(data.list[m]);
@@ -4486,7 +4482,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				if($scope.chit_lists.length>0){
 			  		if($scope.maxover==0){
 						$scope.pageCnt+=1;
-					    	$scope.moreloading=1;
 
 					    	MLookupService.detailSet($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams,$scope.company, $scope.detail.Place_Code, $scope.pageCnt, $scope.todate)
 						.then(function(data){
@@ -4495,14 +4490,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								if(data == '<!--Parameter Check-->'){//조회된 결과 없을경우
 									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 									else alert('조회된 데이터가 없습니다.');
-									$scope.moreloading=0;
 									$scope.maxover = 1;
 								}else{
 									for(var m = 0; m < data.list.length; m++){
 										$scope.chit_lists.push(data.list[m]);
 									}
 								}
-								$scope.moreloading=0;
 							}, 1000);
 						})
 					}
@@ -4887,16 +4880,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	 	if(starname == 'ion-android-star-outline'){
 	 		$scope.ionstar = "ion-android-star";
 	 		var mode = 'use';
-	 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('빠른등록이 등록되었습니다.', 'short', 'center');
-			else alert('빠른등록이 등록되었습니다.');
+	 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('즐겨찾는 리스트로 등록되었습니다.', 'short', 'center');
+			else alert('즐겨찾는 리스트로 등록되었습니다.');
 
 	 	}else{
 	 		$scope.ionstar = "ion-android-star-outline";
 	 		var mode = 'unused';
 	 		var ilno = ilno;
 
-	 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('빠른등록이 해제되었습니다.', 'short', 'center');
-			else alert('빠른등록이 해제되었습니다.');
+	 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('즐겨찾는 리스트에서 해제되었습니다.', 'short', 'center');
+			else alert('즐겨찾는 리스트에서 해제되었습니다.');
 	 	}
 
 	 	MLookupService.quickReg($scope.loginData.Admin_Code, $scope.loginData.UserId, mode, no)
