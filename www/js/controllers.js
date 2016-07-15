@@ -1182,13 +1182,19 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			}
 		}else{
 			$scope.itemsN = [];
-			for(var i =0; i < $scope.items.length; i++){
-				if($scope.items[i].readYN != 'Y'){
-					$scope.itemsN.push($scope.items[i]);
+			if($scope.haveList == 'N'){
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회할 데이터가 없습니다.', 'long', 'center');
+				else alert('조회할 데이터가 없습니다.');
+			}else{
+				for(var i =0; i < $scope.items.length; i++){
+					if($scope.items[i].readYN != 'Y'){
+						$scope.itemsN.push($scope.items[i]);
+					}
 				}
+
+				$scope.items.splice(0, $scope.items.length-1);
+				$scope.items = $scope.itemsN;	
 			}
-			$scope.items.splice(0, $scope.items.length-1);
-			$scope.items = $scope.itemsN;
 		}
 	}
 
