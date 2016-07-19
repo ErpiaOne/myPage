@@ -230,19 +230,20 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			var chart = AmCharts.makeChart("meaip_jem", {
 				"type": "pie",
 				"startDuration": 1, //차트 애니메이션
- 			    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
+ 			    	"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
+ 			    	"showZeroSlices": true,		//20160622(성책추가, 마이너스 금액이 뜰경우 그래프 표현이 안되어 정보만이라도 표시)
 				"minRadius": 50,
 				"maxLabelWidth":50,
 				"titleField": "name",
 				"valueField": "value",//"value",
 				"fontSize": 12,
 				"theme": "dark",
-			    "labelsEnabled": true,
-			    "legend": {
-			      "enabled": false,
-				  "truncateLabels": 10 // custom parameter
+			    	"labelsEnabled": true,
+			    	"legend": {
+			      	"enabled": false,
+				"truncateLabels": 10 // custom parameter
 			    },
-			    "allLabels": [],
+			   	"allLabels": [],
 				"balloon": {},
 				"labelRadius": 1,
 				"dataProvider": chartData
@@ -591,12 +592,14 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"startDuration": 1, //차트 애니메이션
 			    	"theme": "dark",
 				"dataProvider": chartData,
-				"autoMarginOffset": 20,
-				"autoMargins": false,
+
+				"autoMarginOffset": 1,
+				"autoMargins": true,
 				"marginBottom": 30,
 				"marginRight": 50,
 				"marginTop": 50,
 				"marginLeft": 50,
+
 
 				"prefixesOfBigNumbers": [
 					{
@@ -765,25 +768,26 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_7&value_kind=meachul_7&admin_code=" + admin_code + "&swm_gu=" + gu)
 
 			var chart = AmCharts.makeChart("meachul_7", {
-			  "type": "serial",
-			  "startDuration": 1, //차트 애니메이션
-			  "theme": "dark",
-			  "addClassNames": true,
-			  "autoMarginOffset": 20,
-			  "autoMargins": false,
-			  "marginBottom": 30,
-			  "marginRight": 50,
-			  "marginTop": 50,
-			  "marginLeft": 50,
+			"type": "serial",
+			"startDuration": 1, //차트 애니메이션
+			"theme": "dark",
+			"addClassNames": true,
 
-			  "mouseWheelScrollEnabled": false,
-			  "balloon": {
+			"autoMarginOffset": 1,
+			"autoMargins": true,
+			"marginBottom": 30,
+			"marginRight": 50,
+			"marginTop": 50,
+			"marginLeft": 50,
+
+			"mouseWheelScrollEnabled": false,
+			"balloon": {
 				"adjustBorderColor": false,
 				"horizontalPadding": 10,
 				"verticalPadding": 8,
 				"startDuration": 1,
 				"color": "#ffffff"
-			  },
+			},
 				"prefixesOfBigNumbers": [
 							{
 								"number": 10000,
@@ -830,7 +834,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"alphaField": "alpha",
 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span>",
 					"fillAlphas": 1,
-					"title": "금액",
+					"title": "금액(취소반품 제외)",
 					"type": "column",
 					"valueField": "value",
 					"dashLengthField": "dashLengthColumn",
@@ -848,7 +852,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"bulletBorderThickness": 3,
 					"fillAlphas": 0,
 					"lineAlpha": 1,
-					"title": "수량",
+					"title": "수량(취소반품 제외)",
 					"valueField": "su",
 					"valueAxis": "ValueAxis-2",
 					"startDuration": 1,
@@ -858,7 +862,8 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				  "categoryAxis": {
 					"gridPosition": "start",
 					"axisAlpha": 0,
-					"tickLength": 0
+					"tickLength": 0,
+					"size": 8
 				  },
 				  "export": {
 					"enabled": true
@@ -1029,8 +1034,8 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"startDuration": 1, //차트 애니메이션
 					"theme": "dark",
 
-					"autoMarginOffset": 20,
-					"autoMargins": false,
+					"autoMarginOffset": 1,
+					"autoMargins": true,
 
 					"marginBottom": 60,
 					"marginRight": 50,
@@ -1589,8 +1594,9 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			  "startDuration": 1, //차트 애니메이션
 			  "addClassNames": true,
 			  "theme": "dark",
-			  "autoMarginOffset": 20,
-			  "autoMargins": false,
+			  
+			  "autoMarginOffset": 1,
+			  "autoMargins": true,
 			  "marginBottom": 30,
 			  "marginRight": 50,
 			  "marginTop": 50,

@@ -9,16 +9,16 @@ td button{border:0; background:white; font-size:20px}
 
 table tbody{width:100%;}
 td.resulttd1-1{width:10%; border-bottom:1px solid black; vertical-align:middle}
-td.resulttd1-2{padding-left:5px; width:25%}
-td.resulttd1-3{width:40%}
-td.resulttd1-4{width:20%; padding-right:15px; border-bottom:1px solid black}
-td.resulttd2-1{width:55% ; padding-bottom:10px; padding-left:5px; border-bottom:1px solid black;}
+td.resulttd1-2{padding-left:5px; width:22%; }
+td.resulttd1-3{width:36%}
+td.resulttd1-4{width:32%; padding-right:15px; border-bottom:1px solid black}
+td.resulttd2-1{width:58% ; padding-bottom:10px; padding-left:5px; border-bottom:1px solid black;}
 div.footbtn{margin-top:600px}
 div.footbtn button{position:relative; z-index:1000;}
-div.col1{width:20%; border-right: #BDBDBD 2px solid; text-align:center; color: #fff;}
-div.col2{width:5%;}
-div.col3{width:45%; color: #fff;}
-div.col4{width:30%; color: #fff;}
+div.col1{width:12%; border-right: #BDBDBD 2px solid; text-align:center; color: #fff;}
+div.col2{}
+div.col3{width:44%; color: #fff;}
+div.col4{width:44%; color: #fff;}
 </style>
 
 <ion-view cache-view="false">
@@ -29,22 +29,22 @@ div.col4{width:30%; color: #fff;}
 		<div class="item" style="background: #5e6472; border:0; padding-top:15px;">
 			<div  style="clear: both; width:100%">
 				<div style="float: left; width:14%; padding-top:6px; color: #fff;"> 검 색 </div>
-				<div style="float: left; width:76%;">
+				<div style="float: left; width:70%;">
 					<input type="text" ng-model="company.username" ng-click='company_lately()' placeholder="거래처명 입력" style="width: 100%; height: 30px; background: #5e6472; border:0; border-bottom: 1px solid #fff; color: #fff; padding-right: 50px;" ng-change="company_auto()">
 					<li class="item" ng-repeat="x in companyDatas" ng-click="company_Func(x.G_Name,x.G_Code,x.G_GDamdang)">{{x.G_Name}}</li>
 					<li class="item" ng-repeat="x in companylatelyDatas" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code,x.G_GDamdang)">{{x.Search_Ger_Name}}</li>
 				</div>
-				<div style="float: left; width:10%; margin-left: -4px;">
-					<i class='ion-android-close' style='margin-left:-40px; font-size: 27px; color:#fff' ng-click='clearcompany()'></i>
+				<div style="float: left; width:10%; margin-left:-30px;">
+					<i class='ion-android-close' style='font-size: 27px; color:#fff' ng-click='clearcompany()'></i>
 				</div>
 			</div>
 			<div style="clear: both; width:100%; padding-top:10px;">
 				<div style="float: left; width:14%; padding-top:9px; color: #fff;"> 일 자 </div>
-				<div style="float: left; width:36%;">
+				<div style="float: left; width:33%;">
 					<input type="date" ng-model="date.sDate1" ng-change="mydate1(date.sDate1)" style="width: 100%; height: 30px; background: #5e6472; border:0; border-bottom: 1px solid #fff; color: #fff;">
 				</div>
 				<div style="float: left; width:4%; padding-top:5px; color: #fff;"> ~ </div>
-				<div style="float: left; width:36%;">
+				<div style="float: left; width:33%;">
 					<input type="date" ng-model="date.eDate1" ng-change="mydate2(date.eDate1)" style="width: 100%; height: 30px; background: #5e6472; border:0; border-bottom: 1px solid #fff; color: #fff;">
 				</div>
 			</div>
@@ -52,30 +52,30 @@ div.col4{width:30%; color: #fff;}
 		</div>
 
 		<div align="center" style="width:100%; clear: both; margin-top:10px;">
-			<button class="button button-small button-psm01" ng-click="sear_day(0)" style="width:24%">금일</button>
-			<button class="button button-small button-psm02" ng-click="sear_day(7)" style="width:24%">1주일</button>
-			<button class="button button-small button-psm03" ng-click="sear_day(30)" style="width:24%">1개월</button>
-			<button class="button button-small button-psm04" ng-click="detailSet_openModal()" style="width:24%">상세조회</button>
+			<button class="button button-small button-psm04" ng-click="sear_day(0)" style="width:23.1%">금일</button>
+			<button class="button button-small button-psm04" ng-click="sear_day(7)" style="width:23.1%">1주일</button>
+			<button class="button button-small button-psm04" ng-click="sear_day(30)" style="width:23.1%">1개월</button>
+			<button class="button button-small button-psm01" ng-click="detailSet_openModal()" style="width:23.1%">상세조회</button>
 		</div>
 
-		<div class="padding" style="padding-bottom: 100px;">
-			<table style="border-top: 1px solid #e0e0e0; background: #fff; font-size: 0.9em;">
+		<div class="padding" style="padding-bottom: 170px;">
+			<table style="border-top: 1px solid #e0e0e0; background: #ebeded; font-size: 0.85em;">
 				<thead>
-					<th style="width:10%; padding-top:5px; padding-bottom:5px;" align="center">No</th>
-					<th style="width:30%; padding-top:5px; padding-bottom:5px;" align="center">매출일</th>
-					<th style="width:30%; padding-top:5px; padding-bottom:5px;" align="center">업체명</th>
-					<th style="width:30%; padding-top:6px; padding-bottom:5px; padding-right: 17px;" align="right">금액</th>
+					<th style="width:10%; padding-top:6px; padding-bottom:5px;" align="center">No</th>
+					<th style="width:20%; padding-top:6px; padding-bottom:5px;" align="center">매출일</th>
+					<th style="width:30%; padding-top:6px; padding-bottom:5px;" align="center">업체명</th>
+					<th style="width:40%; padding-top:6px; padding-bottom:5px; padding-right: 17px;" align="right">금액</th>
 				</thead>
 			</table>
 
 			<any ng-repeat="x in chit_lists" >
-				<table on-swipe-up="search_more(searchmode)" style="border-top: 1px solid #e0e0e0; font-size: 0.93em; background: #fff">
+				<table on-swipe-up="search_more(searchmode)" style="border-top: 1px solid #e0e0e0; font-size: 0.85em; background: #fff">
 					<tbody ng-click="chit_de(x.Sl_No)">
 						<tr>
 							<td class="resulttd1-1" rowspan="2" align="center" style="padding-top: 8px;">{{$index+1}}.</td>
 							<td class="resulttd1-2" align="left" style="padding-top: 8px;">{{x.MeaChul_date}}</td>
 							<td class="resulttd1-3" align="left" style="padding-top: 8px;"><b>{{x.GerName}}</b></td>
-							<td class="resulttd1-4" rowspan="2" align="right" style="padding-top: 8px;">{{x.MeaChul_Amt| number:0}}원</td>
+							<td class="resulttd1-4" rowspan="2" align="right" style="padding-top: 8px; vertical-align: middle;">{{x.MeaChul_Amt| number:0}}원</td>
 						</tr>
 						<tr>
 							<td colspan="2" class="resulttd2-1" align="left">{{x.G_Name}}<br></td>
@@ -90,16 +90,28 @@ div.col4{width:30%; color: #fff;}
 	</ion-content>
 
 	<div class="hide-on-keyboard-open" style="position: fixed; right: 10px; bottom: 115px;">
-		<i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='meaipchul_i()'></i>&nbsp;&nbsp;
 		<i class='ion-android-star-outline' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='quickReg()'></i>&nbsp;&nbsp;
+		<i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='meaipchul_i()'></i>&nbsp;&nbsp;
 		<i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:3.2em; color: #6c5e72; top:2px;" ng-click='scrollTop()'></i>&nbsp;&nbsp;
 	</div>
 
-	<ion-footer-bar class="hide-on-keyboard-open" align-title="left" style="background: #736777; height: 20px; padding-bottom: 100px;" width="100%">
-		<div class="col1" >기간<br>현황</div>
-		<div class="col2">&nbsp;</div>
-		<div class="col3" style="font-size:12px;">매출액 {{money.meaipchulsum | number:0}}원<br><any ng-if='balance == true'>입금액 {{chit_atmSum | number:0}}원</any></div>
-		<div class="col4" ng-if='balance == true' style="font-size:10px; margin-left:-48px;">이월잔액 {{money.emoon | number:0}}원<br>총잔액 {{money.hap | number:0}}원</div>
-	</ion-footer-bar>
+	<div class="hide-on-keyboard-open" style="width: 100%; position: fixed; bottom: 55px; left: 0; background: #736777; padding: 5px 0;">
+		<table style="width: 100%; font-size: 0.85em; color: #fff;">
+			<tr>
+				<td rowspan="2" style="width: 13%; text-align: center;">기간<br>현황</td>
+				<td style="width: 12%; text-align: left;">매출액</td>
+				<td style="width: 26%; text-align: right;">{{money.meaipchulsum | number:0}}원</td>
+				<td rowspan="2" style="width: 5%;"></td>
+				<td style="width: 15%; text-align: left;"><span ng-if='balance == true'>이월잔액</span></td>
+				<td style="width: 29%; text-align: right; padding-right: 13px;"><span ng-if='balance == true'>{{money.emoon | number:0}}원</span></td>
+			</tr>
+			<tr>
+				<td style="text-align: left;"><span ng-if='balance == true'>입금액</span></td>
+				<td style="text-align: right;"><span ng-if='balance == true'>{{chit_atmSum | number:0}}원</span></td>
+				<td style="text-align: left;"><span ng-if='balance == true'>총잔액</span></td>
+				<td style="text-align: right; padding-right: 13px;"><span ng-if='balance == true'>{{money.hap | number:0}}원</span></td>
+			</tr>
+		</table>
+	</div>
 
 </ion-view>

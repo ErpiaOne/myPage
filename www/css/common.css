@@ -94,8 +94,9 @@ select {-webkit-border-radius: 0; height: 35px;}
 	width: 20%;
 	font-size: 0.9em;
 	vertical-align: middle;
-	text-align: center;
-	cursor:pointer
+	text-align: right;
+	padding-right: 10px;
+	cursor:pointer;
 }
 
 
@@ -217,7 +218,7 @@ select {-webkit-border-radius: 0; height: 35px;}
 .psm_segum19 {width:22%; text-align: center; vertical-align: middle;}
 .psm_segum20 {width:55%; text-align: center; vertical-align: middle;}
 .psm_segum21 {width:10%; text-align: center; vertical-align: middle;}
-.psm_segum22 {width:70%; text-align: left; vertical-align: middle;}
+.psm_segum22 {width:70%; text-align: left; vertical-align: middle; font-size: 0.8em;}
 
 
 
@@ -228,6 +229,9 @@ select {-webkit-border-radius: 0; height: 35px;}
 .psm_segum34 {width:30%; text-align: right; vertical-align: middle; padding-right:10px;}
 .psm_segum35 {width:55%; text-align: left; vertical-align: middle; padding-left: :10px; overflow-x: hidden;}
 
+.psm_segum41 {width:18%; text-align: center; vertical-align: middle; font-size: 0.8em;}
+.psm_segum42 {width:52%; text-align: left; vertical-align: middle; font-size: 0.8em;}
+.psm_segum43 {width:30%; text-align: right; vertical-align: middle; font-size: 0.8em; padding-right: 12px;}
 
 
 
@@ -359,3 +363,16 @@ select {-webkit-border-radius: 0; height: 35px;}
 .psmsmy_close {margin-top: -4px;}
 
 .psmsmy_semo {display: inline-block; position: absolute; right: 10px;}
+
+
+.popup-head {
+  background-color : #ccc;
+  font-weight: bold;
+}
+
+.list .item-checkbox .checkbox-icon    {
+  color: #fff;
+  padding: 0;
+  margin: 0;
+}
+

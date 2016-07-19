@@ -121,6 +121,7 @@ angular.module('starter.services', [])
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
 			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+			console.log('여기오니?=>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response;
@@ -265,6 +266,17 @@ angular.module('starter.services', [])
 		})
 	}
 
+	/* 인증코드요청시  - 김형석 */
+	var certifyde = function(Admin_Code, loginType, ID,  rec_num, UUID){
+			url = ERPiaAPI.url + '/Json_Proc_Mobile_Erpia.asp';
+			var data = 'kind=F_Certify_delete&loginType='+loginType+'&Admin_Code='+Admin_Code+'&id='+ID+'&hp='+rec_num+'&mac=' + UUID;
+			
+		console.log(url,'?',data);
+		return $http.get(url + '?' + data).success(function(response){
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증 취소.', 'long', 'center');
+		})
+	}
+
 	/* 인증번호비교 - 김형석 */
 	var check = function(Admin_Code, loginType, ID, G_Code, Input_Code, rec_num, UUID){
 		var data ='';
@@ -293,6 +305,7 @@ angular.module('starter.services', [])
 	}
 	return{
 		certify: certify,
+		certifyde: certifyde,
 		check: check
 	}
 })
@@ -544,22 +557,22 @@ angular.module('starter.services', [])
 					for(var i=0; i<response.data.list.length; i++){
 						switch(response.data.list[i].Idx){ 
 							case "0": response.data.list[i].title = titles[0].title; response.data.list[i].icon = 'ion-home'; break;
-							case "1": response.data.list[i].title = titles[1].title; response.data.list[i].icon = 'ion-earth'; break;
+							case "1": response.data.list[i].title = titles[1].title; response.data.list[i].icon = 'ion-social-buffer'; break;
 							case "2": response.data.list[i].title = titles[2].title; response.data.list[i].icon = 'ion-monitor'; break;
 							case "3": response.data.list[i].title = titles[3].title; response.data.list[i].icon = 'ion-pricetags'; break;
 							case "4": response.data.list[i].title = titles[4].title; response.data.list[i].icon = 'ion-cube'; break;
 							case "5": response.data.list[i].title = titles[5].title; response.data.list[i].icon = 'ion-stats-bars'; break;
 							case "6": response.data.list[i].title = titles[6].title; response.data.list[i].icon = 'ion-clipboard'; break;
-							case "7": response.data.list[i].title = titles[7].title; response.data.list[i].icon = 'ion-ios-cloud-upload'; break;
-							case "8": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-android-boat'; break;
+							case "7": response.data.list[i].title = titles[7].title; response.data.list[i].icon = 'ion-android-exit'; break;
+							case "8": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-share'; break;
 							case "9": response.data.list[i].title = titles[9].title; response.data.list[i].icon = 'ion-android-bus'; break;
 							case "10": response.data.list[i].title = titles[10].title; response.data.list[i].icon = 'ion-pie-graph'; break;
 							case "11": response.data.list[i].title = titles[11].title; response.data.list[i].icon = 'ion-arrow-swap'; break;
-							case "12": response.data.list[i].title = titles[12].title; response.data.list[i].icon = 'ion-log-out'; break;
+							case "12": response.data.list[i].title = titles[12].title; response.data.list[i].icon = 'ion-arrow-return-left'; break;
 							case "13": response.data.list[i].title = titles[13].title; response.data.list[i].icon = 'ion-person-stalker'; break;
-							case "14": response.data.list[i].title = titles[14].title; response.data.list[i].icon = 'ion-log-in'; break;
+							case "14": response.data.list[i].title = titles[14].title; response.data.list[i].icon = 'ion-ios-download'; break;
 							case "15": response.data.list[i].title = titles[15].title; response.data.list[i].icon = 'ion-loop'; break;
-							case "16": response.data.list[i].title = titles[16].title; response.data.list[i].icon = 'ion-plane';break;
+							case "16": response.data.list[i].title = titles[16].title; response.data.list[i].icon = 'ion-android-open';break;
 						}
 					}
 					return response.data.list;	
@@ -1031,7 +1044,7 @@ angular.module('starter.services', [])
 						// if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되어있는 초기값이 없습니다.', 'short', 'center');
 						// else console.log('저장되어있는 초기값이 없습니다.');
 						var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-						var datas = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=insert&basic_Ch_Code=101&basic_Place_Code=000&basic_Dn_Meaip=0&basic_Dn_Sale=0&basic_Subul_Sale=1&basic_Subul_Sale_Before=N&basic_Subul_Meaip=1&basic_Subul_Meaip_Before=N';
+						var datas = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=insert&basic_Ch_Code=101&basic_Place_Code=-1&basic_Dn_Meaip=0&basic_Dn_Sale=0&basic_Subul_Sale=1&basic_Subul_Sale_Before=N&basic_Subul_Meaip=1&basic_Subul_Meaip_Before=N';
 						return $http.get(url + '?' + datas).then(function(response){
 							var data = {
 								state : 0,
@@ -1691,7 +1704,6 @@ angular.module('starter.services', [])
 
 		}, i_data : function(admin_code, userid, pay, paylist, date, goods, setup, datas){				// 매입&매출 등록
 			console.log("MiuService and i_data");
-
 			/*매입등록*/
 			if($rootScope.distinction == 'meaip'){
 				var kind = 'ERPia_Meaip_Insert_Goods';
@@ -1825,6 +1837,37 @@ angular.module('starter.services', [])
 				}, function(response){
 					return $q.reject(response.data);
 				})
+
+		}, subulupdate : function(admin_code, userid, subul){			// 최근 등록 수분 환경설정에 업데이트
+			console.log("MiuService and subulupdate");
+
+
+			if($rootScope.distinction == 'meaip'){
+				if(subul== 111){
+					var su = 'I';
+				}else{
+					var su = 'B';
+				}
+				var datas = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=update_subul_before&basic_Subul_Sale_Before=&basic_Subul_Meaip_Before='  + su;
+			}else{
+				if(subul == 221){
+					var su = 'C';
+				}else{
+					var su = 'B';
+				}
+				var datas = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=update_subul_before&basic_Subul_Sale_Before='+ su+'&basic_Subul_Meaip_Before=';
+			} 
+
+			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+			return $http.get(url + '?' + datas).then(function(response){
+				if(typeof response == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})	
 
 		}, seq_del : function(admin_code, userid, no, seq){			// 상품T 삭제
 			console.log("MiuService and seq_del==>");

@@ -115,12 +115,20 @@
 </ion-content>
 
 <ion-footer-bar align-title="left" style="background: #736777; padding-bottom: 100px;">
-<div align="center" class="footerdiv">
+<div class="footerdiv" style="width: 100%;">
 	<any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
-		<button class="button button-psm01" ng-click="m_quick(x.Sl_No,ionstar)"><i class="button button-icon button-clear {{ionstar}} starbtn" menu-close></i>즐겨찾기</button>
-		<button class="button button-psm02" ng-controller="tradeCtrl" ng-click='readTradeDetail(x.Sl_No,2)'>거래명세서</button>
-		<button class="button button-psm03" ng-click="chitDeleteF(x.Sl_No)">삭제</button>
-		<button class="button button-psm04" ng-click="meaipchul_u(x.Sl_No)">수정</button>
+		<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+          <tr>
+            <td style="text-align: left;">
+                <button class="button button-psm02" ng-click="chitDeleteF(x.Sl_No)">삭제</button>
+            </td>
+            <td style="text-align: right">
+                <button class="button button-psm01" ng-click="m_quick(x.Sl_No,ionstar)"><i class="button button-icon button-clear {{ionstar}} starbtn" style="color: {{starcss}}" menu-close></i>즐겨찾기</button>
+                <button class="button button-psm03" ng-controller="tradeCtrl" ng-click='readTradeDetail(x.Sl_No,2)'>거래명세서</button>
+                <button class="button button-psm04" ng-click="meaipchul_u(x.Sl_No)">수정</button>
+            </td>
+          </tr>
+        </table>
 	</any>
 </div>
 </ion-footer-bar>

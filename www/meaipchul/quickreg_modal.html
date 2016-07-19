@@ -15,11 +15,14 @@
 		<div style="height: 23px;"></div>
 	</ion-content>
 
-	<ion-footer-bar align-title="left" class="bar-assertive" style="background: #988e9a; border: 0;">
-		<div class="buttons" ng-click="closemodesear()"><button class="button button-psm02" ng-click="quickde()">삭제</button></div>
-		<h1 class="title"></h1>
-		<div class="buttons"><button class="button  button-psm01" ng-click="quick_i()">등록</button></div>
-	</ion-footer-bar>
+	<ion-footer-bar style="width: 100%; background: #736777; border: 0; ">
+	    <table style="width: 100%;">      
+	      <tr>
+	        <td style="text-align: left;"><button class="button button-psm02" ng-click="quickde();closemodesear()">삭제</button></td>
+	        <td style="text-align: right;"><button class="button  button-psm01" ng-click="quick_i()">등록</button></td>
+	      </tr>
+	    </table>
+	  </ion-footer-bar>
 </ion-modal-view>
 
 

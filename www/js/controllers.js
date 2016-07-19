@@ -134,7 +134,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 로그인 설명 - 김형석[2016-01] */
 	$scope.loginhelper = function(){
 		 $ionicPopup.alert({
-		         title: '로그인도움말',
+		         title: '<b>로그인도움말</b>',
 		         subTitle: '',
 		         content: '1.[ERPia]<br> ERPia 고객사 접속 경로입니다.<br><br>2.[SCM]<br> ERPia의 Web SCM 사용 거래처 접속 경로입니다.<br><br>3.[거래명세서]<br> ERPia 고객사의 거래처 접속 경로입니다.<br><br>4.[체험하기]<br> 모바일 ERPia를 체험해볼 수 있습니다.'
 		 })
@@ -397,8 +397,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 //test중 일때만.......................
 			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
 			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'test1234';
-			$rootScope.loginData.Pwd = 'test1234!';
+			$rootScope.loginData.UserId = 'kmtest	';
+			$rootScope.loginData.Pwd = 'kmtest1!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -944,6 +944,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		if($rootScope.userType == 'ERPia') $location.href = '#/slidingtab'; //$state.go('app.slidingtab');
 		else if($rootScope.userType == 'Guest') $location.href = '#/slidingtab'; //$state.go('app.sample_Main');
 	}
+
+	$scope.close_cert_de = function(){
+			CertifyService.certifyde($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)
+			.then(function(response){
+				
+			})
+	}
+
 	/* 인증 모달 닫기 함수 - 이경민[2016-01] */
 	$scope.close_cert = function(){
 		$scope.certificationModal.hide();
@@ -1771,22 +1779,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
    	$scope.currentversion='';
 
    	/* 공지사항 세모표시 - 이경민[2016-07-12] */
-   	$scope.upAnddown = 'ion-arrow-up-b';
-	$scope.upAnddown2 = 'ion-arrow-up-b';
+   	$scope.upAnddown = 'ion-arrow-down-b';
+	$scope.upAnddown2 = 'ion-arrow-down-b';
 
 	/* 세모아이콘 위로 아래로 - 이경민[2016-07-12] */
 	$scope.upAnddownF = function(num){
 		if(num == 1){
-			if($scope.upAnddown == 'ion-arrow-up-b'){
-				$scope.upAnddown = 'ion-arrow-down-b';
+			if($scope.upAnddown == 'ion-arrow-down-b'){
+				$scope.upAnddown = 'ion-arrow-up-b';
 			}else{
-				$scope.upAnddown = 'ion-arrow-up-b'
+				$scope.upAnddown = 'ion-arrow-down-b'
 			}
 		}else{
-			if($scope.upAnddown2 == 'ion-arrow-up-b'){
-				$scope.upAnddown2 = 'ion-arrow-down-b';
+			if($scope.upAnddown2 == 'ion-arrow-down-b'){
+				$scope.upAnddown2 = 'ion-arrow-up-b';
 			}else{
-				$scope.upAnddown2 = 'ion-arrow-up-b'
+				$scope.upAnddown2 = 'ion-arrow-down-b'
 			}
 		}
 	}
@@ -2333,20 +2341,23 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	    		AmCharts.addInitHandler(function(kind) {
 			//kind.height = containerwidth
 			if (kind.dataProvider === undefined || kind.dataProvider.length === 0) {
-			// add some bogus data
+
 			var dp = {};
 			dp[kind.titleField] = "";
 			dp[kind.valueField] = 1;
+			dp[kind.categoryField] = '';
 			kind.dataProvider.push(dp)
 
 			var dp = {};
 			dp[kind.titleField] = "";
 			dp[kind.valueField] = 1;
+			dp[kind.categoryField] = '';
 			kind.dataProvider.push(dp)
 
 			var dp = {};
 			dp[kind.titleField] = "";
 			dp[kind.valueField] = 1;
+			dp[kind.categoryField] = '';
 			kind.dataProvider.push(dp)
 
 			kind.labelsEnabled = false;
@@ -2359,65 +2370,114 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}, ["serial"]);
 	    	}
 	    		var chart = AmCharts.makeChart("chart5", {
-			   theme: "dark",
-				type: "serial",
-				dataProvider: chartData,
-				startDuration: 1,
-				prefixesOfBigNumbers: [
-					{
-						"number": 10000,
-						"prefix": ""
-					}
+			   	"type": "serial",
+				"addClassNames": true,
+				"theme": "dark",
+				"autoMarginOffset": 20,
+				"autoMargins": true,
+				"marginBottom": 40,
+				"marginRight": 50,
+				"marginTop": 50,
+				"marginLeft": 50,
+
+				"balloon": {
+					"adjustBorderColor": false,
+					"horizontalPadding": 10,
+					"verticalPadding": 8,
+					"color": "#ffffff"
+				  },
+				"prefixesOfBigNumbers": [
+							{
+								"number": 10000,
+								"prefix": ""
+							}
 				],
-				valueAxes: [
+				"dataProvider": chartData,
+				"valueAxes": [
+						{
+							"id": "ValueAxis-1",
+							//"title": "금액",
+							"titleRotation": 0,
+							"usePrefixes": true,
+							"position": "left"
+						},
+						{
+							"id": "ValueAxis-2",
+							//"title": "수량",
+							"titleRotation": 0,
+							"precision" : 0,
+							"position": "right"
+						}
+					],
+				"allLabels": [
 					{
-						id: "ValueAxis-1",
-						title: "금액\n(만원)",
-						titleRotation: 0,
-						usePrefixes: true
+						"id": "ValueAxis-1",
+						"text": "금액(만원)",
+						"bold": true,
+						"size": 12,
+						"x": 20,
+						"y": 20
 					},
 					{
-						id: "ValueAxis-2",
-						title: "수량",
-						titleRotation: 0,
-						position: "right"
+						"id": "ValueAxis-2",
+						"text": "수량(개)",
+						"bold": true,
+						"size": 12,
+						"align": "right",
+						"x": "98%",
+						"y": 20
 					}
 				],
-				graphs: [{
-					balloonText: "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 개</span>",
-					fillAlphas: 0.9,
-					lineAlpha: 0.2,
-					title: "수량",
-					type: "column",
-					valueAxis: "ValueAxis-2",
-					valueField: "su"
-				}, {
-					balloonText: "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span>",
-					fillAlphas: 0.9,
-					lineAlpha: 0.2,
-					title: "금액",
-					type: "column",
-					clustered:false,
-					columnWidth:0.5,
-					valueAxis: "ValueAxis-1",
-					valueField: "value"
-				}],
-				plotAreaFillAlphas: 0.1,
-				categoryField: "name",
-				categoryAxis: {
-					gridPosition: "start",
-					autoRotateAngle : 0,
-					autoRotateCount: 1,
-				},
-				export: {
-					enabled: true
-				 },
-                legend: {
-                    align: "center",
-                    markerType: "circle",
-					balloonText : "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>"
+				"startDuration": 1,
+				  "graphs": [{
+					"id": "graph1",
+					"alphaField": "alpha",
+					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span>",
+					"fillAlphas": 1,
+					"title": "금액",
+					"type": "column",
+					"valueField": "value",
+					"dashLengthField": "dashLengthColumn",
+					"ValueAxis": "ValueAxis-1"
+				  }, {
+					"id": "graph2",
+					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 개</span>",
+					"bullet": "round",
+					"lineThickness": 3,
+					"bulletSize": 7,
+					"bulletBorderAlpha": 1,
+					"bulletColor": "#FFFFFF",
+					"useLineColorForBulletBorder": true,
+					"bulletBorderThickness": 3,
+					"fillAlphas": 0,
+					"lineAlpha": 1,
+					"title": "수량",
+					"valueField": "su",
+					"valueAxis": "ValueAxis-2",
+					"position" : "right"
+				  }],
+				"categoryField": "name",
+				  "categoryAxis": {
+					"gridPosition": "start",
+					"axisAlpha": 0,
+					"tickLength": 0
+				  },
+				  "export": {
+					"enabled": true
+				  },
+                "legend": {
+					"enabled": true,
+					"autoMargins": true,
+					"bottom": 0,
+					"top": 0,
+					"left": 0,
+					"right": 0,
+					"verticalGap": 0,
+                    "align": "center",
+                    "markerType": "circle",
+					"balloonText" : "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>"
                 }
-		});
+			});
 	    })
 	}
 	$scope.load_scm_chart();
@@ -3654,12 +3714,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.load_home_chart = function(){
 		var chartData = "";
 		chartData = AmCharts.loadJSON(ERPiaAPI.url+ "/JSon_Proc_graph.asp?kind=Meachul_halfyear&value_kind=Meachul_halfyear&admin_code=" + $scope.loginData.Admin_Code, 'home')
-		console.log('====>', chartData);
 		var chart = AmCharts.makeChart("chart0",
 		{
 			"type": "serial",
 			"categoryField": "category",
 			"startDuration": 1,
+			"autoMarginOffset": 1,
+			"autoMargins": true,
+			"marginBottom": 30,
+			"marginRight": 50,
+			"marginTop": 50,
+			"marginLeft": 50,
+
 			"categoryAxis": {
 				"gridPosition": "start"
 			},
@@ -3693,8 +3759,35 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}
 			],
 				"guides": [],
-				"allLabels": [],
+				"valueAxes": [
+					{
+//						"id": "ValueAxis-1",
+//						"stackType": "regular",
+//						"title": "Axis title"
+						"id": "ValueAxis-1",
+						"title": "",
+						"titleRotation": 0,
+						"usePrefixes": true,
+						"position": "left"
+					}
+				],
+				"allLabels": [
+					{
+						"id": "ValueAxis-1",
+						"text": "금액(만원)",
+						"bold": true,
+						"size": 12,
+						"x": 20,
+						"y": 40
+					}
+				],
 				"balloon": {},
+				"prefixesOfBigNumbers": [
+							{
+								"number": 10000,
+								"prefix": ""
+							}
+				],
 				"legend": {
 					"enabled": true,
 					"align": "center",
@@ -3706,7 +3799,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					{
 						"id": "Title-1",
 						"size": 15,
-						"text": ""
+						"text": "최근 6개월 매출액"
 					}
 				],
 				"dataProvider": chartData
@@ -4011,23 +4104,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		.then(function(data){
 			$rootScope.mejanglists = data.list;
 
-			/*이알피아 매장값 조회 - 이경민*/
-			MconfigService.erpia_basicM($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
-			.then(function(data){
-				var basicMeajang_code = data.list[0].basic_Place_Code;
-				if(basicMeajang_code == null || basicMeajang_code.length == undefined || basicMeajang_code == ''){
-					$rootScope.setupData.basic_Place_Code = '000';
-				}else{
-					for(var i=0; i < $rootScope.mejanglists.length; i++ ){
-						$rootScope.setupData.basic_Place_Code = basicMeajang_code;
-						if($rootScope.mejanglists[i].Sale_Place_Code == basicMeajang_code){
-							$rootScope.mejang2 = $rootScope.mejanglists[i];
-							$rootScope.mejanglists.splice(0,$rootScope.mejanglists.length);
-							$rootScope.mejanglists.push($rootScope.mejang2);
-							break;
-						}
-					}
-				}
+		
 				/*기본 창고조회 - 이경민*/
 				MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
 				.then(function(data){
@@ -4043,7 +4120,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						$rootScope.setupData.basic_Ch_Code = '000';
 					}
 				})
-			})
 
 		})
 
@@ -4066,7 +4142,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/*뒤로 -> 취소 & 수정 & 저장 - 이경민[2015-12]*/
 	$scope.configback=function(){
 		$ionicPopup.show({
-			title: '경고',
+			title: '<b>경고</b>',
 			subTitle: '',
 			content: '저장하시겠습니까?',
 			buttons: [
@@ -4862,8 +4938,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.chit_dedata = data.list;
 		if($scope.chit_dedata[0].MobileQuickReg == 'N'){
 			$scope.ionstar = "ion-android-star-outline";
+			$scope.starcss = '#aca5b5';
 		}else{
 			$scope.ionstar = "ion-android-star";
+			$scope.starcss = '#f6be5c';
 		}
 		//매장미지정일 경우
 		if($scope.chit_dedata[0].Sale_Place_Name == null){
@@ -4885,12 +4963,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.m_quick = function(no,starname){
 	 	if(starname == 'ion-android-star-outline'){
 	 		$scope.ionstar = "ion-android-star";
+	 		$scope.starcss = '#f6be5c';
+
 	 		var mode = 'use';
 	 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('즐겨찾는 리스트로 등록되었습니다.', 'short', 'center');
 			else alert('즐겨찾는 리스트로 등록되었습니다.');
 
 	 	}else{
 	 		$scope.ionstar = "ion-android-star-outline";
+	 		$scope.starcss = '#aca5b5';
 	 		var mode = 'unused';
 	 		var ilno = ilno;
 
@@ -5106,9 +5187,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.basictype=true;
 	$scope.basic2type=false;
 	$scope.basic3type=false;
-	$scope.upAnddown="ion-arrow-down-b";
-	$scope.upAnddown2="ion-arrow-up-b";
-	$scope.upAnddown3="ion-arrow-up-b";
+	$scope.upAnddown="ion-arrow-up-b";
+	$scope.upAnddown2="ion-arrow-down-b";
+	$scope.upAnddown3="ion-arrow-down-b";
 
 	/*거래처 객체 - 이경민[2015-12]*/
 	$scope.datas = {
@@ -5159,46 +5240,53 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     		userMode : 'Select_GoodsName'
     	};
 
+    	$scope.subul = [
+		{checked : false},
+		{checked : false},
+		{checked : false},
+		{checked : false},
+	];
+
     	$scope.bar = 'N'; //바코드로 검색인가 아닌가 구별하기위함.
 
 	 /* page up And down  - 이경민[2015-12]*/
 	$scope.Next=function(){
 		if($scope.basictype == true){
 			$scope.basictype= false;
-			$scope.upAnddown="ion-arrow-up-b";
+			$scope.upAnddown="ion-arrow-down-b";
 		}else{
 			$scope.basictype=true;
 			$scope.basic2type=false;
 			$scope.basic3type=false;
-			$scope.upAnddown="ion-arrow-down-b";
-			$scope.upAnddown2="ion-arrow-up-b";
-			$scope.upAnddown3="ion-arrow-up-b";
+			$scope.upAnddown="ion-arrow-up-b";
+			$scope.upAnddown2="ion-arrow-down-b";
+			$scope.upAnddown3="ion-arrow-down-b";
 		}
 	}
 	$scope.Next2=function(){
 		if($scope.basic2type == true){
 			$scope.basic2type= false;
-			$scope.upAnddown2="ion-arrow-up-b";
+			$scope.upAnddown2="ion-arrow-down-b";
 		}else{
 			$scope.basic2type=true;
 			$scope.basictype=false;
 			$scope.basic3type=false;
-			$scope.upAnddown2="ion-arrow-down-b";
-			$scope.upAnddown="ion-arrow-up-b";
-			$scope.upAnddown3="ion-arrow-up-b";
+			$scope.upAnddown2="ion-arrow-up-b";
+			$scope.upAnddown="ion-arrow-down-b";
+			$scope.upAnddown3="ion-arrow-down-b";
 		}
 	}
 	$scope.Next3=function(){
 		if($scope.basic3type == true){
 			$scope.basic3type= false;
-			$scope.upAnddown3="ion-arrow-up-b";
+			$scope.upAnddown3="ion-arrow-down-b";
 		}else{
 			$scope.basic3type=true;
 			$scope.basictype=false;
 			$scope.basic2type=false;
-			$scope.upAnddown3="ion-arrow-down-b";
-			$scope.upAnddown="ion-arrow-up-b";
-			$scope.upAnddown2="ion-arrow-up-b";
+			$scope.upAnddown3="ion-arrow-up-b";
+			$scope.upAnddown="ion-arrow-down-b";
+			$scope.upAnddown2="ion-arrow-down-b";
 		}
 	}
 	/* // ----------- page up And down  - 이경민[2015-12]*/
@@ -5206,7 +5294,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     /*erpia 설정값 - 이경민[2015-12]*/
     MconfigService.erpia_basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
     .then(function(data){
-    	if(data.list[0].Sale_Place_Code.length > 1){
+    	if(data.list[0].Sale_Place_Code.length != 0){
     		$rootScope.erpia_code = data.list[0].Sale_Place_Code;
     	}else{
     		$rootScope.erpia_code = '000';
@@ -5224,13 +5312,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			var i = $scope.setupData.basic_Subul_Meaip;
 			switch (i) {
 			    case '1' :  switch($scope.setupData.basic_Subul_Meaip_Before){
-			    		   		case 'I' : console.log('I'); $scope.datas.subulkind=111; break;
-			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=122; break;
+			    		   		case 'I' : console.log('I'); $scope.datas.subulkind=111; $scope.subul[0].checked=true; break;
+			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=122; $scope.subul[1].checked=true; break;
 			    		   		case 'N' : console.log('N'); break;
 			    		   }
 			    		   break;
-			    case '2' : $scope.datas.subulkind=111; break;
-			    case '3' : $scope.datas.subulkind=122; break;
+			    case '2' : $scope.datas.subulkind=111; $scope.subul[0].checked=true; break;
+			    case '3' : $scope.datas.subulkind=122; $scope.subul[1].checked=true; break;
 
 			    default : console.log('수불카인드 오류'); $scope.m_check.subulCheck = 'f'; break; // 최근등록수불로 되어있는데 등록된 값 없을경우
 			}
@@ -5241,13 +5329,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			var i = $scope.setupData.basic_Subul_Sale;
 			switch (i) {
 			    case '1' :  switch($scope.setupData.basic_Subul_Sale_Before){
-			    		   		case 'C' : console.log('C'); $scope.datas.subulkind=221; break;
-			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=212; break;
+			    		   		case 'C' : console.log('C'); $scope.datas.subulkind=221; $scope.subul[2].checked=true; break;
+			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=212; $scope.subul[3].checked=true; break;
 			    		   		case 'N' : console.log('N'); break;
 			    		    }
 			    		   break;
-			    case '2' : $scope.datas.subulkind=221; break;
-			    case '3' : $scope.datas.subulkind=212; break;
+			    case '2' : $scope.datas.subulkind=221; $scope.subul[2].checked=true; break;
+			    case '3' : $scope.datas.subulkind=212; $scope.subul[3].checked=true; break;
 
 			    default : console.log('수불카인드 오류'); $scope.m_check.subulCheck = 'f'; break; // 최근등록수불로 되어있는데 등록된 값 없을경우
 			  }
@@ -5261,10 +5349,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		MconfigService.basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
 		.then(function(data){
 			$scope.mejanglists = data.list;
-			if($rootScope.erpia_code == '000'){
-				$scope.setupData.basic_Place_Code = '000';
-			}else{
+			console.log($scope.setupData.basic_Place_Code);
+			if($scope.setupData.basic_Place_Code == -1){
 				$scope.setupData.basic_Place_Code = $rootScope.erpia_code;
+			}
 				for(var i=0; i < $scope.mejanglists.length; i++ ){
 					if($scope.mejanglists[i].Sale_Place_Code == $rootScope.erpia_code){
 						$scope.mejang2 = $scope.mejanglists[i];
@@ -5273,7 +5361,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						break;
 					}
 				}
-			}
 			/*기본 창고조회  - 이경민[2015-12]*/
 			MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.setupData.basic_Place_Code)
 			.then(function(data){
@@ -5318,6 +5405,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
      $scope.paytype = false;
 
      $scope.paylist=[];
+
+     
 
 	////////////////////////////////////////////// 수정일경우 데이터 불러오기 - 이경민[2015-12] //////////////////////////////////////////////////////////
 	if($rootScope.iu == 'u' || $rootScope.iu == 'qi' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui'){
@@ -5918,6 +6007,42 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 	};
 
+
+	$scope.meaipchul_subul=function(index){
+		/*수불구분 활성화/비활성화*/
+		if($rootScope.distinction == 'meaip'){
+			if(index == 0){
+				if($scope.subul[0].checked == false) {
+					$scope.subul[0].checked = true;
+				}
+				$scope.subul[1].checked = false;
+				$scope.datas.subulkind = 111;
+
+			}else if(index == 1){
+				if($scope.subul[1].checked == false) {
+					$scope.subul[1].checked = true;
+				}
+				$scope.subul[0].checked = false;
+				$scope.datas.subulkind = 122;
+			}
+		}else{
+			if(index == 2){
+				if($scope.subul[2].checked == false) {
+					$scope.subul[2].checked = true;
+				}
+				$scope.subul[3].checked = false;
+				$scope.datas.subulkind = 221;
+
+			}else if(index == 3){
+				if($scope.subul[3].checked == false) {
+					$scope.subul[3].checked = true;
+				}
+				$scope.subul[2].checked = false;
+				$scope.datas.subulkind = 212;
+			}
+		}
+	}
+
 	/*자동슬라이드업 - 이경민[2015-12] */
 	$scope.checkup=function(){
 		if($scope.datas.subulkind != 0){// 수불구분
@@ -5926,17 +6051,17 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		if($rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui'){ // 세금계산서와 연계배송정보 존재 시 수정 => 창고와 매장만 수정가능
 			$scope.basic2type=false;
-			$scope.upAnddown2="ion-arrow-up-b";
+			$scope.upAnddown2="ion-arrow-down-b";
 			$scope.basictype= true;
-			$scope.upAnddown="ion-arrow-down-b";
+			$scope.upAnddown="ion-arrow-up-b";
 		}else{
 			if($scope.m_check.cusCheck == 't' && $scope.m_check.subulCheck == 't' && $scope.m_check.meajangCheck == 't' && $scope.m_check.changoCheck == 't'){
 				/*상품폼 열기*/
 				$scope.basic2type=true;
-				$scope.upAnddown2="ion-arrow-down-b";
+				$scope.upAnddown2="ion-arrow-up-b";
 				/*매입폼닫기*/
 				$scope.basictype= false;
-				$scope.upAnddown="ion-arrow-up-b";
+				$scope.upAnddown="ion-arrow-down-b";
 			}
 		}
 	}
@@ -5958,9 +6083,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$scope.basictype=true;
 			$scope.basic2type=false;
 			$scope.basic3type=false;
-			$scope.upAnddown="ion-arrow-down-b";
-			$scope.upAnddown2="ion-arrow-up-b";
-			$scope.upAnddown3="ion-arrow-up-b";
+			$scope.upAnddown="ion-arrow-up-b";
+			$scope.upAnddown2="ion-arrow-down-b";
+			$scope.upAnddown3="ion-arrow-down-b";
 
 		}else if($scope.datas.subulkind == 0){
 			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('수불구분을 지정하지 않었습니다.', 'short', 'center');
@@ -5968,9 +6093,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$scope.basictype=true;
 			$scope.basic2type=false;
 			$scope.basic3type=false;
-			$scope.upAnddown="ion-arrow-down-b";
-			$scope.upAnddown2="ion-arrow-up-b";
-			$scope.upAnddown3="ion-arrow-up-b";
+			$scope.upAnddown="ion-arrow-up-b";
+			$scope.upAnddown2="ion-arrow-down-b";
+			$scope.upAnddown3="ion-arrow-down-b";
 
 		}else{
 			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상품정보가 존재하지 않습니다. 한번더 확인하세요.', 'short', 'center');
@@ -5978,9 +6103,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$scope.basictype=false;
 			$scope.basic2type=true;
 			$scope.basic3type=false;
-			$scope.upAnddown="ion-arrow-up-b";
-			$scope.upAnddown2="ion-arrow-down-b";
-			$scope.upAnddown3="ion-arrow-up-b";
+			$scope.upAnddown="ion-arrow-down-b";
+			$scope.upAnddown2="ion-arrow-up-b";
+			$scope.upAnddown3="ion-arrow-down-b";
 
 		}
 		}else{
@@ -5993,9 +6118,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.basictype=false;
 					$scope.basic2type=true;
 					$scope.basic3type=false;
-					$scope.upAnddown="ion-arrow-up-b";
-					$scope.upAnddown2="ion-arrow-down-b";
-					$scope.upAnddown3="ion-arrow-up-b";
+					$scope.upAnddown="ion-arrow-down-b";
+					$scope.upAnddown2="ion-arrow-up-b";
+					$scope.upAnddown3="ion-arrow-down-b";
 					break;
 				}else if(isNaN($scope.datas.totalsumprices) || $scope.goodsaddlists[i].num == null || $scope.goodsaddlists[i].num == undefined){ //상품가격이 제대로 입력되지 않았을시. -->isNaN == NaN걸러주는거
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상품정보를 바르게 적어주세요.', 'short', 'center');
@@ -6003,9 +6128,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$scope.basictype=false;
 					$scope.basic2type=true;
 					$scope.basic3type=false;
-					$scope.upAnddown="ion-arrow-up-b";
-					$scope.upAnddown2="ion-arrow-down-b";
-					$scope.upAnddown3="ion-arrow-up-b";
+					$scope.upAnddown="ion-arrow-down-b";
+					$scope.upAnddown2="ion-arrow-up-b";
+					$scope.upAnddown3="ion-arrow-down-b";
 					break;
 				}else if(i == $scope.goodsaddlists.length-1 && $scope.goodsaddlists[i].goodsprice != null || i == $scope.goodsaddlists.length-1 && $scope.goodsaddlists[i].goodsprice != undefined){
 					$scope.ijmodal.show();
@@ -6145,8 +6270,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		    		$scope.pay.gubun = 4;
 		    	}
 		    	$ionicPopup.show({
-				title: '전표를 저장하시겠습니까?',
-				content: '',
+				title: '<b>전표저장</b>',
+				content: '전표를 저장하시겠습니까?',
 				buttons: [
 					{
 						text: 'No',
@@ -6159,11 +6284,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							$ionicHistory.clearCache();
 							$ionicHistory.clearHistory();
 							if($rootScope.iu == 'i'){
+								MiuService.subulupdate($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.datas.subulkind)
+								.then(function(data){
+								});
+
 								MiuService.i_data($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.pay, $scope.paylist, $scope.date, $scope.goodsaddlists,$scope.setupData,$scope.datas)
 								.then(function(data){
 									$ionicPopup.show({
-										title: '전표가 저장되었습니다. <br> 확인하시겠습니까?',
-										content: '',
+										title: '<b>저장완료</b>',
+										content: '전표가 저장되었습니다. <br> 확인하시겠습니까?',
 										buttons: [
 											{
 												text: 'No',
@@ -6205,8 +6334,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								MiuService.u_data($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.pay, $scope.paylist, $scope.date, $scope.goodsaddlists,$scope.setupData,$scope.datas,$scope.goods_seqlist)
 								.then(function(data){
 									$ionicPopup.alert({
-										title: '',
-										template: '전표가 수정되었습니다.'
+										title: '<b>수정완료</b>',
+										content: '전표가 수정되었습니다.',
 									});
 									$scope.ijmodal.hide();
 									$ionicHistory.clearCache();
@@ -6239,7 +6368,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 뒤로 제어 - 이경민[2015-12] */
 	$scope.backControll=function(){
 		$ionicPopup.show({
-			title: '경고',
+			title: '<b>경고</b>',
 			subTitle: '',
 			content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 			buttons: [
