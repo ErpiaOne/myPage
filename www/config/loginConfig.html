@@ -1,40 +1,26 @@
-<ion-view view-title="로그인 설정" style="background: #dce0e1; color: #fff">
+<ion-view style="background: #dce0e1; color: #fff">
+	<ion-nav-title>
+		<div class="psmsmy_title_co">로그인 설정 정보</div>
+	</ion-nav-title>
 	<ion-nav-bar>
-		<ion-nav-back-button ng-click="goBack_with_clearHistory()">설정</ion-nav-back-button>
-		<ion-nav-buttons side="right" ng-show="false">
-			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
-		</ion-nav-buttons>
+		<ion-nav-back-button ng-click="goBack_with_clearHistory()">뒤로</ion-nav-back-button>
 	</ion-nav-bar>
 	<ion-content class="padding2" style="padding: 15px;">
-		<ion-toggle ng-model="autoLogin" ng-change='autoLogin_YN(autoLogin)'>
-          		자동로그인
-        	</ion-toggle>
-	</ion-content>
-</ion-view>
-<!--<ion-view view-title="로그인 설정" style="background: #dce0e1; color: #fff">
-	<ion-nav-bar>
-		<ion-nav-back-button ng-click="goBack_with_clearHistory()">설정</ion-nav-back-button>
-		<ion-nav-buttons side="right" ng-show="false">
-			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
-		</ion-nav-buttons>
-	</ion-nav-bar>
-	<ion-content class="padding2" style="padding: 15px;">
-		<div class="list">
-			<ui class="list" ng-click="goto_with_backButton('#/app/config/Info')">
+		<div class="list" ng-if="tabitem.gubun == 'snlogin' && change_YN == 'Y'">
+			<ui class="list" ng-click="pwdchangeModal_open()">
 				<li class="item">
 					<font>비밀번호 변경</font>
 				</li>
 			</ui>
-			<ui class="list" ng-click="goto_with_backButton('#/app/config/Info')">
+			<ui class="list" ng-click="loginLogModal_open()">
 				<li class="item">
 					<font>접속 로그</font>
 				</li>
 			</ui>
 		</div>
-		<hr>
+		<hr ng-if="tabitem.gubun == 'snlogin' && change_YN == 'Y'">
 		<ion-toggle ng-model="autoLogin" ng-change='autoLogin_YN(autoLogin)'>
           			자동로그인
         		</ion-toggle>
 	</ion-content>
 </ion-view>
--->

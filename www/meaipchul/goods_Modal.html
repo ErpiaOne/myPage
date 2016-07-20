@@ -1,16 +1,19 @@
 <!-- 매입/매출 상품조회 모달 -->
 <ion-modal-view title="">
-  <ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
-    <h1 class="title" style="color: #fff;">상품 검색</h1>
+  <ion-header-bar class="bar-dark" style="background: #8f6384; border:0;" title-align="center">
+    <div class="psmsmy_title_mo">상품 검색</div>
+      <div class="buttons" style="position: absolute; right: 0px;">
+            <i ng-click="goods_searchM_close()"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
+        </div>
   </ion-header-bar>
 
   <ion-header-bar class="bar bar-subheader" style="width: 100%; background: #fff; padding-bottom: 10px;">
     <table width="100%" style="background: #fff;">
       <tr>
         <td style="text-align:center; width: 27%; vertical-align: middle;">상품정보</td>
-        <td style="width: 46%"><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; border: 1px solid #e0e0e0; padding: 0 7px;"></td>
-        <td style="width: 27%;">
-            <i class='ion-close-circled' style='margin-left: 20px; margin-top:8px; padding-right:16px; vertical-align:middle; font-size: 2em'  ng-if="sbu == false"ng-click='clear_goods()'></i>
+        <td style="width: 58%"><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; border: 1px solid #e0e0e0; padding: 15px 35px 15px 15px;"></td>
+        <td style="width: 15%;">
+            <i class='ion-android-close' style='text-align: left; margin-top:8px; padding-right:20px; margin-left:-25px; vertical-align:middle; font-size: 2em;'  ng-if="sbu == false"ng-click='clear_goods()'></i>
             <i class="ion-search" style="font-size: 2em;  margin-top:8px; vertical-align: middle;" ng-click="goods_searchM(1)"></i>
         </td>
       </tr>
@@ -44,7 +47,7 @@
                 <font color="blue" ng-if="x.Jego>0">{{x.Jego|number:0}}</font>
               </ion-checkbox>
             </td>
-            <td style='width:10%; padding-left:9px; vertical-align: middle; background: #dce0e1'><i class="ion-help-circled" style="font-size:2.5em;vertical-align:middle;" ng-click='goodsDetail($index)'></i></td>
+            <td style='width:10%; padding-left:9px; vertical-align: middle; background: #dce0e1'><i class="ion-ios-help" style="font-size:30pt; margin-left:7px; color:#5b5b5b; margin-top:5px; " ng-click='goodsDetail($index)'></i></td>
           </tr>
           <tr ng-if="moreloading==1&&$last">
             <td colspan="2" align="center" style="width:100%"><ion-spinner icon="spiral"></ion-spinner></td>
@@ -55,10 +58,13 @@
   <br><br>
   </ion-content>
 
-  <ion-footer-bar align-title="left" class="bar-assertive" style="background: #988e9a; border: 0;">
-    <div class="buttons" ng-click="goods_searchM_close()"><button class="button button-psm02">취소</button></div>
-    <h1 class="title"></h1>
-    <div class="buttons" ng-click="checkdataSave()"><button class="button button-psm01">확인</button></div>
+  <ion-footer-bar style="width: 100%; background: #736777; border: 0; ">
+    <table style="width: 100%;">      
+      <tr>
+        <td style="text-align: left;"></td>
+        <td style="text-align: right;"><button class="button button-psm02" ng-click="checkdataSave()">등록</button></td>
+      </tr>
+    </table>
   </ion-footer-bar>
 </ion-modal-view>
 

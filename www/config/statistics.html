@@ -1,9 +1,9 @@
-<ion-view view-title="통계 리포트 설정" style="background: #dce0e1; color: #fff">
+<ion-view style="background: #dce0e1; color: #fff">
+	<ion-nav-title>
+		<div class="psmsmy_title_co">통계 리포트 설정</div>
+	</ion-nav-title>
 	<ion-nav-bar>
-		<ion-nav-back-button ng-click="backno();goBack_with_clearHistory()">설정</ion-nav-back-button>
-		<!-- <ion-nav-buttons side="right" ng-show="false">
-			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
-		</ion-nav-buttons> -->
+		<ion-nav-back-button ng-click="backno();goBack_with_clearHistory()">뒤로</ion-nav-back-button>
 	</ion-nav-bar>
 	<ion-content class="padding2">
 		<body>
@@ -23,7 +23,7 @@
 			</ion-header-bar>
 
 			<ion-content style="background: #dce0e1; padding: 0 15px">
-				<ion-list show-delete="data.showDelete" show-reorder="data.showReorder" style="padding: 15px 15px 0px 15px; ">
+				<ion-list show-delete="data.showDelete" show-reorder="data.showReorder" style="padding: 15px 15px 55px 15px; ">
 					<ion-item ng-repeat="item in items" item="item" class="item-remove-animate">{{item.title}}
 						<ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button>
 						<ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>

@@ -1,4 +1,7 @@
-<ion-view view-title="{{tradeList.Title}}" cache-view="false">
+<ion-view cache-view="false">
+	<ion-nav-title>
+		<div class="psmsmy_title_co">{{tradeList.Title}}</div>
+	</ion-nav-title>
 	<ion-nav-buttons side="right">
 		<button menu-toggle="right" ng-if="YNcheck =='not'" ng-click="tradechange()" class="button button-small button-psm00">전체보기</button> <!-- 미열람건{{tradeList.Title}} -->
 		<button menu-toggle="right" ng-if="YNcheck =='all'" ng-click="tradechange()" class="button button-small button-psm00">미열람건</button>
@@ -6,21 +9,24 @@
 	<ion-content class="padding" style="width:100%; background: #dce0e1">
 		<!-- <a ng-href="tel:070-7012-3071" class="button button-positive"> call me</a> -->
 		<link ng-href="css/lhkTradeDetail.css" rel="stylesheet">
-		<div>
-			<table border="0" cellpadding="0" cellspacing="0">
+		<div style="width: 100%; padding: 10px 0;">
+			<table border="0" cellpadding="0" cellspacing="0" style="width: 100%; vertical-align: middle;">
 				<tr>
-					<td><button class="button icon ion-android-refresh" ng-click="trade_refresh()"></button></td>
-					<td>최근조회시간 : {{nowtime}}</td>
+					<td style="vertical-align: middle; padding-left: 10px;">
+						<any style="color: #444; padding-bottom: 5px; font-weight: bold;">최근조회시간 : {{nowtime}}</any>
+					</td>
+					<td style="text-align: right; vertical-align: middle; padding-right: 10px;">
+						<i class="ion-android-refresh" ng-click="trade_refresh()" style="color: #444; font-size: 2em;"></i>
+					</td>
 				</tr>
 			</table>
 		</div>
 		<div class="psm_segum11">
 			<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
 				<tr>
-					<td class="psm_segum31">No</td>
-					<td class="psm_segum32">{{tradeList.MeaipMeachul}}</td>
-					<td class="psm_segum33">{{tradeList.Publisher}}</td>
-					<td class="psm_segum34">{{tradeList.isRead}}</td>
+					<td class="psm_segum41">No</td>
+					<td class="psm_segum42">{{tradeList.MeaipMeachul}} / {{tradeList.Publisher}}</td>
+					<td class="psm_segum43">{{tradeList.isRead}}</td>
 				</tr>
 			</table>
 		</div>
@@ -28,9 +34,28 @@
 			<div ng-switch-when='Y'>
 				<ion-list>
 					<ion-item ng-repeat="item in items" style="padding:0px;">
-					<any ng-if="YNcheck =='not'">
-						<div ng-if="item.readYN == 'N'" ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
-								<table on-swipe-up="search_more()" border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+						<!-- <any ng-if="YNcheck =='not'">ng-if="item.readYN == 'N'"  -->
+							<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
+								<table on-swipe-up="search_more(maxover, YNcheck)" border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
+									<tr>
+										<td rowspan="2" class="psm_segum41" style="padding-left: 10px;">{{$index + 1}}</td>
+										<td class="psm_segum42" style="padding-left: 10px;">{{item.in_date}}</td>
+										<td class="psm_segum42" style="padding-left: 10px;" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
+										<td class="psm_segum42" style="padding-left: 10px;" ng-if="userType == 'ERPia'">
+										{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
+										</td>
+										<td rowspan="2" class="psm_segum43">{{(item.readYN=='Y'? '열람' : '미열람')}}</td>
+									</tr>
+									<tr>
+										<td colspan="2" class="psm_segum42" style="padding-left: 10px;">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
+									</tr>
+								</table>
+							</div>
+							<div ng-if="maxover==0&&$last" style="padding: 5px 0; background: #ded1d1; font-size: 0.8em; text-align: center;"><b>더 보기를 하시려면 위로 쓸어올려주세요.</b></div>
+						<!-- </any> -->
+						<!-- <any ng-if="YNcheck =='all'">
+							<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
+								<table on-swipe-up="search_more(maxover)" border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
 									<tbody>
 										<tr>
 											<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
@@ -39,47 +64,18 @@
 											<td class="psm_segum35" ng-if="userType == 'ERPia'">
 											{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
 											</td>
-											<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? 'O' : 'X')}}</td>
+											<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? '열람' : '미열람')}}</td>
 										</tr>
 										<tr>
 											<td colspan="2" class="psm_segum22">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
 										</tr>
 									</tbody>
-										<tr ng-if="moreloading==0&&maxover==0&&$last">
+										<tr ng-if="maxover==0&&$last">
 											<td colspan="4" align="center" style="padding: 5px 0; background: #ded1d1; font-size: 0.85em;"><b>더 보기를 하시려면 위로 쓸어올려주세요.</b></td>
 										</tr>
-										<tr ng-if="moreloading==1&&$last">
-											<td colspan="4" align="center"><ion-spinner icon="spiral" ></ion-spinner></td>
-										</tr>
 								</table>
-						</div>
-					</any>
-					<any ng-if="YNcheck =='all'">
-						<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
-							<table on-swipe-up="search_more()" border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
-								<tbody>
-									<tr>
-										<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
-										<td class="psm_segum19">{{item.in_date}}</td>
-										<td class="psm_segum35" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
-										<td class="psm_segum35" ng-if="userType == 'ERPia'">
-										{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
-										</td>
-										<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? 'O' : 'X')}}</td>
-									</tr>
-									<tr>
-										<td colspan="2" class="psm_segum22">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
-									</tr>
-								</tbody>
-									<tr ng-if="moreloading==0&&maxover==0&&$last">
-										<td colspan="4" align="center" style="padding: 5px 0; background: #ded1d1; font-size: 0.85em;"><b>더 보기를 하시려면 위로 쓸어올려주세요.</b></td>
-									</tr>
-									<tr ng-if="moreloading==1&&$last">
-										<td colspan="4" align="center"><ion-spinner icon="spiral" >끝</ion-spinner></td>
-									</tr>
-							</table>
-						</div>
-					</any>
+							</div>
+						</any> -->
 					</ion-item>
 				</ion-list>
 			</div>
@@ -87,9 +83,9 @@
 				<table border="0" cellpadding="0" cellspacing="0" class="psm_segum17" style="text-align: center;">
 					<tr><td style="height: 50px;" colspan="3"></td></tr>
 					<tr>
-						<td style="width: 15%"></td>
-						<td colspan="4" class="psm_segum18" style="width: 70%; font-size: 1em; padding: 10px; background: #694b58; color: #fff;">확인할 명세서가 없습니다.</td>
-						<td style="width: 15%"></td>
+						<td style="width: 10%"></td>
+						<td colspan="4" class="psm_segum18" style="width: 80%; font-size: 0.9em; padding: 10px; background: #694b58; color: #fff;">확인할 명세서가 없습니다.</td>
+						<td style="width: 10%"></td>
 					</tr>
 				</table>
 			</div>

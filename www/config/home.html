@@ -1,31 +1,31 @@
-<ion-view view-title="설정">
-	<ion-nav-buttons side="right" ng-show="false">
-		<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
-	</ion-nav-buttons>
+<ion-view>
+	<ion-nav-title>
+		<div class="psmsmy_title_co">설정</div>
+	</ion-nav-title>
 	<ion-content class="padding2" style="padding: 15px; background: #dce0e1; font-size: 0.9em;">
 		<body>
 			<div ng-switch="loginState">
 				<div class="list">
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/Info')" style="padding-left: 80px;">
-					<i class="icon ion-information" style="background: #5d9ea8; width: 52px; padding-left: 10px;  color: #fff;"></i>프로그램 정보</a>
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/Info')" style="padding-left: 70px;">
+					<i class="icon ion-information" style="background: #5d9ea8; width: 52px; padding-left: 10px;  color: #fff; margin-left: -11px;"></i>프로그램 정보</a>
 
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/notice')" style="padding-left: 80px;">
-					<i class="icon ion-alert" style="background: #6c5d7c; width: 52px;  padding-left: 10px; color: #fff;"></i>공지사항</a>
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/notice')" style="padding-left: 70px;">
+					<i class="icon ion-alert" style="background: #6c5d7c; width: 52px; padding-left: 10px; color: #fff; margin-left: -11px;"></i>공지사항</a>
 
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/custom')" style="padding-left: 80px;">
-					<i class="icon ion-person-stalker" style="background: #626968; width: 52px;  padding-left: 10px; color: #fff;"></i>고객센터</a>
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/custom')" style="padding-left: 70px;">
+					<i class="icon ion-person-stalker" style="background: #626968; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>이용약관/개인정보 취급방침</a>
 
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/alarm')" style="padding-left: 80px;">
-					<i class="icon ion-ios-bell" style="background: #e5b763; width: 52px;  padding-left: 10px; color: #fff;"></i>알림설정</a>
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/alarm')" style="padding-left: 70px;">
+					<i class="icon ion-ios-bell" style="background: #e5b763; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>알림설정</a>
 					<div ng-switch-when="E">
-						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/statistics')" style="padding-left: 80px;">
-						<i class="icon ion-stats-bars" style="background: #c7745a; width: 52px;  padding-left: 10px; color: #fff;"></i>통계 리포트 설정</a>
+						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/statistics')" style="padding-left: 70px;">
+						<i class="icon ion-stats-bars" style="background: #c7745a; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>통계 리포트 설정</a>
 					</div>
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/loginConfig')" style="padding-left: 80px;">
-					<i class="icon ion-person" style="background: #5d9ea8; width: 52px;  padding-left: 10px; color: #fff;"></i>로그인 설정</a>
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/loginConfig')" style="padding-left: 70px;">
+					<i class="icon ion-person" style="background: #5d9ea8; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>로그인 설정</a>
 					<div ng-switch-when="E">
-						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/meaipchul/m_Setup')" style="padding-left: 80px;">
-						<i class="icon ion-gear-a" style="background: #6c5d7c; width: 52px;  padding-left: 10px; color: #fff;"></i>매입/매출 설정</a>
+						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/meaipchul/m_Setup')" style="padding-left: 70px;">
+						<i class="icon ion-gear-a" style="background: #6c5d7c; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>매입/매출 설정</a>
 					</div>
 				</div>
 			</div>

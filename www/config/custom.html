@@ -1,15 +1,15 @@
-<ion-view view-title="고객센터" style="background: #dce0e1; color: #fff">
+<ion-view style="background: #dce0e1; color: #fff">
+	<ion-nav-title>
+		<div class="psmsmy_title_co">이용약관/개인정보 취급방침</div>
+	</ion-nav-title>
 	<ion-nav-bar>
-		<ion-nav-back-button ng-click="goBack_with_clearHistory()">설정</ion-nav-back-button>
-		<ion-nav-buttons side="right" ng-show="false">
-			<button class="button button-icon button-clear ion-home" menu-close ng-click="goHome()"></button>
-		</ion-nav-buttons>
+		<ion-nav-back-button ng-click="goBack_with_clearHistory()">뒤로</ion-nav-back-button>
 	</ion-nav-bar>
 	<ion-content class="padding2" style="padding: 15px;">
 		<body ng-app="ngAnimate">
-			<ui class="list" ng-click="toggle_info1 = !toggle_info1">
+			<ui class="list" ng-click="upAnddownF(1);toggle_info1 = !toggle_info1">
 				<li class="item">
-					<font>이용약관</font>
+					<font>이용약관</font><i class="{{upAnddown}} psmsmy_semo"></i>
 				</li>
 			</ui>
 			<pre class="lhkNoticeContent" style="font-size: 0.95em; color: #444" ng-show="toggle_info1" ng-animate="'box'">
@@ -261,9 +261,9 @@
 (시행일) 이 약관은 2015년 11월 06일부터 시행합니다.
 이전의 이용약관은 아래에서 확인할 수 있습니다.
 			</pre>
-			<ui class="list" ng-click="toggle_info2 = !toggle_info2">
+			<ui class="list" ng-click="upAnddownF(2);toggle_info2 = !toggle_info2">
 				<li class="item">
-					<font>개인정보 취급방침</font>
+					<font>개인정보 취급방침</font><i class="{{upAnddown2}} psmsmy_semo"></i>
 				</li>
 			</ui>
 			<pre class="lhkNoticeContent" style="font-size: 0.95em; color: #444" ng-show="toggle_info2" ng-animate="'box'">

@@ -1,8 +1,14 @@
+<style type="text/css">
+input::-webkit-input-placeholder { color:#686868 }
+input::-moz-placeholder { color:#686868 }
+input::-ms-input-placeholder { color:#686868 }
+</style>
+
 <ion-modal-view class="psm_login_body" style="height:100%; padding-top:40px;">
   <ion-header-bar class="bar bar-header" style="background: #8f6384; border:0;">
    	<h1 class="title" style="color: #fff">모바일 보안인증</h1>
    	<div class="buttons">
-      <button class="button button-clear" ng-click="close_cert()" style="color: #fff;">닫기</button>
+      <i ng-click="close_cert()"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
     </div>
   </ion-header-bar>
   <ion-content>
@@ -10,30 +16,33 @@
 		<div class="item item-divider">
 			모바일 보안인증
 		</div>
-		<div class="item item-text-wrap" style="height:50%; font-size:14px;">
+		<div class="item item-text-wrap" style="height:60%; padding: 20px;">
+			<div style="width: 100%;"><img src="./img/img_welcome.jpg" style="width: 100%;"></div>
+			<div style="padding: 20px; font-size:14px; background: #aca5b5; color: #fff; margin-top:-10px;">
 안녕하세요!<br>
 ERPia 모바일에 오신 것을 환영합니다.<br>
 <br>
 ERPia 애플리케이션은 고객분들의 소중한 정보 유출을 방지하기 위해 인증된 휴대폰에서만 이용이 가능합니다.<br>
+			</div>
 		</div>
 		<form ng-submit="click_Certification()">
-			<div class="item item-input-inset">
-				<label class="item-input-wrapper" style="background:transparent">
+			<div class="item item-input-inset" style="padding-left: 20px;">
+				<label class="item-input-wrapper" style="background: #f8e6e1; border-bottom: 1px solid #dd8369; height: 47px; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;">
 					<input type="tel" placeholder="전화번호 입력" ng-model="SMSData.recUserTel">
 				</label>
-				<button class="button button-block button-balanced" style="margin:0px 10px 0px 0px; width:105px; font-size:13px; line-height:0px;" type='submit'>
+				<button class="button button-block button-psm02" style="margin:0px 10px 0px 0px; width:105px; font-size:13px; line-height:0px; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;" type='submit'>
 					인증번호발송
 				</button>
 			</div>
 		</form>
 		<form ng-submit="click_responseText()">
-			<div class="item item-input-inset">
-				<label class="item-input-wrapper" style="background:transparent">
+			<div class="item item-input-inset" style="padding-left: 20px;">
+				<label class="item-input-wrapper" style="background: #dfdcdd; border-bottom: 1px solid #5f5055; height: 47px; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;">
 					<input type="tel" placeholder="인증번호 입력" ng-model="SMSData.rspnText">
 				</label>
-				<button class="button button-block button-balanced" style="margin:0px 10px 0px 0px; width:105px; font-size:13px; line-height:0px;" type='submit'>
+				<button class="button button-block button-psm01" style="margin:0px 10px 0px 0px; width:105px; font-size:13px; line-height:0px; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;" type='submit'>
 					인증완료
-				</button> 
+				</button>
 			</div>
 		</form>
 	</div>

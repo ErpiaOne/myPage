@@ -1,6 +1,8 @@
 //최근갱신일 버튼 눌렀을 경우
 function refresh(kind, gu, admin_code, ERPiaApi_url)
 {
+	$("#loading").css("display","block");
+	// AmCharts.loadJSON(ERPiaApi_url + "/renewalDay.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh"); //최근갱신일 로딩
 	AmCharts.loadJSON(ERPiaApi_url + "/graph_DataUpdate.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh");
 	makeCharts(kind, gu, admin_code,ERPiaApi_url);
 }
@@ -16,7 +18,7 @@ function renewalDay(kind, gu, admin_code, ERPiaApi_url)
 }
 
 function makeCharts(kind, gu, admin_code, ERPiaApi_url){
-	
+
 	// 날짜
 	var d= new Date();
 	var month = d.getMonth() + 1;
@@ -108,7 +110,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			kind.alpha = 0.3;
 			return;
 		}
-		
+
 		AmCharts.addInitHandler(function(kind) {
 		  if (kind.dataProvider === undefined || kind.dataProvider.length === 0) {
 			AmCharts.checkEmptyDataPie(kind);
@@ -121,7 +123,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		var cnt1 = 0
 		for (var i in kind.dataProvider) {
 		  if (kind.dataProvider[i].value < 0)
-		  {			
+		  {
 			cnt1 = cnt1 + 1
 		  }
 		}
@@ -144,9 +146,9 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			if (label.length > kind.legend.truncateLabels)
 			  label = label.substr(0, kind.legend.truncateLabels-1)+'...'
 			  kind.dataProvider[i][legendTitleField] = label;
-		  }		
+		  }
 		  // replace chart.titleField to show our own truncated field
-		  kind.titleField = legendTitleField;			  
+		  kind.titleField = legendTitleField;
 		  // make the balloonText use full title instead
 		  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
 
@@ -156,28 +158,28 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		}, ["pie"]);
 	}else //if (kind == "meachul_7" || kind == "banpum" || kind == "beasongb" || kind == "Meachul_ik" || kind == "meaip_7" || kind == "beasong_gu" )// 추가
-	{		
+	{
 		AmCharts.checkEmptyData = function (kind) {
 			if ( 0 == kind.dataProvider.length ) {
 				// set min/max on the value axis
 				kind.valueAxes[0].minimum = 0;
 				kind.valueAxes[0].maximum = 100;
-				
+
 				// add dummy data point
 				var dataPoint = {
 					dummyValue: 0
 				};
 				dataPoint[kind.categoryField] = '';
 				kind.dataProvider = [dataPoint];
-				
+
 				// add label to let users know the chart is empty
 				kind.addLabel("50%", "50%", "조회할 데이터가 없습니다.", "middle", 15);
 							//  x    y     text                          위치   fontsize
 				kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
-				
+
 				// set opacity of the chart div
 				//kind.chartDiv.style.opacity = 0.3;
-				
+
 				// redraw it
 				kind.validateNow();
 			}
@@ -227,20 +229,21 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("meaip_jem", {
 				"type": "pie",
-				"startDuration": 0, //차트 애니메이션 
- 			    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
+				"startDuration": 1, //차트 애니메이션
+ 			    	"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
+ 			    	"showZeroSlices": true,		//20160622(성책추가, 마이너스 금액이 뜰경우 그래프 표현이 안되어 정보만이라도 표시)
 				"minRadius": 50,
 				"maxLabelWidth":50,
 				"titleField": "name",
 				"valueField": "value",//"value",
 				"fontSize": 12,
 				"theme": "dark",
-			    "labelsEnabled": true,
-			    "legend": {
-			      "enabled": false,
-				  "truncateLabels": 10 // custom parameter
+			    	"labelsEnabled": true,
+			    	"legend": {
+			      	"enabled": false,
+				"truncateLabels": 10 // custom parameter
 			    },
-			    "allLabels": [],
+			   	"allLabels": [],
 				"balloon": {},
 				"labelRadius": 1,
 				"dataProvider": chartData
@@ -256,11 +259,11 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			//   chartData[i].litres = chartData[i].value;
 			//   chartData[i].absValue = Math.abs(chartData[i].value);
 			// }
-			
+
 
 			var chart = AmCharts.makeChart("meachul_jem", {
 				"type": "pie",
-				"startDuration": 0, //차트 애니메이션 
+				"startDuration": 1, //차트 애니메이션
  			     "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
 				"minRadius": 50,
 				"maxLabelWidth":50,
@@ -268,7 +271,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"valueField": "value",//"value",
 				"fontSize": 12,
 				"theme": "dark",
-				"startDuration": 0,
+				"startDuration": 1,
 			    "labelsEnabled": true,
 			    "legend": {
 			      "enabled": false,
@@ -289,7 +292,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("brand_top5", {
 				"type": "serial",
-				"startDuration": 0, //차트 애니메이션
+				"startDuration": 1, //차트 애니메이션
 				 "theme": "dark",
 				"categoryField": "name",
 				"rotate": true,
@@ -403,7 +406,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("meachul_top5", {
 				"type": "serial",
-				"startDuration": 0,
+				"startDuration": 1,
 				 "theme": "dark",
 				"categoryField": "name",
 				"rotate": true,
@@ -512,7 +515,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		// 	var chart = AmCharts.makeChart("scm", {
 		// 		"type": "serial",
-		// 		"startDuration": 0, //차트 애니메이션
+		// 		"startDuration": 1, //차트 애니메이션
 		// 	    	"theme": "dark",
 		// 		"autoMarginOffset": 20,
 		// 		"autoMargins": false,
@@ -586,15 +589,17 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("Meachul_ik", {
 			   	"type": "serial",
-				"startDuration": 0, //차트 애니메이션
+				"startDuration": 1, //차트 애니메이션
 			    	"theme": "dark",
 				"dataProvider": chartData,
-				"autoMarginOffset": 20,
-				"autoMargins": false,
+
+				"autoMarginOffset": 1,
+				"autoMargins": true,
 				"marginBottom": 30,
 				"marginRight": 50,
 				"marginTop": 50,
 				"marginLeft": 50,
+
 
 				"prefixesOfBigNumbers": [
 					{
@@ -763,25 +768,26 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_7&value_kind=meachul_7&admin_code=" + admin_code + "&swm_gu=" + gu)
 
 			var chart = AmCharts.makeChart("meachul_7", {
-			  "type": "serial",
-			  "startDuration": 0, //차트 애니메이션
-			  "theme": "dark",
-			  "addClassNames": true,
-			  "autoMarginOffset": 20,
-			  "autoMargins": false,
-			  "marginBottom": 30,
-			  "marginRight": 50,
-			  "marginTop": 50,
-			  "marginLeft": 50,
+			"type": "serial",
+			"startDuration": 1, //차트 애니메이션
+			"theme": "dark",
+			"addClassNames": true,
 
-			  "mouseWheelScrollEnabled": false,
-			  "balloon": {
+			"autoMarginOffset": 1,
+			"autoMargins": true,
+			"marginBottom": 30,
+			"marginRight": 50,
+			"marginTop": 50,
+			"marginLeft": 50,
+
+			"mouseWheelScrollEnabled": false,
+			"balloon": {
 				"adjustBorderColor": false,
 				"horizontalPadding": 10,
 				"verticalPadding": 8,
-				"startDuration": 0,
+				"startDuration": 1,
 				"color": "#ffffff"
-			  },
+			},
 				"prefixesOfBigNumbers": [
 							{
 								"number": 10000,
@@ -828,11 +834,11 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"alphaField": "alpha",
 					"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span>",
 					"fillAlphas": 1,
-					"title": "금액",
+					"title": "금액(취소반품 제외)",
 					"type": "column",
 					"valueField": "value",
 					"dashLengthField": "dashLengthColumn",
-					"startDuration": 0,
+					"startDuration": 1,
 					"ValueAxis": "ValueAxis-1"
 				  }, {
 					"id": "graph2",
@@ -846,17 +852,18 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"bulletBorderThickness": 3,
 					"fillAlphas": 0,
 					"lineAlpha": 1,
-					"title": "수량",
+					"title": "수량(취소반품 제외)",
 					"valueField": "su",
 					"valueAxis": "ValueAxis-2",
-					"startDuration": 0,
+					"startDuration": 1,
 					"position" : "right"
 				  }],
 				  "categoryField": "name",
 				  "categoryAxis": {
 					"gridPosition": "start",
 					"axisAlpha": 0,
-					"tickLength": 0
+					"tickLength": 0,
+					"size": 8
 				  },
 				  "export": {
 					"enabled": true
@@ -885,7 +892,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("meaip_7", {
 			   	"type": "serial",
-			    	"startDuration": 0, //차트 애니메이션
+			    	"startDuration": 1, //차트 애니메이션
 				"theme": "dark",
 				"dataProvider": chartData,
 				"autoMargins": true,
@@ -992,7 +999,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("beasonga", {
 			  "type": "pie",
-			  "startDuration": 0, //차트 애니메이션 
+			  "startDuration": 1, //차트 애니메이션
 			  "theme": "dark",
 			  "minRadius": 50,
 			  "maxLabelWidth":50,
@@ -1024,11 +1031,11 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("beasong_gu", {
 					"type": "serial",
-					"startDuration": 0, //차트 애니메이션
+					"startDuration": 1, //차트 애니메이션
 					"theme": "dark",
 
-					"autoMarginOffset": 20,
-					"autoMargins": false,
+					"autoMarginOffset": 1,
+					"autoMargins": true,
 
 					"marginBottom": 60,
 					"marginRight": 50,
@@ -1109,7 +1116,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("meachul_onoff", {
 				"type": "pie",
-				"startDuration": 0, //차트 애니메이션 
+				"startDuration": 1, //차트 애니메이션
 				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
 				"minRadius": 50,
 				"maxLabelWidth":50,
@@ -1138,7 +1145,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("banpum", {
 				"type": "serial",
-			  "startDuration": 0, //차트 애니메이션
+			  "startDuration": 1, //차트 애니메이션
 			  "theme": "dark",
 			  "addClassNames": true,
 			  "autoMarginOffset": 20,
@@ -1254,7 +1261,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("banpum_top5", {
 				"type": "serial",
-			    	"startDuration": 0, //차트 애니메이션
+			    	"startDuration": 1, //차트 애니메이션
 				"theme": "dark",
 				"categoryField": "name",
 				"rotate": true,
@@ -1371,7 +1378,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("meachul_cs", {
 				"type": "pie",
-				"startDuration": 0, //차트 애니메이션 
+				"startDuration": 1, //차트 애니메이션
 				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
 				"minRadius": 50,
 				"maxLabelWidth":50,
@@ -1397,10 +1404,10 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		case "meaip_commgoods" :			//상품별 매입건수/매입액 top5
 			console.log('상품별 매입건수/매입액 top5');
 			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_commgoods&value_kind=meaip_commgoods&admin_code=" + admin_code + "&swm_gu=" + gu)
-			
+
 			var chart = AmCharts.makeChart("meaip_commgoods", {
 				"type": "serial",
-			    	"startDuration": 0, //차트 애니메이션
+			    	"startDuration": 1, //차트 애니메이션
 				"theme": "dark",
 				"categoryField": "name",
 				"rotate": true,
@@ -1513,11 +1520,11 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("JeGo_TurnOver", {
 				"type": "serial",
-			    	"startDuration": 0, //차트 애니메이션
-				"theme": "dark",
+				 "theme": "dark",
 				"categoryField": "name",
-				"rotate": true,	
-				
+				"rotate": true,
+				"startDuration": 1,
+
 				"categoryAxis": {
 					"gridPosition": "start",
 					"position": "left"
@@ -1575,6 +1582,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 					"enabled": true
 				 }
 			});
+
 			break;
 
 		case "beasongb" :			//출고현황
@@ -1583,11 +1591,12 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("beasongb", {
 			  "type": "serial",
-			  "startDuration": 0, //차트 애니메이션
+			  "startDuration": 1, //차트 애니메이션
 			  "addClassNames": true,
 			  "theme": "dark",
-			  "autoMarginOffset": 20,
-			  "autoMargins": false,
+			  
+			  "autoMarginOffset": 1,
+			  "autoMargins": true,
 			  "marginBottom": 30,
 			  "marginRight": 50,
 			  "marginTop": 50,
@@ -1658,7 +1667,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		$("button[name=btnGrid]").css('color', '#686868');
 	}else{
 		$("button[name=btnGrid]").css('background', '#ececed');
-		$("button[name=btnGrid]").css('color', '#444');
+		$("button[name=btnGrid]").css('color', '#444444');
 	}
 
 }

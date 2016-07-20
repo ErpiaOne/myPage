@@ -1,8 +1,10 @@
 <!-- 빠른등록 리스트 모달 -->
 <ion-modal-view title="" >
-	<ion-header-bar style="background: #8f6384;">
-		<div class="buttons"><button class="button" ng-click='quickMcancle()'>취소</button></div>
-		<h1 class="title" style="color: #fff">빠른등록리스트</h1>
+	<ion-header-bar class="bar-dark" style="background: #8f6384; border:0;" title-align="center">
+		<div class="psmsmy_title_mo">즐겨찾기리스트</div>
+		<div class="buttons" style="position: absolute; right: 0px;">
+		<i ng-click="quickMcancle()"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
+		</div>
 	</ion-header-bar>
 
 	<ion-content style="padding:10px; background: #dce0e1;">
@@ -13,11 +15,14 @@
 		<div style="height: 23px;"></div>
 	</ion-content>
 
-	<ion-footer-bar align-title="left" class="bar-assertive" style="background: #988e9a; border: 0;">
-		<div class="buttons" ng-click="closemodesear()"><button class="button button-psm02" ng-click="quickde()">삭제</button></div>
-		<h1 class="title"></h1>
-		<div class="buttons"><button class="button  button-psm01" ng-click="quick_i()">확인</button></div>
-	</ion-footer-bar>
+	<ion-footer-bar style="width: 100%; background: #736777; border: 0; ">
+	    <table style="width: 100%;">      
+	      <tr>
+	        <td style="text-align: left;"><button class="button button-psm02" ng-click="quickde();closemodesear()">삭제</button></td>
+	        <td style="text-align: right;"><button class="button  button-psm01" ng-click="quick_i()">등록</button></td>
+	      </tr>
+	    </table>
+	  </ion-footer-bar>
 </ion-modal-view>
 
 

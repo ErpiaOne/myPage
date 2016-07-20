@@ -1,0 +1,30 @@
+<ion-modal-view cache-view="false" style="color: #fff;" class="bar-dark">
+	<ion-header-bar class="bar-dark" style="background: #8f6384; border:0;" title-align="center">
+		<div class="psmsmy_title_mo">접속 로그</div>
+		<div class="buttons" style="position: absolute; right: 0px;">
+			<i ng-click="loginLogModal_close()"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
+		</div>
+	</ion-header-bar>
+	<ion-content>
+		<div class="list">
+			<div class="item" style="background: #dce0e1;">
+				<table width="100%" style="text-align:center; background: #fff;">
+					<tr bgcolor="#8C8C8C">
+						<td style="font-size:0.8em; padding: 7px 0; color:#fff;">날짜</td>
+						<td style="font-size:0.8em; padding: 7px 0; color:#fff;">폰번호</td>
+						<td style="font-size:0.8em; padding: 7px 0; color:#fff;">최초시간</td>
+						<td style="font-size:0.8em; padding: 7px 0; color:#fff;">최종시간</td>
+						<td style="font-size:0.8em; padding: 7px 0; color:#fff;">횟수</td>
+					</tr>
+					<tr ng-repeat="y in log_list">
+						<td style="vertical-align:middle; padding:15px 0; border-bottom: 1px solid #e0e0e0;"><font color="black">{{y.login_date}}</font></td>
+						<td style="vertical-align:middle; padding:15px 0; border-bottom: 1px solid #e0e0e0;"><font color="black">{{y.phoneno}}</font></td>
+						<td style="vertical-align:middle; padding:15px 0; border-bottom: 1px solid #e0e0e0;"><font color="black">{{y.firstlogintime}}</font></td>
+						<td style="vertical-align:middle; padding:15px 0; border-bottom: 1px solid #e0e0e0;"><font color="black">{{y.lastlogintime}}</font></td>
+						<td style="vertical-align:middle; padding:15px 0; border-bottom: 1px solid #e0e0e0;"><font color="black">{{y.logincount}}</font></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</ion-content>
+</ion-modal-view>
