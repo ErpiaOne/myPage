@@ -395,10 +395,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.loginData.Pwd = $scope.logindata2.EPwd;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.Admin_Code = '6178600097'; //PC모드
 			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'kmtest	';
-			$rootScope.loginData.Pwd = 'kmtest1!';
+			$rootScope.loginData.UserId = 'borntoroad';
+			$rootScope.loginData.Pwd = 'borntoroad1!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -943,13 +943,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.click_home = function(){
 		if($rootScope.userType == 'ERPia') $location.href = '#/slidingtab'; //$state.go('app.slidingtab');
 		else if($rootScope.userType == 'Guest') $location.href = '#/slidingtab'; //$state.go('app.sample_Main');
-	}
-
-	$scope.close_cert_de = function(){
-			CertifyService.certifyde($scope.loginData.Admin_Code, $rootScope.loginState, $rootScope.loginData.UserId, $scope.SMSData.recUserTel, $rootScope.deviceInfo.uuid)
-			.then(function(response){
-				
-			})
 	}
 
 	/* 인증 모달 닫기 함수 - 이경민[2016-01] */
@@ -4099,28 +4092,37 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	.then(function(data){
 		$rootScope.setupData = data;
 
-		/*기본 매장조회- 이경민*/
-		MconfigService.basicM($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
+		/*기본 매장조회 - 이경민[2015-12]*/
+		MconfigService.basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
 		.then(function(data){
-			$rootScope.mejanglists = data.list;
-
-		
-				/*기본 창고조회 - 이경민*/
-				MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
-				.then(function(data){
-					$rootScope.changolists = data.list;
-					var gubun = false;
-					for(var i = 0; i < $rootScope.changolists.length; i++){
-						if($rootScope.changolists[i].Code == $rootScope.setupData.basic_Ch_Code){
-							var gubun = true;
-							break;
-						}
+			$scope.mejanglists = data.list;
+			console.log($scope.setupData.basic_Place_Code);
+			if($scope.setupData.basic_Place_Code == -1){
+				$scope.setupData.basic_Place_Code = $rootScope.erpia_code;
+			}
+				for(var i=0; i < $scope.mejanglists.length; i++ ){
+					if($scope.mejanglists[i].Sale_Place_Code == $rootScope.erpia_code){
+						$scope.mejang2 = $scope.mejanglists[i];
+						$scope.mejanglists.splice(0,$scope.mejanglists.length);
+						$scope.mejanglists.push($scope.mejang2);
+						break;
 					}
-					if(gubun == false){
-						$rootScope.setupData.basic_Ch_Code = '000';
+				}
+			/*기본 창고조회  - 이경민[2015-12]*/
+			MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.setupData.basic_Place_Code)
+			.then(function(data){
+				$scope.changolists = data.list;
+				var gubun = false;
+				for(var i = 0; i < $scope.changolists.length; i++){ ////여기여기!
+					if($scope.changolists[i].Code == $scope.setupData.basic_Ch_Code){
+						var gubun = true;
+						break;
 					}
-				})
-
+				}
+				if(gubun == false){
+					$scope.setupData.basic_Ch_Code = '000';
+				}
+			})
 		})
 
 	})
@@ -4935,6 +4937,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
  	/*매출매입 상세조회 - 이경민[2015-12]*/
 	MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.m_no)
 	.then(function(data){
+		console.log('여기! =>',data);
 		$scope.chit_dedata = data.list;
 		if($scope.chit_dedata[0].MobileQuickReg == 'N'){
 			$scope.ionstar = "ion-android-star-outline";

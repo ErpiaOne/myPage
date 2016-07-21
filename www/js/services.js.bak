@@ -121,6 +121,7 @@ angular.module('starter.services', [])
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
 			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + G_id + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+			console.log('여기오니?=>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response;
@@ -251,9 +252,11 @@ angular.module('starter.services', [])
 			data += '&model=' + DeviceInfo.model + '&platform=' + DeviceInfo.platform + '&originalhp=' + phoneno;
 		}
 		return $http.get(url + '?' + data).success(function(response){
+			console.log(response);
 			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증코드를 전송했습니다.', 'long', 'center');
 
 			if (response.list[0].Result == '1'){ //사용자 정보 및 인증코드 디비에 저장 후 
+				 console.log('일로와라 좋은말로할때 ');
 				var url = ERPiaAPI.url + '/SCP.asp';
 				var data = 'sms_id=' + sms_id + '&sms_pwd=' + sms_pwd + '&send_num=' + sendNum + '&rec_num=' + rec_num;
 				data += '&rndNum=' + $rootScope.rndNum + '&SendType=mobile_Certification';
@@ -264,6 +267,7 @@ angular.module('starter.services', [])
 			}
 		})
 	}
+
 
 	/* 인증번호비교 - 김형석 */
 	var check = function(Admin_Code, loginType, ID, G_Code, Input_Code, rec_num, UUID){
@@ -542,24 +546,24 @@ angular.module('starter.services', [])
 			return $http.get(url + '?' + data).then(function(response) {
 				if(typeof response.data == 'object'){
 					for(var i=0; i<response.data.list.length; i++){
-						switch(response.data.list[i].Idx){
+						switch(response.data.list[i].Idx){ 
 							case "0": response.data.list[i].title = titles[0].title; response.data.list[i].icon = 'ion-home'; break;
-							case "1": response.data.list[i].title = titles[1].title; response.data.list[i].icon = 'ion-earth'; break;
+							case "1": response.data.list[i].title = titles[1].title; response.data.list[i].icon = 'ion-social-buffer'; break;
 							case "2": response.data.list[i].title = titles[2].title; response.data.list[i].icon = 'ion-monitor'; break;
 							case "3": response.data.list[i].title = titles[3].title; response.data.list[i].icon = 'ion-pricetags'; break;
 							case "4": response.data.list[i].title = titles[4].title; response.data.list[i].icon = 'ion-cube'; break;
 							case "5": response.data.list[i].title = titles[5].title; response.data.list[i].icon = 'ion-stats-bars'; break;
 							case "6": response.data.list[i].title = titles[6].title; response.data.list[i].icon = 'ion-clipboard'; break;
-							case "7": response.data.list[i].title = titles[7].title; response.data.list[i].icon = 'ion-ios-cloud-upload'; break;
-							case "8": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-android-cloud-done'; break;
+							case "7": response.data.list[i].title = titles[7].title; response.data.list[i].icon = 'ion-android-exit'; break;
+							case "8": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-share'; break;
 							case "9": response.data.list[i].title = titles[9].title; response.data.list[i].icon = 'ion-android-bus'; break;
 							case "10": response.data.list[i].title = titles[10].title; response.data.list[i].icon = 'ion-pie-graph'; break;
 							case "11": response.data.list[i].title = titles[11].title; response.data.list[i].icon = 'ion-arrow-swap'; break;
-							case "12": response.data.list[i].title = titles[12].title; response.data.list[i].icon = 'ion-log-out'; break;
+							case "12": response.data.list[i].title = titles[12].title; response.data.list[i].icon = 'ion-arrow-return-left'; break;
 							case "13": response.data.list[i].title = titles[13].title; response.data.list[i].icon = 'ion-person-stalker'; break;
-							case "14": response.data.list[i].title = titles[14].title; response.data.list[i].icon = 'ion-log-in'; break;
+							case "14": response.data.list[i].title = titles[14].title; response.data.list[i].icon = 'ion-ios-download'; break;
 							case "15": response.data.list[i].title = titles[15].title; response.data.list[i].icon = 'ion-loop'; break;
-							case "16": response.data.list[i].title = titles[16].title; response.data.list[i].icon = 'ion-plane';break;
+							case "16": response.data.list[i].title = titles[16].title; response.data.list[i].icon = 'ion-android-open';break;
 						}
 					}
 					return response.data.list;	
@@ -657,9 +661,10 @@ angular.module('starter.services', [])
 /* 로그인단말기 정보관련 Service - 김형석[2016-02] */
 .factory('uuidService', function($http, $q, $rootScope, ERPiaAPI, $cordovaToast){
 	return{
-		get_Log : function(uuid){			// 로그인 로그정보 불러오기 (나중에 리스트 뿌릴 때 사용할 예정 )
+			//http://www.erpia.net/include/JSon_Proc_Mobile_Erpia.asp?Kind=get_Log&Admin_Code=onz&loginType=E&id=khs239
+		get_Log : function(Admin_Code, loginType, id){			// 로그인 로그정보 불러오기 (나중에 리스트 뿌릴 때 사용할 예정 )
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'Kind=get_Log&Mac=' + uuid;
+			var data = 'Kind=get_Log&Admin_Code=' + Admin_Code + 'loginType=' + loginType + '&id=' + id;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;
@@ -1030,7 +1035,7 @@ angular.module('starter.services', [])
 						// if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되어있는 초기값이 없습니다.', 'short', 'center');
 						// else console.log('저장되어있는 초기값이 없습니다.');
 						var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-						var datas = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=insert&basic_Ch_Code=101&basic_Place_Code=000&basic_Dn_Meaip=0&basic_Dn_Sale=0&basic_Subul_Sale=1&basic_Subul_Sale_Before=N&basic_Subul_Meaip=1&basic_Subul_Meaip_Before=N';
+						var datas = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=insert&basic_Ch_Code=101&basic_Place_Code=-1&basic_Dn_Meaip=0&basic_Dn_Sale=0&basic_Subul_Sale=1&basic_Subul_Sale_Before=N&basic_Subul_Meaip=1&basic_Subul_Meaip_Before=N';
 						return $http.get(url + '?' + datas).then(function(response){
 							var data = {
 								state : 0,
@@ -1597,13 +1602,16 @@ angular.module('starter.services', [])
 			
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + userid + '&Kind='+ kind +'&Mode=Select_G_Dn0&GoodsCode=' + goods_code + '&GerCode=' + ger_code;
+			console.log('강아지 모자 =>',url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
+					console.log('1차=>', response);
 					var returndata = { 
-						'data' : response.data,
+						'data' : response.data.list[0],
 						'i' : i,
 						'bar' : bar
 					};
+					console.log('2차=>', returndata);
 					return returndata;
 				}else{
 					return $q.reject(response.data);
@@ -1690,7 +1698,6 @@ angular.module('starter.services', [])
 
 		}, i_data : function(admin_code, userid, pay, paylist, date, goods, setup, datas){				// 매입&매출 등록
 			console.log("MiuService and i_data");
-
 			/*매입등록*/
 			if($rootScope.distinction == 'meaip'){
 				var kind = 'ERPia_Meaip_Insert_Goods';
@@ -1825,6 +1832,37 @@ angular.module('starter.services', [])
 					return $q.reject(response.data);
 				})
 
+		}, subulupdate : function(admin_code, userid, subul){			// 최근 등록 수분 환경설정에 업데이트
+			console.log("MiuService and subulupdate");
+
+
+			if($rootScope.distinction == 'meaip'){
+				if(subul== 111){
+					var su = 'I';
+				}else{
+					var su = 'B';
+				}
+				var datas = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=update_subul_before&basic_Subul_Sale_Before=&basic_Subul_Meaip_Before='  + su;
+			}else{
+				if(subul == 221){
+					var su = 'C';
+				}else{
+					var su = 'B';
+				}
+				var datas = 'Admin_Code=' + admin_code + '&Userid=' + userid + '&Kind=ERPia_Config&Mode=update_subul_before&basic_Subul_Sale_Before='+ su+'&basic_Subul_Meaip_Before=';
+			} 
+
+			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+			return $http.get(url + '?' + datas).then(function(response){
+				if(typeof response == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})	
+
 		}, seq_del : function(admin_code, userid, no, seq){			// 상품T 삭제
 			console.log("MiuService and seq_del==>");
 			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Delete_Goods&Mode=Delete_MeaipT&iL_No=' + no + '&Tseq=' + seq;
@@ -1915,5 +1953,44 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 		}
+		
+	};
+
+})
+/* SCM/NORMAL모드 비밀번호변경 Service - 김형석[2016-06-22] */
+//http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=SCM_PassChange&loginType=N&Admin_Code=onz&GerCode=00926&ID=onz&pwd=onz&changePass=1234&mac=ba8e205a02d20e66
+//http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=Normal_PassChange&Admin_Code=onz&GerCode=00926&ID=aaaa&pwd=aaaaaaa!1&changePass=1234&mac=ba8e205a02d20e66
+/* 비밀번호 변경전 검사 - 이경민[2016-07-13] */
+//http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=pwdSet&Admin_Code=phj9775&id=555&pwd=555&loginType=S
+.factory('PassChangeService', function($http, $q, $cordovaToast, ERPiaAPI){
+	return{
+		changepass: function(mode, Admin_Code, GerCode, UserID, G_Pass, changePass, UUID){
+			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
+			var data = 'kind=PassChange&mode='+ mode +'&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode + '&ID='+ UserID;
+			   data  += '&pwd='  +G_Pass + '&changePass=' + changePass + '&mac=' + UUID;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}, changepass_YN: function(Admin_Code, UserID, G_Pass, loginType){
+			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
+			var data = 'kind=pwdSet&Admin_Code='+ Admin_Code + '&id='+ UserID +'&pwd='+ G_Pass +'&loginType=' + loginType;
+			console.log(url, '?', data);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}
+		
 	};
 });

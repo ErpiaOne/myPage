@@ -74,11 +74,11 @@ div.col4{width:44%; color: #fff;}
 						<tr>
 							<td class="resulttd1-1" rowspan="2" align="center" style="padding-top: 8px;">{{$index+1}}.</td>
 							<td class="resulttd1-2" align="left" style="padding-top: 8px;">{{x.MeaChul_date}}</td>
-							<td class="resulttd1-3" align="left" style="padding-top: 8px;"><b>{{x.GerName}}</b></td>
+							<td class="resulttd1-3" align="left" style="padding-top: 8px;"><div style="width: 100%; height: 25px; overflow: hidden; "><b>{{x.GerName}}</b></div></td>
 							<td class="resulttd1-4" rowspan="2" align="right" style="padding-top: 8px; vertical-align: middle;">{{x.MeaChul_Amt| number:0}}원</td>
 						</tr>
 						<tr>
-							<td colspan="2" class="resulttd2-1" align="left">{{x.G_Name}}<br></td>
+							<td colspan="2" class="resulttd2-1" align="left"><div style="width: 100%; height: 25px; overflow: hidden; ">{{x.G_Name}}<br></td>
 						</tr>
 					</tbody>
 						<tr ng-if="moreloading==0&&maxover==0&&$last">

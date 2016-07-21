@@ -146,9 +146,9 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			if (label.length > kind.legend.truncateLabels)
 			  label = label.substr(0, kind.legend.truncateLabels-1)+'...'
 			  kind.dataProvider[i][legendTitleField] = label;
-		  }
+		  }		
 		  // replace chart.titleField to show our own truncated field
-		  kind.titleField = legendTitleField;
+		  kind.titleField = legendTitleField;			  
 		  // make the balloonText use full title instead
 		  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
 
@@ -196,16 +196,16 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var containerWidth = $(window).width() - 100;
 
-			if (containerWidth <= 500)//화면 넓이가 374보다 작으면 라벨 각의 값을 준다
-			{
-				kind.categoryAxis.autoRotateAngle = -60;
-				kind.categoryAxis.autoRotateCount = 4;
-			}
-			else
-			{
-				kind.categoryAxis.autoRotateAngle = 0;
-				kind.categoryAxis.autoRotateCount = 0;
-			}
+			// if (containerWidth <= 500)//화면 넓이가 374보다 작으면 라벨 각의 값을 준다
+			// {
+			// 	kind.categoryAxis.autoRotateAngle = -60;
+			// 	kind.categoryAxis.autoRotateCount = 4;
+			// }
+			// else
+			// {
+			// 	kind.categoryAxis.autoRotateAngle = 0;
+			// 	kind.categoryAxis.autoRotateCount = 0;
+			// }
 		}, ["serial"]);
 	}
 
@@ -229,26 +229,24 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("meaip_jem", {
 				"type": "pie",
-				"startDuration": 1, //차트 애니메이션
- 			    	"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
- 			    	"showZeroSlices": true,		//20160622(성책추가, 마이너스 금액이 뜰경우 그래프 표현이 안되어 정보만이라도 표시)
+ 			        "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> 원</span></span> ([[percents]]%)</span>",
+				"showZeroSlices": true,		//20160622(성책추가, 마이너스 금액이 뜰경우 그래프 표현이 안되어 정보만이라도 표시)
 				"minRadius": 50,
 				"maxLabelWidth":50,
 				"titleField": "name",
-				"valueField": "value",//"value",
+				"valueField": "value",
 				"fontSize": 12,
 				"theme": "dark",
-			    	"labelsEnabled": true,
-			    	"legend": {
-			      	"enabled": false,
-				"truncateLabels": 10 // custom parameter
+			        "labelsEnabled": true,
+			        "legend": {
+			        "enabled": false,
+				  "truncateLabels": 10 // custom parameter
 			    },
-			   	"allLabels": [],
+				"allLabels": [],
 				"balloon": {},
 				"labelRadius": 1,
 				"dataProvider": chartData
 			});
-
 			break;
 
 		case "meachul_jem" :			//사이트별 매출 점유율

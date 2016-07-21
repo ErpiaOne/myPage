@@ -244,6 +244,11 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		} 
 	}
 
+	$rootScope.already = function(){
+		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('준비중입니다.', 'long', 'center');
+		else console.log('준비중입니다.');
+	}
+
 	$rootScope.goto_with_clearHistory = function(goto_Href){
 		if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){
 			$ionicPopup.show({
