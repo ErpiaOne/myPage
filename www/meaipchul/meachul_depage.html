@@ -107,10 +107,9 @@
 	<div style="height: 15px; background: #dce0e1;" ></div>
 
 	<label class="item item-input">
-	<span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;관리비고 </i></span>
-	<any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">{{x.Remk}}</any>
+		<span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;관리비고 </i></span>
+		<span ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1" style="display: inline-block; width: 100%; padding-right: 20px; white-space: normal;">{{x.Remk}}</span>
 	</label>
-	<!-- <div style="height: 15px; background: #dce0e1;" ></div> -->
 </div>
 </ion-content>
 

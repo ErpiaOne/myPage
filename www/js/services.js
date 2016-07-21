@@ -1419,7 +1419,7 @@ angular.module('starter.services', [])
 /* 매입 & 매출 등록 & 수정 통합 - 이경민[2016-01] */
 .factory('MiuService', function($http, ERPiaAPI, $q, $cordovaToast, $rootScope){
 	return{
-		companyAndgoods_lately: function(admin_code, userid, gubun){			// 최근 검색상품내역 자동조회
+		companyAndgoods_lately: function(admin_code, userid, gubun){			// 최근 검색 거래처 또는 상품내역 자동조회
 			console.log("MiuService and companyAndgoods_lately");
 			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Sel_G_Lately';
 			else var kind = 'ERPia_Sale_Sel_G_Lately';
@@ -1427,7 +1427,9 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind='+ kind +'&Mode=Sel_GerGoods_Search_Lately&G_Gubun=' + gubun;
 
+			console.log('최근 조회=>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
+				console.log('최근조회결과 ->', response);
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
@@ -1437,7 +1439,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 		
-		}, companyAndgoods_latelysave: function(admin_code, userid, gubun, username, code){		// 최근상품검색내역 저장
+		}, companyAndgoods_latelysave: function(admin_code, userid, gubun, username, code){		// 최근 거래처 또는 상품검색내역 저장
 			console.log("MiuService and companyAndgoods_latelysave");
 			
 			if(gubun == 'Ger') var gername = escape(username);
@@ -1445,11 +1447,13 @@ angular.module('starter.services', [])
 			
 			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Sel_G_Lately';
 			else var kind = 'ERPia_Sale_Sel_G_Lately';
-			
+
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind='+ kind +'&Mode=Reg_Select_GerGoods_Search_Lately&G_Gubun=' + gubun + '&G_Gubun_Value=' + gername + '&GerCode=' + code;
-
+			
+			console.log('최근조회저장 =>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
+				console.log('저장내역결과=>', response);
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
@@ -1588,7 +1592,9 @@ angular.module('starter.services', [])
 			
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid )+ '&Kind='+ kind +'&Mode=Select_G_Dn0&GoodsCode=' + goods_code + '&GerCode=' + ger_code;
+			console.log('단가 유알엘 확인 ->', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
+				console.log('단가 데이터 확인 =>', response);
 				if(typeof response == 'object'){
 					var returndata = { 
 						'data' : response.data,
@@ -1737,7 +1743,7 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + escape(userid) + '&Kind='+ kind + '&Mode=&RequestXml=';
 
-			// console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
+			console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
 			return $http.post(url + '?' + data + m_data + goods_xml + middel + end).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;

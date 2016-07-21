@@ -98,7 +98,7 @@
     </tr>
     <tr>
       <td class="width-30">{{x.IpJi_Date}}</td>
-      <td class="width-30"><any ng-if='x.IpJi_Gubun == 701'>현금입금</any><any ng-if='x.IpJi_Gubun == 702'>통장입금</any><any ng-if='x.IpJi_Gubun == 703'>카드입금</any><any ng-if='x.IpJi_Gubun == 704'>어음입금</any></td>
+      <td class="width-30"><any ng-if='x.IpJi_Gubun == 701'>현금결제</any><any ng-if='x.IpJi_Gubun == 702'>통장결제</any><any ng-if='x.IpJi_Gubun == 703'>카드결제</any><any ng-if='x.IpJi_Gubun == 704'>어음결제</any></td>
       <td class="width-20-r"><b>{{x.IpJi_Amt | number:0}}원</b></td>
     </tr>
     </table>
@@ -108,13 +108,9 @@
 
   <label class="item item-input">
   <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;관리비고 </i></span>
-
-
   <span ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1" style="display: inline-block; width: 100%; padding-right: 20px; white-space: normal;">{{x.Remk}}</span>
-
- <!--  <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">{{x.Remk}}</any> -->
   </label>
-<!--   <div style="height: 15px; background: #dce0e1;" ></div> -->
+
 </div>
 </ion-content>
 <ion-footer-bar align-title="left"  style="background: #736777; padding-bottom: 100px">

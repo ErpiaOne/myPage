@@ -1,7 +1,7 @@
 <style>
-	input::-webkit-input-placeholder { color:#8f8699 }
-	input::-moz-placeholder { color:#8f8699 }
-	input::-ms-input-placeholder { color:#8f8699 }
+	input::-webkit-input-placeholder { color:#ccc }
+	input::-moz-placeholder { color:#ccc }
+	input::-ms-input-placeholder { color:#ccc }
 </style>
 
 <!-- 매출 등록/수정 페이지 -->
@@ -27,42 +27,42 @@
 	</div>
 
 
-	<div class="list list-inset" style="padding: 10px; margin-top: 10px; text-align: left;">
-		<div ng-click="Next()" style="text-align: left;">매출정보<i class="{{upAnddown}} psmsmy_semo"></i> </div>
-		<div ng-if="basictype" style="align:center; margin-top:15px; padding-top:25px; padding-bottom: 15px; border-top: 1px solid #6c5e72;">
+	<div class="list list-inset">
+		<div ng-click="Next()" style="text-align: left; padding: 10px;">매출정보<i class="{{upAnddown}} psmsmy_semo"></i> </div>
+		<div ng-if="basictype" style="padding: 25px 15px 15px 15px; margin-top:5px; border: 1px solid #aaa; background: #5e6472;">
 
 			<table width="100%" class=""style="align:center; vertical-align:middle;">
 				<tr>
-					<td style="width: 100px;">거래처</td>
+					<td style="width: 100px; color: #fff;">거래처</td>
 					<td style="text-align: right;">
-						<input type="search" ng-click='company_lately()' ng-model="datas.userGerName" ng-disabled="{{sbu}}" placeholder="거래처명검색" style="border:1px solid #e0e0e0; padding-left: 10px; padding-right: 35px; width: 100%; -webkit-appearance:none; -webkit-border-radius: 0;" ng-change="company_auto()">
+						<input type="search" ng-click='company_lately()' ng-model="datas.userGerName" ng-disabled="{{sbu}}" placeholder="거래처명검색" style="border: 0; border-bottom: 1px solid #e0e0e0; padding-left: 10px; padding-right: 35px; width: 100%; -webkit-appearance:none; -webkit-border-radius: 0; background: #5e6472; color: #fff;" ng-change="company_auto()">
 					</td>
 					<td width="90px;" style="text-align: right;">
 						<div style="position: relative; z-index: 50">
-							<i class='ion-android-close' style='margin-top:8px; padding-right:25px; vertical-align:middle; font-size:25px;' ng-if="sbu == false" ng-click='clearcompany()'></i>
-							<i class='ion-ios-help' style='font-size:35px; vertical-align:middle;' ng-click='gerDetail()'></i>
+							<i class='ion-android-close' style='margin-top:8px; padding-right:25px; vertical-align:middle; font-size:25px; color: #fff;' ng-if="sbu == false" ng-click='clearcompany()'></i>
+							<i class='ion-ios-help' style='font-size:35px; vertical-align:middle; color: #fff;' ng-click='gerDetail()'></i>
 						</div>
 					</td>
 				</tr>
 			</table>
 
-			<div class="list">
+			<div class="list" style="padding-left: 100px; margin-top: -1px;">
 				<ul>
-					<li class="item" ng-repeat="x in companyDatas" style="background: #ebebeb" ng-click="company_Func(x.G_Name,x.G_Code);checkup()">{{x.G_Name}}</li>
-					<li class="item" ng-repeat="x in companylatelyDatas" style="background: #ebebeb" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code);checkup()">{{x.Search_Ger_Name}}</li>
+					<li class="item" ng-repeat="x in companyDatas" style="background: #ebebeb; font-size: 0.8em;" ng-click="company_Func(x.G_Name,x.G_Code);checkup()">{{x.G_Name}}</li>
+					<li class="item" ng-repeat="x in companylatelyDatas" style="background: #ebebeb; font-size: 0.8em;" ng-click="company_Func2(x.Search_Ger_Name,x.Search_Ger_Code);checkup()">{{x.Search_Ger_Name}}</li>
 				</ul>
 			</div>
 
 			<table width="100%" class=""style="align:center;vertical-align:middle;">
 				<tr>
-					<td style="width: 100px; vertical-align:middle;">수불구분</td>
+					<td style="width: 100px; vertical-align:middle; color: #fff;">수불구분</td>
 					<td style="position: relative;">
 						<div style="width: 50%;">
-							<ion-checkbox ng-click="meaipchul_subul(2);checkup()" ng-model='subul[2].checked' ng-disabled="{{sbu}}"  style="width: 100%; padding: 6px 6px 6px 47px; border: 0; margin-left: -17px; letter-spacing:-0.1em;">매출출고
+							<ion-checkbox ng-click="meaipchul_subul(2);checkup()" ng-model='subul[2].checked' ng-disabled="{{sbu}}"  style="width: 100%; padding: 6px 6px 6px 47px; border: 0; margin-left: -17px; letter-spacing:-0.1em; background: #5e6472; color: #fff;">매출출고
 							</ion-checkbox>
 						</div>
 						<div style="position: absolute; top: 0; right: 0; width: 50%;">
-							<ion-checkbox ng-click="meaipchul_subul(3);checkup()" ng-model='subul[3].checked' ng-disabled="{{sbu}}"  style="width: 100%; padding: 6px 6px 6px 47px; border: 0;  margin-left: -17px;  letter-spacing:-0.1em;">매출반품
+							<ion-checkbox ng-click="meaipchul_subul(3);checkup()" ng-model='subul[3].checked' ng-disabled="{{sbu}}"  style="width: 100%; padding: 6px 6px 6px 47px; border: 0;  margin-left: -17px;  letter-spacing:-0.1em; background: #5e6472; color: #fff;">매출반품
 							</ion-checkbox>
 						</div>
 					</td>
@@ -71,9 +71,9 @@
 
 			<table width="100%" style="align:center;vertical-align:middle; margin-top: 20px;">
 				<tr>
-					<td style="width: 100px; vertical-align:middle;">매장지정</td>
-					<td style="border-bottom: 1px solid #e0e0e0; height: 28px; vertical-align: middle;">
-						<select ng-model="setupData.basic_Place_Code" ng-change='Link_Chango();checkup()' style="width:100%; border: 1px solid #e0e0e0;">
+					<td style="width: 100px; vertical-align:middle; color: #fff;">매장지정</td>
+					<td style="height: 28px; vertical-align: middle;">
+						<select ng-model="setupData.basic_Place_Code" ng-change='Link_Chango();checkup()' style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;">
 						  <option value='000' ng-selected ="setupData.basic_Place_Code == 000">매장미지정</option>
 						  <option  ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}" ng-selected="setupData.basic_Place_Code == {{x.Sale_Place_Code}}">{{x.Sale_Place_Name}}</option>
 						</select>
@@ -83,9 +83,9 @@
 
 			<table width="100%" style="align:center;vertical-align:middle; margin-top: 20px;">
 				<tr>
-					<td style="width: 100px; vertical-align:middle;">창고지정</td>
-					<td style="border-bottom: 1px solid #e0e0e0; height: 28px; vertical-align: middle;">
-						<select ng-model="setupData.basic_Ch_Code" ng-change='Changosave();checkup()' style="width:100%; border: 1px solid #e0e0e0;">
+					<td style="width: 100px; vertical-align:middle; color: #fff;">창고지정</td>
+					<td style="height: 28px; vertical-align: middle;">
+						<select ng-model="setupData.basic_Ch_Code" ng-change='Changosave();checkup()' style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;">
 						  <option value='000' ng-selected ="setupData.basic_Ch_Code == 000">창고를 선택해주세요.</option>
 						  <option ng-repeat="x in changolists" value="{{x.Code}}" ng-selected="setupData.basic_Ch_Code == {{x.Code}}">{{x.Name}}</option>
 						</select>
@@ -96,17 +96,17 @@
 		</div>
 	</div>
 
+	<!-- 상품정보 -->
+	<div class="list list-inset" align="left">
+		<div ng-click="Next2()" style="text-align: left; padding: 10px;">상품<i class="{{upAnddown2}} psmsmy_semo"></i></div>
+		<div ng-if="basic2type" style="margin-top:5px; border: 1px solid #aaa;">
 
-	<div class="list list-inset" align="left" style="padding: 10px;">
-		<div ng-click="Next2()" style="text-align: left;">상품<i class="{{upAnddown2}} psmsmy_semo"></i></div>
-		<div ng-if="basic2type" style="margin-top:5px; border-top: 1px solid #6c5e72;">
-
-			<div style="background: #d7d3db;">
-				<div class="list list-inset" style="background: #d7d3db; padding-top: 15px; padding-bottom: 15px;">
+			<div style="background: #5e6472;">
+				<div class="list list-inset" style="background: #5e6472; padding-top: 15px; padding-bottom: 15px; margin-top: 0;">
 					<table width="100%" ng-if="sbu == false">
 						<tr>
 							<td>
-								<select ng-model="user.userMode" ng-change="modeselect()" style="width: 100%; padding: 0 10px; background: #d7d3db; border-top: 0; border-left: 0; border-right: 0;">
+								<select ng-model="user.userMode" ng-change="modeselect()" style="width: 100%; padding: 0 10px; background: #5e6472; border-top: 0; border-left: 0; border-right: 0; border-bottom: 1px solid #fff; color: #fff;">
 								<option ng-repeat="x in modeselectlist" value="{{x.Code}}" ng-selected="user.userMode == x.Code">{{x.Name}}</option>
 								</select>
 								&nbsp;&nbsp;
@@ -114,10 +114,15 @@
 							<td style="width: 40px"><i style="font-size: 2.5em; padding-top: 15px; padding-left:10px; vertical-align:middle; text-align: right;" ng-click="scanBarcode()"><img src="./img/barc.png"></i></td>
 						</tr>
 						<tr>
-							<td><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; padding: 15px 35px 15px 15px; background: #d7d3db; border-top: 0; border-left: 0; border-right: 0; border-bottom: 1px solid #aaa;"></td>
+							<td><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; padding: 15px 35px 15px 15px; background: #5e6472; border-top: 0; border-left: 0; border-right: 0; border-bottom: 1px solid #fff; color: #fff;"></td>
 							<td>
-								<i class='ion-android-close' style='text-align: left; margin-top:8px; padding-right:20px; margin-left:-25px; vertical-align:middle; font-size: 2em;'  ng-if="sbu == false"ng-click='clear_goods()'></i>
-								<i class="ion-search" style="text-align: left; margin-top:8px; vertical-align:middle; font-size: 2.2em;" ng-click="goods_searchM(1)"></i>
+								<i class='ion-android-close' style='text-align: left; margin-top:8px; padding-right:20px; margin-left:-25px; vertical-align:middle; font-size: 2em; color: #fff;'  ng-if="sbu == false"ng-click='clear_goods()'></i>
+								<i class="ion-search" style="text-align: left; margin-top:8px; vertical-align:middle; font-size: 2.2em; color: #fff;" ng-click="goods_searchM(1)"></i>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="item" style="background: #ebebeb; font-size: 0.8em;" ng-repeat="x in goodlately_slists"  ng-click="goods_lately_serarch(x.Search_Goods_Name)">{{x.Search_Goods_Name}}</div>
 							</td>
 						</tr>
 					</table>
@@ -126,14 +131,9 @@
 
 
 
-			<div class="list list-inset">
-				<div>
-					<ul>
-						<li class="item" ng-repeat="x in goodlately_slists"  ng-click="goods_lately_serarch(x.Search_Goods_Name)">{{x.Search_Goods_Name}}</li>
-					</ul>
-				</div>
+			<div class="list list-inset" style="margin: 0; padding: 0;">
 				<table width="100%" style="text-align:center; margin:0 0 10px 0;">
-					<tr bgcolor="#EAEAEA">
+					<tr bgcolor="#ddd">
 						<td style="font-size:0.8em; padding: 7px 0;">No</td>
 						<td style="font-size:0.8em; padding: 7px 0;">상품명</td>
 						<td style="font-size:0.8em; padding: 7px 0;">수 량</td>
@@ -148,26 +148,26 @@
 						<td align="right" style="width:25%; padding:10px 1%; vertical-align:middle; border-bottom: 1px solid #e0e0e0;" ng-if="sbb != true">
 							<input type="tel" ng-disabled="{{sbu}}" style="width:100%; border: 1px solid silver; text-align: right; padding: 0 5px;" ng-change="goods_totalprice1($index)" ng-model="y.goodsprice" fcsa-number="{ preventInvalidInput: true }" pattern="\d*"/>
 						</td>
-						<td style="width: 10%; vertical-align: middle; padding:10px 0; border-bottom: 1px solid #e0e0e0;" ng-if="sbb == true">
+						<td salign="right" style="width:25%; padding:10px 1%; vertical-align:middle; border-bottom: 1px solid #e0e0e0;" ng-if="sbb == true">
 							<input type="tel" style="width:100%; border: 1px solid silver; text-align:right" ng-change="goods_totalprice1($index)" ng-model="y.goodsprice" fcsa-number="{ preventInvalidInput: true }" pattern="\d*"/>
 						</td>
 						<td style="width: 10%; vertical-align: middle; padding:10px 0; border-bottom: 1px solid #e0e0e0;"><i class="ion-close-circled" ng-if="sbu == false" ng-click="goodsDelete($index);goods_totalprice1()" style="font-size: 2em; margin-top: 10px;  vertical-align: middle;"></i>&nbsp;</td>
 					</tr>
 				</table>
 			</div>
-			<div class="list list-inset" align="right">
+			<div class="list list-inset" align="right" style="padding-bottom: 15px;">
 				<b style="font-size: 0.9em;">최종가격 : </b><font style="color: #db856f; font-size: 1.3em; font-weight: bold;">{{datas.totalsumprices | number:0}} <span style="font-size: 0.7em">원</span></font>
 			</div>
 		</div>
 	</div>
 
 
-	<div class="list list-inset" style="padding: 10px;" align="left">
-		<div ng-click='Next3()' style="width: 100%; text-align: left;">관리비고<i class="{{upAnddown3}} psmsmy_semo"></i></div>
-		<div ng-if="basic3type" class="list list-inset" style="padding-bottom:15px;">
-			<label class="item item-input item-stacked-label">
-			<textarea placeholder="관리자비고란 입니다." rows="8" cols="10" ng-model="datas.remk"></textarea>
-			</label>
+	<div class="list list-inset" align="left">
+		<div ng-click='Next3()' style="text-align: left; padding: 10px;">관리비고<i class="{{upAnddown3}} psmsmy_semo"></i></div>
+		<div style="background: #5e6472;">
+			<div ng-if="basic3type" style="padding: 20px;">
+				<textarea placeholder="관리자비고란 입니다." ng-model="datas.remk" style="width: 100%; height: 150px; padding: 15px; font-size: 0.8em;"></textarea>
+			</div>
 		</div>
 	</div>
 	<div style="padding: 0 10px;"><button class="button button-block psm_login_ink"  ng-click='ijmodal_function()' style="background: #52bcae; ">다음</button></div>

@@ -395,10 +395,20 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.loginData.Pwd = $scope.logindata2.EPwd;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = '6178600097'; //PC모드
+			// $rootScope.loginData.Admin_Code = '6178600097'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'borntoroad';
+			// $rootScope.loginData.Pwd = 'borntoroad1!';
+
+			$rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
 			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'borntoroad';
-			$rootScope.loginData.Pwd = 'borntoroad1!';
+			$rootScope.loginData.UserId = '박혜진';
+			$rootScope.loginData.Pwd = '1234';
+
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'kmtest';
+			// $rootScope.loginData.Pwd = 'kmtest1!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -5105,7 +5115,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 })
 
-/* 매입&매출 등록 컨트롤러 - 이경민[2015-12] */
+/* 매입&매출 등록/수정 컨트롤러 - 이경민[2015-12] */
 .controller('MiuCtrl', function($scope, $rootScope, $ionicPopup, $ionicModal, $cordovaBarcodeScanner, $ionicHistory, $timeout, $state, $cordovaToast, ERPiaAPI, MconfigService, MiuService, MLookupService, app) {
 	if($rootScope.iu == 'sb_u'){
 		$scope.sbu = true;
@@ -5294,24 +5304,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 	/* // ----------- page up And down  - 이경민[2015-12]*/
 
-    /*erpia 설정값 - 이경민[2015-12]*/
-    MconfigService.erpia_basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
-    .then(function(data){
-    	if(data.list[0].Sale_Place_Code.length != 0){
-    		$rootScope.erpia_code = data.list[0].Sale_Place_Code;
-    	}else{
-    		$rootScope.erpia_code = '000';
-    	}
-     })
-
-    /*환경설정값 있는지 먼저 불러오기 - 이경민[2015-12]*/
+/*환경설정값 있는지 먼저 불러오기.- 이경민*/
     MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
 	.then(function(data){
 		$scope.setupData = data;
 		$scope.m_check.meajangCheck = 't';
 		$scope.m_check.changoCheck = 't';
 
-		if($rootScope.distinction == 'meaip'){  								//매입 수불구분확인 -------------------- 매입일경우
+		if($rootScope.distinction == 'meaip' && $rootScope.iu == 'i'){  								//매입 수불구분확인 -------------------- 매입일경우
 			var i = $scope.setupData.basic_Subul_Meaip;
 			switch (i) {
 			    case '1' :  switch($scope.setupData.basic_Subul_Meaip_Before){
@@ -5328,7 +5328,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			if($scope.datas.subulkind == 0){
 				$scope.m_check.subulCheck = 'f';
 			}
-		}else{  																//매출 수불구분확인 -------------------- 매출일경우
+		}else if($rootScope.distinction == 'meachul' && $rootScope.iu == 'i'){  																//매출 수불구분확인 -------------------- 매출일경우
 			var i = $scope.setupData.basic_Subul_Sale;
 			switch (i) {
 			    case '1' :  switch($scope.setupData.basic_Subul_Sale_Before){
@@ -5468,8 +5468,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.setupData.basic_Place_Code = data.list[0].Sale_Place_Code;
 			}
 			$scope.setupData.basic_Ch_Code = data.list[0].Ccode;
+
+
 			/*조회된 수불카인드 - 이경민[2015-12]*/
-			$scope.datas.subulkind = data.list[0].Subul_kind;
+			$scope.datas.subulkind = parseInt(data.list[0].Subul_kind);
+			console.log('너머야 =>',$scope.datas.subulkind );
+			switch ($scope.datas.subulkind){
+				case 111 : $scope.subul[0].checked = true; break;
+				case 122 : $scope.subul[1].checked = true; break;
+				case 221 : $scope.subul[2].checked = true; break;
+				case 212 : $scope.subul[3].checked = true; break;
+			}
+
 
 			for(var i=0; i < data.list.length; i++){
 				$scope.goodsaddlists.push({

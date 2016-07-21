@@ -261,24 +261,22 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("meachul_jem", {
 				"type": "pie",
-				"startDuration": 1, //차트 애니메이션
- 			     "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<span style='font-size:20px;'>[[value]]원</span> ([[percents]]%)</span>",
+ 			        "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<span style='font-size:20px;'>[[value]]</span> 원</span> </span> ([[percents]]%)</span>",
 				"minRadius": 50,
 				"maxLabelWidth":50,
 				"titleField": "name",
-				"valueField": "value",//"value",
+				"valueField": "value",
 				"fontSize": 12,
 				"theme": "dark",
-				"startDuration": 1,
-			    "labelsEnabled": true,
-			    "legend": {
-			      "enabled": false,
+			        "labelsEnabled": true,
+			        "legend": {
+			        "enabled": false,
 				  "truncateLabels": 10 // custom parameter
 			    },
 				"allLabels": [],
 				"balloon": {},
 				"labelRadius": 1,
-				 "dataProvider": chartData
+				"dataProvider": chartData
 			});
 
 			break;
