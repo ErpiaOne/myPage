@@ -400,10 +400,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'borntoroad';
 			// $rootScope.loginData.Pwd = 'borntoroad1!';
 
-			$rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = '박혜진';
-			$rootScope.loginData.Pwd = '1234';
+			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = '박혜진';
+			// $rootScope.loginData.Pwd = '1234';
 
 			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
@@ -433,10 +433,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
-			$rootScope.loginData.loginType = 'S'; //PC모드
-			$rootScope.loginData.UserId = '555';
-			$rootScope.loginData.Pwd = '555';
+			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
+			// $rootScope.loginData.loginType = 'S'; //PC모드
+			// $rootScope.loginData.UserId = '555';
+			// $rootScope.loginData.Pwd = '555';
 //test중 일때만.......................
 		}else if(userType == 'Normal'){
 			$rootScope.loginMenu = "selectUser";
@@ -461,10 +461,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			$rootScope.loginData.loginType = 'N'; //PC모드
-			$rootScope.loginData.UserId = 'test1234';
-			$rootScope.loginData.Pwd = 'test1234!';
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'N'; //PC모드
+			// $rootScope.loginData.UserId = 'test1234';
+			// $rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType == 'Guest'){
 			$rootScope.loginMenu = "selectUser"; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
@@ -1735,8 +1735,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 거래명세서 인증모달창 인증확인 - 이경민[2016-01] */
 	$scope.check_Sano = function(){
 		if($rootScope.userType == "SCM" || $rootScope.userType == "Normal" ){
-			// if($rootScope.userData.G_Sano.substring($rootScope.userData.G_Sano.lastIndexOf('-') + 1) == $rootScope.userData.Sano){ =========== 수정하고 올릴것.
-			if($rootScope.userData.Sano== $rootScope.userData.Sano){
+			if($rootScope.userData.G_Sano.substring($rootScope.userData.G_Sano.lastIndexOf('-') + 1) == $rootScope.userData.Sano){ 
+			// if($rootScope.userData.Sano== $rootScope.userData.Sano){ //=========== 수정하고 올릴것.
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
 					disableBack: true
@@ -1748,7 +1748,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				else alert('사업자 번호와 일치하지 않습니다.');
 			}
 		}else if($rootScope.userType == "ERPia"){
-			$scope.loginData.Pwd = $rootScope.userData.Sano;	// ===========지우고 업데이트 할것.
+			// $scope.loginData.Pwd = $rootScope.userData.Sano;	// ===========지우고 업데이트 할것.
 			if($scope.loginData.Pwd == $rootScope.userData.Sano){
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
@@ -3897,7 +3897,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							'<div class="direct-chat">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 13px; vertical-align: top; background: #7a6e80;">'+
 									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');" style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
-									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>'+
+									'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
 									'<div class="pull-right">'+
 										'<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>'+
 									'</div>'+
@@ -3928,7 +3928,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							'<div class="direct-chat">'+
 								'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 13px; vertical-align: top; background: #7a6e80;">'+
 									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
-									'<h3 class="box-title" name="refresh_date" style="color:#fff"></h3>'+
+									'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
 									'<div class="pull-right">'+
 										'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
 										'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
@@ -3974,7 +3974,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}
 				/*새로고침 버튼 클릭시 - 이경민[2016-02]*/
 				$("button[name=refreshW]").click(function() {
-					$scope.loadingani();
 					$("div[name=gridBody]").css('display', 'none');
 					$('#' + $scope.kind).css('display', 'block');
 					$scope.btn();
@@ -3985,6 +3984,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					}else if($scope.sn == 3){
 						$("button[name=btnY]").click();
 					}
+					$scope.loadingani();
 
 				});
 				/*주간버튼 클릭시 - 이경민[2016-02]*/
@@ -6195,35 +6195,46 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		if(index == 1 && $scope.payment[index].checked == true || index == 3 && $scope.payment[index].checked == true){
 			$scope.pay.gubun = index;
+			$scope.pay.paycardbank = 'no';
 			$scope.paycardbank.splice(0,$scope.paycardbank.length);
 			$scope.paytype = true;
 			MiuService.ij_data($scope.loginData.Admin_Code, $scope.loginData.UserId, index)
 			.then(function(data){
-				if(index == 1){
-					$scope.payname = '지급은행';
-					if($scope.pay.paycardbank.length<3) $scope.pay.paycardbank = 'no';
-					for(var i=0; i < data.list.length; i++){
-						$scope.paycardbank.push({
-							num : data.list[i].Bank_Account,
-							name : data.list[i].Bank_Name,
-							code : data.list[i].Bank_Code
-						});
-					}
+				console.log('gjggj ->', data);
+				if(data == '<!--Parameter Check-->'){
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('ERPIa에 등록되어있는 카드/통장정보가 없습니다. 등록 후 사용해주세요.', 'long', 'center');
+					else alert('ERPIa에 등록되어있는 카드/통장정보가 없습니다. 등록 후 사용해주세요.');
+					$scope.paytype = false;
 				}else{
-				$scope.payname = '지급카드';
-				if($scope.pay.paycardbank.length<3) $scope.pay.paycardbank = 'no';
-					for(var i=0; i < data.list.length; i++){
-						$scope.paycardbank.push({
-							num : data.list[i].Card_Num,
-							name : data.list[i].Card_Name,
-							code : data.list[i].Card_Code
-						});
+					if(index == 1){
+						$scope.payname = '지급은행';
+						if($scope.pay.paycardbank.length<3) $scope.pay.paycardbank = 'no';
+						for(var i=0; i < data.list.length; i++){
+							$scope.paycardbank.push({
+								num : data.list[i].Bank_Account,
+								name : data.list[i].Bank_Name,
+								code : data.list[i].Bank_Code
+							});
+						}
+					}else{
+					$scope.payname = '지급카드';
+					if($scope.pay.paycardbank.length<3) $scope.pay.paycardbank = 'no';
+						for(var i=0; i < data.list.length; i++){
+							$scope.paycardbank.push({
+								num : data.list[i].Card_Num,
+								name : data.list[i].Card_Name,
+								code : data.list[i].Card_Code
+							});
+						}
 					}
 				}
+				
 			})
 		}else{
+			$scope.paycardbank.splice(0,$scope.paycardbank.length);
 			$scope.pay.gubun = 0;
 			$scope.paytype = false;
+			$scope.pay.codenum = -1;
 			$scope.pay.paycardbank = 'no';
 			for(var i=0; i<2; i++){
 				$scope.paylist.push({
@@ -6238,9 +6249,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 지급전표 insert - 이경민[2015-12] */
 	$scope.payinsert = function(){
 		if($scope.paylist.length > 0){
-			$scope.paylist.splice(0,2);
+			$scope.paylist.splice(0,$scope.paylist.length);
 		}
 		$scope.pay_datas = $scope.pay.paycardbank.split(',');
+
 		if($scope.payment[1].checked == true){ // 은행
 			$scope.paylist.push({
 				code :  $scope.pay_datas[0],

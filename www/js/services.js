@@ -1743,7 +1743,7 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + escape(userid) + '&Kind='+ kind + '&Mode=&RequestXml=';
 
-			console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
+			// console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
 			return $http.post(url + '?' + data + m_data + goods_xml + middel + end).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;

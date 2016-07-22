@@ -47,7 +47,7 @@
       <label class="item item-input" ng-if="paytype">
         <span class="input-label psm_sang_04">&nbsp;&nbsp;{{payname}}</span>
         <select ng-if="paytype"  ng-disabled="tax_u" ng-model="pay.paycardbank" ng-change='payinsert()' style="width: 62%; height: 30px;">
-          <option value='no' ng-selected="pay.paycardbank == no">======================</option>
+          <option value='no' ng-selected="pay.paycardbank == no">====</option>
           <option ng-repeat='x in paycardbank' value='{{x.code}},{{x.name}},{{x.num}}' ng-selected="pay.codenum == {{x.code}}">{{x.name}}</option>
         </select>
       </label>
