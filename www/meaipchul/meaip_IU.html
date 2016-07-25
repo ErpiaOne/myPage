@@ -9,7 +9,7 @@
 	<div class="psmsmy_title_co">간편매입 {{mode}}</div>
 </ion-nav-title>
 <ion-nav-bar>
-<ion-nav-back-button ng-click="backControll()">뒤로</ion-nav-back-button>
+<ion-nav-back-button ng-click="backControll()"></ion-nav-back-button>
 </ion-nav-bar>
 
 <ion-content style="color:#444444; background: #dce0e1;">
@@ -27,7 +27,7 @@
 
 	<!-- 매입정보 -->
 	<div class="list list-inset">
-		<div ng-click="Next()" style="text-align: left; padding: 10px;">매입정보<i class="{{upAnddown}} psmsmy_semo"></i></div>
+		<div ng-click="Next()" style="text-align: left; padding: 10px; font-size: 0.85em;">매입정보<i class="{{upAnddown}} psmsmy_semo"></i></div>
 		<div ng-if="basictype" style="padding: 25px 15px 15px 15px; margin-top:5px; border: 1px solid #aaa; background: #5e6472;">
 
 			<table width="100%" style="align:center; vertical-align:middle;">
@@ -73,7 +73,7 @@
 				<tr>
 					<td style="width: 100px; vertical-align:middle; color: #fff;">매장지정</td>
 					<td style="height: 28px; vertical-align: middle;">
-						<select ng-model="setupData.basic_Place_Code" ng-change='Link_Chango();checkup()' style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;">
+						<select  ng-disabled="placeYN" ng-model="setupData.basic_Place_Code" ng-change='Link_Chango();checkup()' style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;">
 						  <option value='000' ng-selected ="setupData.basic_Place_Code == 000">매장미지정</option>
 						  <option  ng-repeat="x in mejanglists" value="{{x.Sale_Place_Code}}" ng-selected="setupData.basic_Place_Code == {{x.Sale_Place_Code}}">{{x.Sale_Place_Name}}</option>
 						</select>
@@ -97,7 +97,7 @@
 
 	<!-- 상품정보 -->
 	<div class="list list-inset" align="left">
-		<div ng-click="Next2()" style="text-align: left; padding: 10px;">상품<i class="{{upAnddown2}} psmsmy_semo"></i></div>
+		<div ng-click="Next2()" style="text-align: left; padding: 10px; font-size: 0.85em;">상품<i class="{{upAnddown2}} psmsmy_semo"></i></div>
 		<div ng-if="basic2type" style="margin-top:5px; border: 1px solid #aaa;">
 
 			<div style="background: #5e6472;">
@@ -159,7 +159,7 @@
 
 	<!-- 관리비고 사항 -->
 	<div class="list list-inset" align="left">
-		<div ng-click='Next3()' style="text-align: left; padding: 10px;">관리비고<i class="{{upAnddown3}} psmsmy_semo"></i></div>
+		<div ng-click='Next3()' style="text-align: left; padding: 10px; font-size: 0.85em;">관리비고<i class="{{upAnddown3}} psmsmy_semo"></i></div>
 		<div style="background: #5e6472;">
 			<div ng-if="basic3type" style="padding: 20px;">
 				<textarea placeholder="관리자비고란 입니다." ng-model="datas.remk" style="width: 100%; height: 150px; padding: 15px; font-size: 0.8em;"></textarea>

@@ -838,27 +838,6 @@ angular.module('starter.services', [])
 	}
 })
 
-/* 없어도될듯..? */
-// .factory('testLhkServicse', function($http, $q, ERPiaAPI){
-// 	return{
-// 		test: function(){
-// 		var url = ERPiaAPI.url + '/psm/02/html/Graph.asp';
-// 		var data = 'Admin_Code=onz&swm_gu=1&kind=chart7';
-// 		return $http.get(url + '?' + data)
-// 			.then(function(response){
-// 				console.log('testChart', typeof response);
-// 				if(typeof response == 'object'){
-// 					return response.data;
-// 				}else{
-// 					return $q.reject(response.data);
-// 				}
-// 			}, function(response){
-// 				return $q.reject(response.data);
-// 			})
-// 		}
-// 	};
-// })
-
 /* 차트관련Service - 이경민[2015-12] */
 .factory('AmChart_Service', function($http, $q, ERPiaAPI){
 	var url = ERPiaAPI.url + '/JSon_Proc_graph.asp';
@@ -907,92 +886,6 @@ angular.module('starter.services', [])
 	}
 })
 
-/* 없어도 될듯..? */
-// .factory('Chats', function() {
-// 	// Might use a resource here that returns a JSON array
-
-// 	// Some fake testing data
-// 	var chats = [{
-// 		id : 0,
-// 		name : 'Ben Sparrow',
-// 		lastText : 'You on your way?',
-// 		face : 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'
-// 	}, {
-// 		id : 1,
-// 		name : 'Max Lynx',
-// 		lastText : 'Hey, it\'s me',
-// 		face : 'https://avatars3.githubusercontent.com/u/11214?v=3&s=460'
-// 	}, {
-// 		id : 2,
-// 		name : 'Adam Bradleyson',
-// 		lastText : 'I should buy a boat',
-// 		face : 'https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg'
-// 	}, {
-// 		id : 3,
-// 		name : 'Perry Governor',
-// 		lastText : 'Look at my mukluks!',
-// 		face : 'https://pbs.twimg.com/profile_images/598205061232103424/3j5HUXMY.png'
-// 	}, {
-// 		id : 4,
-// 		name : 'Mike Harrington',
-// 		lastText : 'This is wicked good ice cream.',
-// 		face : 'https://pbs.twimg.com/profile_images/578237281384841216/R3ae1n61.png'
-// 	}];
-
-// 	return {
-// 		all : function() {
-// 			return chats;
-// 		},
-// 		remove : function(chat) {
-// 			chats.splice(chats.indexOf(chat), 1);
-// 		},
-// 		get : function(chatId) {
-// 			for (var i = 0; i < chats.length; i++) {
-// 				if (chats[i].id === parseInt(chatId)) {
-// 					return chats[i];
-// 				}
-// 			}
-// 			return null;
-// 		}
-// 	};
-// })
-
-/* 매입매출관련Service - 이경민[2015-11] */
-// .factory('meaipService', function($http, ERPiaAPI, $q, $cordovaToast){
-// 	return{
-// 		insertm : function(code, id, meaipdata, goodsdata, atc, paycardbank, date, meaiptotal){
-// 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-// 			var basicdata = 'Admin_Code='+ code +'&User_id='+ id +'&Kind=ERPia_Meaip_Insert_Goods&Mode=&RequestXml=';
-// 			var meaip = '<root><MeaipM><Admin_Code>'+ code + '</Admin_Code><Meaip_Date>'+ date.todate +'</Meaip_Date><GuMeaCom_Code>'+ atc.GerCode +'</GuMeaCom_Code><Meaip_Amt>'+ meaiptotal.totalsumprices +'</Meaip_Amt><Sale_Place>'+ meaipdata.basic_Place_Code +'</Sale_Place><Remk><![CDATA['+ escape(atc.remk) +']]></Remk></MeaipM><MeaipT>';
-// 			var goods = '';
-// 			for(var i=0; i < goodsdata.length; i++){
-// 			var ii = i+1;
-// 			var goodstemporary = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ meaipdata.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ atc.subulkind +'</subul_kind><G_Code>'+ goodsdata[i].code +'</G_Code><G_name><![CDATA['+ escape(goodsdata[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goodsdata[i].goodsprice +'</G_Price><G_Qty>'+ goodsdata[i].num +'</G_Qty><G_vat>'+ parseInt(goodsdata[i].goodsprice)/1.1 +'</G_vat></item>';
-// 			var goods = goods + goodstemporary;
-// 			}
-// 			var middel = '</MeaipT><IpJi>';
-
-// 			var end = '</IpJi></root>&IpJi_YN=';
-// 			if(atc.paysubul == 0){
-// 			var sum = url + '?' + basicdata+ meaip + goods + '</MeaipT></root>&IpJi_YN=N';
-// 			}else{
-// 			var jidata = '<item><Aseq>'+ 1 +'</Aseq><ij_Date>'+ date.payday +'</ij_Date><Comp_No>'+ atc.GerCode +'</Comp_No><Subul_kind>'+ atc.paysubul +'</Subul_kind><Bank_Code>'+ paycardbank[0].code +'</Bank_Code><Bank_Name> <![CDATA['+ escape(paycardbank[0].name) +']]> </Bank_Name><Bank_Account>'+ paycardbank[0].num +'</Bank_Account><Card_Code>'+ paycardbank[1].code +'</Card_Code><Card_Name><![CDATA['+ escape(paycardbank[1].name) +']]></Card_Name><Card_Num>'+ paycardbank[1].num +'</Card_Num><Hap_Amt>'+ atc.payprice +'</Hap_Amt></item>';
-// 			var sum = url + '?' + basicdata+ meaip + goods + middel + jidata + end + 'Y';
-// 			}
-// 			return $http.get(sum)
-// 			.then(function(response){
-// 			if(typeof response == 'object'){
-// 			return response.data;
-// 			}else{
-// 			return $q.reject(response.data);
-// 			}
-// 			}, function(response){
-// 			return $q.reject(response.data);
-// 			})
-// 		}
-// 	};
-// })
-
 ////////////////////////////////////////////////////////////// 매입 & 매출 ///////////////////////////////////////////////////////////////////////////////////
 /* 환경설정 - 이경민[2015-11] */
 .factory('MconfigService', function($http, ERPiaAPI, $q, $cordovaToast, $rootScope){
@@ -1001,7 +894,7 @@ angular.module('starter.services', [])
 			console.log("MconfigService and basicSetup");
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&Userid=' + escape(userid)+ '&Kind=ERPia_Config&Mode=select';
-
+			console.log('url =>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){	//조회된 환경설정이 있을경우.
 					if(response.data != '<!--Parameter Check-->'){
@@ -1048,23 +941,8 @@ angular.module('starter.services', [])
 		}, basicM: function(admin_code, userid){			 // 기본매장조회
 			console.log("MconfigService and basicM");
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-			var data = 'Admin_Code=' + admin_code + '&User_id=' + escape(userid) + '&Kind=ERPia_Meaip_Select_Place_CName&Mode=Select_Place';
+			var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind=ERPia_Meaip_Select_Place_CName&Mode=Select_Place';
 			return $http.get(url + '?' + data).then(function(response){
-				if(typeof response == 'object'){
-					return response.data;
-				}else{
-					return $q.reject(response.data);
-				}
-			}, function(response){
-				return $q.reject(response.data);
-			})
-
-		}, erpia_basicM: function(admin_code, userid){ 		// 이알피아 매장 조회
-		console.log("MconfigService and erpia_basicM");
-		var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp';
-		var data = 'kind=ERPia_Config_Sale_Place_Check&Admin_Code=' + admin_code + '&UserId=' + escape(userid);
-		return $http.get(url + '?' + data)
-			.then(function(response){
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
@@ -1240,8 +1118,9 @@ angular.module('starter.services', [])
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind=' + kind + '&Mode=Update_Check'+ no;
-				
+				console.log('url=>', url,'?',data);
 				return $http.get(url + '?' + data).then(function(response){
+					console.log('uch=>',  response);
 					if(typeof response == 'object'){
 						return response.data;
 					}else{

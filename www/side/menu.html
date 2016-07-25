@@ -1,35 +1,39 @@
 <!-- APP - side메뉴페이지 - 이경민 -->
+
+<style type="text/css">
+	.psm_button01 {font-size: 0.85em;}
+</style>
 <ion-side-menus enable-menu-with-back-views="true">
 	<ion-side-menu-content>
 		<div class="hide-on-keyboard-open" ng-switch="tabitem.gubun">
 			<div class="tabs-striped tabs-background-dark tabs-color-energized">
 				<!-- 로그인전 하단탭 -->
 				<div class="tabs" style="height:55px" name="main_side" ng-switch-when="loginout">
-					<span class="{{tabitem.tab1}}" ng-click="login(); sidetab('tab1')">
+					<span class="{{tabitem.tab1}} psm_button01" ng-click="login(); sidetab('tab1')">
 						로그인
 					</span>
-					<span class="{{tabitem.tab2}}" ng-click="goto_with_clearHistory('#/app/introduce'); sidetab('tab2')">
+					<span class="{{tabitem.tab2}} psm_button01" ng-click="goto_with_clearHistory('#/app/introduce'); sidetab('tab2')">
 						ERPia소개
 					</span>
-					<span class="{{tabitem.tab3}}" ng-click="goto_with_clearHistory('#/app/cs'); sidetab('tab3');">
+					<span class="{{tabitem.tab3}} psm_button01" ng-click="goto_with_clearHistory('#/app/cs'); sidetab('tab3');">
 						가입상담
 					</span>
-					<span class="{{tabitem.tab4}}" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4')">
+					<span class="{{tabitem.tab4}} psm_button01" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4')">
 						홈페이지
 					</span>
 				</div>
 				<!-- erpia로그인 후 하단탭 -->
 				<div class="tabs" style="height:55px" name="main_side" ng-switch-when="elogin">
-					<a class="{{tabitem.tab1}}" ng-click="goHome(); sidetab('tab1')">
+					<a class="{{tabitem.tab1}} psm_button01" ng-click="goHome(); sidetab('tab1')">
 						홈
 					</a>
-					<a class="{{tabitem.tab2}}" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'>
+					<a class="{{tabitem.tab2}} psm_button01" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'>
 						매입
 					</a>
-					<a class="{{tabitem.tab3}}" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3")'>
+					<a class="{{tabitem.tab3}} psm_button01" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3")'>
 						매출
 					</a>
-					<a class="{{tabitem.tab4}}" ng-click='jego();'>
+					<a class="{{tabitem.tab4}} psm_button01" ng-click='jego();'>
 						재고현황
 					</a>
 					<a class="{{tabitem.tab4}}">
@@ -38,34 +42,34 @@
 				</div>
 				<!-- scm/nomal로그인 후 하단탭 -->
 				<div class="tabs" style="height:55px" name="main_side" ng-switch-when="snlogin">
-					<a class="{{tabitem.tab1}}" ng-click="goHome(); sidetab('tab1')">
+					<a class="{{tabitem.tab1}} psm_button01" ng-click="goHome(); sidetab('tab1')">
 						홈
 					</a>
-					<span class="{{tabitem.tab2}}" ng-click="showCheckSano(); sidetab('tab2')" ng-if="loginState=='E' || loginState=='N'">
+					<span class="{{tabitem.tab2}} psm_button01" ng-click="showCheckSano(); sidetab('tab2')" ng-if="loginState=='E' || loginState=='N'">
 						거래명세표
 					</span>
-					<span class="{{tabitem.tab2}}" ng-click="goto_with_clearHistory('#/app/introduce'); sidetab('tab2')" ng-if="loginState=='S'">
+					<span class="{{tabitem.tab2}} psm_button01" ng-click="goto_with_clearHistory('#/app/introduce'); sidetab('tab2')" ng-if="loginState=='S'">
 						ERPia소개
 					</span>
-					<span class="{{tabitem.tab3}}" ng-click="goto_with_clearHistory('#/app/cs'); sidetab('tab3');">
+					<span class="{{tabitem.tab3}} psm_button01" ng-click="goto_with_clearHistory('#/app/cs'); sidetab('tab3');">
 						가입상담
 					</span>
-					<span class="{{tabitem.tab4}}" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4')">
+					<span class="{{tabitem.tab4}} psm_button01" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4')">
 						홈페이지
 					</span>
 				</div>
 				<!-- 체험하기 버전 하단탭 -->
 				<div class="tabs" style="height:55px" name="main_side" ng-switch-when="Gest">
-					<a class="{{tabitem.tab1}}" ng-click="goHome(); sidetab('tab1')">
+					<a class="{{tabitem.tab1}} psm_button01" ng-click="goHome(); sidetab('tab1')">
 						홈
 					</a>
-					<a class="{{tabitem.tab2}}" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'>
+					<a class="{{tabitem.tab2}} psm_button01" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'>
 						매입
 					</a>
-					<a class="{{tabitem.tab3}}" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3")'>
+					<a class="{{tabitem.tab3}} psm_button01" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3")'>
 						매출
 					</a>
-					<a class="{{tabitem.tab4}}" ng-click='jego();'>
+					<a class="{{tabitem.tab4}} psm_button01" ng-click='jego();'>
 						재고현황
 					</a>
 					<a class="{{tabitem.tab4}}">
