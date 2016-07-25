@@ -81,6 +81,16 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	if (kind == "meachul_jem" || kind == "meaip_jem" || kind == "beasonga" || kind == "meachul_onoff" || kind == "meachul_cs")
 	{
 
+		if (kind != "beasonga")
+		{
+			AmCharts.addInitHandler(function(kind) {			
+					  //  x    y     text                          위치   fontsize
+			kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
+			
+			}, ["pie"]);		
+		}
+
+
 		AmCharts.checkEmptyDataPie = function (kind) {
 			// add some bogus data
 			var dp = {};
@@ -105,7 +115,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			kind.addLabel("50%", "50%", "조회할 데이터가 없습니다.", "middle", 15);
 
 						//  x    y     text                          위치   fontsize
-			kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
+			// kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
 
 			// dim the whole chart
 			kind.alpha = 0.3;
@@ -113,40 +123,44 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		}
 
 		AmCharts.addInitHandler(function(kind) {
-		  if (kind.dataProvider === undefined || kind.dataProvider.length === 0) {
-			AmCharts.checkEmptyDataPie(kind);
+			if (kind.dataProvider === undefined || kind.dataProvider.length === 0) {
+				AmCharts.checkEmptyDataPie(kind);
+				return;
+			}
+			if (kind.legend === undefined || kind.legend.truncateLabels === undefined)
 			return;
-		}
 
-		 if (kind.legend === undefined || kind.legend.truncateLabels === undefined)
-		return;
+			var cnt1 = 0
+			for (var i in kind.dataProvider) {
+			  if (kind.dataProvider[i].value < 0)
+			  {			
+				cnt1 = cnt1 + 1
+			  }
+			}
 
-		var cnt1 = 0
-		for (var i in kind.dataProvider) {
-		  if (kind.dataProvider[i].value < 0)
-		  {
-			cnt1 = cnt1 + 1
-		  }
-		}
+			if (kind.dataProvider.length === cnt1 )
+			{
+				AmCharts.checkEmptyDataPie(kind);
+			}
 
-		if (kind.dataProvider.length === cnt1 )
-		{
-			AmCharts.checkEmptyDataPie(kind);
-		}
+			 var titleField =""
+			 var legendTitleField=""
+			  // init fields
+			  titleField = kind.titleField;
+			  legendTitleField = kind.titleField+"Legend";
+			  // iterate through the data and create truncated label properties
+			  for(var i = 0; i < kind.dataProvider.length; i++) {
+				var label = kind.dataProvider[i][kind.titleField];
+				if (label.length > kind.legend.truncateLabels)
+				  label = label.substr(0, kind.legend.truncateLabels-1)+'...'
+				  kind.dataProvider[i][legendTitleField] = label;
+			  }
+			  // replace chart.titleField to show our own truncated field
+			  kind.titleField = legendTitleField;			  
+			  // make the balloonText use full title instead
+			  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
 
-		kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
-
-		 var titleField =""
-		 var legendTitleField=""
-		  // init fields
-		titleField = kind.titleField;
-		legendTitleField = kind.titleField+"Legend";
-		// replace chart.titleField to show our own truncated field
-		  kind.titleField = legendTitleField;			  
-		  // make the balloonText use full title instead
-		  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
-
-		}, ["pie"]);
+			}, ["pie"]);
 	}else
 	{
 		AmCharts.checkEmptyData = function (kind) {
@@ -896,31 +910,31 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 			var chart = AmCharts.makeChart("beasonga", {
 			 "type": "pie",
-			  "startAngle": 45,
-			  "theme": "dark",
-			  "minRadius": 50,
-			  "maxLabelWidth":100,
-			  "dataProvider": chartData,
-			  "titleField": "name",
-			  "valueField": "value",
-			  "labelRadius": 5,
-			  //"radius": "42%",
-			  "innerRadius": "60%",
-			  "labelText": "[[title]]<br>[[percents]]%",
-			  "labelsEnabled": true,
-			  "legend": {
-			    "enabled": false,
-			    "truncateLabels": 10 // custom parameter
-			  },
-			  "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
-			  "export": {
+				"startAngle": 45,
+				"theme": "dark",
+				"minRadius": 50,
+				"maxLabelWidth":100,
+				"dataProvider": chartData,
+				"titleField": "name",
+				"valueField": "value",
+				"labelRadius": 5,
+				//"radius": "42%",
+				"innerRadius": "60%",
+				"labelText": "[[title]]<br>[[percents]]%",
+				"labelsEnabled": true,
+				"legend": {
+				"enabled": false,
+				"truncateLabels": 10 // custom parameter
+				},
+				"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
+				"export": {
 				"enabled": true
-			  },
-			  "colorField": "color",
-			  "labelColorField": "color",
-			  "balloon": {
+				},
+				"colorField": "color",
+				"labelColorField": "color",
+				"balloon": {
 				"fixedPosition": true
-			  }
+				}
 			});
 			break;
 

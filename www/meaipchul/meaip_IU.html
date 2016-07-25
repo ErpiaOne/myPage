@@ -1,4 +1,9 @@
 <!-- 매입 등록/수정 페이지 -->
+<style>
+	input::-webkit-input-placeholder { color:#ccc }
+	input::-moz-placeholder { color:#ccc }
+	input::-ms-input-placeholder { color:#ccc }
+</style>
 <ion-view cache-view="false" style="color: #fff" class="bar-dark">
 <ion-nav-title>
 	<div class="psmsmy_title_co">간편매입 {{mode}}</div>
@@ -138,7 +143,7 @@
 							<input type="number" ng-disabled="{{sbu}}" min="0" max="100000" ng-bind-html="goods_totalprice1($index)" style="text-align:right; border: 1px solid silver; width:100%" ng-model="y.num" required>
 						</td>
 						<td align="right" style="width:25%; padding:10px 1%; vertical-align:middle; border-bottom: 1px solid #e0e0e0;">
-							<input type="tel" ng-disabled="{{sbu}}" style="width:100%; border: 1px solid silver; text-align: right;" ng-change="goods_totalprice1($index)" ng-model="y.goodsprice" fcsa-number="{ preventInvalidInput: true }" pattern="\d*"/>
+							<input type="tel" ng-disabled="{{sbu}}" style="width:100%; border: 1px solid silver; text-align: right;  padding: 0 5px;" ng-change="goods_totalprice1($index)" ng-model="y.goodsprice" fcsa-number="{ preventInvalidInput: true }" pattern="\d*"/>
 						</td>
 						<td style="width: 10%; vertical-align: middle; padding:10px 0; border-bottom: 1px solid #e0e0e0;">
 							<i class="ion-close-circled" ng-if="sbu == false" ng-click="goodsDelete($index);goods_totalprice1()" style="font-size: 2em; margin-top: 10px;  vertical-align: middle;"></i>&nbsp;

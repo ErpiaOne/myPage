@@ -74,7 +74,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '0.2.8', //업데이트시 필수로 변경!!
+   		Android_version : '1.0.0', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -400,9 +400,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'borntoroad';
 			// $rootScope.loginData.Pwd = 'borntoroad1!';
 
-			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
+			// $rootScope.loginData.Admin_Code = 'prebebe'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = '박혜진';
+			// $rootScope.loginData.UserId = 'phj9775';
 			// $rootScope.loginData.Pwd = '1234';
 
 			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
@@ -1374,6 +1374,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 거래명세서 이미지화 - 이경민[2016-01] */
 	$scope.html3image = function(detaillist, where){
+		console.log(detaillist);
 		for(var i = 0; i < detaillist.length; i++){
 			var detail = detaillist[i];
 			var j = i+1;
@@ -1392,7 +1393,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			var html_view10 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name2)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea2)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price2)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong2)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax2)+"</td></tr>";
 			var html_view11 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name3)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea3)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price3)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong3)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax3)+"</td></tr>";
 			var html_view12 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name4)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea4)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price4)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong4)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax4)+"</td></tr>";
-			var html_view13 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name5)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea5)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price5)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong5)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax5)+"</td></tr>";
+			var html_view13 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name5)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea5)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.g_price5)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong5)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax5)+"</td></tr>";
 			var html_view14 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name6)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea6)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price6)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong6)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax6)+"</td></tr>";
 			var html_view15 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name7)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea7)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price7)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong7)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax7)+"</td></tr>";
 			var html_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #0100FF; border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #0100FF;' align=right>"+checklist2(detail.tax8)+"</td></tr>";
@@ -1418,7 +1419,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			var html2_view10 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name2)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea2)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price2)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong2)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax2)+"</td></tr>";
 			var html2_view11 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name3)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea3)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price3)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong3)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax3)+"</td></tr>";
 			var html2_view12 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name4)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea4)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price4)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong4)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax4)+"</td></tr>";
-			var html2_view13 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name5)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea5)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price5)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong5)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax5)+"</td></tr>";
+			var html2_view13 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name5)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea5)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.g_price5)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong5)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax5)+"</td></tr>";
 			var html2_view14 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name6)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea6)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price6)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong6)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax6)+"</td></tr>";
 			var html2_view15 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name7)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea7)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price7)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong7)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax7)+"</td></tr>";
 			var html2_view16 = "<tr><td colspan=3 width=550 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;'>"+ checklist(detail.G_name8)+"</td><td width=97 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist(detail.G_ea8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_price8)+"</td><td width=140 style='border-right:2px solid #FF0000; border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.G_Gong8)+"</td><td width=140 style='border-bottom: 2px solid #FF0000;' align=right>"+checklist2(detail.tax8)+"</td></tr>";
@@ -1516,6 +1517,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		tradeDetailService.readDetail($scope.loginData.Admin_Code, $rootScope.Sl_No)
 		.then(function(response){
+			console.log('왜왜왜왜왜 =>',response);
 			var numhap = 0; // 수량합계
 			var num = 1;
 			if(response.list[0].vatYN == 'Y'){// 세액적용
@@ -1566,14 +1568,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					if(response.list[0].G_ea5 == null) break;
 
 				case 5:
-					var price = parseInt(response.list[0].G_price5)/1.1;
+					var price = parseInt(response.list[0].g_price5)/1.1;
 					price = price * parseInt(response.list[0].G_ea5);
 					var gong = Math.round(price);
 					response.list[0].G_Gong5 = gong;
-					response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].G_price5)* parseInt(response.list[0].G_ea5);
+					response.list[0].Hap = parseInt(response.list[0].Hap) + parseInt(response.list[0].g_price5)* parseInt(response.list[0].G_ea5);
 					response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
-					response.list[0].tax5 = parseInt(response.list[0].G_price5) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong5);
-					response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+					response.list[0].tax5 = parseInt(response.list[0].g_price5) * parseInt(response.list[0].G_ea5) - parseInt(response.list[0].G_Gong5);
+					response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].g_price5);
 					if(response.list[0].G_ea6 == null) break;
 
 				case 6:
@@ -1667,7 +1669,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					case 5:
 						response.list[0].numhap = parseInt(response.list[0].numhap) + parseInt(response.list[0].G_ea5);
 						response.list[0].taxhap = parseInt(response.list[0].taxhap) + parseInt(response.list[0].tax5);
-						response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].G_price5);
+						response.list[0].pricehap = parseInt(response.list[0].pricehap) + parseInt(response.list[0].g_price5);
 						if(response.list[0].G_ea6 == null) break;
 
 					case 6:
@@ -3722,7 +3724,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			"type": "serial",
 			"categoryField": "category",
 			"startDuration": 1,
-			"autoMarginOffset": 1,
+			"autoMarginOffset": 10,
 			"autoMargins": true,
 			"marginBottom": 30,
 			"marginRight": 50,
@@ -3792,11 +3794,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							}
 				],
 				"legend": {
-					"enabled": true,
-					"align": "center",
 					"spacing": 11,
 					"top": -4,
-					"useGraphSettings": true
+					"useGraphSettings": true,
+					"enabled": true,
+					"align": "center",
+					"markerType": "circle",
+					"balloonText" : "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+					"backgroundAlpha": 0.06,
+					"borderColor": "#787885"
 				},
 				"titles": [
 					{
@@ -3906,6 +3912,39 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								'<div class="box-body" style="padding:20px 10px;">'+
 									'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 320px;"></div>'+
 									'<div name="gridBody" style="background: #ececed; height: 320px;">'+
+										'<ul class="contacts-list">'+
+											'<li>'+
+												'<div name="gridSubject" style="width: 100%; height: 40px; padding-top:10px; text-align:center; background:#a6b3cb; margin-bottom: 20px;"><font style="font-weight:bold; font-size:11pt;"></font></div>'+
+												'<table name="tbGrid" class="table table-bordered" style="color:rgb(100, 100, 100); width:100%; font-size:11pt; margin-bottom:10px;">'+
+												'</table>'+
+												'<div style="width:100%; text-align:center;">'+
+													'<button name="btnGridClose" class="btn bg-orange margin">닫기</button>'+
+												'</div>'+
+											'</li>'+
+										'</ul>'+
+									'</div>'+
+								'</div>'+
+							'</div>';
+				}if($scope.kind === "Meachul_ik"){
+					$scope.htmlCode =
+							'<div class="box-title" style="color:#fff; padding-top:15px; padding-bottom:10px; background: #bcb6c3; color: #000; font-weight: bold; font-size: 1.1em;">'+
+								titles[idxnum].name+
+							'</div>'+
+							'<input type="hidden" name="gu_hidden">' +
+							'<div class="direct-chat">'+
+								'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 13px; vertical-align: top; background: #7a6e80;">'+
+									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
+									'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
+									'<div class="pull-right">'+
+										'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
+										'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
+										'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>'+
+									'</div>'+
+								'</div>'+
+
+								'<div class="box-body" style="padding:20px 10px;">'+
+									'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 320px;"></div>'+
+									'<div name="gridBody" style="background: #ececed;">'+
 										'<ul class="contacts-list">'+
 											'<li>'+
 												'<div name="gridSubject" style="width: 100%; height: 40px; padding-top:10px; text-align:center; background:#a6b3cb; margin-bottom: 20px;"><font style="font-weight:bold; font-size:11pt;"></font></div>'+
@@ -4092,6 +4131,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
       { id: '매입입고', num: 2 },
       { id: '매입반품', num: 3 }
     ];
+
+    $scope.basicYN_M = 'N'// erpia에 기본 매장이 설정되어있는지 확인하는여부
+
     $rootScope.setupData={};
     $rootScope.mejanglists=[];
     $rootScope.changolists=[];
@@ -4118,6 +4160,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						break;
 					}
 				}
+			
 			/*기본 창고조회  - 이경민[2015-12]*/
 			MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.setupData.basic_Place_Code)
 			.then(function(data){
@@ -4141,11 +4184,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.Link_Chango = function(){
 		MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
 		.then(function(data){
-			$rootScope.changolists = data.list;
-			if($rootScope.setupData.basic_Place_Code == '000'){ //매장미지정을 선택할 경우 본사창고 디폴트
-				$rootScope.setupData.basic_Ch_Code = '101';
+			console.log('여기오나?=>', $rootScope.changolists);
+			$scope.changolists = [];
+			console.log($rootScope.changolists);
+			$scope.changolists = data.list;
+			if($scope.setupData.basic_Place_Code == '000'){ //매장미지정을 선택할 경우 본사창고 디폴트
+				$scope.setupData.basic_Ch_Code = '101';
 			}else{
-				$rootScope.setupData.basic_Ch_Code = '000';
+				$scope.setupData.basic_Ch_Code = '000';
 			}
 
 		})
@@ -4469,7 +4515,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		MLookupService.chit_lookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.reqparams, $scope.company.name, 1)
 		.then(function(data){
-			console.log('노트모아? =>', data.list);
 			$scope.maxover=0;
 			$scope.chit_atmSum = 0;
 			$scope.chit_jiSum = 0;
@@ -4684,6 +4729,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 빠른등록리스트에 추가 - 이경민[2015-12] */
 	$scope.quick_i = function(){
+		console.log('여기오지..?');
 		for(var i = 0; i < $scope.quicklists.length; i++){
 			$scope.quickregM.hide();
 			if($scope.quicklists[i].checked == true){
@@ -4692,11 +4738,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$rootScope.mode = '등록';
 					$rootScope.u_no = $scope.quicklists[i].No;
 					$state.go('app.meaip_IU', {}, {location:'replace'});
+					$ionicHistory.clearCache();
+					$ionicHistory.clearHistory();
 				}else{
 					$rootScope.iu = 'qi';
 					$rootScope.mode = '등록';
 					$rootScope.u_no = $scope.quicklists[i].No;
 					$state.go('app.meachul_IU', {}, {location:'replace'});
+					$ionicHistory.clearCache();
+					$ionicHistory.clearHistory();
 				}
 				break;
 			}
@@ -5108,15 +5158,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		if($rootScope.distinction == 'meaip'){
 			$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 			$state.go('app.meaip_page', {}, {location:'replace'});
+			$ionicHistory.clearCache();
+			$ionicHistory.clearHistory();
+			$rootScope.u_no = null;
 		}else{
 			$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 			$state.go('app.meachul_page', {}, {location:'replace'});
+			$ionicHistory.clearCache();
+			$ionicHistory.clearHistory();
+			$rootScope.u_no = null;
 		}
 	}
 })
 
 /* 매입&매출 등록/수정 컨트롤러 - 이경민[2015-12] */
 .controller('MiuCtrl', function($scope, $rootScope, $ionicPopup, $ionicModal, $cordovaBarcodeScanner, $ionicHistory, $timeout, $state, $cordovaToast, ERPiaAPI, MconfigService, MiuService, MLookupService, app) {
+	console.log('MiuCtrl');
 	if($rootScope.iu == 'sb_u'){
 		$scope.sbu = true;
 	}else if($rootScope.iu == 'sb_ui'){
@@ -5409,13 +5466,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
      $scope.paylist=[];
 
-     
-
 	////////////////////////////////////////////// 수정일경우 데이터 불러오기 - 이경민[2015-12] //////////////////////////////////////////////////////////
 	if($rootScope.iu == 'u' || $rootScope.iu == 'qi' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui'){
 		/*전표 상세조회 -- 날짜 paydate(입출일), todate(지급일) - 이경민[2015-12]*/
 		MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.u_no)
 		.then(function(data){
+			console.log('수정 데이터 확인 =>', data);
 			$scope.datas.remk = data.list[0].Remk;
 			if($rootScope.distinction == 'meaip'){
 				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
@@ -5472,7 +5528,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 			/*조회된 수불카인드 - 이경민[2015-12]*/
 			$scope.datas.subulkind = parseInt(data.list[0].Subul_kind);
-			console.log('너머야 =>',$scope.datas.subulkind );
 			switch ($scope.datas.subulkind){
 				case 111 : $scope.subul[0].checked = true; break;
 				case 122 : $scope.subul[1].checked = true; break;
@@ -6408,9 +6463,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
 							$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true}); // ------------------이소스 다음에 띄워질 페이지는 루트페이지(더이상 뒤로갈 곳이없음) 이다.
 							$state.go('app.meaip_page', {}, {location:'replace'});
+							$ionicHistory.clearCache();
+							$ionicHistory.clearHistory();
+							$rootScope.u_no = null;
 						}else{ /* 매출일 경우 */
 							$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 							$state.go('app.meachul_page', {}, {location:'replace'});
+							$ionicHistory.clearCache();
+							$ionicHistory.clearHistory();
+							$rootScope.u_no = null;
 						}
 					}
 				},

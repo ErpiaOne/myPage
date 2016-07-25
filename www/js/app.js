@@ -741,7 +741,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				controller : 'MiuCtrl'
 			}
 		}
-	});
+	})
 
 	$urlRouterProvider.otherwise('/app/login');
 });

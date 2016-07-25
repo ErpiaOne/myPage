@@ -331,77 +331,81 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Meaip&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
 			else var data = 'Kind=select_Trade_Detail' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
+			console.log(url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
+				console.log('왜왜왜22222 =>', response);
 				if(typeof response.data == 'object'){
-					if(response.data.list[0].G_name1 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea1) * parseInt(response.data.list[0].G_price1) - parseInt(response.data.list[0].G_Gong1);
-						response.data.list[0].tax1 = tax;
-					}else{
-						response.data.list[0].tax1 = 0;
-					}
-					if(response.data.list[0].G_name2 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea2) * parseInt(response.data.list[0].G_price2) - parseInt(response.data.list[0].G_Gong2);
-						response.data.list[0].tax2 = tax;
-					}else{
-						response.data.list[0].tax2 = '.';
-					}
-					if(response.data.list[0].G_name3 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea3) * parseInt(response.data.list[0].G_price3) - parseInt(response.data.list[0].G_Gong3);
-						response.data.list[0].tax3 = tax;
-					}else{
-						response.data.list[0].tax3 = '.';
-					}
-					if(response.data.list[0].G_name4 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea4) * parseInt(response.data.list[0].G_price4) - parseInt(response.data.list[0].G_Gong4);
-						response.data.list[0].tax4 = tax;
-					}else{
-						response.data.list[0].tax4 = '.';
-					}
-					if(response.data.list[0].G_name5 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea5) * parseInt(response.data.list[0].G_price5) - parseInt(response.data.list[0].G_Gong5);
-						response.data.list[0].tax5 = tax;
-					}else{
-						response.data.list[0].tax5 =  '.';
-					}
-					if(response.data.list[0].G_name6 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea6) * parseInt(response.data.list[0].G_price6) - parseInt(response.data.list[0].G_Gong6);
-						response.data.list[0].tax6 = tax;
-					}else{
-						response.data.list[0].tax6 = '.';
-					}
-					if(response.data.list[0].G_name7 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea7) * parseInt(response.data.list[0].G_price7) - parseInt(response.data.list[0].G_Gong7);
-						response.data.list[0].tax7 = tax;
-					}else{
-						response.data.list[0].tax7 = '.';
-					}
-					if(response.data.list[0].G_name8 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea8) * parseInt(response.data.list[0].G_price8) - parseInt(response.data.list[0].G_Gong8);
-						response.data.list[0].tax8 = tax;
-					}else{
-						response.data.list[0].tax8 = '.';
-					}
-					if(response.data.list[0].G_name9 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea9) * parseInt(response.data.list[0].G_price9) - parseInt(response.data.list[0].G_Gong9);
-						response.data.list[0].tax9 = tax;
-					}else{
-						response.data.list[0].tax9 = '.';
-					}
-					if(response.data.list[0].G_name10 != null){
-						var tax = 0;
-						var tax =  parseInt(response.data.list[0].G_ea10) * parseInt(response.data.list[0].G_price10) - parseInt(response.data.list[0].G_Gong10);
-						response.data.list[0].tax10 = tax;
-					}else{
-						response.data.list[0].tax10 = '.';
+					for(var i = 0; i > response.data.list.length; i++){
+						if(response.data.list[i].G_name1 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea1) * parseInt(response.data.list[i].G_price1) - parseInt(response.data.list[i].G_Gong1);
+							response.data.list[i].tax1 = tax;
+						}else{
+							response.data.list[i].tax1 = 0;
+						}
+						if(response.data.list[i].G_name2 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea2) * parseInt(response.data.list[i].G_price2) - parseInt(response.data.list[i].G_Gong2);
+							response.data.list[i].tax2 = tax;
+						}else{
+							response.data.list[i].tax2 = '.';
+						}
+						if(response.data.list[i].G_name3 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea3) * parseInt(response.data.list[i].G_price3) - parseInt(response.data.list[i].G_Gong3);
+							response.data.list[i].tax3 = tax;
+						}else{
+							response.data.list[i].tax3 = '.';
+						}
+						if(response.data.list[i].G_name4 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea4) * parseInt(response.data.list[i].G_price4) - parseInt(response.data.list[i].G_Gong4);
+							response.data.list[i].tax4 = tax;
+						}else{
+							response.data.list[i].tax4 = '.';
+						}
+						if(response.data.list[i].G_name5 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea5) * parseInt(response.data.list[i].g_price5) - parseInt(response.data.list[i].G_Gong5);
+							response.data.list[i].tax5 = tax;
+						}else{
+							response.data.list[i].tax5 = '.';
+						}
+						if(response.data.list[i].G_name6 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea6) * parseInt(response.data.list[i].G_price6) - parseInt(response.data.list[i].G_Gong6);
+							response.data.list[i].tax6 = tax;
+						}else{
+							response.data.list[i].tax6 = '.';
+						}
+						if(response.data.list[i].G_name7 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea7) * parseInt(response.data.list[i].G_price7) - parseInt(response.data.list[i].G_Gong7);
+							response.data.list[i].tax7 = tax;
+						}else{
+							response.data.list[i].tax7 = '.';
+						}
+						if(response.data.list[i].G_name8 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea8) * parseInt(response.data.list[i].G_price8) - parseInt(response.data.list[i].G_Gong8);
+							response.data.list[i].tax8 = tax;
+						}else{
+							response.data.list[i].tax8 = '.';
+						}
+						if(response.data.list[i].G_name9 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea9) * parseInt(response.data.list[i].G_price9) - parseInt(response.data.list[i].G_Gong9);
+							response.data.list[i].tax9 = tax;
+						}else{
+							response.data.list[i].tax9 = '.';
+						}
+						if(response.data.list[i].G_name10 != null){
+							var tax = 0;
+							var tax =  parseInt(response.data.list[i].G_ea10) * parseInt(response.data.list[i].G_price10) - parseInt(response.data.list[i].G_Gong10);
+							response.data.list[i].tax10 = tax;
+						}else{
+							response.data.list[i].tax10 = '.';
+						}
 					}
 					return response.data;
 				}else{
@@ -432,8 +436,6 @@ angular.module('starter.services', [])
 		}, chkRead: function(Admin_Code, Sl_No, user_id, loginType){				// SCM & Nomal 읽음조회
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
 			var data = 'Kind=read_Trade_chk&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No + '&id=' + escape(user_id) + '&loginType=' + loginType;
-
-			console.log('너 여기오니 ?=>', url,'?',data);
 			return $http.get(url + '?' + data)
 				.then(function(response){
 					if(typeof response.data == 'object'){
@@ -1077,6 +1079,7 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&User_id=' + escape(userid) + '&Kind=ERPia_Sale_Select_Place_CName&Mode=Select_CName&Sale_Place_Code=' + meajang_code;
 			return $http.get(url + '?' + data).then(function(response){
+				console.log('response=>', response);
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
@@ -1126,7 +1129,6 @@ angular.module('starter.services', [])
 
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind='+ kind +'&Mode=Select_Ger_Date&GerName='+ escape(gername) +'&pageCnt='+ pageCnt + '&pageRow='+ 5 +'&sDate='+ sedata.sDate +'&eDate='+ sedata.eDate + '&rslt_Amt=' + gubun ;
-			console.log('???->', url, '?', data);
 			if(gubun == 'N'){
 				return $http.get(url + '?' + data).then(function(response){
 					if(typeof response == 'object'){
@@ -1194,9 +1196,7 @@ angular.module('starter.services', [])
 				} 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind='+ kind +'&Mode='+ no;
-				console.log('url =>', url,'?',data);
 				return $http.get(url + '?' + data).then(function(response){
-					console.log('봐 ->',response);
 					if(typeof response == 'object'){
 						return response.data;
 					}else{
@@ -1429,7 +1429,6 @@ angular.module('starter.services', [])
 
 			console.log('최근 조회=>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
-				console.log('최근조회결과 ->', response);
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
@@ -1451,7 +1450,6 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind='+ kind +'&Mode=Reg_Select_GerGoods_Search_Lately&G_Gubun=' + gubun + '&G_Gubun_Value=' + gername + '&GerCode=' + code;
 			
-			console.log('최근조회저장 =>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				console.log('저장내역결과=>', response);
 				if(typeof response == 'object'){
