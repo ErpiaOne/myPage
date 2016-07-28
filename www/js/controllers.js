@@ -20,7 +20,7 @@ var g_playlists = [{
 
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
-.controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, $cordovaSocialSharing, $ionicSideMenuDelegate){
+.controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, PrivService, $cordovaSocialSharing, $ionicSideMenuDelegate){
 	$rootScope.PushData = {};
 	/* 인앱브라우져(사이트띄우는거) 기본설정  - 김형석[2016-05] */
 	var browseroptions = {
@@ -74,7 +74,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.0.0', //업데이트시 필수로 변경!!
+   		Android_version : '1.0.1', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -405,10 +405,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'phj9775';
 			// $rootScope.loginData.Pwd = '1234';
 
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'kmtest';
-			// $rootScope.loginData.Pwd = 'kmtest1!';
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId = 'kmtest';
+			$rootScope.loginData.Pwd = 'kmtest1!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -433,10 +433,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
-			// $rootScope.loginData.loginType = 'S'; //PC모드
-			// $rootScope.loginData.UserId = '555';
-			// $rootScope.loginData.Pwd = '555';
+			$rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
+			$rootScope.loginData.loginType = 'S'; //PC모드
+			$rootScope.loginData.UserId = '555';
+			$rootScope.loginData.Pwd = '555';
 //test중 일때만.......................
 		}else if(userType == 'Normal'){
 			$rootScope.loginMenu = "selectUser";
@@ -461,10 +461,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			// $rootScope.loginData.loginType = 'N'; //PC모드
-			// $rootScope.loginData.UserId = 'test1234';
-			// $rootScope.loginData.Pwd = 'test1234!';
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.loginType = 'N'; //PC모드
+			$rootScope.loginData.UserId = 'test1234';
+			$rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType == 'Guest'){
 			$rootScope.loginMenu = "selectUser"; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
@@ -734,6 +734,37 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '' , $rootScope.deviceInfo);
 							}
 						}
+
+						// 권한설정 function
+						$rootScope.priv = [
+							{ 
+								id : '' ,
+								useYN : '',
+								de : '',
+								save : '',
+								print : ''
+							},
+							{ 
+								id : '' ,
+								useYN : '',
+								de : '',
+								save : '',
+								print : ''
+							}
+						];
+
+						/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
+						PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
+						.then(function(data){
+							for(i=0; i < 2; i++){
+								$rootScope.priv[i].id = data[i].Menu_NM;
+								$rootScope.priv[i].useYN = data[i].priv;
+								$rootScope.priv[i].de = data[i].priv_Delete;
+								$rootScope.priv[i].save = data[i].priv_Save;
+								$rootScope.priv[i].print = data[i].priv_Print;
+							}
+						});
+
 						$timeout(function() {
 							$ionicLoading.hide();
 							$scope.closeLogin();
@@ -744,19 +775,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							$rootScope.boardIndex = $rootScope.PushData.state;
 								if($rootScope.PushData.BoardParam == "0"){
 									$rootScope.boardIndex = 0;
-									console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 								}else if($rootScope.PushData.BoardParam == "1"){
 									$rootScope.boardIndex = 1;
-									console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 								}else if($rootScope.PushData.BoardParam == "2"){
 									$rootScope.boardIndex = 2;
-									console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 								}else if($rootScope.PushData.BoardParam == "3"){
 									$rootScope.boardIndex = 3;
-									console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
-								}else{
 								}
+								console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 								location.href= '#/app/board/Main';
+
 							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
 								$scope.showCheckSano();
 							}else if($rootScope.PushData.state != "" || !isUndefined($rootScope.PushData.state) || $rootScope.PushData.state != "undefined"){ //기타 이벤트
@@ -1052,7 +1080,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		/* 업데이트 알림 - 김형석[2016-02] */
 		$scope.updatego=function(){
 			$ionicPopup.show({
-				title: '업데이트알림',
+				title: '<b>업데이트알림</b>',
 				subTitle: '',
 				content: '버전이 업데이트 되었습니다.  업데이트창으로 이동합니다.',
 				buttons: [
@@ -2691,7 +2719,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.cs_certify_click_fn = function(phoneno){
 		if(phoneno == null || phoneno == undefined|| phoneno == '' || phoneno.length<10){
 			$ionicPopup.alert({
-			        title: '경고',
+			        title: '<b>경고</b>',
 			        subTitle: '',
 			        content: '핸드폰번호를 입력해주세요'
 			})
@@ -2712,7 +2740,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.cs_certify_Check_fn = function(certify_no){
 		if(certify_no == null || certify_no == undefined|| certify_no == '' || certify_no.length<5){
 		$ionicPopup.alert({
-			title: '경고',
+			title: '<b>경고</b>',
 			subTitle: '',
 			content: '인증번호를 정확히 입력해주세요'
 		})
@@ -2720,15 +2748,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$scope.csData.cs_certify_ok = true;
 			$rootScope.rndNum = '';
 			$ionicPopup.alert({
-				title: '인증성공!',
+				title: '<b>인증성공</b>',
 				subTitle: '',
 				content: '인증에 성공하였습니다.'
 			})
 		}else{
 			$ionicPopup.alert({
-				title: '인증번호가 일치하지 않습니다.',
+				title: '<b>경고</b>',
 				subTitle: '',
-				content: '다시 입력해주세요.'
+				content: '인증번호가 일치하지 않습니다. <br>다시 입력해주세요.'
 			})
 		}
 	};
@@ -4087,48 +4115,48 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
     	yn : false
     }
 
-    /*환경설정값 있는지 먼저 불러오기.- 이경민*/
-    MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
+	/*erpia 환경설정값*/
+	MconfigService.erpia_basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
 	.then(function(data){
-		$rootScope.setupData = data;
-
-		/*기본 매장조회 - 이경민[2015-12]*/
-		MconfigService.basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
-		.then(function(data){
-			$scope.mejanglists = data.list;
+		if(data.list[0].Sale_Place_Code.length == 0){
+			var er_placecode = '000';
 			$scope.placeYN = false;
-			console.log($scope.setupData.basic_Place_Code);
-			if($scope.mejanglists[0].rslt == 'Y'){
-				$scope.setupData.basic_Place_Code = $scope.mejanglists[0].Sale_Place_Code;
-				$scope.placeYN = true;
+		}else{
+			var er_placecode = data.list[0].Sale_Place_Code;
+			$scope.placeYN = true;
+		}
+		/*환경설정값 있는지 먼저 불러오기.- 이경민*/
+	    	MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId, er_placecode)
+		.then(function(data){
+			console.log('data######-->',data);
+			if(data != null){
+				$rootScope.setupData = data;
 			}
-				for(var i=0; i < $scope.mejanglists.length; i++ ){
-					if($scope.mejanglists[i].Sale_Place_Code == $rootScope.erpia_code){
-						$scope.mejang2 = $scope.mejanglists[i];
-						$scope.mejanglists.splice(0,$scope.mejanglists.length);
-						$scope.mejanglists.push($scope.mejang2);
-						break;
-					}
-				}
-			
-			/*기본 창고조회  - 이경민[2015-12]*/
-			MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.setupData.basic_Place_Code)
+
+			/*기본 매장조회 - 이경민[2015-12]*/
+			MconfigService.basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
 			.then(function(data){
-				$scope.changolists = data.list;
-				var gubun = false;
-				for(var i = 0; i < $scope.changolists.length; i++){ ////여기여기!
-					if($scope.changolists[i].Code == $scope.setupData.basic_Ch_Code){
-						var gubun = true;
-						break;
+				$scope.mejanglists = data.list;
+				
+				/*기본 창고조회  - 이경민[2015-12]*/
+				MconfigService.basicC($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.setupData.basic_Place_Code)
+				.then(function(data){
+					$scope.changolists = data.list;
+					var gubun = false;
+					for(var i = 0; i < $scope.changolists.length; i++){ ////여기여기!
+						if($scope.changolists[i].Code == $rootScope.setupData.basic_Ch_Code){
+							var gubun = true;
+							break;
+						}
 					}
-				}
-				if(gubun == false){
-					$scope.setupData.basic_Ch_Code = '000';
-				}
+					if(gubun == false){
+						$rootScope.setupData.basic_Ch_Code = '000';
+					}
+				})
 			})
 		})
-
-	})
+	});
+   	
 
 	/*매장에따른 연계창고 조회 - 이경민[2015-12]*/
 	$scope.Link_Chango = function(){
@@ -5060,17 +5088,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.mode='삭제가능';
 				$rootScope.u_no = no;
 				$rootScope.tax_u = false;
-				var data_alert = '정말로 삭제하시겠습니까?.';
+				var data_alert = '정말로 삭제하시겠습니까?';
 			}else if(data.list[0].Rslt == 1){ // --------------- 세금계산서 존재
 				var data_alert = '세금계산서가 발행된 전표는 삭제가 불가능합니다.';
-			}else if(data.list[0].Rslt == -2){
-				var decheck = 'd';  // --------------- 배송정보 존재
-				var data_alert = '연계된 배송정보가 존재합니다. 모두 삭제하시겠습니까?';
+			}else if(data.list[0].Rslt == -2){// --------------- 배송정보 존재
+				var data_alert = '연계된 배송정보가 존재합니다. 삭제가 불가능합니다.';
 			}else if(data.list[0].Rslt == -1){  // --------------- 세금계산서 & 배송정보 존재
 				var data_alert = '세금계산서와 배송정보가 모두 존재합니다. 삭제가 불가능합니다.';
 			}
 			$ionicPopup.show({
-				title: '경고',
+				title: '<b>경고</b>',
 				subTitle: '',
 				content: data_alert,
 				buttons: [
@@ -5264,6 +5291,33 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		{checked : false},
 	];
 
+	    /*지급정보 구분 - one(현금) two(통장) th(어음) fo(카드)  - 이경민[2015-12]*/
+	$scope.payment=[
+		{ one : false, name : '현금결제', checked : false },
+		{ two : false, name : '통장결제', checked : false },
+		{ th : false, name : '어음결제', checked : false },
+		{ fo : false, name : '카드결제', checked : false }
+	];
+
+	$scope.pay={
+		use : true,
+		payprice : 0, // 지급액
+		paycardbank : '', //은행&카드 정보
+		gubun : 4,
+		acno : '', //지급전표 정보 (수정시 사용)
+		no : '', // 전표번호 (수정시 사용)
+		codenum : -1,
+		goods_del : 'N', // 상품 삭제 Y&N
+		goods_seq_end : 0,
+		delete : true
+	};
+
+	/*은행/카드 정보  - 이경민[2015-12]*/
+	$scope.paycardbank=[];
+	$scope.paytype = false;
+
+	$scope.paylist=[];
+
     	$scope.bar = 'N'; //바코드로 검색인가 아닌가 구별하기위함.
 
 	 /* page up And down  - 이경민[2015-12]*/
@@ -5306,248 +5360,220 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$scope.upAnddown2="ion-arrow-down-b";
 		}
 	}
-	/* // ----------- page up And down  - 이경민[2015-12]*/
 
-/*환경설정값 있는지 먼저 불러오기.- 이경민*/
-    MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
+	/*erpia 환경설정값*/
+	MconfigService.erpia_basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
 	.then(function(data){
-		$scope.setupData = data;
-		$scope.m_check.meajangCheck = 't';
-		$scope.m_check.changoCheck = 't';
-
-		if($rootScope.distinction == 'meaip' && $rootScope.iu == 'i'){  								//매입 수불구분확인 -------------------- 매입일경우
-			var i = $scope.setupData.basic_Subul_Meaip;
-			switch (i) {
-			    case '1' :  switch($scope.setupData.basic_Subul_Meaip_Before){
-			    		   		case 'I' : console.log('I'); $scope.datas.subulkind=111; $scope.subul[0].checked=true;  $scope.subul[1].checked=false; break;
-			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=122; $scope.subul[1].checked=true; $scope.subul[0].checked=false; break;
-			    		   		case 'N' : console.log('N'); break;
-			    		   }
-			    		   break;
-			    case '2' : $scope.datas.subulkind=111; $scope.subul[0].checked=true; $scope.subul[1].checked=false; break;
-			    case '3' : $scope.datas.subulkind=122; $scope.subul[1].checked=true; $scope.subul[0].checked=false; break;
-
-			    default : console.log('수불카인드 오류'); $scope.m_check.subulCheck = 'f'; break; // 최근등록수불로 되어있는데 등록된 값 없을경우
-			}
-			if($scope.datas.subulkind == 0){
-				$scope.m_check.subulCheck = 'f';
-			}
-		}else if($rootScope.distinction == 'meachul' && $rootScope.iu == 'i'){  																//매출 수불구분확인 -------------------- 매출일경우
-			var i = $scope.setupData.basic_Subul_Sale;
-			switch (i) {
-			    case '1' :  switch($scope.setupData.basic_Subul_Sale_Before){
-			    		   		case 'C' : console.log('C'); $scope.datas.subulkind=221; $scope.subul[2].checked=true; $scope.subul[3].checked=false; break;
-			    		   		case 'B' : console.log('B'); $scope.datas.subulkind=212; $scope.subul[3].checked=true; $scope.subul[2].checked=false; break;
-			    		   		case 'N' : console.log('N'); break;
-			    		    }
-			    		   break;
-			    case '2' : $scope.datas.subulkind=221; $scope.subul[2].checked=true; $scope.subul[3].checked=false; break;
-			    case '3' : $scope.datas.subulkind=212; $scope.subul[3].checked=true; $scope.subul[2].checked=false; break;
-
-			    default : console.log('수불카인드 오류'); $scope.m_check.subulCheck = 'f'; break; // 최근등록수불로 되어있는데 등록된 값 없을경우
-			  }
-			  if($scope.datas.subulkind == 0){
-			  	$scope.m_check.subulCheck = 'f';
-			  }
-
-		}
-
-		/*기본 매장조회 - 이경민[2015-12]*/
-		MconfigService.basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
-		.then(function(data){
-			$scope.mejanglists = data.list;
+		if(data.list[0].Sale_Place_Code.length == 0){
+			var er_placecode = '000';
 			$scope.placeYN = false;
-			if($scope.mejanglists[0].rslt == 'Y'){
-				$scope.setupData.basic_Place_Code = $scope.mejanglists[0].Sale_Place_Code;
-				$scope.placeYN = true;
+		}else{
+			var er_placecode = data.list[0].Sale_Place_Code;
+			$scope.placeYN = true;
+		}
+		/*환경설정값 있는지 먼저 불러오기.- 이경민*/
+	    	MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId, er_placecode)
+		.then(function(data){
+			if(data != null){
+				$scope.setupData = data;
+				$scope.m_check.meajangCheck = 't';
+				$scope.m_check.changoCheck = 't';
+			
+				if($rootScope.distinction == 'meaip' && $rootScope.iu == 'i'){  //매입 수불구분확인 -------------------- 매입일경우
+					var i = $scope.setupData.basic_Subul_Meaip;
+					switch (i) {
+					    case '1' :  switch($scope.setupData.basic_Subul_Meaip_Before){
+					    		   		case 'I' : console.log('I'); $scope.datas.subulkind=111; $scope.subul[0].checked=true;  $scope.subul[1].checked=false; break;
+					    		   		case 'B' : console.log('B'); $scope.datas.subulkind=122; $scope.subul[1].checked=true; $scope.subul[0].checked=false; break;
+					    		   		case 'N' : console.log('N'); break;
+					    		   }
+					    		   break;
+					    case '2' : $scope.datas.subulkind=111; $scope.subul[0].checked=true; $scope.subul[1].checked=false; break;
+					    case '3' : $scope.datas.subulkind=122; $scope.subul[1].checked=true; $scope.subul[0].checked=false; break;
+
+					    default : console.log('수불카인드 오류'); $scope.m_check.subulCheck = 'f'; break; // 최근등록수불로 되어있는데 등록된 값 없을경우
+					}
+					if($scope.datas.subulkind == 0){
+						$scope.m_check.subulCheck = 'f';
+					}
+				}else if($rootScope.distinction == 'meachul' && $rootScope.iu == 'i'){  //매출 수불구분확인 -------------------- 매출일경우
+					var i = $scope.setupData.basic_Subul_Sale;
+					switch (i) {
+					    case '1' :  switch($scope.setupData.basic_Subul_Sale_Before){
+					    		   		case 'C' : console.log('C'); $scope.datas.subulkind=221; $scope.subul[2].checked=true; $scope.subul[3].checked=false; break;
+					    		   		case 'B' : console.log('B'); $scope.datas.subulkind=212; $scope.subul[3].checked=true; $scope.subul[2].checked=false; break;
+					    		   		case 'N' : console.log('N'); break;
+					    		    }
+					    		   break;
+					    case '2' : $scope.datas.subulkind=221; $scope.subul[2].checked=true; $scope.subul[3].checked=false; break;
+					    case '3' : $scope.datas.subulkind=212; $scope.subul[3].checked=true; $scope.subul[2].checked=false; break;
+
+					    default : console.log('수불카인드 오류'); $scope.m_check.subulCheck = 'f'; break; // 최근등록수불로 되어있는데 등록된 값 없을경우
+					  }
+					  if($scope.datas.subulkind == 0){
+					  	$scope.m_check.subulCheck = 'f';
+					  }
+				}
 			}
-				for(var i=0; i < $scope.mejanglists.length; i++ ){
-					if($scope.mejanglists[i].Sale_Place_Code == $rootScope.erpia_code){
-						$scope.mejang2 = $scope.mejanglists[i];
-						$scope.mejanglists.splice(0,$scope.mejanglists.length);
-						$scope.mejanglists.push($scope.mejang2);
-						break;
-					}
-				}
-			/*기본 창고조회  - 이경민[2015-12]*/
-			MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.setupData.basic_Place_Code)
+
+			/*기본 매장조회 - 이경민[2015-12]*/
+			MconfigService.basicM($scope.loginData.Admin_Code, $scope.loginData.UserId)
 			.then(function(data){
-				$scope.changolists = data.list;
-				var gubun = false;
-				for(var i = 0; i < $scope.changolists.length; i++){ ////여기여기!
-					if($scope.changolists[i].Code == $scope.setupData.basic_Ch_Code){
-						var gubun = true;
-						break;
+				$scope.mejanglists = data.list;
+
+				/*기본 창고조회  - 이경민[2015-12]*/
+				MconfigService.basicC($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.setupData.basic_Place_Code)
+				.then(function(data){
+					$scope.changolists = data.list;
+					var gubun = false;
+					for(var i = 0; i < $scope.changolists.length; i++){ ////여기여기!
+						if($scope.changolists[i].Code == $scope.setupData.basic_Ch_Code){
+							var gubun = true;
+							break;
+						}
 					}
-				}
-				if(gubun == false){
-					$scope.setupData.basic_Ch_Code = '000';
-				}
+					if(gubun == false){
+						$scope.setupData.basic_Ch_Code = '000';
+						$scope.m_check.changoCheck = 'f';
+					}
+						////////////////////////////////////////////// 수정일경우 데이터 불러오기 - 이경민[2015-12] //////////////////////////////////////////////////////////
+						if($rootScope.iu == 'u' || $rootScope.iu == 'qi' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui'){
+							/*전표 상세조회 -- 날짜 paydate(입출일), todate(지급일) - 이경민[2015-12]*/
+							MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.u_no)
+							.then(function(data){
+								console.log('수정 데이터 확인 =>', data);
+								$scope.datas.remk = data.list[0].Remk;
+								if($rootScope.distinction == 'meaip'){
+									if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+										$scope.date.todate1 = new Date(data.list[0].Meaip_Date);
+										$scope.date.todate = data.list[0].Meaip_Date;
+									}else{
+										$scope.date.todate1 = $scope.date.todate1=new Date($scope.dateMinus(0));
+										$scope.date.todate = $scope.dateMinus(0);
+									} //오늘날짜 스코프
+									$scope.pay.acno = data.list[0].AC_No;
+									$scope.pay.no = data.list[0].iL_No;
+									$scope.pay.goods_seq_end = data.list[data.list.length-1].Seq;
+
+									if(data.list[0].IpJi_Date.length > 0){
+										if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+											$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
+											$scope.date.payday = data.list[0].IpJi_Date;
+										}else{
+											$scope.date.payday1=new Date($scope.date.payday);
+											$scope.date.payday=$scope.dateMinus(0);
+										}
+									}
+								}else{
+									if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+										$scope.date.todate1 = new Date(data.list[0].MeaChul_Date);
+										$scope.date.todate = data.list[0].MeaChul_Date;
+									}else{
+										$scope.date.todate1 = $scope.date.todate1=new Date($scope.dateMinus(0));
+										$scope.date.todate = $scope.dateMinus(0);
+									}
+									$scope.pay.acno = data.list[0].AC_No;
+									$scope.pay.no = data.list[0].Sl_No;
+									$scope.pay.goods_seq_end = data.list[data.list.length-1].Seq;
+									if(data.list[0].IpJi_Date.length > 0){
+										if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
+											$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
+											$scope.date.payday = data.list[0].IpJi_Date;
+										}else{
+											$scope.date.payday1=new Date($scope.date.payday);
+											$scope.date.payday=$scope.dateMinus(0);
+										}
+
+									}
+								}
+
+								/*조회된 창고랑 매장 - 이경민[2015-12]*/
+								if(data.list[0].Sale_Place_Code.length == 0){
+									$scope.setupData.basic_Place_Code = '000';
+								}else{
+									$scope.setupData.basic_Place_Code = data.list[0].Sale_Place_Code;
+								}
+								$scope.setupData.basic_Ch_Code = data.list[0].Ccode;
+
+
+								/*조회된 수불카인드 - 이경민[2015-12]*/
+								$scope.datas.subulkind = parseInt(data.list[0].Subul_kind);
+								switch ($scope.datas.subulkind){
+									case 111 : $scope.subul[0].checked = true; $scope.subul[1].checked=false; break;
+									case 122 : $scope.subul[1].checked = true; $scope.subul[0].checked=false; break;
+									case 221 : $scope.subul[2].checked = true; $scope.subul[3].checked=false; break;
+									case 212 : $scope.subul[3].checked = true; $scope.subul[2].checked=false; break;
+								}
+
+
+								for(var i=0; i < data.list.length; i++){
+									$scope.goodsaddlists.push({
+										name : data.list[i].G_Name,
+										num : parseInt(data.list[i].G_Qty),
+										goodsprice : data.list[i].G_Price,
+										code : data.list[i].G_Code,
+										goods_seq : data.list[i].Seq,
+										state : 'u' // 디비에있는 데이터인지 확인하기위해. / 티삭제시 필요
+									});
+								}
+
+								$scope.m_check.meajangCheck = 't';
+								$scope.m_check.changoCheck = 't';
+								$scope.m_check.subulCheck = 't';
+
+								$scope.company_Func(data.list[0].GerName,data.list[0].GerCode,data.list[0].G_GDamdang);
+								$scope.checkup();
+
+								/*지급구분 - 이경민[2015-12]*/
+								if(data.list[0].IpJi_Gubun.length > 0){
+									$scope.pay.use = false;
+									if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' )  $scope.pay.delete=false;
+									else  $scope.pay.delete=true;
+									$scope.pay.payprice = parseInt(data.list[0].IpJi_Amt);
+									switch(parseInt(data.list[0].IpJi_Gubun)){
+										case 701 : $scope.payment[0].checked = true; $scope.pay.gubun = 0; break;
+										case 721 : $scope.payment[0].checked = true; $scope.pay.gubun = 0; break;
+
+										case 702 : $scope.payment[1].checked = true; $scope.pay.gubun = 1; break;
+										case 722 : $scope.payment[1].checked = true; $scope.pay.gubun = 1; break;
+
+										case 703 : $scope.payment[3].checked = true; $scope.pay.gubun = 3; break;
+										case 723 : $scope.payment[3].checked = true; $scope.pay.gubun = 3; break;
+
+										case 704 : $scope.payment[2].checked = true; $scope.pay.gubun = 2; break;
+										case 724 : $scope.payment[2].checked = true; $scope.pay.gubun = 2; break;
+
+										default : console.log('셀렉트 된 것이 없습니다.'); break;
+									}
+									if(data.list[0].IpJi_Gubun == 703 || data.list[0].IpJi_Gubun == 723){
+										$scope.Payments_division(3);
+										$scope.pay.paycardbank = data.list[0].Card_Code + ',' + data.list[0].Card_Name + ',' + data.list[0].Card_Num;
+										$scope.pay.codenum = data.list[0].Card_Code;
+									}else if(data.list[0].IpJi_Gubun == 702 || data.list[0].IpJi_Gubun == 722){
+										$scope.Payments_division(1);
+										$scope.pay.paycardbank = data.list[0].Bank_Code + ',' + data.list[0].Bank_Name + ',' + data.list[0].Bank_Account;
+										$scope.pay.codenum = data.list[0].Bank_Code;
+									}else{
+										for(var i=0; i<2; i++){
+											$scope.paylist.push({
+									    			code : '',
+									    			name : '',
+									    			num : 0
+								    			});
+										}
+									}
+									$scope.payinsert();
+								}
+							})
+							if($rootScope.iu == 'qi'){
+								$rootScope.iu = 'i';
+							}
+						}
+						////////////////////////////////////////////// 수정 끝 //////////////////////////////////////////////////////////////////////////////
+				})
 			})
 		})
-	})
-
-    /*지급정보 구분 - one(현금) two(통장) th(어음) fo(카드)  - 이경민[2015-12]*/
-    $scope.payment=[
-    { one : false, name : '현금결제', checked : false },
-    { two : false, name : '통장결제', checked : false },
-    { th : false, name : '어음결제', checked : false },
-    { fo : false, name : '카드결제', checked : false }
-    ];
-
-    $scope.pay={
-     	use : true,
-     	payprice : 0, // 지급액
-     	paycardbank : '', //은행&카드 정보
-     	gubun : 4,
-     	acno : '', //지급전표 정보 (수정시 사용)
-     	no : '', // 전표번호 (수정시 사용)
-     	codenum : -1,
-     	goods_del : 'N', // 상품 삭제 Y&N
-     	goods_seq_end : 0,
-     	delete : true
-     };
-
-     /*은행/카드 정보  - 이경민[2015-12]*/
-     $scope.paycardbank=[];
-     $scope.paytype = false;
-
-     $scope.paylist=[];
-
-	////////////////////////////////////////////// 수정일경우 데이터 불러오기 - 이경민[2015-12] //////////////////////////////////////////////////////////
-	if($rootScope.iu == 'u' || $rootScope.iu == 'qi' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui'){
-		/*전표 상세조회 -- 날짜 paydate(입출일), todate(지급일) - 이경민[2015-12]*/
-		MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.u_no)
-		.then(function(data){
-			console.log('수정 데이터 확인 =>', data);
-			$scope.datas.remk = data.list[0].Remk;
-			if($rootScope.distinction == 'meaip'){
-				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
-					$scope.date.todate1 = new Date(data.list[0].Meaip_Date);
-					$scope.date.todate = data.list[0].Meaip_Date;
-				}else{
-					$scope.date.todate1 = $scope.date.todate1=new Date($scope.dateMinus(0));
-					$scope.date.todate = $scope.dateMinus(0);
-				} //오늘날짜 스코프
-				$scope.pay.acno = data.list[0].AC_No;
-				$scope.pay.no = data.list[0].iL_No;
-				$scope.pay.goods_seq_end = data.list[data.list.length-1].Seq;
-
-				if(data.list[0].IpJi_Date.length > 0){
-					if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
-						$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
-						$scope.date.payday = data.list[0].IpJi_Date;
-					}else{
-						$scope.date.payday1=new Date($scope.date.payday);
-						$scope.date.payday=$scope.dateMinus(0);
-					}
-				}
-			}else{
-				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
-					$scope.date.todate1 = new Date(data.list[0].MeaChul_Date);
-					$scope.date.todate = data.list[0].MeaChul_Date;
-				}else{
-					$scope.date.todate1 = $scope.date.todate1=new Date($scope.dateMinus(0));
-					$scope.date.todate = $scope.dateMinus(0);
-				}
-				$scope.pay.acno = data.list[0].AC_No;
-				$scope.pay.no = data.list[0].Sl_No;
-				$scope.pay.goods_seq_end = data.list[data.list.length-1].Seq;
-				if(data.list[0].IpJi_Date.length > 0){
-					if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
-						$scope.date.payday1 = new Date(data.list[0].IpJi_Date);
-						$scope.date.payday = data.list[0].IpJi_Date;
-					}else{
-						$scope.date.payday1=new Date($scope.date.payday);
-						$scope.date.payday=$scope.dateMinus(0);
-					}
-
-				}
-			}
-
-			/*조회된 창고랑 매장 - 이경민[2015-12]*/
-			if(data.list[0].Sale_Place_Code.length == 0){
-				$scope.setupData.basic_Place_Code = '000';
-			}else{
-				$scope.setupData.basic_Place_Code = data.list[0].Sale_Place_Code;
-			}
-			$scope.setupData.basic_Ch_Code = data.list[0].Ccode;
-
-
-			/*조회된 수불카인드 - 이경민[2015-12]*/
-			$scope.datas.subulkind = parseInt(data.list[0].Subul_kind);
-			switch ($scope.datas.subulkind){
-				case 111 : $scope.subul[0].checked = true; $scope.subul[1].checked=false; break;
-				case 122 : $scope.subul[1].checked = true; $scope.subul[0].checked=false; break;
-				case 221 : $scope.subul[2].checked = true; $scope.subul[3].checked=false; break;
-				case 212 : $scope.subul[3].checked = true; $scope.subul[2].checked=false; break;
-			}
-
-
-			for(var i=0; i < data.list.length; i++){
-				$scope.goodsaddlists.push({
-					name : data.list[i].G_Name,
-					num : parseInt(data.list[i].G_Qty),
-					goodsprice : data.list[i].G_Price,
-					code : data.list[i].G_Code,
-					goods_seq : data.list[i].Seq,
-					state : 'u' // 디비에있는 데이터인지 확인하기위해. / 티삭제시 필요
-				});
-			}
-
-			$scope.m_check.meajangCheck = 't';
-			$scope.m_check.changoCheck = 't';
-			$scope.m_check.subulCheck = 't';
-
-			$scope.company_Func(data.list[0].GerName,data.list[0].GerCode,data.list[0].G_GDamdang);
-			$scope.checkup();
-
-			/*지급구분 - 이경민[2015-12]*/
-			if(data.list[0].IpJi_Gubun.length > 0){
-				$scope.pay.use = false;
-				if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' )  $scope.pay.delete=false;
-				else  $scope.pay.delete=true;
-				$scope.pay.payprice = parseInt(data.list[0].IpJi_Amt);
-				switch(parseInt(data.list[0].IpJi_Gubun)){
-					case 701 : $scope.payment[0].checked = true; $scope.pay.gubun = 0; break;
-					case 721 : $scope.payment[0].checked = true; $scope.pay.gubun = 0; break;
-
-					case 702 : $scope.payment[1].checked = true; $scope.pay.gubun = 1; break;
-					case 722 : $scope.payment[1].checked = true; $scope.pay.gubun = 1; break;
-
-					case 703 : $scope.payment[3].checked = true; $scope.pay.gubun = 3; break;
-					case 723 : $scope.payment[3].checked = true; $scope.pay.gubun = 3; break;
-
-					case 704 : $scope.payment[2].checked = true; $scope.pay.gubun = 2; break;
-					case 724 : $scope.payment[2].checked = true; $scope.pay.gubun = 2; break;
-
-					default : console.log('셀렉트 된 것이 없습니다.'); break;
-				}
-				if(data.list[0].IpJi_Gubun == 703 || data.list[0].IpJi_Gubun == 723){
-					$scope.Payments_division(3);
-					$scope.pay.paycardbank = data.list[0].Card_Code + ',' + data.list[0].Card_Name + ',' + data.list[0].Card_Num;
-					$scope.pay.codenum = data.list[0].Card_Code;
-				}else if(data.list[0].IpJi_Gubun == 702 || data.list[0].IpJi_Gubun == 722){
-					$scope.Payments_division(1);
-					$scope.pay.paycardbank = data.list[0].Bank_Code + ',' + data.list[0].Bank_Name + ',' + data.list[0].Bank_Account;
-					$scope.pay.codenum = data.list[0].Bank_Code;
-				}else{
-					for(var i=0; i<2; i++){
-						$scope.paylist.push({
-				    			code : '',
-				    			name : '',
-				    			num : 0
-			    			});
-					}
-				}
-				$scope.payinsert();
-			}
-		})
-		if($rootScope.iu == 'qi'){
-			$rootScope.iu = 'i';
-		}
-	}
-	////////////////////////////////////////////// 수정 끝 //////////////////////////////////////////////////////////////////////////////
+	});
 
 	/*거래처명 초기화 - 이경민[2015-12]*/
 	$scope.clearcompany = function(){
@@ -5821,7 +5847,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			}
 			if(check == 'Y'){
 				$ionicPopup.alert({
-					title : '경고',
+					title : '<b>경고</b>',
 					template: '몇 개의 상품이 중복되었습니다<br> <b>* 중복된 상품은 추가되지 않습니다.</b>'
 				});
 			}
@@ -6025,38 +6051,40 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 
 	$scope.meaipchul_subul=function(index){
-		/*수불구분 활성화/비활성화*/
-		if($rootScope.distinction == 'meaip'){
-			if(index == 0){
-				if($scope.subul[0].checked == false) {
-					$scope.subul[0].checked = true;
-				}
-				$scope.subul[1].checked = false;
-				$scope.datas.subulkind = 111;
+		if($scope.sbu == false){
+			/*수불구분 활성화/비활성화*/
+			if($rootScope.distinction == 'meaip'){
+				if(index == 0){
+					if($scope.subul[0].checked == false) {
+						$scope.subul[0].checked = true;
+					}
+					$scope.subul[1].checked = false;
+					$scope.datas.subulkind = 111;
 
-			}else if(index == 1){
-				if($scope.subul[1].checked == false) {
-					$scope.subul[1].checked = true;
+				}else if(index == 1){
+					if($scope.subul[1].checked == false) {
+						$scope.subul[1].checked = true;
+					}
+					$scope.subul[0].checked = false;
+					$scope.datas.subulkind = 122;
 				}
-				$scope.subul[0].checked = false;
-				$scope.datas.subulkind = 122;
-			}
-		}else{
-			if(index == 2){
-				if($scope.subul[2].checked == false) {
-					$scope.subul[2].checked = true;
-				}
-				$scope.subul[3].checked = false;
-				$scope.datas.subulkind = 221;
+			}else{
+				if(index == 2){
+					if($scope.subul[2].checked == false) {
+						$scope.subul[2].checked = true;
+					}
+					$scope.subul[3].checked = false;
+					$scope.datas.subulkind = 221;
 
-			}else if(index == 3){
-				if($scope.subul[3].checked == false) {
-					$scope.subul[3].checked = true;
+				}else if(index == 3){
+					if($scope.subul[3].checked == false) {
+						$scope.subul[3].checked = true;
+					}
+					$scope.subul[2].checked = false;
+					$scope.datas.subulkind = 212;
 				}
-				$scope.subul[2].checked = false;
-				$scope.datas.subulkind = 212;
 			}
-		}
+		}	
 	}
 
 	/*자동슬라이드업 - 이경민[2015-12] */
@@ -6184,8 +6212,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		})
 	}
 
+	$scope.paylist = [
+	{ code : '', name : '', num : 0 },
+	{ code : '', name : '', num : 0 }
+	]
+
 	/* 지급구분 - 이경민[2015-12] */
 	$scope.Payments_division=function(index){
+		$scope.pay.gubun = index;
 		/*지급액 활성화/비활성화*/
 		if($scope.payment[index].checked == true) $scope.pay.use = false;
 		else $scope.pay.use = true;
@@ -6197,13 +6231,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 
 		if(index == 1 && $scope.payment[index].checked == true || index == 3 && $scope.payment[index].checked == true){
-			$scope.pay.gubun = index;
 			$scope.pay.paycardbank = 'no';
+			$scope.pay.codenum = -1;
 			$scope.paycardbank.splice(0,$scope.paycardbank.length);
 			$scope.paytype = true;
 			MiuService.ij_data($scope.loginData.Admin_Code, $scope.loginData.UserId, index)
 			.then(function(data){
-				console.log('gjggj ->', data);
 				if(data == '<!--Parameter Check-->'){
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('ERPIa에 등록되어있는 카드/통장정보가 없습니다. 등록 후 사용해주세요.', 'long', 'center');
 					else alert('ERPIa에 등록되어있는 카드/통장정보가 없습니다. 등록 후 사용해주세요.');
@@ -6235,16 +6268,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			})
 		}else{
 			$scope.paycardbank.splice(0,$scope.paycardbank.length);
-			$scope.pay.gubun = 0;
 			$scope.paytype = false;
 			$scope.pay.codenum = -1;
 			$scope.pay.paycardbank = 'no';
 			for(var i=0; i<2; i++){
-				$scope.paylist.push({
+				$scope.paylist[i] = {
 					code : '',
 					name : '',
 					num : 0
-				});
+				};
 			}
 		}
 	}
@@ -6257,27 +6289,27 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.pay_datas = $scope.pay.paycardbank.split(',');
 
 		if($scope.payment[1].checked == true){ // 은행
-			$scope.paylist.push({
+			$scope.paylist[0] = {
 				code :  $scope.pay_datas[0],
 				name :  $scope.pay_datas[1],
 				num :  $scope.pay_datas[2]
-			});
-			$scope.paylist.push({
+			};
+			$scope.paylist[1] = {
 				code : '',
 				name : '',
 				num : 0
-			});
+			}
 		}else{ //카드
-			$scope.paylist.push({
+			$scope.paylist[0] = {
 				code : '',
 				name : '',
 				num : 0
-			});
-			$scope.paylist.push({
+			};
+			$scope.paylist[1] = {
 				code :  $scope.pay_datas[0],
 				name :  $scope.pay_datas[1],
 				num :  $scope.pay_datas[2]
-			});
+			};
 		}
 	}
 	/* 지급모달 닫기 - 이경민[2015-12] */
