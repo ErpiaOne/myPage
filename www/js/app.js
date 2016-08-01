@@ -317,7 +317,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			}else{
 				location.href = goto_Href;
 			}
-		}	
+		}
 	}
 
 	$rootScope.goto_with_backButton = function(goto_Href){

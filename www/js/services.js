@@ -350,8 +350,9 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Meaip&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
 			else var data = 'Kind=select_Trade_Detail' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
+			console.log('ㅇ알엘 ㅗ학인 ->', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
-
+				console.log('확인 =========>',response);
 				if(typeof response.data == 'object'){
 					for(var i = 0; i > response.data.list.length; i++){
 						if(response.data.list[i].G_name1 != null){
@@ -384,7 +385,7 @@ angular.module('starter.services', [])
 						}
 						if(response.data.list[i].G_name5 != null){
 							var tax = 0;
-							var tax =  parseInt(response.data.list[i].G_ea5) * parseInt(response.data.list[i].g_price5) - parseInt(response.data.list[i].G_Gong5);
+							var tax =  parseInt(response.data.list[i].G_ea5) * parseInt(response.data.list[i].G_price5) - parseInt(response.data.list[i].G_Gong5);
 							response.data.list[i].tax5 = tax;
 						}else{
 							response.data.list[i].tax5 = '.';
@@ -1719,7 +1720,7 @@ angular.module('starter.services', [])
 				
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code +'&UserId=' + escape(userid) + '&Kind='+ kind;
-				console.log('수정데이터 확인 =>', url, '?', data,m_data, goods_xml, middel, end); //-->데이터 오류나면 xml확인용
+				// console.log('수정데이터 확인 =>', url, '?', data,m_data, goods_xml, middel, end); //-->데이터 오류나면 xml확인용
 				return $http.post(url + '?' + data + m_data + goods_xml + middel + end).then(function(response){
 					if(typeof response == 'object'){
 						return response.data;

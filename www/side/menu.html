@@ -27,10 +27,12 @@
 					<a class="{{tabitem.tab1}} psm_button01" ng-click="goHome(); sidetab('tab1')">
 						홈
 					</a>
-					<a class="{{tabitem.tab2}} psm_button01" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'>
+					<!-- <a class="{{tabitem.tab2}} psm_button01" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'> -->
+					<a class="{{tabitem.tab2}} psm_button01" ng-click='useYN_Check(1)'>
 						매입
 					</a>
-					<a class="{{tabitem.tab3}} psm_button01" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3")'>
+					<!-- <a class="{{tabitem.tab3}} psm_button01" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3")'> -->
+					<a class="{{tabitem.tab3}} psm_button01" ng-click='useYN_Check(2)'>
 						매출
 					</a>
 					<a class="{{tabitem.tab4}} psm_button01" ng-click='jego();'>
@@ -136,7 +138,7 @@
 						<button class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" menu-close ng-click="already()"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</button>
 					</div>
 
-					<div>
+					<div ng-if="priv_meachul.print == 'Y'">
 						<a class="item item-icon-left navi-item" menu-close ng-click="showCheckSano()" >
 							<i class="icon"><span class="psm_uplist psm_upcolor1 ion-ios-copy-outline"></span><span class="navi-item-leftText">거래명세표<br>금일 발송건</span><span class="navi-item-rightText" style="color:#ff0000;">{{userData.cntNotRead}} 건</span></i>
 						</a>
