@@ -95,7 +95,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.0.1', //업데이트시 필수로 변경!!
+   		Android_version : '1.0.2', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -454,10 +454,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
-			$rootScope.loginData.loginType = 'S'; //PC모드
-			$rootScope.loginData.UserId = '555';
-			$rootScope.loginData.Pwd = '555';
+			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
+			// $rootScope.loginData.loginType = 'S'; //PC모드
+			// $rootScope.loginData.UserId = '555';
+			// $rootScope.loginData.Pwd = '555';
 //test중 일때만.......................
 		}else if(userType == 'Normal'){
 			$rootScope.loginMenu = "selectUser";
@@ -482,10 +482,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			$rootScope.loginData.loginType = 'N'; //PC모드
-			$rootScope.loginData.UserId = 'test1234';
-			$rootScope.loginData.Pwd = 'test1234!';
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'N'; //PC모드
+			// $rootScope.loginData.UserId = 'test1234';
+			// $rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType == 'Guest'){
 			$rootScope.loginMenu = "selectUser"; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
@@ -613,6 +613,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						window.plugins.OneSignal.sendTag("usertype", "S");
 						window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
 						window.plugins.OneSignal.sendTag("gercode", comInfo.data.list[0].G_code);
+						window.plugins.OneSignal.sendTag("key7", "7");
 					}
 					$rootScope.userData.GerName = comInfo.data.list[0].G_Name + '<br>(' + comInfo.data.list[0].G_code + ')';
 					$rootScope.userData.G_Code = comInfo.data.list[0].G_code;
@@ -687,6 +688,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						window.plugins.OneSignal.sendTag("usertype", "E");
 						window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
 						window.plugins.OneSignal.sendTag("gercode", "");
+						window.plugins.OneSignal.sendTag("key7", "7");
 					}
 					$rootScope.userData.Com_Code = comInfo.data.list[0].Com_Code;
 					$rootScope.userData.Com_Name = comInfo.data.list[0].Com_Name + '<br>(' + comInfo.data.list[0].Com_Code + ')';
@@ -847,6 +849,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						window.plugins.OneSignal.sendTag("usertype", "N");
 						window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
 						window.plugins.OneSignal.sendTag("gercode", comInfo.data.list[0].G_code);
+						window.plugins.OneSignal.sendTag("key7", "7");
 					}
 
 					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
@@ -922,7 +925,43 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			});
 			$rootScope.tabitem.gubun = 'Gest';
 			$rootScope.sideMenuHide = 'false';
+
+			// 권한설정 function
+			$rootScope.priv_meaip = 
+				{ 
+					id : '' ,
+					useYN : '',
+					de : '',
+					save : '',
+					print : ''
+				};
+			$rootScope.priv_meachul = 	
+				{ 
+					id : '' ,
+					useYN : '',
+					de : '',
+					save : '',
+					print : ''
+				};
+
+			/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
+			PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
+			.then(function(data){
+					$rootScope.priv_meaip.id = data[0].Menu_NM;
+					$rootScope.priv_meaip.useYN = data[0].priv;
+					$rootScope.priv_meaip.de = data[0].priv_Delete;
+					$rootScope.priv_meaip.save = data[0].priv_Save;
+					$rootScope.priv_meaip.print = data[0].priv_Print;
+
+					$rootScope.priv_meachul.id = data[1].Menu_NM;
+					$rootScope.priv_meachul.useYN = data[1].priv;
+					$rootScope.priv_meachul.de = data[1].priv_Delete;
+					$rootScope.priv_meachul.save = data[1].priv_Save;
+					$rootScope.priv_meachul.print = data[1].priv_Print;
+			});
+
 			$rootScope.goto_with_clearHistory('#/app/slidingtab');
+
 
 		}
 		$scope.LoginAdminCodeCK($rootScope.userType);
@@ -2754,7 +2793,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$rootScope.rndNum = Math.floor(Math.random() * 1000000) + 1;
 			if ($rootScope.rndNum < 100000) $rootScope.rndNum = '0' + $rootScope.rndNum;
 
-			csInfoService.cs_certify($rootScope.rndNum, $scope.SMSData.recUserTel).then(function(response){
+			csInfoService.cs_certify($rootScope.rndNum, $scope.csData.tel).then(function(response){
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('인증번호를 발송했습니다.', 'long', 'center');
 				else alert('인증번호를 발송했습니다.');
 				$scope.certificationModal.hide();
@@ -3456,6 +3495,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	var request = null;
 	var indexList = [];
 	$scope.gu = 1;
+	var c_line = "0";
 	/* 상세표보기 - 이경민[2016-02] */
 	function commaChange(Num)
 	{
@@ -3490,7 +3530,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		var strHtml = "";
 		var strSubject = "";
 		var strSubgu="";
-
 		switch($('input[name=gu_hidden]').val()){
 			case "1": strSubgu = " (주간)"; break;
 			case "2": strSubgu = " (월간)"; break;
@@ -3498,6 +3537,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 		switch (kind)
 		{
+			case "Meachul_halfyear" :
+				strHtml = "<tr><th style='color:white'>순번</th><th style='color:white'>구분</th><th style='color:white'>온라인매출액</th><th style='color:white'>오프라인매출액</th></tr>";
+				strSubject = "최근 6개월 매출액" + strSubgu;
+				break;
 			case "meaip_jem" :
 				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
 				strSubject = "거래처별 매입 점유율 TOP 10" + strSubgu;
@@ -3575,6 +3618,23 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		{
 			switch (kind)
 			{
+				case  "Meachul_halfyear":
+					strHtml = strHtml + "<tr>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml +  (i+1) ;
+					strHtml = strHtml + "</td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + data[i].category.replace("<br>", " ");
+					strHtml = strHtml + "</td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + commaChange(data[i].c_on) + " 원";
+					strHtml = strHtml + "</td>";
+					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + commaChange(data[i].c_off) + " 원";
+					strHtml = strHtml + "</td>";
+					strHtml = strHtml + "</tr>";
+					break;
+
 				case  "meaip_jem": case "meachul_jem" :
 					strHtml = strHtml + "<tr>";
 					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
@@ -3707,8 +3767,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* AmCharts에서 Json 데이터를 불러오는 함수 - 이경민[2016-01] */
 	AmCharts.loadJSON = function(url, load_kind) {
-		console.log('url==>',url);
-		console.log('load_kind==>', load_kind);
 		// create the request
 		if (window.XMLHttpRequest) {
 		// IE7+, Firefox, Chrome, Opera, Safari
@@ -3718,12 +3776,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			var request = new ActiveXObject('Microsoft.XMLHTTP');
 		}
 
-
 		request.open('POST', url, false);
 		request.send();
-		if(load_kind != 'home'){
+		if(load_kind != 'Meachul_halfyear'){
 			var tmpAlert = "최근갱신일 : <br>";
-		}else if(load_kind == 'home'){
+		}else if(load_kind == 'Meachul_halfyear'){
 			response = eval(request.responseText);
 		}
 
@@ -3770,107 +3827,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		return eval(request.responseText);
 	};
 
-	/* 메인화면 차트 추가 - 이경민[2016-05] */
-	$scope.load_home_chart = function(){
-		var chartData = "";
-		chartData = AmCharts.loadJSON(ERPiaAPI.url+ "/JSon_Proc_graph.asp?kind=Meachul_halfyear&value_kind=Meachul_halfyear&admin_code=" + $scope.loginData.Admin_Code, 'home')
-		var chart = AmCharts.makeChart("chart0",
-		{
-			"type": "serial",
-			"categoryField": "category",
-			"startDuration": 1,
-			"autoMarginOffset": 10,
-			"autoMargins": true,
-			"marginBottom": 30,
-			"marginRight": 50,
-			"marginTop": 50,
-			"marginLeft": 50,
-
-			"categoryAxis": {
-				"gridPosition": "start"
-			},
-			"theme": "dark",
-			"trendLines": [],
-			"graphs": [
-				{
-					"balloonText": "[[title]] of [[category]]:[[value]]",
-					"fillAlphas": 1,
-					"fillColors": "#ae85c9",
-					"id": "AmGraph-1",
-					"lineColor": "#ae85c9",
-					"title": "온라인 매출액",
-					"type": "column",
-					"valueField": "c_on"
-				},
-				{
-					"balloonText": "[[title]] of [[category]]:[[value]]",
-					"fillAlphas": 1,
-					"fillColors": "#aab9f7",
-					"id": "AmGraph-2",
-					"title": "오프라인 매출액",
-					"type": "column",
-					"valueField": "c_off"
-				},
-				{
-					"id": "AmGraph-6",
-					"lineColor": "#f6be5c",
-					"title": "평균 매출액",
-					"valueField": "c_line"
-				}
-			],
-				"guides": [],
-				"valueAxes": [
-					{
-//						"id": "ValueAxis-1",
-//						"stackType": "regular",
-//						"title": "Axis title"
-						"id": "ValueAxis-1",
-						"title": "",
-						"titleRotation": 0,
-						"usePrefixes": true,
-						"position": "left"
-					}
-				],
-				"allLabels": [
-					{
-						"id": "ValueAxis-1",
-						"text": "금액(만원)",
-						"bold": true,
-						"size": 12,
-						"x": 20,
-						"y": 40
-					}
-				],
-				"balloon": {},
-				"prefixesOfBigNumbers": [
-							{
-								"number": 10000,
-								"prefix": ""
-							}
-				],
-				"legend": {
-					"spacing": 11,
-					"top": -4,
-					"useGraphSettings": true,
-					"enabled": true,
-					"align": "center",
-					"markerType": "circle",
-					"balloonText" : "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-					"backgroundAlpha": 0.06,
-					"borderColor": "#787885"
-				},
-				"titles": [
-					{
-						"id": "Title-1",
-						"size": 15,
-						"text": "최근 6개월 매출액"
-					}
-				],
-				"dataProvider": chartData
-			}
-		);
-	}
-
 	/* 슬라이드 될때마다 - 이경민[2016-04] */
 	$scope.slideC= function(index) {
 		var num = parseInt(index);
@@ -3898,7 +3854,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		console.log("You have selected " + data.index + " tab");
 		$scope.chart_index = data.index;
 		$scope.loadingani();
-		var titles =  [{Idx:0, title:"홈"}
+		var titles =  [{Idx:0, title:"Meachul_halfyear", name: '최근 6개월 평균 매출액'}
 			, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10'}
 			, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율'}
 			, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5'}
@@ -3918,13 +3874,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		if(data.index == 0){
 			$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 			$timeout(function(){
-			$scope.load_home_chart();
+			// $scope.load_home_chart();
 			$ionicLoading.hide();
 			}, 1000);
 		}
-		if (data.index > 0){
+		if (data.index > -1){
 			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index, $rootScope.deviceInfo.uuid)
 			.then(function(response){
+				console.log('확인 => ', response);
 				$rootScope.kind = 'chart' + response.list[0].idx;
 				var idxnum = response.list[0].idx;
 				switch (response.list[0].idx)
@@ -3949,10 +3906,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}
 
 				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.) - 이경민
-				if($scope.kind === "beasonga"){
+				if($scope.kind === "beasonga" || $scope.kind == "Meachul_halfyear"){
 					$scope.htmlCode2 = '<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>';
 
-				}if($scope.kind === "Meachul_ik"){
+				}else if($scope.kind === "Meachul_ik"){
 					$scope.htmlCode2 =	'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
 									'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
 									'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
@@ -3994,6 +3951,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								'</div>'+
 							'</div>';
 				switch(data.index){
+					case 0: $('#s0').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 1: $('#s1').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 2: $('#s2').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
 					case 3: $('#s3').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
@@ -4052,7 +4010,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				});
 
 				$scope.btn = function(){
-					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){   // 정보있을때
+					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)' || $("button[name=btnGrid]").css('color') == 'rgb(104, 104, 104)'){   // 정보있을때
 						$("button[name=btnGrid]").css('background', '#ececed');
 						$("button[name=btnGrid]").css('color', '#444');
 					}else{
@@ -4065,7 +4023,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 				$("button[name=btnGrid]").click(function() {
 					$scope.loadingani();
-					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){  // 정보있을때
+					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)' || $("button[name=btnGrid]").css('color') == 'rgb(104, 104, 104)'){  // 정보있을때
 						if ($('div[name=gridBody]').css('display') == 'none') {
 							$('div[name=gridBody]').css('display','block');
 							$('#' + $scope.kind).css('display', 'none');
@@ -4757,7 +4715,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 빠른등록리스트에 추가 - 이경민[2015-12] */
 	$scope.quick_i = function(){
-		console.log('여기오지..?');
 		for(var i = 0; i < $scope.quicklists.length; i++){
 			$scope.quickregM.hide();
 			if($scope.quicklists[i].checked == true){
@@ -5522,8 +5479,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							/*전표 상세조회 -- 날짜 paydate(입출일), todate(지급일) - 이경민[2015-12]*/
 							MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.u_no)
 							.then(function(data){
-								console.log('수정 데이터 확인 =>', data);
-								$scope.datas.remk = data.list[0].Remk;
+								if($rootScope.iu != 'i'){
+									$scope.datas.remk = data.list[0].Remk;
+								}else{
+									$scope.datas.remk = '';
+								}
+								
 								if($rootScope.distinction == 'meaip'){
 									if($rootScope.iu == 'u' || $rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui' ){
 										$scope.date.todate1 = new Date(data.list[0].Meaip_Date);

@@ -80,15 +80,16 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 	if (kind == "meachul_jem" || kind == "meaip_jem" || kind == "beasonga" || kind == "meachul_onoff" || kind == "meachul_cs")
 	{
-
-		if (kind != "beasonga")
-		{
-			AmCharts.addInitHandler(function(kind) {			
-					  //  x    y     text                          위치   fontsize
+		kindroot = kind;
+		AmCharts.addInitHandler(function(kind) {			
+				  //  x    y     text                          위치   fontsize
+		if(kindroot != "beasonga"){
 			kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
-			
-			}, ["pie"]);		
+		}else{
+			kind.addLabel(20, 0, ' ', "left", 12);  /*			변경		 */
 		}
+		
+		}, ["pie"]);		
 
 
 		AmCharts.checkEmptyDataPie = function (kind) {
@@ -155,12 +156,13 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				  label = label.substr(0, kind.legend.truncateLabels-1)+'...'
 				  kind.dataProvider[i][legendTitleField] = label;
 			  }
-			  // replace chart.titleField to show our own truncated field
+
 			  kind.titleField = legendTitleField;			  
-			  // make the balloonText use full title instead
+
 			  kind.balloonText = kind.balloonText.replace(/\[\[title\]\]/, "[["+titleField+"]]");
 
 			}, ["pie"]);
+
 	}else
 	{
 		AmCharts.checkEmptyData = function (kind) {
@@ -178,45 +180,139 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				
 				// add label to let users know the chart is empty
 				kind.addLabel("50%", "50%", "조회할 데이터가 없습니다.", "middle", 15);
-							//  x    y     text                          위치   fontsize
-				kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
-				
-				// set opacity of the chart div
-				//kind.chartDiv.style.opacity = 0.3;
-				
-				// redraw it
+
+
 				kind.validateNow();
 			}
 		}
-
+		kindroot = kind;
 		AmCharts.addInitHandler(function(kind) {
 			if (kind.dataProvider === undefined || kind.dataProvider.length === 0) {
 				AmCharts.checkEmptyData(kind);
 				return;
 			}
-	  	   	kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
+			//  x    y     text                   위치   fontsize
+			if(kindroot != "Meachul_halfyear"){
+				kind.addLabel(20, 0, temp + sDate + " ~ " + eDate, "left", 12);  /*			변경		 */
+			}else{
+				kind.addLabel(20, 0, '', "left", 12);  /*			변경		 */
+			}
+			
+			//kind.height = containerwidth
 			var containerWidth = $(window).width() - 100;
+
 		}, ["serial"]);
 	}
-	// 이거 삭제인가 ?
-	// height = $(window).height()-300;
-	// $('#' + kind).css('height', height+'px');
+	function commaChange(Num){
+		fl=""
+		Num = new String(Num)
+		temp=""
+		co=3
+		num_len=Num.length
+		while (num_len>0){
+			num_len=num_len-co
+			if(num_len<0){
+				co=num_len+co;
+				num_len=0
+			}
+			temp=","+Num.substr(num_len,co)+temp
+		}
+		rResult =  fl+temp.substr(1);
+		return rResult;
+	}
 
-	// $(window).resize(function () {
-	// 	height = $(window).height()-300;
-	// 	$('#' + kind).css('height', height+'px');
-	// });
-
+	var chartData = ""
 	switch (kind)
 	{
+		case "Meachul_halfyear" :			//최근 6개월 매출액
+			//범례에 금액을 넣어 주기 위해서 쿼리 한번더 날려서 금액 가져옴
+			// AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=Meachul_halfyear&value_kind=Meachul_halfyear&admin_code=" + admin_code,"gridInfo")
+
+			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=Meachul_halfyear&value_kind=Meachul_halfyear&admin_code=" + admin_code)
+			var chart = AmCharts.makeChart("Meachul_halfyear", {
+				"type": "serial",
+				"theme": "dark",
+				"categoryField": "category",
+				"startDuration": 1,
+				"autoMarginOffset": 10,
+				"autoMargins": true,
+				"marginBottom": 30,
+				"marginRight": 50,
+				"marginTop": 50,
+				"marginLeft": 50,
+
+				"categoryAxis": {
+					"gridPosition": "start"
+				},
+				// "trendLines": [],
+				"graphs": [
+					{
+						"balloonText": "[[title]] of [[category]]:[[value]]",
+						"fillAlphas": 1,
+						"id": "AmGraph-1",
+						"title": "온라인 매출액",
+						"type": "column",
+						"valueField": "c_on"
+					},
+					{
+						"balloonText": "[[title]] of [[category]]:[[value]]",
+						"fillAlphas": 1,
+						"id": "AmGraph-2",
+						"title": "오프라인 매출액",
+						"type": "column",
+						"valueField": "c_off"
+					},
+					{
+						"id": "AmGraph-6",
+						"title": "평균 매출액(" + commaChange(chartData[0].c_line) + "원)",
+						"valueField": "c_line"
+					}
+				],
+				// "guides": [],
+				"valueAxes": [
+					{
+						"id": "ValueAxis-1",
+						"title": "",
+						"titleRotation": 0,
+						"usePrefixes": true,
+						"position": "left"
+					}
+				],
+				"allLabels": [
+					{
+						"id": "ValueAxis-1",
+						"text": "금액(만원)",
+						"bold": true,
+						"size": 12,
+						"x": 20,
+						"y": 20
+					}
+				],
+				// "balloon": {},
+				"prefixesOfBigNumbers": [
+							{
+								"number": 10000,
+								"prefix": ""
+							}
+				],
+				"legend": {
+					"spacing": 11,
+					"top": -4,
+					"useGraphSettings": true,
+					"enabled": true,
+					"align": "center",
+					"markerType": "circle",
+					"balloonText" : "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+					"backgroundAlpha": 0.06,
+					"borderColor": "#787885"
+				},
+				"dataProvider": chartData
+			});
+			break;
+
 		case "meaip_jem" :			//거래처별 매입 점유율
 		console.log('거래처별 매입 점유율');
 		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meaip_jem&value_kind=meaip_jem&admin_code=" + admin_code + "&swm_gu=" + gu)
-			// for (var i in chartData) {
-			//   chartData[i].litres = chartData[i].value;
-			//   chartData[i].absValue = Math.abs(chartData[i].value);
-			// }
-
 			var chart = AmCharts.makeChart("meaip_jem", {
 				"type": "pie",
 				"startAngle": 45,
@@ -909,7 +1005,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			// }
 
 			var chart = AmCharts.makeChart("beasonga", {
-			 "type": "pie",
+			 	"type": "pie",
 				"startAngle": 45,
 				"theme": "dark",
 				"minRadius": 50,
@@ -1600,7 +1696,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			break;
 
 	}
-
 	if(chart.dataProvider[0].name == undefined || chart.dataProvider[0].name == ''){
 		$("button[name=btnGrid]").css('background', '#7b7b7b');
 		$("button[name=btnGrid]").css('color', '#686868');
