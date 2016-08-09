@@ -95,7 +95,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.0.2', //업데이트시 필수로 변경!!
+   		Android_version : '1.0.3', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -4113,7 +4113,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		/*환경설정값 있는지 먼저 불러오기.- 이경민*/
 	    	MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId, er_placecode)
 		.then(function(data){
-			console.log('data######-->',data);
 			if(data != null){
 				$rootScope.setupData = data;
 			}
@@ -5547,9 +5546,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 									case 212 : $scope.subul[3].checked = true; $scope.subul[2].checked=false; break;
 								}
 
-
+								/* 수정시 중복 컨텐츠 색변경 */
+								var numlist = '';
+								for(var i=0; i < data.list.length; i++){
+									for(var j=0; j < data.list.length; j++){
+										if(i != j && data.list[i].G_Code == data.list[j].G_Code){
+											var numlist = numlist + i + '/' ;
+										}
+									}
+								}
 								for(var i=0; i < data.list.length; i++){
 									$scope.goodsaddlists.push({
+										overlap_color : '#000',
 										name : data.list[i].G_Name,
 										num : parseInt(data.list[i].G_Qty),
 										goodsprice : data.list[i].G_Price,
@@ -5557,6 +5565,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										goods_seq : data.list[i].Seq,
 										state : 'u' // 디비에있는 데이터인지 확인하기위해. / 티삭제시 필요
 									});
+								}
+								if(numlist.length > 1){
+									$scope.num_list = [];
+									$scope.num_list = numlist.split('/');
+									for(var o=0; o < $scope.num_list.length-1; o++){
+										$scope.goodsaddlists[$scope.num_list[o]].overlap_color = '#FF5E00';
+									}
 								}
 
 								$scope.m_check.meajangCheck = 't';
@@ -5871,6 +5886,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 		if($scope.checkcaught != 'yes'){
 			$scope.checkedDatas.push(goodsdata);
+
 		}
 	}
 
@@ -5881,17 +5897,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			for(var j=0; j < $scope.goodsaddlists.length; j++){
 				for(var o=0; o < $scope.checkedDatas.length; o++){
 					if($scope.goodsaddlists[j].code == $scope.checkedDatas[o].G_Code){
-						var check = 'Y';
-						$scope.checkedDatas.splice(o, 1);
-						break;
+						$scope.goodsaddlists[j].overlap_color = '#FF5E00';
+						$scope.checkedDatas[o].overlap_color = '#FF5E00';
 					}
 				}
 			}
-			if(check == 'Y'){
-				$ionicPopup.alert({
-					title : '<b>경고</b>',
-					template: '몇 개의 상품이 중복되었습니다<br> <b>* 중복된 상품은 추가되지 않습니다.</b>'
-				});
+		}else{
+			for(var o=0; o < $scope.checkedDatas.length; o++){
+				$scope.checkedDatas[o].overlap_color = '#000';
 			}
 		}
 		for(var i=0; i < $scope.checkedDatas.length; i++){
@@ -5942,6 +5955,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								onTap: function(e){
 								if($scope.bargoods.num != 0){
 									$scope.goodsaddlists.push({
+										overlap_color : $scope.checkedDatas[0].overlap_color,
 										name : $scope.checkedDatas[0].G_Name,
 										num : parseInt($scope.bargoods.num),
 										goodsprice : parseInt(price),
@@ -5959,6 +5973,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}else{
 					if($rootScope.iu == 'i'){
 						$scope.goodsaddlists.push({
+							overlap_color : $scope.checkedDatas[i].overlap_color,
 							name : $scope.checkedDatas[i].G_Name,
 							num : 1,
 							goodsprice : parseInt(price),
@@ -5966,6 +5981,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						});
 					}else{
 						$scope.goodsaddlists.push({
+							overlap_color : $scope.checkedDatas[i].overlap_color,
 							name : $scope.checkedDatas[i].G_Name,
 							num : 1,
 							goodsprice : parseInt(price),
@@ -5995,6 +6011,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							onTap: function(e){
 								if($scope.bargoods.num != 0){
 									$scope.goodsaddlists.push({
+										overlap_color : $scope.checkedDatas[0].overlap_color,
 										name : $scope.checkedDatas[0].G_Name,
 										num : parseInt($scope.bargoods.num),
 										goodsprice : parseInt(price),
@@ -6012,6 +6029,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			}else{
 				if($rootScope.iu == 'i'){
 					$scope.goodsaddlists.push({
+						overlap_color : $scope.checkedDatas[i].overlap_color,
 						name : $scope.checkedDatas[i].G_Name,
 						num : 1,
 						goodsprice : parseInt(price),
@@ -6019,6 +6037,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					});
 				}else{
 					$scope.goodsaddlists.push({
+						overlap_color : $scope.checkedDatas[i].overlap_color,
 						name : $scope.checkedDatas[i].G_Name,
 						num : 1,
 						goodsprice : parseInt(price),
@@ -6079,7 +6098,35 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				seq : $scope.goodsaddlists[index].goods_seq
 			});
 		}
-		$scope.goodsaddlists.splice(index,1);
+
+		if($scope.goodsaddlists.length > 0){
+			var check = 'N';
+			var ch_num = 0;
+			for(var j=0; j < $scope.goodsaddlists.length; j++){
+				if(index != j && $scope.goodsaddlists[index].code == $scope.goodsaddlists[j].code){
+					ch_num = ch_num + 1;
+					$scope.goodsaddlists[j].overlap_color = 'check';
+				}
+			}
+
+			if(j == $scope.goodsaddlists.length-1 && ch_num < 2){
+					for(var o=0; o < $scope.goodsaddlists.length; o++){
+						if($scope.goodsaddlists[o].overlap_color == 'check'){
+							$scope.goodsaddlists[o].overlap_color = '#000';
+						}
+					}
+			}else if(j == $scope.goodsaddlists.length-1 && ch_num > 1){
+				for(var o=0; o < $scope.goodsaddlists.length; o++){
+					if($scope.goodsaddlists[o].overlap_color == 'check'){
+						$scope.goodsaddlists[o].overlap_color = '#FF5E00';
+					}
+				}
+			}
+			$scope.goodsaddlists.splice(index,1);
+		}
+
+		
+
 	}
 
 	/*상품 종합 합계 가격 구하기 - 이경민[2015-12] */

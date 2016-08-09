@@ -962,7 +962,6 @@ angular.module('starter.services', [])
 			console.log("MconfigService and erpia_basicSetup");
 			var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp';
 			var data = 'Admin_Code=' + admin_code + '&Userid=' + escape(userid)+ '&Kind=ERPia_Config_Sale_Place_Check';
-			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){	//조회된 환경설정이 있을경우.
 					return response.data;
@@ -989,11 +988,13 @@ angular.module('starter.services', [])
 
 		}, basicC: function(admin_code, userid, meajang_code){ 	//창고조회 & 매장미지정일때 전체창고 조회
 			console.log("MconfigService and basicC");
+			if(meajang_code == '000'){
+				meajang_code = '';
+			}
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&User_id=' + escape(userid) + '&Kind=ERPia_Sale_Select_Place_CName&Mode=Select_CName&Sale_Place_Code=' + meajang_code;
 			console.log('basicSetup=>' , url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
-				console.log(response);
 				if(typeof response == 'object'){
 					return response.data;
 				}else{
@@ -1599,7 +1600,9 @@ angular.module('starter.services', [])
 
 		}, i_data : function(admin_code, userid, pay, paylist, date, goods, setup, datas){				// 매입&매출 등록
 			console.log("MiuService and i_data");
-
+			if(setup.basic_Ch_Code == '000'){
+				setup.basic_Ch_Code = '';
+			}
 			/*매입등록*/
 			if($rootScope.distinction == 'meaip'){
 				var kind = 'ERPia_Meaip_Insert_Goods';
