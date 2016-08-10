@@ -1602,6 +1602,8 @@ angular.module('starter.services', [])
 			console.log("MiuService and i_data");
 			if(setup.basic_Ch_Code == '000'){
 				setup.basic_Ch_Code = '';
+			}else if(setup.basic_Place_Code == '000'){
+				setup.basic_Place_Code = '';
 			}
 			/*매입등록*/
 			if($rootScope.distinction == 'meaip'){
@@ -1672,6 +1674,11 @@ angular.module('starter.services', [])
 		}, u_data : function(admin_code, userid, pay, paylist, date, goods, setup, datas){		// 매입&매출 수정
 				console.log("MiuService and u_data");
 				/*매입수정*/
+				if(setup.basic_Ch_Code == '000'){
+				setup.basic_Ch_Code = '';
+				}else if(setup.basic_Place_Code == '000'){
+					setup.basic_Place_Code = '';
+				}
 				if($rootScope.distinction == 'meaip'){
 					var kind = 'ERPia_Meaip_Update_Goods&Mode=Update_Meaip&RequestXml=';
 					var m_data = '<root><MeaipM><Admin_Code>'+ admin_code + '</Admin_Code><Meaip_Date>'+ date.todate +'</Meaip_Date><GuMeaCom_Code>'+ datas.GerCode +'</GuMeaCom_Code><Meaip_Amt>'+ datas.totalsumprices +'</Meaip_Amt><Sale_Place>'+ setup.basic_Place_Code +'</Sale_Place><Remk><![CDATA['+ escape(datas.remk) +']]></Remk></MeaipM><MeaipT>';
