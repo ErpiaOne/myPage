@@ -95,7 +95,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.0.3', //업데이트시 필수로 변경!!
+   		Android_version : '1.0.4', //업데이트시 필수로 변경!!
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -426,10 +426,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'phj9775';
 			// $rootScope.loginData.Pwd = '1234';
 
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'kmtest';
-			$rootScope.loginData.Pwd = 'kmtest1!';
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'kmtest';
+			// $rootScope.loginData.Pwd = 'kmtest1!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";

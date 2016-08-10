@@ -138,7 +138,7 @@
 					</tr>
 					<tr ng-repeat="y in goodsaddlists">
 						<td style="width: 10%; vertical-align:middle; padding:10px 0; border-bottom: 1px solid #e0e0e0;">{{$index+1}}.</td>
-						<td style="width: 42%; vertical-align:middle; padding:10px 0; text-align:left; font-size: 0.8em; padding-right: 10px; border-bottom: 1px solid #e0e0e0;">{{y.name}}</td>
+						<td style="width: 42%; vertical-align:middle; padding:10px 0; text-align:left; font-size: 0.8em; color: {{y.overlap_color}}; padding-right: 10px; border-bottom: 1px solid #e0e0e0;">{{y.name}}</td>
 						<td style="width: 13%; vertical-align:middle; padding:10px 0; border-bottom: 1px solid #e0e0e0;">
 							<input type="number" ng-disabled="{{sbu}}" min="0" max="100000" ng-bind-html="goods_totalprice1($index)" style="text-align:right; border: 1px solid silver; width:100%" ng-model="y.num" required>
 						</td>
