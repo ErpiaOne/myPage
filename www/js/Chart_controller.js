@@ -128,6 +128,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			case "2": strSubgu = " (월간)"; break;
 			case "3": strSubgu = " (년간)"; break;
 		}
+		var th = "<th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>";
 		switch (kind)
 		{
 			case "Meachul_halfyear" :
@@ -135,94 +136,95 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 				strSubject = "최근 6개월 매출액" + strSubgu;
 				break;
 			case "meaip_jem" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th +"순번</th>" + th + "구분</th>" + th + "금액</th></tr>";
 				strSubject = "거래처별 매입 점유율 TOP 10" + strSubgu;
 				break;
 			case "meachul_jem" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>사이트명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>매출액</th></tr>";
+				strHtml = "<tr>" + th + "번호</th>" + th + "사이트명</th>" + th + "매출액</th></tr>";
 				strSubject = "사이트별 매출 점유율"  + strSubgu ;
 				break;
 			case "brand_top5" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>브랜드명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th + "번호</th>" + th + "브랜드명</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "브랜드별 매출 TOP 5" + strSubgu;
 				break;
 			case "meachul_top5" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>상품명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th + "번호</th>" + th + "상품명</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "상품별 매출 TOP 5" + strSubgu;
 				break;
 			case "scm" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th + "번호</th>" + th + "구분</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "SCM " + strSubgu;
 				break;
 			case "Meachul_ik" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>공급이익</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>매출이익</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>공급이익률</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>매출이익률</th></tr>";
+				strHtml = "<tr>" + th + "날짜</th>" + th + "공급이익</th>" + th + "매출이익</th>" + th + "공급이익률</th>" + th + "매출이익률</th></tr>";
 				strSubject = "매출 이익율" + strSubgu;
 				break;
 			case "meachul_7" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th + "날짜</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "매출 실적 추이" + strSubgu;
 				break;
 			case "meaip_7" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th + "번호</th>" + th + "날짜</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "매입 현황" + strSubgu;
 				break;
 			case "beasonga" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>건수</th></tr>";
+				strHtml = "<tr>" + th + "순번</th>" + th + "구분</th>" + th + "건수</th></tr>";
 				strSubject = "금일 출고 현황" + strSubgu;
 				break;
 			case "beasong_gu" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>선불</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>착불</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>신용</th></tr>";
+				strHtml = "<tr>" + th + "순번</th>" + th + "구분</th>" + th + "선불</th>" + th + "착불</th>" + th + "신용</th></tr>";
 				strSubject = "택배사별 구분 건수 통계" + strSubgu;
 				break;
 			case "meachul_onoff" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th + "구분</th>" + th + "금액</th></tr>";
 				strSubject = "온오프라인 비교 매출" + strSubgu;
 				break;
 			case "banpum" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th + "날짜</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "매출 반품 현황" + strSubgu;
 				break;
 			case "banpum_top5" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>상품명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th + "번호</th>" + th + "상품명</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "상품별 매출 반품 건수/반품액 TOP5" + strSubgu;
 				break;
 			case "meachul_cs" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>건수</th></tr>";
+				strHtml = "<tr>" + th + "번호</th>" + th + "구분</th>" + th + "건수</th></tr>";
 				strSubject = "CS 컴플레인 현황" + strSubgu;
 				break;
 			case "meaip_commgoods" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>번호</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>상품명</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>수량</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>금액</th></tr>";
+				strHtml = "<tr>" + th + "번호</th>" + th + "상품명</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "상품별 매입건수/매입액 TOP5" + strSubgu;
 				break;
 			case "JeGo_TurnOver" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>구분</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>소진일</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>회전율</th></tr>";
+				strHtml = "<tr>" + th + "순번</th>" + th + "구분</th>" + th + "소진일</th>" + th + "회전율</th></tr>";
 				strSubject = "재고 회전율 TOP5" + strSubgu;
 				break;
 			case "beasongb" :
-				strHtml = "<tr><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>순번</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>날짜</th><th style='color: #fff; background: #4f4f5e; font-size: 0.9em; padding:5px; white-space: nowrap;'>건수</th></tr>";
+				strHtml = "<tr>" + th + "순번</th>" + th + "날짜</th>" + th + "건수</th></tr>";
 				strSubject = "출고현황" + strSubgu;
 				break;
 		}
 
 		$("div[name=gridSubject]").html("<font style='color:#000000; font-weight:bold;'>" + strSubject + "</font>");
-
+		
 		/*상세 표보기 부분 - 이경민[2016-01]*/
+		var td = "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
 		for (i=0, len=data.length; i<len; i++)
 		{
 			switch (kind)
 			{
 				case  "Meachul_halfyear":
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + data[i].category.replace("<br>", " ");
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].c_on) + " 원";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].c_off) + " 원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
@@ -230,126 +232,126 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 
 				case  "meaip_jem": case "meachul_jem" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td style='font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case "meachul_top5" : case "brand_top5" : case "banpum_top5" : case "meaip_7" : case "meaip_commgoods" : case "scm" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].su);
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case "Meachul_ik" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml +  commaChange(data[i].value1) + "원";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value2) + "원";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].su1) + " %";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].su2) + " %";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case "meachul_cs": case "beasonga": case "beasongb" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value) + "건";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case "meachul_onoff" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case  "meachul_7": case "banpum": case "meaip_7":
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].su);
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value) + "원";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case  "beasong_gu" :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value) + "건";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value1) + "건";
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value2) + "건";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				case  "JeGo_TurnOver" :
 					strHtml = strHtml + "<tr style='color:white'>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + data[i].name;
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].su);
 					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value) + " %";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
 				default :
 					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + "<td style='; font-size: 0.85em; padding: 4px; color: #2a2a2a; vertical-align: middle; font-weight: bold;'>";
+					strHtml = strHtml + td;
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
@@ -368,7 +370,6 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 		// code for IE6, IE5
 			var request = new ActiveXObject('Microsoft.XMLHTTP');
 		}
-
 		request.open('POST', url, false);
 		request.send();
 		if(load_kind != 'Meachul_halfyear'){
@@ -419,6 +420,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 		}
 		return eval(request.responseText);
 	};
+	$scope.tabs = [];
 
 	/* 슬라이드 될때마다 - 이경민[2016-04] */
 	$scope.slideC= function(index) {
@@ -427,17 +429,74 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 		$scope.chartlist = false;
 		$scope.loadingani();
 	};
+	function SimplePubSub() {
+		var events = {};
+		return {
+			on : function(names, handler) {
+				names.split(' ').forEach(function(name) {
+					if (!events[name]) {
+						events[name] = [];
+					}
+					events[name].push(handler);
+				});
+				return this;
+			},
+			trigger : function(name, args) {
+				angular.forEach(events[name], function(handler) {
+					handler.call(null, args);
+				});
+				return this;
+			}
+		};
+	};
+	
+	$scope.movezero = function(tabs){
+	    	var data = {
+	    		index: 0
+	    	}
 
+	    	$scope.slideHasChanged(0, tabs);
+
+	}
+	$scope.events = new SimplePubSub();
+
+	$scope.slideHasChanged = function(index, tabs) {
+		$scope.events.trigger("slideChange", {
+			"index" : index
+		});
+		$timeout(function() {
+			if ($scope.onSlideMove)
+				$scope.onSlideMove({
+					"index" : eval(index)
+				}, tabs);
+		}, 100);
+	};
+
+	$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+		$scope.events.trigger("ngRepeatFinished", {
+			"event" : ngRepeatFinishedEvent
+		});
+	});
+	
 	/* ERPia 차트화면에서 위에 차트 이름을 보여주는 부분. (차트 이름을 변경시켜야 하므로 서버에 저장하고 이를 불러옴.) - 이경민[2016-04]*/
 	statisticService.title('myPage_Config_Stat', 'select_Title', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 	.then(function(data){
-		$scope.tabs = data;
+		for(var i =0; i < data.length; i++){
+			if(data[i].visible == 'Y'){
+				$scope.tabs.push(data[i]);
+			}
+		}
+		$scope.movezero($scope.tabs);
 	})
+
+	 $scope.updateSlider = function () {
+            $ionicSlideBoxDelegate.update();
+        }
 
 	$scope.kind= '', $scope.htmlCode= '';
 
 	/* 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함. - 이경민[2016-04]*/
-	$scope.onSlideMove = function(data) {
+	$scope.onSlideMove = function(data, tabs) {
 		$scope.sn = 1;
 		if($scope.chartlist != false){
 			data.index = parseInt(data.index);
@@ -445,203 +504,136 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 		}
 		/*홈 차트*/
 		console.log("You have selected " + data.index + " tab");
-		$scope.chart_index = data.index;
 		$scope.loadingani();
-		var titles =  [{Idx:0, title:"Meachul_halfyear", name: '최근 6개월 평균 매출액'}
-			, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10'}
-			, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율'}
-			, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5'}
-			, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5'}
-			, {Idx:5, title:"Meachul_ik", name:'매출이익증감율'}
-			, {Idx:6, title:"meachul_7", name:'매출 실적 추이'}
-			, {Idx:7, title:"meaip_7", name:'매입 현황'}
-			, {Idx:8, title:"beasonga", name:'금일 출고 현황'}
-			, {Idx:9, title:"beasong_gu", name:'택배사별 구분 건수 통계'}
-			, {Idx:10, title:"meachul_onoff", name:'온오프라인 비교 매출'}
-			, {Idx:11, title:"banpum", name:'매출반품현황'}
-			, {Idx:12, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5'}
-			, {Idx:13, title:"meachul_cs", name:'CS 컴플레인 현황'}
-			, {Idx:14, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5'}
-			, {Idx:15, title:"JeGo_TurnOver", name:'재고회전율TOP5'}
-			, {Idx:16, title:"beasongb", name:'출고현황'}];
-		if(data.index == 0){
-			$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-			$timeout(function(){
-			// $scope.load_home_chart();
-			$ionicLoading.hide();
-			}, 1000);
+		var index = data.index;
+
+		$scope.kind = tabs[index].title;
+
+		if(index > 0){
+			var titlename = tabs[index].name;
+		}else{
+			var titlename = '최근 6개월간 매출액';
 		}
-		if (data.index > -1){
-			statisticService.chart('myPage_Config_Stat', 'select_Chart', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, data.index, $rootScope.deviceInfo.uuid)
-			.then(function(response){
-				console.log('확인 => ', response);
-				$rootScope.kind = 'chart' + response.list[0].idx;
-				var idxnum = response.list[0].idx;
-				switch (response.list[0].idx)
-				{
-					case '0' : $scope.kind = titles[0].title; break;
-					case '1' : $scope.kind = titles[1].title; break;
-					case '2' : $scope.kind = titles[2].title; break;
-					case '3' : $scope.kind = titles[3].title; break;
-					case '4' : $scope.kind = titles[4].title; break;
-					case '5' : $scope.kind = titles[5].title; break;
-					case '6' : $scope.kind = titles[6].title; break;
-					case '7' : $scope.kind = titles[7].title; break;
-					case '8' : $scope.kind = titles[8].title; break;
-					case '9' : $scope.kind = titles[9].title; break;
-					case '10' : $scope.kind = titles[10].title; break;
-					case '11' : $scope.kind = titles[11].title; break;
-					case '12' : $scope.kind = titles[12].title; break;
-					case '13' : $scope.kind = titles[13].title; break;
-					case '14' : $scope.kind = titles[14].title; break;
-					case '15' : $scope.kind = titles[15].title; break;
-					case '16' : $scope.kind = titles[16].title; break;
-				}
 
-				// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.) - 이경민
-				if($scope.kind === "beasonga" || $scope.kind == "Meachul_halfyear"){
-					$scope.htmlCode2 = '<button name="btnGrid" class="btn btn-box-tool" style="background: #ececed; height:28px; color: #444;"><i class="fa fa-bars"></i></button>';
+		// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.) - 이경민
+		if($scope.kind === "beasonga" || $scope.kind == "Meachul_halfyear"){
+			$scope.htmlCode2 = '<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
 
-				}else if($scope.kind === "Meachul_ik"){
-					$scope.htmlCode2 =	'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
-									'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
-									'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
+		}else if($scope.kind === "Meachul_ik"){
+			$scope.htmlCode2 =	'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
+							'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
+							'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
 
-				}else{
-					$scope.htmlCode2 = 		'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
-										'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
-										'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
-										'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
-				}
+		}else{
+			$scope.htmlCode2 = 		'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
+								'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
+								'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
+								'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
+		}
 
-				$scope.htmlCode = '<div class="box-title" style="color:#fff; padding-top:15px; padding-bottom:10px; background: #bcb6c3; color: #000; font-weight: bold; font-size: 1.1em;">'+
-								titles[idxnum].name+
+		$scope.htmlCode = '<div class="box-title" style="color:#fff; padding-top:15px; padding-bottom:10px; background: #bcb6c3; color: #000; font-weight: bold; font-size: 1.1em;">'+
+						titlename+
+					'</div>'+
+					'<input type="hidden" name="gu_hidden">' +
+					'<div class="direct-chat">'+
+						'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 13px; vertical-align: top; background: #7a6e80;">'+
+							'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
+							'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
+							'<div class="pull-right">'+
+								$scope.htmlCode2 +
 							'</div>'+
-							'<input type="hidden" name="gu_hidden">' +
-							'<div class="direct-chat">'+
-								'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 13px; vertical-align: top; background: #7a6e80;">'+
-									'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
-									'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
-									'<div class="pull-right">'+
-										$scope.htmlCode2 +
-									'</div>'+
-								'</div>'+
+						'</div>'+
 
-								'<div class="box-body" style="padding:20px 10px;">'+
-									'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 320px;"></div>'+
-									'<div name="gridBody" style="background: #ececed;">'+
-										'<ul class="contacts-list">'+
-											'<li>'+
-												'<div name="gridSubject" style="width: 100%; height: 40px; padding-top:10px; text-align:center; background:#a6b3cb; margin-bottom: 20px;"><font style="font-weight:bold; font-size:11pt;"></font></div>'+
-												'<table name="tbGrid" class="table table-bordered" style="color:rgb(100, 100, 100); width:100%; font-size:11pt; margin-bottom:10px;">'+
-												'</table>'+
-												'<div style="width:100%; text-align:center;">'+
-													'<button name="btnGridClose" class="btn bg-orange margin">닫기</button>'+
-												'</div>'+
-											'</li>'+
-										'</ul>'+
-									'</div>'+
-								'</div>'+
-							'</div>';
-				switch(data.index){
-					case 0: $('#s0').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 1: $('#s1').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 2: $('#s2').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 3: $('#s3').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 4: $('#s4').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 5: $('#s5').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 6: $('#s6').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 7: $('#s7').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 8: $('#s8').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 9: $('#s9').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 10: $('#s10').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 11: $('#s11').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 12: $('#s12').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 13: $('#s13').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 14: $('#s14').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 15: $('#s15').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-					case 16: $('#s16').html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url); break;
-				}
-				/*새로고침 버튼 클릭시 - 이경민[2016-02]*/
-				$("button[name=refreshW]").click(function() {
-					$("div[name=gridBody]").css('display', 'none');
-					$('#' + $scope.kind).css('display', 'block');
-					$scope.btn();
-					if($scope.sn == 1){
-						$("button[name=btnW]").click();
-					}else if($scope.sn == 2){
-						$("button[name=btnM]").click();
-					}else if($scope.sn == 3){
-						$("button[name=btnY]").click();
-					}
-					$scope.loadingani();
+						'<div class="box-body" style="padding:20px 10px;">'+
+							'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 320px;"></div>'+
+							'<div name="gridBody" style="background: #ececed;">'+
+								'<ul class="contacts-list">'+
+									'<li>'+
+										'<div name="gridSubject" style="width: 100%; height: 40px; padding-top:10px; text-align:center; background:#a6b3cb; margin-bottom: 20px;"><font style="font-weight:bold; font-size:11pt;"></font></div>'+
+										'<table name="tbGrid" class="table table-bordered" style="color:rgb(100, 100, 100); width:100%; font-size:11pt; margin-bottom:10px;">'+
+										'</table>'+
+										'<div style="width:100%; text-align:center;">'+
+											'<button name="btnGridClose" class="btn bg-orange margin">닫기</button>'+
+										'</div>'+
+									'</li>'+
+								'</ul>'+
+							'</div>'+
+						'</div>'+
+					'</div>';
 
-				});
-				/*주간버튼 클릭시 - 이경민[2016-02]*/
-				$("button[name=btnW]").click(function() {
-					$scope.sn = 1;
-					$("div[name=gridBody]").css('display', 'none');
-					$('#' + $scope.kind).css('display', 'block');
-					$scope.btn();
-					$scope.loadingani();
-				});
-				/*월간버튼 클릭시 - 이경민[2016-02]*/
-				$("button[name=btnM]").click(function() {
-					$scope.sn = 2;
-					$("div[name=gridBody]").css('display', 'none');
-					$('#' + $scope.kind).css('display', 'block');
-					$scope.btn();
-					$scope.loadingani();
-				});
-				/*연간버튼 클릭시 - 이경민[2016-02]*/
-				$("button[name=btnY]").click(function() {
-					$scope.sn = 3;
-					$("div[name=gridBody]").css('display', 'none');
-					$('#' + $scope.kind).css('display', 'block');
-					$scope.btn();
-					$scope.loadingani();
-				});
+		$('#'+data.index).html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url);
+		$scope.loadingani();
 
-				$scope.btn = function(){
-					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)' || $("button[name=btnGrid]").css('color') == 'rgb(104, 104, 104)'){   // 정보있을때
-						$("button[name=btnGrid]").css('background', '#ececed');
-						$("button[name=btnGrid]").css('color', '#444');
-					}else{
-						$("button[name=btnGrid]").css('background', '#7b7b7b');
-						$("button[name=btnGrid]").css('color', '#686868');
-					}
-				}
+		/*새로고침 버튼 클릭시 - 이경민[2016-02]*/
+		$("button[name=refreshW]").click(function() {
+			$("div[name=gridBody]").css('display', 'none');
+			$('#' + $scope.kind).css('display', 'block');
+			$scope.btn();
+			if($scope.sn == 1){
+				$("button[name=btnW]").click();
+			}else if($scope.sn == 2){
+				$("button[name=btnM]").click();
+			}else if($scope.sn == 3){
+				$("button[name=btnY]").click();
+			}
+			$scope.loadingani();
 
-				$scope.btn();
+		});
+		/*주간버튼 클릭시 - 이경민[2016-02]*/
+		$("button[name=btnW]").click(function() {
+			$scope.sn = 1;
+			$("div[name=gridBody]").css('display', 'none');
+			$('#' + $scope.kind).css('display', 'block');
+			$scope.btn();
+			$scope.loadingani();
+		});
+		/*월간버튼 클릭시 - 이경민[2016-02]*/
+		$("button[name=btnM]").click(function() {
+			$scope.sn = 2;
+			$("div[name=gridBody]").css('display', 'none');
+			$('#' + $scope.kind).css('display', 'block');
+			$scope.btn();
+			$scope.loadingani();
+		});
+		/*연간버튼 클릭시 - 이경민[2016-02]*/
+		$("button[name=btnY]").click(function() {
+			$scope.sn = 3;
+			$("div[name=gridBody]").css('display', 'none');
+			$('#' + $scope.kind).css('display', 'block');
+			$scope.btn();
+			$scope.loadingani();
+		});
 
-				$("button[name=btnGrid]").click(function() {
-					$scope.loadingani();
-					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)' || $("button[name=btnGrid]").css('color') == 'rgb(104, 104, 104)'){  // 정보있을때
-						if ($('div[name=gridBody]').css('display') == 'none') {
-							$('div[name=gridBody]').css('display','block');
-							$('#' + $scope.kind).css('display', 'none');
-							$scope.gu = $("input[name=gu_hidden]").val();
-							AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $rootScope.userData.GerCode, "gridInfo");
-						} else {
-							$("div[name=gridBody]").css('display', 'none');
-							$('#' + $scope.kind).css('display', 'block');
-
-						}
-					}
-				});
-				$("button[name=btnGridClose]").click(function() {
-					$("div[name=gridBody]").css('display', 'none');
-					$('#' + $scope.kind).css('display', 'block');
-				});
-			})
+		$scope.btn = function(){ // 주간월간연간 버튼 색상 
+			if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){   // 정보있을때
+				$("button[name=btnGrid]").css('background', '#ececed');
+				$("button[name=btnGrid]").css('color', '#444');
+			}else{
+				$("button[name=btnGrid]").css('background', '#7b7b7b');
+				$("button[name=btnGrid]").css('color', '#686868');
+			}
 		}
-    };
-    $scope.movezero = function(){
-    	var data = {
-    		index:0
-    	}
-    	$scope.onSlideMove(data);
-    }
-    $scope.movezero();
 
+		$scope.btn();
+
+		$("button[name=btnGrid]").click(function() {
+			$scope.loadingani();
+			if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)' ){  // 정보있을때
+				if ($('div[name=gridBody]').css('display') == 'none') {
+					$('div[name=gridBody]').css('display','block');
+					$('#' + $scope.kind).css('display', 'none');
+					$scope.gu = $("input[name=gu_hidden]").val();
+					AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $rootScope.userData.GerCode, "gridInfo");
+				} else {
+					$("div[name=gridBody]").css('display', 'none');
+					$('#' + $scope.kind).css('display', 'block');
+
+				}
+			}
+		});
+		$("button[name=btnGridClose]").click(function() {
+			$("div[name=gridBody]").css('display', 'none');
+			$('#' + $scope.kind).css('display', 'block');
+		});
+	};
 });

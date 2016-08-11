@@ -167,7 +167,7 @@ function($timeout, $window, $ionicSlideBoxDelegate, $ionicScrollDelegate, $rootS
 		controller : function($scope, $attrs, $element) {
 			$scope.events = new SimplePubSub();
 
-			$scope.slideHasChanged = function(index) {
+			$scope.slideHasChanged = function(index, tabs) {
 				$scope.events.trigger("slideChange", {
 					"index" : index
 				});
@@ -175,7 +175,7 @@ function($timeout, $window, $ionicSlideBoxDelegate, $ionicScrollDelegate, $rootS
 					if ($scope.onSlideMove)
 						$scope.onSlideMove({
 							"index" : eval(index)
-						});
+						}, tabs);
 				}, 100);
 			};
 

@@ -177,7 +177,7 @@ angular.module('starter.services', [])
 	return{
 		pricheck : function(Admin_Code, UserId){		// 메인홈(미처리건/미수신건...등등) 정보 조회
 			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
-			var data = 'Kind=Mobile_Select_User_Priv&Admin_Code=' + Admin_Code + '&UserId=' + UserId;
+			var data = 'Kind=Mobile_Select_User_Priv&Admin_Code=' + Admin_Code + '&UserId=' + escape(UserId);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response.data.list;
@@ -491,29 +491,31 @@ angular.module('starter.services', [])
 /* 차트관련Service - 이경민[2015-11] */
 .factory('statisticService', function($http, $q, ERPiaAPI) {
 	var titles =  [
-		{Idx:0, title:"홈"}
-		, {Idx:1, title:"거래처별 매입 점유율 TOP 10"}
-		, {Idx:2, title:"사이트별 매출 점유율"}
-		, {Idx:3, title:"브랜드별 매출 TOP5"}
-		, {Idx:4, title:"상품별 매출 TOP5"}
-		, {Idx:5, title:"매출이익증감율"}
-		, {Idx:6, title:"매출 실적 추이"}
-		, {Idx:7, title:"매입 현황"}
-		, {Idx:8, title:"금일 출고 현황"}
-		, {Idx:9, title:"택배사별 구분 건수 통계"}
-		, {Idx:10, title:"온오프라인 비교 매출"}
-		, {Idx:11, title:"매출반품현황"}
-		, {Idx:12, title:"상품별 매출 반품 건수/반품액 TOP5"}
-		, {Idx:13, title:"CS 컴플레인 현황"}
-		, {Idx:14, title:"상품별 매입건수/매입액 TOP5"}
-		, {Idx:15, title:"재고회전율top5"}
-		, {Idx:16, title:"출고현황"}
-	];
+		{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home'}
+		, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer'}
+		, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor'}
+		, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags'}
+		, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube'}
+		, {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'}
+		, {Idx:6, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard'}
+		, {Idx:7, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit'}
+		, {Idx:8, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share'}
+		, {Idx:9, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus'}
+		, {Idx:10, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph'}
+		, {Idx:11, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap'}
+		, {Idx:12, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left'}
+		, {Idx:13, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker'}
+		, {Idx:14, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download'}
+		, {Idx:15, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop'}
+		, {Idx:16, title:"beasongb", name:'출고현황', icon: 'ion-android-open'}
+		];
+
 	return{
 		all : function(kind, mode, Admin_Code, loginType, G_Id, mac) {		// 차트 리스트 전체조회
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + escape(G_Id) + '&mac=' + mac;
-			return $http.get(url + '?' + data).then(function(response) {			
+			return $http.get(url + '?' + data).then(function(response) {	
+			console.log('여기올텐데 all');		
 				if(typeof response.data == 'object'){
 					for(var i=0; i<response.data.list.length; i++){
 						switch(response.data.list[i].Idx){
@@ -558,30 +560,15 @@ angular.module('starter.services', [])
 			})
 
 		}, title : function(kind, mode, Admin_Code, loginType, G_Id, mac){			// 차트 타이틀전체조회
+			console.log('여기올텐데 title');
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + escape(G_Id) +'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response) {
 				if(typeof response.data == 'object'){
 					for(var i=0; i<response.data.list.length; i++){
-						switch(response.data.list[i].Idx){ 
-							case "0": response.data.list[i].title = titles[0].title; response.data.list[i].icon = 'ion-home'; break;
-							case "1": response.data.list[i].title = titles[1].title; response.data.list[i].icon = 'ion-social-buffer'; break;
-							case "2": response.data.list[i].title = titles[2].title; response.data.list[i].icon = 'ion-monitor'; break;
-							case "3": response.data.list[i].title = titles[3].title; response.data.list[i].icon = 'ion-pricetags'; break;
-							case "4": response.data.list[i].title = titles[4].title; response.data.list[i].icon = 'ion-cube'; break;
-							case "5": response.data.list[i].title = titles[5].title; response.data.list[i].icon = 'ion-stats-bars'; break;
-							case "6": response.data.list[i].title = titles[6].title; response.data.list[i].icon = 'ion-clipboard'; break;
-							case "7": response.data.list[i].title = titles[7].title; response.data.list[i].icon = 'ion-android-exit'; break;
-							case "8": response.data.list[i].title = titles[8].title; response.data.list[i].icon = 'ion-share'; break;
-							case "9": response.data.list[i].title = titles[9].title; response.data.list[i].icon = 'ion-android-bus'; break;
-							case "10": response.data.list[i].title = titles[10].title; response.data.list[i].icon = 'ion-pie-graph'; break;
-							case "11": response.data.list[i].title = titles[11].title; response.data.list[i].icon = 'ion-arrow-swap'; break;
-							case "12": response.data.list[i].title = titles[12].title; response.data.list[i].icon = 'ion-arrow-return-left'; break;
-							case "13": response.data.list[i].title = titles[13].title; response.data.list[i].icon = 'ion-person-stalker'; break;
-							case "14": response.data.list[i].title = titles[14].title; response.data.list[i].icon = 'ion-ios-download'; break;
-							case "15": response.data.list[i].title = titles[15].title; response.data.list[i].icon = 'ion-loop'; break;
-							case "16": response.data.list[i].title = titles[16].title; response.data.list[i].icon = 'ion-android-open';break;
-						}
+						response.data.list[i].title = titles[i].title; 
+						response.data.list[i].name = titles[i].name; 
+						response.data.list[i].icon = titles[i].icon;
 					}
 					return response.data.list;	
 				}else{
@@ -591,10 +578,34 @@ angular.module('starter.services', [])
 				return $q.rejec(response.data);
 			})
 
-		}, chart : function(kind, mode, Admin_Code, loginType, G_Id, chart_idx,mac){			// 조회된 리스트의 저장되어있는 순번조회
+		}
+		// , chart : function(kind, mode, Admin_Code, loginType, G_Id, chart_idx,mac){			// 조회된 리스트의 저장되어있는 순번조회
+		// 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
+		// 	var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType;
+		// 	data += '&G_Id=' + escape(G_Id) + '&chart_idx=' + chart_idx +'&mac=' + mac;
+		// 	return $http.get(url + '?' + data).then(function(response) {
+		// 		if(typeof response.data == 'object'){
+		// 			if(response.data.list.length == 0){
+		// 					response.data.list[0] = {cntOrder : '0', idx : '0', url : "", visible : "Y"};
+		// 			}
+		// 			console.log(response);
+		// 			return response.data;	
+		// 		}else{
+		// 			return $q.reject(response.data);
+		// 		}
+		// 	})
+		// }
+	}
+})
+
+/* 차트 새로 개편 - 이경민 20160811 */
+.factory('chart_statisticService', function($http, $q, ERPiaAPI) {
+	return{
+		chart : function(kind, mode, Admin_Code, loginType, G_Id, chart_idx,mac){			// 조회된 리스트의 저장되어있는 순번조회
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType;
-			data += '&G_Id=' + escape(G_Id) + '&chart_idx=' + chart_idx +'&mac=' + mac;
+			var data = 'Value_Kind=list&Kind=myPage_Config_Stat&mode=select_Title&Admin_Code=' + Admin_Code + '&loginType=' + loginType;
+			data += '&G_Id=' + escape(G_Id) +'&mac=' + mac;
+			console.log('새로 생긴 chart list 불러오기 =>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response) {
 				if(typeof response.data == 'object'){
 					if(response.data.list.length == 0){

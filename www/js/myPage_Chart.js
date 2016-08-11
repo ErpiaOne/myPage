@@ -12,14 +12,14 @@ function refresh(kind, gu, admin_code, ERPiaApi_url)
 // 처음 로딩 할때
 function renewalDay(kind, gu, admin_code, ERPiaApi_url)
 {
+	console.log('renewalDay');
 	$("#loading").css("display","block");
-	// AmCharts.loadJSON(ERPiaApi_url + "/renewalDay.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh"); //최근갱신일 로딩
 	AmCharts.loadJSON(ERPiaApi_url + "/graph_DataUpdate.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh");
 	makeCharts(kind, gu, admin_code,ERPiaApi_url);
 }
 
 function makeCharts(kind, gu, admin_code, ERPiaApi_url){
-
+	console.log('makeCharts');
 	// 날짜
 	var d= new Date();
 	var month = d.getMonth() + 1;
@@ -225,9 +225,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 	switch (kind)
 	{
 		case "Meachul_halfyear" :			//최근 6개월 매출액
-			//범례에 금액을 넣어 주기 위해서 쿼리 한번더 날려서 금액 가져옴
-			// AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=Meachul_halfyear&value_kind=Meachul_halfyear&admin_code=" + admin_code,"gridInfo")
-
 			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=Meachul_halfyear&value_kind=Meachul_halfyear&admin_code=" + admin_code)
 			var chart = AmCharts.makeChart("Meachul_halfyear", {
 				"type": "serial",
