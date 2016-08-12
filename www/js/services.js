@@ -511,46 +511,18 @@ angular.module('starter.services', [])
 		];
 
 	return{
-		all : function(kind, mode, Admin_Code, loginType, G_Id, mac) {		// 차트 리스트 전체조회
-			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + escape(G_Id) + '&mac=' + mac;
-			return $http.get(url + '?' + data).then(function(response) {	
-			console.log('여기올텐데 all');		
-				if(typeof response.data == 'object'){
-					for(var i=0; i<response.data.list.length; i++){
-						switch(response.data.list[i].Idx){
-							case "0": response.data.list[i].title = titles[0].title; break;
-							case "1": response.data.list[i].title = titles[1].title; break;
-							case "2": response.data.list[i].title = titles[2].title; break;
-							case "3": response.data.list[i].title = titles[3].title; break;
-							case "4": response.data.list[i].title = titles[4].title; break;
-							case "5": response.data.list[i].title = titles[5].title; break;
-							case "6": response.data.list[i].title = titles[6].title; break;
-							case "7": response.data.list[i].title = titles[7].title; break;
-							case "8": response.data.list[i].title = titles[8].title; break;
-							case "9": response.data.list[i].title = titles[9].title; break;
-							case "10": response.data.list[i].title = titles[10].title; break;
-							case "11": response.data.list[i].title = titles[11].title; break;
-							case "12": response.data.list[i].title = titles[12].title; break;
-							case "13": response.data.list[i].title = titles[13].title; break;
-							case "14": response.data.list[i].title = titles[14].title; break;
-							case "15": response.data.list[i].title = titles[15].title; break;
-							case "16": response.data.list[i].title = titles[16].title; break;
-						}
-					}
-					return response.data.list;	
-				}else{
-					return $q.reject(response.data);
-				}
-			}, function(response){
-				return $q.reject(response.data);
-			})
-
-		},save : function(kind, mode, Admin_Code, loginType, G_Id, statistic,mac){		// 차트 리스트순서 변경후 저장
+		save : function(kind, mode, Admin_Code, loginType, G_Id, statistic,mac){		// 차트 리스트순서 변경후 저장
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + escape(G_Id) + '&statistic=' + statistic+'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response) {
 				if(typeof response.data == 'object'){
+					if(response.data.list[0].result == 'Update Success'){
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되었습니다.', 'short', 'center');
+						else alert('Update Success');
+					}else{
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장이 실패하였습니다. 잠시후 다시 시도해주세요.', 'short', 'center');
+						else alert('저장이 실패하였습니다. 잠시후 다시 시도해주세요.');
+					}
 					return response.data;	
 				}else{
 					return $q.reject(response.data);
@@ -560,15 +532,15 @@ angular.module('starter.services', [])
 			})
 
 		}, title : function(kind, mode, Admin_Code, loginType, G_Id, mac){			// 차트 타이틀전체조회
-			console.log('여기올텐데 title');
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + escape(G_Id) +'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response) {
 				if(typeof response.data == 'object'){
 					for(var i=0; i<response.data.list.length; i++){
-						response.data.list[i].title = titles[i].title; 
-						response.data.list[i].name = titles[i].name; 
-						response.data.list[i].icon = titles[i].icon;
+						var index = parseInt(response.data.list[i].Idx);
+						response.data.list[i].title = titles[index].title; 
+						response.data.list[i].name = titles[index].name; 
+						response.data.list[i].icon = titles[index].icon;
 					}
 					return response.data.list;	
 				}else{
@@ -579,22 +551,6 @@ angular.module('starter.services', [])
 			})
 
 		}
-		// , chart : function(kind, mode, Admin_Code, loginType, G_Id, chart_idx,mac){			// 조회된 리스트의 저장되어있는 순번조회
-		// 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
-		// 	var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType;
-		// 	data += '&G_Id=' + escape(G_Id) + '&chart_idx=' + chart_idx +'&mac=' + mac;
-		// 	return $http.get(url + '?' + data).then(function(response) {
-		// 		if(typeof response.data == 'object'){
-		// 			if(response.data.list.length == 0){
-		// 					response.data.list[0] = {cntOrder : '0', idx : '0', url : "", visible : "Y"};
-		// 			}
-		// 			console.log(response);
-		// 			return response.data;	
-		// 		}else{
-		// 			return $q.reject(response.data);
-		// 		}
-		// 	})
-		// }
 	}
 })
 

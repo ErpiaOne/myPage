@@ -636,4 +636,73 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			$('#' + $scope.kind).css('display', 'block');
 		});
 	};
+})
+
+/* 통계리포트 설정 컨트롤러 - 이경민[2015-12] */
+.controller('configCtrl_statistics', function($scope, $rootScope, statisticService, publicFunction, app, ERPiaAPI){
+	/* 차트타이틀 전체 조회 - 이경민[2016-12] */
+	$scope.titleall = function(){
+		statisticService.title('myPage_Config_Stat', 'select_Title', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+		.then(function(data){
+			$scope.items = data;
+			$scope.items.splice(0,1);
+		})
+	}
+	$scope.titleall();
+
+	/* 뒤로가기했을경우 홈이슈 수정 - 이경민[2016-03] */
+	$scope.backno = function(){
+		$scope.data.showReorder = false;
+		$scope.data.showDelete = false;
+		$scope.titleall();
+	}
+
+	$scope.data = {
+		showReorder : false,
+		showDelete : false
+	}
+	$scope.rslist = 'X';
+
+	/* 아이템을 옮길때 리스트 순서변경. - 이경민[2016-03] */
+	$scope.moveItem = function(item, fromIndex, toIndex) {
+		$scope.rslist = 'O';
+		$scope.items.splice(fromIndex, 1);
+    		$scope.items.splice(toIndex, 0, item);
+
+		$scope.rsltList = '';
+		for(var i = 0; i < $scope.items.length; i++){
+			$scope.items[i].cntOrder = i+1;
+			$scope.rsltList += $scope.items[i].cntOrder + '^';
+			$scope.rsltList += $scope.items[i].Idx + '^';
+			$scope.rsltList += $scope.items[i].visible + '^|';
+		}
+		console.log($scope.rsltList);
+
+	};
+
+	/* 순서저장 - 이경민[2016-03] */
+	$scope.movesave = function(){
+		if($scope.rslist != 'X'){
+			$scope.rslist = 'X';
+			statisticService.save('myPage_Config_Stat', 'save_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $scope.rsltList, $rootScope.deviceInfo.uuid);
+		}
+	}
+
+	/* 리스트 안보이게 - 이경민[구현예정] */
+	$scope.onItemDelete = function(items, index) {
+		if($scope.items[index].visible == 'Y'){
+			$scope.items[index].visible = 'N';
+		}else{
+			$scope.items[index].visible = 'Y';
+		}
+		$scope.rsltList = '';
+		$scope.rslist = 'O';
+		for(var i = 0; i < $scope.items.length; i++){
+			$scope.items[i].cntOrder = i+1;
+			$scope.rsltList += $scope.items[i].cntOrder + '^';
+			$scope.rsltList += $scope.items[i].Idx + '^';
+			$scope.rsltList += $scope.items[i].visible + '^|';
+		}
+	};
+
 });

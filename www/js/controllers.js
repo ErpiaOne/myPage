@@ -95,7 +95,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.0.5', //업데이트시 필수로 변경!!
+   		Android_version : '1.0.6', //업데이트시 필수로 변경!! --> 다음 변경시 1.0.7
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -426,10 +426,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'phj9775';
 			// $rootScope.loginData.Pwd = '1234';
 
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'kmtest';
-			// $rootScope.loginData.Pwd = 'kmtest1!';
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId = 'kmtest';
+			$rootScope.loginData.Pwd = 'kmtest1!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -454,10 +454,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
-			// $rootScope.loginData.loginType = 'S'; //PC모드
-			// $rootScope.loginData.UserId = '555';
-			// $rootScope.loginData.Pwd = '555';
+			$rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
+			$rootScope.loginData.loginType = 'S'; //PC모드
+			$rootScope.loginData.UserId = '555';
+			$rootScope.loginData.Pwd = '555';
 //test중 일때만.......................
 		}else if(userType == 'Normal'){
 			$rootScope.loginMenu = "selectUser";
@@ -482,10 +482,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			// $rootScope.loginData.loginType = 'N'; //PC모드
-			// $rootScope.loginData.UserId = 'test1234';
-			// $rootScope.loginData.Pwd = 'test1234!';
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.loginType = 'N'; //PC모드
+			$rootScope.loginData.UserId = 'test1234';
+			$rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType == 'Guest'){
 			$rootScope.loginMenu = "selectUser"; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
@@ -815,7 +815,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
 								$scope.showCheckSano();
 							}else if($rootScope.PushData.state != "" || !isUndefined($rootScope.PushData.state) || $rootScope.PushData.state != "undefined"){ //기타 이벤트
-								if (jsonData.additionalData) {
+								if (jsonData.additionalData || jsonData.additionalData != undefined) {
 									if (jsonData.additionalData.launchURL){
 										$cordovaInAppBrowser.open(jsonData.additionalData.launchURL, '_blank', browseroptions)
 										.then(function(event) {
@@ -1327,64 +1327,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.scrollTop = function() {
     		$ionicScrollDelegate.scrollTop();
     	};
-})
-
-/* 통계리포트 설정 컨트롤러 - 이경민[2015-12] */
-.controller('configCtrl_statistics', function($scope, $rootScope, statisticService, publicFunction, app, ERPiaAPI){
-	/* 차트타이틀 전체 조회 - 이경민[2016-12] */
-	$scope.titleall = function(){
-		statisticService.all('myPage_Config_Stat', 'select_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
-		.then(function(data){
-			$scope.items = data;
-		})
-	}
-
-	$scope.titleall();
-
-	/* 뒤로가기했을경우 홈이슈 수정 - 이경민[2016-03] */
-	$scope.backno = function(){
-		if($scope.data.showReorder != false){
-			$scope.data.showReorder = false;
-			$scope.titleall();
-		}
-	}
-
-	$scope.data = {
-		showReorder: false
-	}
-	$scope.rslist = 'X';
-
-	/* 아이템을 옮길때마다 내용을 서버에 저장시켜둔다. - 이경민[2016-03] */
-	$scope.moveItem = function(item, fromIndex, toIndex) {
-		$scope.rslist = 'O';
-		$scope.items.splice(fromIndex, 1);
-    		$scope.items.splice(toIndex, 0, item);
-
-		$scope.rsltList = '';
-		console.log($scope.items);
-		for(var i = 0; i < $scope.items.length; i++){
-			$scope.items[i].cntOrder = i+1;
-			$scope.rsltList += $scope.items[i].cntOrder + '^';
-			$scope.rsltList += $scope.items[i].Idx + '^';
-			$scope.rsltList += $scope.items[i].visible + '^|';
-		}
-		console.log($scope.rsltList);
-
-	};
-
-	/* 순서저장 - 이경민[2016-03] */
-	$scope.movesave = function(){
-		if($scope.rslist != 'X'){
-			$scope.rslist = 'X';
-			statisticService.save('myPage_Config_Stat', 'save_Statistic', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $scope.rsltList, $rootScope.deviceInfo.uuid);
-		}
-	}
-
-	/* 리스트 안보이게 - 이경민[구현예정] */
-	$scope.onItemDelete = function(item) {
-		$scope.items.splice($scope.items.indexOf(item), 1);
-	};
-
 })
 
 /* 알림설정 컨트롤러 - 김형석[2016-01] */
