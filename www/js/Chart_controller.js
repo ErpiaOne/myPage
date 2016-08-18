@@ -15,18 +15,22 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 	/*차트 슬라이드 관련*/
 	$scope.onTouch = function(){
 		$ionicSlideBoxDelegate.enableSlide(false);
+		$ionicSideMenuDelegate.canDragContent(false);
 	 };
 
 	$scope.onRelease = function(){
 		$ionicSlideBoxDelegate.enableSlide(true);
+		$ionicSideMenuDelegate.canDragContent(false);
 	};
 
 	$scope.nextSlide = function() {
 		$ionicSlideBoxDelegate.next();
+		$ionicSideMenuDelegate.canDragContent(false);
 	 };
 
 	$scope.previousSlide = function() {
 		$ionicSlideBoxDelegate.previous();
+		$ionicSideMenuDelegate.canDragContent(false);
 	};
 
 	$scope.dashBoard = {};
@@ -603,8 +607,8 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			$scope.btn();
 			$scope.loadingani();
 		});
-
-		$scope.btn = function(){ // 주간월간연간 버튼 색상 
+		
+		$scope.btn = function(){ // 새로고침 버튼 색상 
 			if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){   // 정보있을때
 				$("button[name=btnGrid]").css('background', '#ececed');
 				$("button[name=btnGrid]").css('color', '#444');
@@ -652,14 +656,15 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 
 	/* 뒤로가기했을경우 홈이슈 수정 - 이경민[2016-03] */
 	$scope.backno = function(){
-		$scope.data.showReorder = false;
-		$scope.data.showDelete = false;
+		$scope.data.showReorder = true;
+		$scope.data.showDelete = true;
+		$scope.items = [];
 		$scope.titleall();
 	}
 
 	$scope.data = {
-		showReorder : false,
-		showDelete : false
+		showReorder : true,
+		showDelete : true
 	}
 	$scope.rslist = 'X';
 

@@ -1693,12 +1693,22 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			break;
 
 	}
-	if(chart.dataProvider[0].name == undefined || chart.dataProvider[0].name == ''){
-		$("button[name=btnGrid]").css('background', '#7b7b7b');
-		$("button[name=btnGrid]").css('color', '#686868');
-	}else{
-		$("button[name=btnGrid]").css('background', '#ececed');
-		$("button[name=btnGrid]").css('color', '#444444');
-	}
 
+	if(kind == 'Meachul_halfyear'){
+		if(chart.dataProvider[0].category == undefined || chart.dataProvider[0].category == ''){
+			$("button[name=btnGrid]").css('background', '#7b7b7b');
+			$("button[name=btnGrid]").css('color', '#686868');
+		}else{
+			$("button[name=btnGrid]").css('background', '#ececed');
+			$("button[name=btnGrid]").css('color', '#444444');
+		}
+	}else{
+		if(chart.dataProvider[0].name == undefined || chart.dataProvider[0].name == ''){
+			$("button[name=btnGrid]").css('background', '#7b7b7b');
+			$("button[name=btnGrid]").css('color', '#686868');
+		}else{
+			$("button[name=btnGrid]").css('background', '#ececed');
+			$("button[name=btnGrid]").css('color', '#444444');
+		}
+	}
 }

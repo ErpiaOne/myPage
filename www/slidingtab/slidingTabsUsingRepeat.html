@@ -41,9 +41,10 @@
 					</li>
 				</ul>
 			</div>
-			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index, tabs);slideChanged(index)" style="padding-bottom: 100px;">
+			
+			<ion-slide-box does-continue="true" show-pager="true" on-slide-changed="slideHasChanged($index, tabs);slideChanged(index)" style="padding-bottom: 100px;">
 				<!-- ERPia 메인화면 -->
-				<ion-slide ng-repeat="tab in tabs" ng-init="updateSlider()" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;" >
+				<ion-slide on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()" ng-repeat="tab in tabs" ng-init="updateSlider()" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;" >
 					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
 						<div style="height:100%; padding-top: 20px; width: 100%; background: #ededed;" ng-if = "$index == 0">
 

@@ -918,7 +918,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$rootScope.userData.cnt_site = '10 개';
 
 			$rootScope.userData.cntNotRead = 10;	//계산서 미수신건
-			$rootScope.userData.expire_date = '2016-04-31'; //"2015년<br>8월20일";
+			$rootScope.userData.expire_date = '2020-04-31'; //"2015년<br>8월20일";
 			$rootScope.userData.expire_days = 50;
 			$ionicHistory.nextViewOptions({
 				disableBack: true

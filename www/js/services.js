@@ -121,6 +121,7 @@ angular.module('starter.services', [])
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
 			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response;
@@ -147,6 +148,7 @@ angular.module('starter.services', [])
 		}else if(kind == 'ERPia_Ger_Login'){	// 거래처모드(거래명세서모드) 로그인
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp';
 			var data = 'kind=Login_Normal&loginType=N&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					for(var i=0; i < response.data.list.length; i++){
@@ -489,7 +491,7 @@ angular.module('starter.services', [])
 })
 
 /* 차트관련Service - 이경민[2015-11] */
-.factory('statisticService', function($http, $q, ERPiaAPI) {
+.factory('statisticService', function($http, $q, ERPiaAPI, $cordovaToast) {
 	var titles =  [
 		{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home'}
 		, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer'}
@@ -630,6 +632,7 @@ angular.module('starter.services', [])
 		var data = 'Admin_Code=' + Admin_Code + '&UserId=' + escape(UserId )+ '&kind=' + kind + '&chkAdmin=' + chkAdmin + '&comName=' + comName 
 		data += '&writer=' + writer + '&subject=' + subject + '&tel=' + tel + '&sectors=' + sectors + '&interestTopic=' + interestTopic
 		data += '&inflowRoute=' + inflowRoute + '&contents=' + contents;
+		console.log('여기보세요! =>', url,'?',data);
 		return $http.get(url + '?' + data);
 	}
 		
