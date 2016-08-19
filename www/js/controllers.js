@@ -416,20 +416,20 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.loginData.Pwd = $scope.logindata2.EPwd;
 			}
 //test중 일때만.......................
-			// $rootScope.loginData.Admin_Code = '6178600097'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'borntoroad';
-			// $rootScope.loginData.Pwd = 'borntoroad1!';
+			$rootScope.loginData.Admin_Code = '6178600097'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId = 'borntoroad';
+			$rootScope.loginData.Pwd = 'erpia!1010';
 
 			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
 			// $rootScope.loginData.UserId = 'phj9775';
 			// $rootScope.loginData.Pwd = '1234';
 
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'kmtest';
-			$rootScope.loginData.Pwd = 'kmtest1!';
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'kmtest';
+			// $rootScope.loginData.Pwd = 'kmtest1!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -454,10 +454,16 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
+			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
+			// $rootScope.loginData.loginType = 'S'; //PC모드
+			// $rootScope.loginData.UserId = '555';
+			// $rootScope.loginData.Pwd = '555';
+
+
+			$rootScope.loginData.Admin_Code = '80850'; //PC모드
 			$rootScope.loginData.loginType = 'S'; //PC모드
-			$rootScope.loginData.UserId = '555';
-			$rootScope.loginData.Pwd = '555';
+			$rootScope.loginData.UserId = '212-20-54825';
+			$rootScope.loginData.Pwd = '54825';
 //test중 일때만.......................
 		}else if(userType == 'Normal'){
 			$rootScope.loginMenu = "selectUser";
@@ -1628,6 +1634,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 .controller('ScmUser_HomeCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $sce, scmInfoService, AmChart_Service, app, ERPiaAPI){
 	/* scm메인 데이터 조회 - 이경민[2015-11] */
 	$scope.ScmBaseData = function() {
+		$scope.loadingani();
 		if($rootScope.loginState == "S") {
 			// 날짜
 			var d= new Date();
@@ -1646,8 +1653,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 			$scope.nowTime = '최근 조회 시간 :' + nowday + ' ' + nowTime;
 			// 발주정보 조회
-			scmInfoService.scmInfo('ScmMain', 'Balju', $scope.loginData.Admin_Code, $scope.G_Code, aWeekAgo, nowday)
+			scmInfoService.scmInfo('ScmMain', 'Balju', $scope.loginData.Admin_Code, $rootScope.userData.G_Code, aWeekAgo, nowday)
 			.then(function(scmInfo){
+				console.log('요기와?', scmInfo);
 				var B_TOT = 0;
 				for(var i=0; i<scmInfo.data.list.length; i++){
 					switch(scmInfo.data.list[i].CntStts){
@@ -1669,7 +1677,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.B_TOT = B_TOT + '';
 
 			});// 직배송 정보 조회
-			scmInfoService.scmInfo('ScmMain', 'Direct', $scope.loginData.Admin_Code, $scope.G_Code, aWeekAgo, nowday)
+			scmInfoService.scmInfo('ScmMain', 'Direct', $scope.loginData.Admin_Code, $rootScope.userData.G_Code, aWeekAgo, nowday)
 			.then(function(scmInfo){
 				var J_TOT = 0;
 				for(var i=0; i<scmInfo.data.list.length; i++){
@@ -1690,7 +1698,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}
 				$scope.J_TOT = J_TOT + '';
 			}); //CRM 메뉴 조회
-			scmInfoService.scmInfo('CrmMenu', '', $scope.loginData.Admin_Code, $scope.G_Code, aWeekAgo, nowday)
+			scmInfoService.scmInfo('CrmMenu', '', $scope.loginData.Admin_Code, $rootScope.userData.G_Code, aWeekAgo, nowday)
 			.then(function(scmInfo){
 				var C_TOT = 0;
 				for(var i=0; i<scmInfo.data.list.length; i++){

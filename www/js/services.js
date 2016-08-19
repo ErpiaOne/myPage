@@ -212,6 +212,7 @@ angular.module('starter.services', [])
 		var url = ERPiaAPI.url + '/JSon_Proc_Multi_Lhk.asp';
 		var data = 'Value_Kind=list&kind=' + kind + '&BaljuMode=' + BaljuMode + '&Admin_Code=' + Admin_Code + '&GerCode=' + GerCode;
 		data += '&FDate=' + FDate + '&TDate=' + TDate;
+		console.log('이거쏴? =>', url,'?',data);
 		return $http.get(url + '?' + data);
 	}
 	return{

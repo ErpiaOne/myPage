@@ -1,5 +1,5 @@
 /* ERPia 차트 컨트롤러 - 이경민[2016-03] */
-angular.module('starter.controllers').controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, ERPiaAPI, statisticService, IndexService, $cordovaToast, $ionicSlideBoxDelegate, app, $ionicLoading) {
+angular.module('starter.controllers').controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, ERPiaAPI, statisticService, IndexService, $cordovaToast, app, $ionicLoading, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
 
 	/* 차트 리스트 목록관련 - 이경민[2016-01] */
 	$scope.chartlist = false;
@@ -501,144 +501,153 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 
 	/* 차트를 슬라이드 할 때마다 차트가 생성되도록 하는 함수. 처음부터 모든 차트를 불러오면 너무 느려서 슬라이드할 때마다 불러오도록 변경함. - 이경민[2016-04]*/
 	$scope.onSlideMove = function(data, tabs) {
-		$scope.sn = 1;
-		if($scope.chartlist != false){
-			data.index = parseInt(data.index);
-			$scope.chartlist = false;
-		}
-		/*홈 차트*/
-		console.log("You have selected " + data.index + " tab");
-		$scope.loadingani();
-		var index = data.index;
-
-		$scope.kind = tabs[index].title;
-
-		if(index > 0){
-			var titlename = tabs[index].name;
-		}else{
-			var titlename = '최근 6개월간 매출액';
-		}
-
-		// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.) - 이경민
-		if($scope.kind === "beasonga" || $scope.kind == "Meachul_halfyear"){
-			$scope.htmlCode2 = '<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
-
-		}else if($scope.kind === "Meachul_ik"){
-			$scope.htmlCode2 =	'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
-							'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
-							'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
-
-		}else{
-			$scope.htmlCode2 = 		'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
-								'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
-								'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
-								'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
-		}
-
-		$scope.htmlCode = '<div class="box-title" style="color:#fff; padding-top:15px; padding-bottom:10px; background: #bcb6c3; color: #000; font-weight: bold; font-size: 1.1em;">'+
-						titlename+
-					'</div>'+
-					'<input type="hidden" name="gu_hidden">' +
-					'<div class="direct-chat">'+
-						'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 13px; vertical-align: top; background: #7a6e80;">'+
-							'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
-							'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
-							'<div class="pull-right">'+
-								$scope.htmlCode2 +
-							'</div>'+
-						'</div>'+
-
-						'<div class="box-body" style="padding:20px 10px;">'+
-							'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 320px;"></div>'+
-							'<div name="gridBody" style="background: #ececed;">'+
-								'<ul class="contacts-list">'+
-									'<li>'+
-										'<div name="gridSubject" style="width: 100%; height: 40px; padding-top:10px; text-align:center; background:#a6b3cb; margin-bottom: 20px;"><font style="font-weight:bold; font-size:11pt;"></font></div>'+
-										'<table name="tbGrid" class="table table-bordered" style="color:rgb(100, 100, 100); width:100%; font-size:11pt; margin-bottom:10px;">'+
-										'</table>'+
-										'<div style="width:100%; text-align:center;">'+
-											'<button name="btnGridClose" class="btn bg-orange margin">닫기</button>'+
-										'</div>'+
-									'</li>'+
-								'</ul>'+
-							'</div>'+
-						'</div>'+
-					'</div>';
-
-		$('#'+data.index).html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url);
-		$scope.loadingani();
-
-		/*새로고침 버튼 클릭시 - 이경민[2016-02]*/
-		$("button[name=refreshW]").click(function() {
-			$("div[name=gridBody]").css('display', 'none');
-			$('#' + $scope.kind).css('display', 'block');
-			$scope.btn();
-			if($scope.sn == 1){
-				$("button[name=btnW]").click();
-			}else if($scope.sn == 2){
-				$("button[name=btnM]").click();
-			}else if($scope.sn == 3){
-				$("button[name=btnY]").click();
-			}
-			$scope.loadingani();
-
-		});
-		/*주간버튼 클릭시 - 이경민[2016-02]*/
-		$("button[name=btnW]").click(function() {
+		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+		// 로딩화면 안돌아서 추가
+		$timeout(function(){
+			$ionicLoading.hide();
+		      
 			$scope.sn = 1;
-			$("div[name=gridBody]").css('display', 'none');
-			$('#' + $scope.kind).css('display', 'block');
-			$scope.btn();
-			$scope.loadingani();
-		});
-		/*월간버튼 클릭시 - 이경민[2016-02]*/
-		$("button[name=btnM]").click(function() {
-			$scope.sn = 2;
-			$("div[name=gridBody]").css('display', 'none');
-			$('#' + $scope.kind).css('display', 'block');
-			$scope.btn();
-			$scope.loadingani();
-		});
-		/*연간버튼 클릭시 - 이경민[2016-02]*/
-		$("button[name=btnY]").click(function() {
-			$scope.sn = 3;
-			$("div[name=gridBody]").css('display', 'none');
-			$('#' + $scope.kind).css('display', 'block');
-			$scope.btn();
-			$scope.loadingani();
-		});
-		
-		$scope.btn = function(){ // 새로고침 버튼 색상 
-			if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){   // 정보있을때
-				$("button[name=btnGrid]").css('background', '#ececed');
-				$("button[name=btnGrid]").css('color', '#444');
-			}else{
-				$("button[name=btnGrid]").css('background', '#7b7b7b');
-				$("button[name=btnGrid]").css('color', '#686868');
+			if($scope.chartlist != false){
+				data.index = parseInt(data.index);
+				$scope.chartlist = false;
 			}
-		}
-
-		$scope.btn();
-
-		$("button[name=btnGrid]").click(function() {
+			/*홈 차트*/
+			console.log("You have selected " + data.index + " tab");
 			$scope.loadingani();
-			if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)' ){  // 정보있을때
-				if ($('div[name=gridBody]').css('display') == 'none') {
-					$('div[name=gridBody]').css('display','block');
-					$('#' + $scope.kind).css('display', 'none');
-					$scope.gu = $("input[name=gu_hidden]").val();
-					AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $rootScope.userData.GerCode, "gridInfo");
-				} else {
-					$("div[name=gridBody]").css('display', 'none');
-					$('#' + $scope.kind).css('display', 'block');
+			var index = data.index;
 
+			$scope.kind = tabs[index].title;
+
+			if(index > 0){
+				var titlename = tabs[index].name;
+			}else{
+				var titlename = '최근 6개월간 매출액';
+			}
+
+			// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.) - 이경민
+			if($scope.kind === "beasonga" || $scope.kind == "Meachul_halfyear"){
+				$scope.htmlCode2 = '<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
+
+			}else if($scope.kind === "Meachul_ik"){
+				$scope.htmlCode2 =	'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
+								'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
+								'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
+
+			}else{
+				$scope.htmlCode2 = 		'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
+									'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>'+
+									'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
+									'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
+			}
+
+			$scope.htmlCode = '<div class="box-title" style="color:#fff; padding-top:15px; padding-bottom:10px; background: #bcb6c3; color: #000; font-weight: bold; font-size: 1.1em;">'+
+							titlename+
+						'</div>'+
+						'<input type="hidden" name="gu_hidden">' +
+						'<div class="direct-chat">'+
+							'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 13px; vertical-align: top; background: #7a6e80;">'+
+								'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
+								'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
+								'<div class="pull-right">'+
+									$scope.htmlCode2 +
+								'</div>'+
+							'</div>'+
+
+							'<div class="box-body" style="padding:20px 10px;">'+
+								'<div id=\"'+$scope.kind+'\" style="width: 100%; height: 320px;"></div>'+
+								'<div name="gridBody" style="background: #ececed;">'+
+									'<ul class="contacts-list">'+
+										'<li>'+
+											'<div name="gridSubject" style="width: 100%; height: 40px; padding-top:10px; text-align:center; background:#a6b3cb; margin-bottom: 20px;"><font style="font-weight:bold; font-size:11pt;"></font></div>'+
+											'<table name="tbGrid" class="table table-bordered" style="color:rgb(100, 100, 100); width:100%; font-size:11pt; margin-bottom:10px;">'+
+											'</table>'+
+											'<div style="width:100%; text-align:center;">'+
+												'<button name="btnGridClose" class="btn bg-orange margin">닫기</button>'+
+											'</div>'+
+										'</li>'+
+									'</ul>'+
+								'</div>'+
+							'</div>'+
+						'</div>';
+
+			$('#'+data.index).html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url);
+			$scope.loadingani();
+
+			/*새로고침 버튼 클릭시 - 이경민[2016-02]*/
+			$("button[name=refreshW]").click(function() {
+				$("div[name=gridBody]").css('display', 'none');
+				$('#' + $scope.kind).css('display', 'block');
+				$scope.btn();
+				if($scope.sn == 1){
+					$("button[name=btnW]").click();
+				}else if($scope.sn == 2){
+					$("button[name=btnM]").click();
+				}else if($scope.sn == 3){
+					$("button[name=btnY]").click();
+				}
+				$scope.loadingani();
+
+			});
+			/*주간버튼 클릭시 - 이경민[2016-02]*/
+			$("button[name=btnW]").click(function() {
+				$scope.sn = 1;
+				$("div[name=gridBody]").css('display', 'none');
+				$('#' + $scope.kind).css('display', 'block');
+				$scope.btn();
+				$scope.loadingani();
+			});
+			/*월간버튼 클릭시 - 이경민[2016-02]*/
+			$("button[name=btnM]").click(function() {
+				$scope.sn = 2;
+				$("div[name=gridBody]").css('display', 'none');
+				$('#' + $scope.kind).css('display', 'block');
+				$scope.btn();
+				$scope.loadingani();
+			});
+			/*연간버튼 클릭시 - 이경민[2016-02]*/
+			$("button[name=btnY]").click(function() {
+				$scope.sn = 3;
+				$("div[name=gridBody]").css('display', 'none');
+				$('#' + $scope.kind).css('display', 'block');
+				$scope.btn();
+				$scope.loadingani();
+			});
+			
+			$scope.btn = function(){ // 새로고침 버튼 색상 
+				if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)'){   // 정보있을때
+					$("button[name=btnGrid]").css('background', '#ececed');
+					$("button[name=btnGrid]").css('color', '#444');
+				}else{
+					$("button[name=btnGrid]").css('background', '#7b7b7b');
+					$("button[name=btnGrid]").css('color', '#686868');
 				}
 			}
-		});
-		$("button[name=btnGridClose]").click(function() {
-			$("div[name=gridBody]").css('display', 'none');
-			$('#' + $scope.kind).css('display', 'block');
-		});
+
+			$scope.btn();
+
+			$("button[name=btnGrid]").click(function() {
+				$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+				$timeout(function(){
+					$ionicLoading.hide();
+					if($("button[name=btnGrid]").css('color') == 'rgb(68, 68, 68)' ){  // 정보있을때
+						if ($('div[name=gridBody]').css('display') == 'none') {
+							$('div[name=gridBody]').css('display','block');
+							$('#' + $scope.kind).css('display', 'none');
+							$scope.gu = $("input[name=gu_hidden]").val();
+							AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $rootScope.userData.GerCode, "gridInfo");
+						} else {
+							$("div[name=gridBody]").css('display', 'none');
+							$('#' + $scope.kind).css('display', 'block');
+
+						}
+					}
+				}, 500);
+			});
+			$("button[name=btnGridClose]").click(function() {
+				$("div[name=gridBody]").css('display', 'none');
+				$('#' + $scope.kind).css('display', 'block');
+			});
+		}, 500);
 	};
 })
 

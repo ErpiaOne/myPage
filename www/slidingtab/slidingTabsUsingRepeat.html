@@ -7,7 +7,7 @@
 		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/cs');" class="button button-small button-psm04" ng-if="userType == 'Guest' " style="line-height: 14px;">가입<br>상담</button>
 	</ion-nav-buttons>
 
-	<ion-content class="" >
+	<ion-content scroll="false">
 		<!-- <img src="./img/img_erpia.jpg" width="100%"> -->
 		<tab-slide-box>
 			<div class="tsb-icons" style="border-bottom: 1px solid #ccc7cf;"> <!-- class건들이면 안되요..ㅠㅠ -->
@@ -35,7 +35,7 @@
 					</ul>
 				</div>
 				</ion-scroll>
-				<ul style="width: 100%; position: fixed; bottom: 55px; left: 0; ">
+				<ul style="width: 100%; position: fixed; bottom: 55px; left: 0;">
 					<li class="item" style="background: #6c5e72; text-align: right;">
 						<i class='ion-android-settings' style='font-size:25px; text-align: right; color: #fff;' ng-click="goto_with_backButton('#/app/config/statistics')"></i>
 					</li>
@@ -138,6 +138,7 @@
 						<div ng-if = "$index != 0" style="height:100%;"  id='{{$index}}'></div>
 					</ion-scroll>
 				</ion-slide>
+			</ion-slide-box>
 		</tab-slide-box>
 	</ion-content>
 </ion-view>
