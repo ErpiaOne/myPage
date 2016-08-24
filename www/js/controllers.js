@@ -95,7 +95,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.0.6', //업데이트시 필수로 변경!! --> 다음 변경시 1.0.7
+   		Android_version : '1.0.7',
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -416,10 +416,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.loginData.Pwd = $scope.logindata2.EPwd;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = '6178600097'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'borntoroad';
-			$rootScope.loginData.Pwd = 'erpia!1010';
+			// $rootScope.loginData.Admin_Code = '6178600097'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'borntoroad';
+			// $rootScope.loginData.Pwd = 'erpia!1010';
 
 			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
@@ -460,10 +460,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.Pwd = '555';
 
 
-			$rootScope.loginData.Admin_Code = '80850'; //PC모드
-			$rootScope.loginData.loginType = 'S'; //PC모드
-			$rootScope.loginData.UserId = '212-20-54825';
-			$rootScope.loginData.Pwd = '54825';
+			// $rootScope.loginData.Admin_Code = '80850'; //PC모드
+			// $rootScope.loginData.loginType = 'S'; //PC모드
+			// $rootScope.loginData.UserId = '212-20-54825';
+			// $rootScope.loginData.Pwd = '54825';
 //test중 일때만.......................
 		}else if(userType == 'Normal'){
 			$rootScope.loginMenu = "selectUser";
@@ -488,10 +488,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			$rootScope.loginData.loginType = 'N'; //PC모드
-			$rootScope.loginData.UserId = 'test1234';
-			$rootScope.loginData.Pwd = 'test1234!';
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'N'; //PC모드
+			// $rootScope.loginData.UserId = 'test1234';
+			// $rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType == 'Guest'){
 			$rootScope.loginMenu = "selectUser"; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
@@ -796,6 +796,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								$rootScope.priv_meachul.de = data[1].priv_Delete;
 								$rootScope.priv_meachul.save = data[1].priv_Save;
 								$rootScope.priv_meachul.print = data[1].priv_Print;
+
+								console.log('권한 볼꺼에용11! ->', $rootScope.priv_meaip);
+					console.log('권한 볼꺼에용22! ->', $rootScope.priv_meachul);
 						});
 
 						$timeout(function() {
@@ -964,6 +967,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$rootScope.priv_meachul.de = data[1].priv_Delete;
 					$rootScope.priv_meachul.save = data[1].priv_Save;
 					$rootScope.priv_meachul.print = data[1].priv_Print;
+
+
+					console.log('권한 볼꺼에용11! ->', $rootScope.priv_meaip);
+					console.log('권한 볼꺼에용22! ->', $rootScope.priv_meachul);
 			});
 
 			$rootScope.goto_with_clearHistory('#/app/slidingtab');

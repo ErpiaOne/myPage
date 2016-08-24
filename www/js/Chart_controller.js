@@ -1,6 +1,7 @@
 /* ERPia 차트 컨트롤러 - 이경민[2016-03] */
 angular.module('starter.controllers').controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, ERPiaAPI, statisticService, IndexService, $cordovaToast, app, $ionicLoading, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
 
+
 	/* 차트 리스트 목록관련 - 이경민[2016-01] */
 	$scope.chartlist = false;
 	$scope.chrtlistF = function(){
@@ -51,6 +52,10 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 	var aWeekAgo = w.getFullYear() + '-' + (wMonth<10 ? '0':'') + wMonth + '-' + (wDay<10 ? '0' : '') + wDay;
 	$rootScope.nowTime = '최근 조회 시간 :' + nowday + ' ' + nowTime;
 
+	$scope.pushf = function(){
+		console.log('여기와랑~');
+	}
+
 	/* erpia메인홈 데이터 세팅 - 이경민[2016-01] */
 	$scope.ERPiaBaseData = function(){
 		$scope.loadingani();
@@ -96,8 +101,15 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 	/* 상세표보기 - 이경민[2016-02] */
 	function commaChange(Num)
 	{
-		fl=""
 		Num = new String(Num)
+
+		var numlist = Num.split('.');
+
+		if(numlist[1] != undefined){
+			Num = numlist[0];
+		}
+
+		fl=""
 		temp=""
 		co=3
 

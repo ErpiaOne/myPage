@@ -120,7 +120,7 @@ angular.module('starter.services', [])
 
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + '01056579731' + '&mac=' + UUID;
 			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -500,7 +500,7 @@ angular.module('starter.services', [])
 		, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags'}
 		, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube'}
 		, {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'}
-		, {Idx:6, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard'}
+		, {Idx:6, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard'} // 매출실적 추이 삭제할것.....
 		, {Idx:7, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit'}
 		, {Idx:8, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share'}
 		, {Idx:9, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus'}

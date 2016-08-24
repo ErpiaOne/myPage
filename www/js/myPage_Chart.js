@@ -1694,6 +1694,8 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 	}
 
+	console.log('요기지롱', chart.dataProvider);
+
 	if(kind == 'Meachul_halfyear'){
 		if(chart.dataProvider[0].category == undefined || chart.dataProvider[0].category == ''){
 			$("button[name=btnGrid]").css('background', '#7b7b7b');

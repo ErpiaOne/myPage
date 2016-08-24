@@ -47,7 +47,7 @@
 				<ion-slide on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()" ng-repeat="tab in tabs" ng-init="updateSlider()" style="background: #4f4f5e; overflow-y: auto; padding-bottom: 0px;" >
 					<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
 						<div style="height:100%; padding-top: 20px; width: 100%; background: #ededed;" ng-if = "$index == 0">
-
+						<!-- <button ng-click="pushf()">안뇽! </button> -->
 							<!-- 컨텐츠 상단 (정보)-->
 							<div class="psm_home05" ng-bind-html='nowTime' ng-click="ERPiaBaseData()" style="color: #444; padding-bottom: 5px; font-weight: bold;"></div>
 							<div class="psm_home06 ion-android-refresh" ng-click="ERPiaBaseData()" style="color: #444; position: absolute; top:-5px; padding-top: 20px; right:0; font-size: 2em;"></div>
