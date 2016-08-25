@@ -1115,8 +1115,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				if(data != '<!--Parameter Check-->'){
 					$rootScope.ckversion = data;
 					if(ionic.Platform.isAndroid()==true){
-						if(data.Android_version == '999'){
-							console.log('이건 긴급 업데이트시!!!!');
+						if(data.Android_version == '999'){ 		// 긴급 점검 기능 추가 [이경민 - 2016-08-25]
 							$scope.Emergency_update(data.text);
 						}else {
 							console.log('android');
@@ -1178,11 +1177,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			})
 		}
 
-		/* 업데이트 알림 - 김형석[2016-02] */
+		/* 긴급 점검 알림 - 이경민[2016-08-25] */
 		$scope.Emergency_update=function(text){
 			$ionicPopup.show({
 				title: "<b>긴급 점검</b>",
-				content: "죄송합니다. 긴급 업데이트중입니다. <br>" + text,
+				content: "죄송합니다. 긴급 점검 중입니다. <br>" + text,
 				buttons: [
 				{
 					text: '확인',
