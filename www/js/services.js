@@ -499,18 +499,18 @@ angular.module('starter.services', [])
 		, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor'}
 		, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags'}
 		, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube'}
-		, {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'}
-		, {Idx:6, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard'} // 매출실적 추이 삭제할것.....
-		, {Idx:7, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit'}
-		, {Idx:8, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share'}
-		, {Idx:9, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus'}
-		, {Idx:10, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph'}
-		, {Idx:11, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap'}
-		, {Idx:12, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left'}
-		, {Idx:13, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker'}
-		, {Idx:14, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download'}
-		, {Idx:15, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop'}
-		, {Idx:16, title:"beasongb", name:'출고현황', icon: 'ion-android-open'}
+		// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
+		, {Idx:5, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard'} 
+		, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit'}
+		, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share'}
+		, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus'}
+		, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph'}
+		, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap'}
+		, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left'}
+		, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker'}
+		, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download'}
+		, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop'}
+		, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open'}
 		];
 
 	return{
@@ -519,7 +519,7 @@ angular.module('starter.services', [])
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + escape(G_Id) + '&statistic=' + statistic+'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response) {
 				if(typeof response.data == 'object'){
-					if(response.data.list[0].result == 'Update Success'){
+					if(response.data.list[0].result == 'Update Success' || response.data.list[0].result == 'Insert Success'){
 						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('저장되었습니다.', 'short', 'center');
 						else alert('Update Success');
 					}else{
@@ -564,7 +564,6 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=myPage_Config_Stat&mode=select_Title&Admin_Code=' + Admin_Code + '&loginType=' + loginType;
 			data += '&G_Id=' + escape(G_Id) +'&mac=' + mac;
-			console.log('새로 생긴 chart list 불러오기 =>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response) {
 				if(typeof response.data == 'object'){
 					if(response.data.list.length == 0){

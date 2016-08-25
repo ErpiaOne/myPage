@@ -69,7 +69,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.useYN_Check = function(gubun){
 		switch (gubun){
 			case 1 : console.log('매입'); 
-				if($rootScope.priv_meaip.useYN == '1'){
+				if($rootScope.priv_meaip.useYN == '1' &&  $rootScope.priv_meaip.master_useYN != 'N'){
 					$rootScope.goto_with_clearHistory("#app/meaip_page"); $scope.sidetab("tab2");
 				}else{
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('접근 권한이 없습니다.', 'long', 'center');
@@ -77,7 +77,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}
 				break;
 			case 2 : console.log('매출'); 
-				if($rootScope.priv_meachul.useYN == '1'){
+				if($rootScope.priv_meachul.useYN == '1' &&  $rootScope.priv_meachul.master_useYN != 'N'){
 					$rootScope.goto_with_clearHistory("#app/meachul_page"); $scope.sidetab("tab3");
 				}else{
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('접근 권한이 없습니다.', 'long', 'center');
@@ -95,7 +95,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.0.7',
+   		Android_version : '1.0.8',
    		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -423,13 +423,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'phj9775';
+			// $rootScope.loginData.UserId = '박혜진';
 			// $rootScope.loginData.Pwd = '1234';
 
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.Admin_Code = 'km0421'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'kmtest';
-			// $rootScope.loginData.Pwd = 'kmtest1!';
+			// $rootScope.loginData.UserId = 'kaming312';
+			// $rootScope.loginData.Pwd = 'lkmbanana1!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -585,7 +585,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			if(ERPiaAPI.toast == 'Y'){		//uuid, admin_code, loginType, id, pwd, autoLogin_YN, UUID, phoneno, DeviceInfo
 				$rootScope.loginData.Admin_Code = $filter('lowercase')($scope.loginData.Admin_Code);
 				$rootScope.loginData.UserId = $filter('lowercase')($scope.loginData.UserId);
-				uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 			}else{
 				/* 테스트시  */
 				switch($rootScope.userType){
@@ -768,6 +767,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						$rootScope.priv_meaip = 
 							{ 
 								id : '' ,
+								master_useYN : '',
 								useYN : '',
 								de : '',
 								save : '',
@@ -776,6 +776,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						$rootScope.priv_meachul = 	
 							{ 
 								id : '' ,
+								master_useYN : '',
 								useYN : '',
 								de : '',
 								save : '',
@@ -786,19 +787,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
 						.then(function(data){
 								$rootScope.priv_meaip.id = data[0].Menu_NM;
+								$rootScope.priv_meaip.master_useYN = data[0].Mpriv;
 								$rootScope.priv_meaip.useYN = data[0].priv;
 								$rootScope.priv_meaip.de = data[0].priv_Delete;
 								$rootScope.priv_meaip.save = data[0].priv_Save;
 								$rootScope.priv_meaip.print = data[0].priv_Print;
 
 								$rootScope.priv_meachul.id = data[1].Menu_NM;
+								$rootScope.priv_meachul.master_useYN = data[1].Mpriv;
 								$rootScope.priv_meachul.useYN = data[1].priv;
 								$rootScope.priv_meachul.de = data[1].priv_Delete;
 								$rootScope.priv_meachul.save = data[1].priv_Save;
 								$rootScope.priv_meachul.print = data[1].priv_Print;
-
-								console.log('권한 볼꺼에용11! ->', $rootScope.priv_meaip);
-					console.log('권한 볼꺼에용22! ->', $rootScope.priv_meachul);
 						});
 
 						$timeout(function() {
@@ -939,6 +939,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$rootScope.priv_meaip = 
 				{ 
 					id : '' ,
+					master_useYN : '',
 					useYN : '',
 					de : '',
 					save : '',
@@ -947,6 +948,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$rootScope.priv_meachul = 	
 				{ 
 					id : '' ,
+					master_useYN : '',
 					useYN : '',
 					de : '',
 					save : '',
@@ -957,20 +959,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
 			.then(function(data){
 					$rootScope.priv_meaip.id = data[0].Menu_NM;
+					$rootScope.priv_meaip.master_useYN = date[0].Mpriv;
 					$rootScope.priv_meaip.useYN = data[0].priv;
 					$rootScope.priv_meaip.de = data[0].priv_Delete;
 					$rootScope.priv_meaip.save = data[0].priv_Save;
 					$rootScope.priv_meaip.print = data[0].priv_Print;
 
 					$rootScope.priv_meachul.id = data[1].Menu_NM;
+					$rootScope.priv_meachul.master_useYN = date[1].Mpriv;
 					$rootScope.priv_meachul.useYN = data[1].priv;
 					$rootScope.priv_meachul.de = data[1].priv_Delete;
 					$rootScope.priv_meachul.save = data[1].priv_Save;
 					$rootScope.priv_meachul.print = data[1].priv_Print;
-
-
-					console.log('권한 볼꺼에용11! ->', $rootScope.priv_meaip);
-					console.log('권한 볼꺼에용22! ->', $rootScope.priv_meachul);
 			});
 
 			$rootScope.goto_with_clearHistory('#/app/slidingtab');
@@ -1114,45 +1114,50 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$timeout(function(){
 				if(data != '<!--Parameter Check-->'){
 					$rootScope.ckversion = data;
-				if(ionic.Platform.isAndroid()==true){
-					console.log('android');
-					var version = $scope.version.Android_version.split('.');
-					version = version[0]+'.'+version[1]+version[2];
-				     	version = parseFloat(version);
-				     	console.log("version", version);
+					if(ionic.Platform.isAndroid()==true){
+						if(data.Android_version == '999'){
+							console.log('이건 긴급 업데이트시!!!!');
+							$scope.Emergency_update(data.text);
+						}else {
+							console.log('android');
+							var version = $scope.version.Android_version.split('.');
+							version = version[0]+'.'+version[1]+version[2];
+						     	version = parseFloat(version);
+						     	console.log("version", version);
 
-					var ckversion = $rootScope.ckversion.Android_version.split('.');
-					ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
-					ckversion = parseFloat(ckversion);
-					console.log("ckversion", ckversion);
+							var ckversion = $rootScope.ckversion.Android_version.split('.');
+							ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
+							ckversion = parseFloat(ckversion);
+							console.log("ckversion", ckversion);
 
-					$scope.thisversion=$rootScope.version.Android_version;
-					$scope.currentversion=$rootScope.ckversion.Android_version;
-					if (version<ckversion) $scope.updatego();
-					else $scope.thisversioncurrent='Y';
+							$scope.thisversion=$rootScope.version.Android_version;
+							$scope.currentversion=$rootScope.ckversion.Android_version;
+							if (version<ckversion) $scope.updatego();
+							else $scope.thisversioncurrent='Y';
+						}
+					}else{
+						console.log('ios');
+						var version = $scope.version.IOS_version.split('.');
+						version = version[0]+'.'+version[1]+version[2];
+					     	version = parseFloat(version);
+					     	console.log("version", version);
+
+						var ckversion = $rootScope.ckversion.IOS_version.split('.');
+						ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
+						ckversion = parseFloat(ckversion);
+						console.log("ckversion", ckversion);
+
+						$scope.thisversion=$rootScope.version.IOS_version;
+						$scope.currentversion=$rootScope.ckversion.IOS_version;
+						if (version<ckversion) $scope.updatego();
+						else $scope.thisversioncurrent='Y';
+					}
 				}else{
-					console.log('ios');
-					var version = $scope.version.IOS_version.split('.');
-					version = version[0]+'.'+version[1]+version[2];
-				     	version = parseFloat(version);
-				     	console.log("version", version);
-
-					var ckversion = $rootScope.ckversion.IOS_version.split('.');
-					ckversion = ckversion[0]+'.'+ckversion[1]+ckversion[2];
-					ckversion = parseFloat(ckversion);
-					console.log("ckversion", ckversion);
-
-					$scope.thisversion=$rootScope.version.IOS_version;
-					$scope.currentversion=$rootScope.ckversion.IOS_version;
-					if (version<ckversion) $scope.updatego();
-					else $scope.thisversioncurrent='Y';
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회실패. 데이터접속을 확인해주세요.', 'short', 'center');
+					else alert('조회실패. 데이터접속을 확인해주세요.');
 				}
-			}else{
-				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회실패. 데이터접속을 확인해주세요.', 'short', 'center');
-				else alert('조회실패. 데이터접속을 확인해주세요.');
-			}
-		      		}, 1000);
-		});
+			      		}, 1000);
+			});
 
 		/* 업데이트 알림 - 김형석[2016-02] */
 		$scope.updatego=function(){
@@ -1172,6 +1177,24 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				]
 			})
 		}
+
+		/* 업데이트 알림 - 김형석[2016-02] */
+		$scope.Emergency_update=function(text){
+			$ionicPopup.show({
+				title: "<b>긴급 점검</b>",
+				content: "죄송합니다. 긴급 업데이트중입니다. <br>" + text,
+				buttons: [
+				{
+					text: '확인',
+					type: 'button-positive',
+					onTap: function(e) {
+					ionic.Platform.exitApp();
+					}
+				}
+				]
+			})
+		}
+
 		$rootScope.loginData.autologin_YN = $localstorage.get("autoLoginYN");
 
 		if($localstorage.get("autoLoginYN")=="Y"){

@@ -171,10 +171,6 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 				strHtml = "<tr>" + th + "번호</th>" + th + "구분</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "SCM " + strSubgu;
 				break;
-			case "Meachul_ik" :
-				strHtml = "<tr>" + th + "날짜</th>" + th + "공급이익</th>" + th + "매출이익</th>" + th + "공급이익률</th>" + th + "매출이익률</th></tr>";
-				strSubject = "매출 이익율" + strSubgu;
-				break;
 			case "meachul_7" :
 				strHtml = "<tr>" + th + "날짜</th>" + th + "수량</th>" + th + "금액</th></tr>";
 				strSubject = "매출 실적 추이" + strSubgu;
@@ -272,25 +268,6 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value) + "원";
-					strHtml = strHtml + "</td>";
-					strHtml = strHtml + "</tr>";
-					break;
-				case "Meachul_ik" :
-					strHtml = strHtml + "<tr>";
-					strHtml = strHtml + td;
-					strHtml = strHtml + data[i].name;
-					strHtml = strHtml + "</td>";
-					strHtml = strHtml + td;
-					strHtml = strHtml +  commaChange(data[i].value1) + "원";
-					strHtml = strHtml + "</td>";
-					strHtml = strHtml + td;
-					strHtml = strHtml + commaChange(data[i].value2) + "원";
-					strHtml = strHtml + "</td>";
-					strHtml = strHtml + td;
-					strHtml = strHtml + commaChange(data[i].su1) + " %";
-					strHtml = strHtml + "</td>";
-					strHtml = strHtml + td;
-					strHtml = strHtml + commaChange(data[i].su2) + " %";
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + "</tr>";
 					break;
@@ -539,11 +516,6 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.) - 이경민
 			if($scope.kind === "beasonga" || $scope.kind == "Meachul_halfyear"){
 				$scope.htmlCode2 = '<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
-
-			}else if($scope.kind === "Meachul_ik"){
-				$scope.htmlCode2 =	'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
-								'<button name="btnM" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'2\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">월간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
-								'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
 
 			}else{
 				$scope.htmlCode2 = 		'<button name="btnW" style="height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'1\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">주간</button>'+
