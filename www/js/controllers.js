@@ -34,7 +34,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		tab1: 'tab-item active',
 		tab2: 'tab-item',
 		tab3: 'tab-item',
-		tab4: 'tab-item'
+		tab4: 'tab-item',
+		tab5: 'tab-item'
 	}
 	$ionicSideMenuDelegate.canDragContent(true);
 	$scope.sidetab= function(tabgubun){
@@ -44,24 +45,35 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.tabitem.tab2 = 'tab-item';
 				$rootScope.tabitem.tab3 = 'tab-item';
 				$rootScope.tabitem.tab4 = 'tab-item';
+				$rootScope.tabitem.tab5 = 'tab-item';
 				break;
 			case 'tab2' :
 				$rootScope.tabitem.tab1 = 'tab-item';
 				$rootScope.tabitem.tab2 = 'tab-item active';
 				$rootScope.tabitem.tab3 = 'tab-item';
 				$rootScope.tabitem.tab4 = 'tab-item';
+				$rootScope.tabitem.tab5 = 'tab-item';
 				break;
 			case 'tab3' :
 				$rootScope.tabitem.tab1 = 'tab-item';
 				$rootScope.tabitem.tab2 = 'tab-item';
 				$rootScope.tabitem.tab3 = 'tab-item active';
 				$rootScope.tabitem.tab4 = 'tab-item';
+				$rootScope.tabitem.tab5 = 'tab-item';
 				break;
 			case 'tab4' :
 				$rootScope.tabitem.tab1 = 'tab-item';
 				$rootScope.tabitem.tab2 = 'tab-item';
 				$rootScope.tabitem.tab3 = 'tab-item';
 				$rootScope.tabitem.tab4 = 'tab-item active';
+				$rootScope.tabitem.tab5 = 'tab-item';
+				break;
+			case 'tab5' :
+				$rootScope.tabitem.tab1 = 'tab-item';
+				$rootScope.tabitem.tab2 = 'tab-item';
+				$rootScope.tabitem.tab3 = 'tab-item';
+				$rootScope.tabitem.tab4 = 'tab-item';
+				$rootScope.tabitem.tab5 = 'tab-item active';
 				break;
 		}
 	}
@@ -89,8 +101,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 재고관리 - 이경민[2016-05] */
 	$scope.jego = function(){
-		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('준비중입니다.', 'long', 'center');
-		else alert('준비중입니다.');
+		// if(ERPiaAPI.toast == 'Y') $cordovaToast.show('준비중입니다.', 'long', 'center');
+		// else alert('준비중입니다.');
+		$rootScope.goto_with_clearHistory("#app/jegoMain"); $scope.sidetab("tab4");
 	}
 
 	/* 버전관리 - 김형석[2016-01] */
@@ -327,6 +340,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.tabitem.tab2 = 'tab-item';
 				$rootScope.tabitem.tab3 = 'tab-item';
 				$rootScope.tabitem.tab4 = 'tab-item';
+				$rootScope.tabitem.tab5 = 'tab-item';
 		     		$state.go("app.slidingtab");
 			}else if($rootScope.loginState == 'N'){
 				$rootScope.tabitem.gubun = 'snlogin';
@@ -426,10 +440,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = '박혜진';
 			// $rootScope.loginData.Pwd = '1234';
 
-			// $rootScope.loginData.Admin_Code = 'km0421'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'kaming312';
-			// $rootScope.loginData.Pwd = 'lkmbanana1!';
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId = 'kmtest';
+			$rootScope.loginData.Pwd = 'kmtest1!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -608,6 +622,31 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			}
 		}
 
+		// 권한설정 function
+		$rootScope.priv_meaip = 
+			{ 
+				id : '' , // 메뉴이름
+				master_useYN : '', // 대메뉴권한 사용여부
+				useYN : '',  // 소메뉴 사용여부
+				de : '', // 삭제권한 
+				save : '', // 저장권한
+				print : '' // 출력권한
+			};
+		$rootScope.priv_meachul = 	
+			{ 
+				id : '' ,
+				master_useYN : '',
+				useYN : '',
+				de : '',
+				save : '',
+				print : ''
+			};
+		$rootScope.priv_jego = [
+			{ jego_YN : '', jego : '' },
+			{ jego_YN : '', jego : '' },
+			{ jego_YN : '', jego : '' }
+		]
+
 		/* SCM 로그인 - 김형석[2016-01] */
 		if ($rootScope.userType == 'SCM') {
 			loginService.comInfo('scm_login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
@@ -674,7 +713,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				else alert('login error');
 			});
 		}else if ($rootScope.userType == 'ERPia'){
-
+			$scope.dashBoard = {
+				M_today : '',
+				M_before : ''
+			}
 			/*금일 / 전일 매출액 조회 - 이경민[2016-05]*/
 			IndexService.meachulamt($scope.loginData.Admin_Code)
 			.then(function(response){
@@ -763,26 +805,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							}
 						}
 
-						// 권한설정 function
-						$rootScope.priv_meaip = 
-							{ 
-								id : '' ,
-								master_useYN : '',
-								useYN : '',
-								de : '',
-								save : '',
-								print : ''
-							};
-						$rootScope.priv_meachul = 	
-							{ 
-								id : '' ,
-								master_useYN : '',
-								useYN : '',
-								de : '',
-								save : '',
-								print : ''
-							};
-
 						/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
 						PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
 						.then(function(data){
@@ -799,6 +821,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								$rootScope.priv_meachul.de = data[1].priv_Delete;
 								$rootScope.priv_meachul.save = data[1].priv_Save;
 								$rootScope.priv_meachul.print = data[1].priv_Print;
+								var j = 0;
+								for(i=2; i<5; i++){
+									$rootScope.priv_jego[j].jego_YN = data[i].Mpriv;
+									$rootScope.priv_jego[j].jego = data[i].priv;
+									j = j+1;
+								}
 						});
 
 						$timeout(function() {
@@ -935,42 +963,30 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$rootScope.tabitem.gubun = 'Gest';
 			$rootScope.sideMenuHide = 'false';
 
-			// 권한설정 function
-			$rootScope.priv_meaip = 
-				{ 
-					id : '' ,
-					master_useYN : '',
-					useYN : '',
-					de : '',
-					save : '',
-					print : ''
-				};
-			$rootScope.priv_meachul = 	
-				{ 
-					id : '' ,
-					master_useYN : '',
-					useYN : '',
-					de : '',
-					save : '',
-					print : ''
-				};
 
 			/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
 			PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
 			.then(function(data){
 					$rootScope.priv_meaip.id = data[0].Menu_NM;
-					$rootScope.priv_meaip.master_useYN = date[0].Mpriv;
+					$rootScope.priv_meaip.master_useYN = data[0].Mpriv;
 					$rootScope.priv_meaip.useYN = data[0].priv;
 					$rootScope.priv_meaip.de = data[0].priv_Delete;
 					$rootScope.priv_meaip.save = data[0].priv_Save;
 					$rootScope.priv_meaip.print = data[0].priv_Print;
 
 					$rootScope.priv_meachul.id = data[1].Menu_NM;
-					$rootScope.priv_meachul.master_useYN = date[1].Mpriv;
+					$rootScope.priv_meachul.master_useYN = data[1].Mpriv;
 					$rootScope.priv_meachul.useYN = data[1].priv;
 					$rootScope.priv_meachul.de = data[1].priv_Delete;
 					$rootScope.priv_meachul.save = data[1].priv_Save;
 					$rootScope.priv_meachul.print = data[1].priv_Print;
+
+					var j = 0;
+					for(i=2; i<5; i++){
+						$rootScope.priv_jego[j].jego_YN = data[i].Mpriv;
+						$rootScope.priv_jego[j].jego = data[i].priv;
+						j = j+1;
+					}
 			});
 
 			$rootScope.goto_with_clearHistory('#/app/slidingtab');
@@ -1030,6 +1046,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$rootScope.tabitem.tab2 = 'tab-item';
 					$rootScope.tabitem.tab3 = 'tab-item';
 					$rootScope.tabitem.tab4 = 'tab-item';
+					$rootScope.tabitem.tab5 = 'tab-item';
 			     		$state.go("app.slidingtab");
 				}else if($rootScope.loginState == 'N'){
 					$rootScope.tabitem.gubun = 'snlogin';
