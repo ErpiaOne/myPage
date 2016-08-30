@@ -57,7 +57,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 						</div>
 
 						<div style="width: 100%; position: fixed; bottom: 100px; left: 0; padding: 5px 0;">
-							<button class="button button-small button-psm05" style="width:20%; align: left;">조회</button>
+							<button class="button button-small button-psm05" style="width:20%; align: left;" ng-click='jego_search()'>조회</button>
 						</div>
 					</div>
 
@@ -178,7 +178,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 									<tr>
 										<td class="td1-1">관심항목</td>
 										<td>
-											<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px">목록</button>
+											<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(1)">목록</button>
 										</td>
 										<td class="td1-2">
 											<input type="search" ng-disabled="true" placeholder="선택해주세요.">
@@ -192,7 +192,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 									<tr>
 										<td class="td1-1">MY LIST</td>
 										<td>
-											<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px">목록</button>
+											<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(2)">목록</button>
 										</td>
 										<td class="td1-2">
 											<input type="search" ng-disabled="true" placeholder="선택해주세요.">
@@ -239,7 +239,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 								</table>
 						</div>
 
-						<div style="padding: 0 10px;"><button class="button button-block psm_login_ink"  ng-click='ijmodal_function()' style="background: #52bcae;">조회</button></div>
+						<div style="padding: 0 10px;"><button class="button button-block psm_login_ink"  ng-click='jego_search()' style="background: #52bcae;">조회</button></div>
 						
 					</div>
 					</ion-scroll>
@@ -252,7 +252,26 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 								<div style="padding: 10px 0 55px 0;">
 									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
 										<tr >
-											<td>최근검색</td>
+											<td>상품명</td>
+											<td>규격</td>
+											<td>창고</td>
+										</tr>
+										<tr >
+											<td>자체코드</td>
+											<td>로케이션</td>
+											<td>브랜드</td>
+										</tr>
+									</table>
+									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
+										<tr >
+											<td>상품명</td>
+											<td>규격</td>
+											<td>창고</td>
+										</tr>
+										<tr >
+											<td>자체코드</td>
+											<td>로케이션</td>
+											<td>브랜드</td>
 										</tr>
 									</table>
 								</div>
@@ -266,9 +285,28 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 							<div align="center" style="background: #dce0e1; height:auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
 								<div style="padding: 10px 0 55px 0;">
 									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
-									<tr>
-										<td>빠른검색</td>
-									</tr>
+										<tr >
+											<td>상품명</td>
+											<td>규격</td>
+											<td>창고</td>
+										</tr>
+										<tr >
+											<td>자체코드</td>
+											<td>로케이션</td>
+											<td>브랜드</td>
+										</tr>
+									</table>
+									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
+										<tr >
+											<td>상품명</td>
+											<td>규격</td>
+											<td>창고</td>
+										</tr>
+										<tr >
+											<td>자체코드</td>
+											<td>로케이션</td>
+											<td>브랜드</td>
+										</tr>
 									</table>
 								</div>
 							</div>

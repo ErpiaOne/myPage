@@ -755,6 +755,17 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
+	/* 재고메인화면 - 이경민 */
+	.state('app.jego_search', {
+		url : '/jego_search',
+		views : {
+			'menuContent' : {
+				templateUrl : 'jego_manage/jego_search.html',
+				controller : 'jegoCtrl'
+			}
+		}
+	})
+
 	$urlRouterProvider.otherwise('/app/login');
 });
 

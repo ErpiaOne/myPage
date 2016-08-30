@@ -1,0 +1,70 @@
+<ion-view cache-view="false" style="color: #fff" class="bar-dark">
+	<ion-nav-title>
+		<div class="psmsmy_title_co">재고현황 조회</div>
+	</ion-nav-title>
+	<ion-nav-bar>
+		<ion-nav-buttons side="right">
+			<button menu-toggle="right" class="button button-small button-psm04"><i class="ion-ios-list-outline"></i></button>
+		</ion-nav-buttons>
+		<ion-nav-back-button ng-click="jego_back()">뒤로</ion-nav-back-button>
+	</ion-nav-bar>
+
+	<ion-content style="background-color: #dce0e1;">
+		<div style="text-align: center; padding: 10px 10px 30px 10px; color: #000;">
+			<div style="float: left; width: 30%; vertical-align: middle; font-size: 20px;">조회창고</div>
+			<div style="float: right; width: 70%;">
+				<select style="width:90%; border: 0; border-bottom: 1px solid #e0e0e0; color: #000;">
+					<option ng-selected>본사창고</option>
+					<option>가짜창고</option>
+					<option>진짜창고</option>
+				</select>
+				<i class="ion-search" style="width:10%; font-size: 25px; padding-left: 2px; vertical-align: middle;"></i>
+			</div>
+
+			<div style=" width: 100%;border-top: 1px solid #e0e0e0; background: #ebeded; font-size: 0.85em; margin-top: 50px; margin-bottom: 10px;">
+				<div style="width: 100%; text-align: left; border-bottom: 1px solid #000;">상품명</div>
+				<div style="text-align: center;">
+					<div style="float: left; width: 70%; border-bottom: 1px solid #000;">규격</div>
+					<div style="float: right; border-left: 1px solid #000; width: 30%; border-bottom: 1px solid #000;">재고(가용/불용)</div>
+					<br>
+					<div style="float: left; width: 35%;">자체코드</div>
+					<div style="float: right; border-left: 1px solid #000; width: 30%;">가용-출고대기</div>
+					<div style="margin: 0 auto; border-left: 1px solid #000; width: 35%;">로케이션</div>
+				</div>
+			</div>
+
+			<div><!-- 여기서 돌릴까? -->
+				<div style="width: 100%; border: 1px solid #000; background: #fff; font-size: 0.85em;">
+					<div style="width: 100%; text-align: left; border-bottom: 1px solid #000;"><b>네이처 레시피 마스크 팩_꿀</b></div>
+					<div style="text-align: center;">
+						<div style="float: left; width: 70%; border-bottom: 1px solid #000;">20g</div>
+						<div style="float: right; border-left: 1px solid #000; width: 30%; border-bottom: 1px solid #000;">26,953 (26,921/32)</div>
+						<br>
+						<div style="float: left; width: 35%;">S356</div>
+						<div style="float: right; border-left: 1px solid #000; width: 30%;">10</div>
+						<div style="margin: 0 auto; border-left: 1px solid #000; width: 35%;">-</div>
+					</div>
+				</div>
+				<div style="width: 100%; border: 1px solid #000; background: #FFE08C; font-size: 0.85em;">
+					<div style="width: 100%; text-align: left; border-bottom: 1px solid #000;"><b>네이처 레시피 마스크 팩_꿀</b></div>
+					<div style="text-align: center;">
+						<div style="float: left; width: 70%; border-bottom: 1px solid #000;">20g</div>
+						<div style="float: right; border-left: 1px solid #000; width: 30%; border-bottom: 1px solid #000;">26,953 (26,921/32)</div>
+						<br>
+						<div style="float: left; width: 35%;">S356</div>
+						<div style="float: right; border-left: 1px solid #000; width: 30%;">10</div>
+						<div style="margin: 0 auto; border-left: 1px solid #000; width: 35%;">-</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>
+
+
+<!-- 
+<div style="text-align: center;">
+    <div style="float: left;">왼쪽</div>
+    <div style="float: right;">오른쪽</div>
+    <div style="margin: 0 auto;">가운데</div>
+</div> -->

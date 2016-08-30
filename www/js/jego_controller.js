@@ -1,8 +1,6 @@
 // 재고현황 컨트롤러
-angular.module('starter.controllers')
-
-.controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $cordovaToast, $state, $location, $ionicPlatform, ERPiaAPI,  app) {
-	
+angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $cordovaToast, $state, $location, $ionicPlatform, $ionicModal, ERPiaAPI, app) {
+	console.log('jegoCtrl(재고현황 조회 컨트롤러)');
 	$scope.jegoSearch = 'hap';
 
 	$scope.upAnddown = 'ion-arrow-down-b';
@@ -56,24 +54,35 @@ angular.module('starter.controllers')
 		}
 	}
 
-	$scope.ion-page.modal {
-	    padding: 30px;
-	    background: rgba(0,0,0,0.5);
+	/* 관심항목/MY LIST 목록조회시 뜨는 모달창(크기 작음) - 이경민[2016-08-30] */
+	$ionicModal.fromTemplateUrl('jego_manage/mylist_modal.html',{
+		scope : $scope
+	}).then(function(modal){
+		$scope.mylist_Modal = modal;
+	});
+
+	$scope.mylist = function(num){
+		if(num == 2){
+			$scope.listname = "My LIST";
+		}else{
+			$scope.listname = "관심항목";
+		}
+		$scope.mylist_Modal.show();
 	}
 
-	/* 거래명세표 조회시 뜨는 모달창 - 이경민[2016-01] */
-	// $ionicModal.fromTemplateUrl('side/check_Sano.html',{
-	// 	scope : $scope;
-	// 	padding: 30px;
-	// 	background: rgba(0,0,0,0.5);
-	// }).then(function(modal){
-	// 	$scope.check_sano_Modal = modal;
-	// });
-
-	$scope.mylist = function(){
-
+	$scope.mylist_cloes = function(){
+		$scope.mylist_Modal.hide();
 	}
 
+	$scope.jego_search = function(){
+		console.log('재고조회 할꺼야.');
+		$state.go("app.jego_search");
+	}
+
+	$scope.jego_back = function(){
+		console.log('back');
+		$ionicHistory.goBack();
+	}
 
 // })
 // /* 매입&매출 전표조회 컨트롤러 - 이경민[2015-12]*/
