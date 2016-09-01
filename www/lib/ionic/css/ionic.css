@@ -5980,7 +5980,7 @@ input[type="radio"][disabled], input[type="checkbox"][disabled], input[type="rad
     height: 100%;
     border-width: 1px;
     border-style: solid;
-    border-radius: 28px;
+   /* border-radius: 28px; */
     background: #fff;
     content: ' ';
     -webkit-transition: background-color 20ms ease-in-out;

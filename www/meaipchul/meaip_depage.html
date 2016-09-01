@@ -27,7 +27,7 @@
 </ion-nav-bar>
 <ion-content>
 
-<div class="list list-inset" style="color: #444444; margin-bottom: 100px;">
+<div class="list list-inset" style="color: #444444;"> <!-- margin-bottom 삭 -->
   <any ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1">
 
   <label class="item item-input" style="padding-right: 10px;">
@@ -110,6 +110,8 @@
   <span class="input-label psm_sang_04"><i class="ion-record">&nbsp;&nbsp;관리비고 </i></span>
   <span ng-repeat="x in chit_dedata | filter: listSearch track by $index" ng-if="$index < 1" style="display: inline-block; width: 100%; padding-right: 20px; white-space: normal;">{{x.Remk}}</span>
   </label>
+
+  <div style="height: 100px; background: #dce0e1;"></div> <!-- 추가 됨 -->
 
 </div>
 </ion-content>
