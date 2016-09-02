@@ -52,10 +52,13 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 			var er_placecode = data.list[0].Sale_Place_Code;
 			$scope.placeYN = true;
 		}
+		$rootScope.setupData.basic_Place_Code = er_placecode;
 		/*환경설정값 있는지 먼저 불러오기.- 이경민*/
 	    	MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId, er_placecode)
 		.then(function(data){
+			console.log('여기가 문제! ==>>', data);
 			if(data != null){
+				console.log('여기넘어오니?');
 				$rootScope.setupData = data;
 			}
 
@@ -69,7 +72,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 				.then(function(data){
 					$scope.changolists = data.list;
 					var gubun = false;
-					for(var i = 0; i < $scope.changolists.length; i++){ ////여기여기!
+					for(var i = 0; i < $scope.changolists.length; i++){ 
 						if($scope.changolists[i].Code == $rootScope.setupData.basic_Ch_Code){
 							var gubun = true;
 							break;
@@ -1809,10 +1812,66 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		//상품명, 자체코드가 11글자보다 크면 <BR>태그를 삽입하여 한줄 띄게 만든다 ( IONIC POPUP 깨지는 문제 해결방안) - 김형석
 		if($scope.goodslists[indexnum].G_Name.length>7) $scope.G_NameS = $scope.goodslists[indexnum].G_Name.substring(0,8) + '<br>' + $scope.goodslists[indexnum].G_Name.substring(8,$scope.goodslists[indexnum].G_Name.length);
 		if($scope.goodslists[indexnum].G_OnCode.length>11) $scope.G_OnCodeS = $scope.goodslists[indexnum].G_OnCode.substring(0,10) + '<br>' + $scope.goodslists[indexnum].G_OnCode.substring(10,$scope.goodslists[indexnum].G_OnCode.length);
+		var td = '<td width="40%" style="border-right:1px solid black; font-size: 0.8em;">';
+		var td2 = '<td width="55%" style="padding-left:5px; font-size: 0.8em;">';
+		var alert_template = '<table width="100%">' +
+						'<tr>' +
+							td + '상품명</td>' +
+							td2 + $scope.G_NameS + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '규격</td>' +
+							td2 + $scope.goodslists[indexnum].G_Stand + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '로케이션</td>' +
+							td2 + $scope.goodslists[indexnum].Location + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '자체코드</td>' +
+							td2 + $scope.G_OnCodeS + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '제조사</td>' +
+							td2 + $scope.goodslists[indexnum].G_JeaJoChe + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '브랜드</td>' +
+							td2 + $scope.goodslists[indexnum]. Brand_Name+ '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '매입가</td>' +
+							td2 + commaChange($scope.goodslists[indexnum].G_Dn1) + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '도매가</td>' +
+							td2 + commaChange($scope.goodslists[indexnum].G_Dn2) + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '인터넷가</td>' +
+							td2 + commaChange($scope.goodslists[indexnum].G_Dn3) + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '소매가</td>' +
+							td2 + commaChange($scope.goodslists[indexnum].G_Dn4) + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '권장소비자가</td>' +
+							td2 + commaChange($scope.goodslists[indexnum].G_Dn5) + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '입수량</td>' +
+							td2 + $scope.goodslists[indexnum].Box_In_Qty + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '재고</td>' +
+							td2 + $scope.goodslists[indexnum].Jego + '</td>' +
+						'</tr>' +
+						'</table>';
 		$ionicPopup.alert({
 			title: '<b>상품 정보</b>',
 			subTitle: '',
-			template: '<table width="100%"><tr><td width="40%" style="border-right:1px solid black;">상품명</td><td width="55%" style="padding-left:5px">'+$scope.G_NameS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">규격</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].G_Stand+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">로케이션</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Location+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">자체코드</td><td width="55%" style="padding-left:5px">'+$scope.G_OnCodeS+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">매입가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn1)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">도매가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn2)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">인터넷가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn3)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">소매가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn4)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">권장소비자가</td><td width="55%" style="padding-left:5px">'+commaChange($scope.goodslists[indexnum].G_Dn5)+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">입수량</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Box_In_Qty+'</td></tr><tr><td width="40%" style="border-right:1px solid black;">재고</td><td width="55%" style="padding-left:5px">'+$scope.goodslists[indexnum].Jego+'</td></tr></table>'
+			template: alert_template
 		})
 	};
 

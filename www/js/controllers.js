@@ -624,28 +624,33 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 		// 권한설정 function
 		$rootScope.priv_meaip = 
-			{ 
-				id : '' , // 메뉴이름
-				master_useYN : '', // 대메뉴권한 사용여부
-				useYN : '',  // 소메뉴 사용여부
-				de : '', // 삭제권한 
-				save : '', // 저장권한
-				print : '' // 출력권한
-			};
+		{ 
+			id : '' , // 메뉴이름
+			master_useYN : '', // 대메뉴권한 사용여부
+			useYN : '',  // 소메뉴 사용여부
+			de : '', // 삭제권한 
+			save : '', // 저장권한
+			print : '' // 출력권한
+		};
+
 		$rootScope.priv_meachul = 	
-			{ 
-				id : '' ,
-				master_useYN : '',
-				useYN : '',
-				de : '',
-				save : '',
-				print : ''
-			};
+		{ 
+			id : '' ,
+			master_useYN : '',
+			useYN : '',
+			de : '',
+			save : '',
+			print : ''
+		};
+
 		$rootScope.priv_jego = [
 			{ jego_YN : '', jego : '' },
 			{ jego_YN : '', jego : '' },
 			{ jego_YN : '', jego : '' }
 		]
+
+		$rootScope.priv_wongaYN = 'Y'; // 원가 비공개 설정여부이기 때문에 Y면 원가 비공개 N이면 원가 공개 - 비공개 디폴트[이경민]
+		$rootScope.priv_productYM = 'N' // 상품 조회등록수정 권한이 없을 경우 N -> 상품 상세정보 접근 불가 [이경민]
 
 		/* SCM 로그인 - 김형석[2016-01] */
 		if ($rootScope.userType == 'SCM') {
@@ -808,6 +813,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
 						PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
 						.then(function(data){
+								/* 매입매출권한 */
 								$rootScope.priv_meaip.id = data[0].Menu_NM;
 								$rootScope.priv_meaip.master_useYN = data[0].Mpriv;
 								$rootScope.priv_meaip.useYN = data[0].priv;
@@ -821,12 +827,27 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								$rootScope.priv_meachul.de = data[1].priv_Delete;
 								$rootScope.priv_meachul.save = data[1].priv_Save;
 								$rootScope.priv_meachul.print = data[1].priv_Print;
+
+								/* 재고권한 */
 								var j = 0;
 								for(i=2; i<5; i++){
 									$rootScope.priv_jego[j].jego_YN = data[i].Mpriv;
 									$rootScope.priv_jego[j].jego = data[i].priv;
 									j = j+1;
 								}
+
+								/* 상품정보 권한 */
+								if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0 && data[6].priv == 0){
+									$rootScope.priv_productYM = 'N';
+								}else{
+									$rootScope.priv_productYM = 'Y';
+								}
+						});
+
+						/* 원가 공개 설정 여부 [이경민 - 2016-09-01] */ // Y가 원가 비공개 N이 원가 공개
+						PrivService.priv_wonga_Check($scope.loginData.Admin_Code, $scope.loginData.UserId)
+						.then(function(data){
+								$rootScope.priv_wongaYN = data[0].WonGa;
 						});
 
 						$timeout(function() {
@@ -967,6 +988,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
 			PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
 			.then(function(data){
+					/* 매입매출 권한 */
 					$rootScope.priv_meaip.id = data[0].Menu_NM;
 					$rootScope.priv_meaip.master_useYN = data[0].Mpriv;
 					$rootScope.priv_meaip.useYN = data[0].priv;
@@ -981,12 +1003,26 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$rootScope.priv_meachul.save = data[1].priv_Save;
 					$rootScope.priv_meachul.print = data[1].priv_Print;
 
+					/* 재고권한 */
 					var j = 0;
 					for(i=2; i<5; i++){
 						$rootScope.priv_jego[j].jego_YN = data[i].Mpriv;
 						$rootScope.priv_jego[j].jego = data[i].priv;
 						j = j+1;
 					}
+
+					/* 상품정보 권한 */
+					if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0 && data[6].priv == 0){
+						$rootScope.priv_productYM = 'N';
+					}else{
+						$rootScope.priv_productYM = 'Y';
+					}
+			});
+
+			/* 원가 공개 설정 여부 [이경민 - 2016-09-01] */ // Y가 원가 비공개 N이 원가 공개
+			PrivService.priv_wonga_Check($scope.loginData.Admin_Code, $scope.loginData.UserId)
+			.then(function(data){
+					$rootScope.priv_wongaYN = data[0].WonGa;
 			});
 
 			$rootScope.goto_with_clearHistory('#/app/slidingtab');

@@ -175,11 +175,25 @@ angular.module('starter.services', [])
 })
 
 /* ERPia로그인시 계정권한관현 Service - 이경민[2016-07] */
-.factory('PrivService', function($http, $q, ERPiaAPI){
+.factory('PrivService', function($http, $q, ERPiaAPI){ 
 	return{
 		pricheck : function(Admin_Code, UserId){		// 메인홈(미처리건/미수신건...등등) 정보 조회
 			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
 			var data = 'Kind=Mobile_Select_User_Priv&Admin_Code=' + Admin_Code + '&UserId=' + escape(UserId);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response.data.list;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+
+		}, priv_wonga_Check : function(Admin_Code, UserId){		// 메인홈(미처리건/미수신건...등등) 정보 조회
+			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
+			var data = 'Kind=ERPia_WonGa_Priv&Admin_Code=' + Admin_Code + '&UserId=' + escape(UserId);
+			console.log('priv_wonga_Check=>' , url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response.data.list;
@@ -915,11 +929,10 @@ angular.module('starter.services', [])
 							basic_Subul_Meaip_Before : response.data.list[0].basic_Subul_Meaip_Before,
 							basic_Subul_Sale_Before : response.data.list[0].basic_Subul_Sale_Before
 						};
-
-						if(er_place != '000'){
-							data_setup.basic_Place_Code = er_place;
-						}
 					}
+				if(er_place != '000'){
+					data_setup.basic_Place_Code = er_place;
+				}
 				return data_setup;
 				}else{
 					return $q.reject(response.data);
@@ -1422,8 +1435,8 @@ angular.module('starter.services', [])
 					break;
 				default : console.log('모드선택안됨 오류'); break;
 			}	
-
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+			console.log('상품정보 수정 =>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
 					if(response.data == '<!--Parameter Check-->'){

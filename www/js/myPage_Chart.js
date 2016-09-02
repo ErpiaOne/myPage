@@ -203,15 +203,31 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		}, ["serial"]);
 	}
-	function commaChange(Num){
-		fl=""
+	function commaChange(Num)
+	{
 		Num = new String(Num)
+
+		var numlist = Num.split('.');
+
+		if(numlist[1] != undefined){
+			Num = numlist[0];
+		}
+
+		fl=""
 		temp=""
 		co=3
+
+		if(Num < 0){// 마이너스 금액일경우
+			Num = Num.replace(/\-/g,'');
+			fl = '-';
+		}
+
 		num_len=Num.length
-		while (num_len>0){
+		while (num_len>0)
+		{
 			num_len=num_len-co
-			if(num_len<0){
+			if(num_len<0)
+			{
 				co=num_len+co;
 				num_len=0
 			}
