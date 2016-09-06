@@ -77,10 +77,13 @@
     <tr ng-repeat="y in chit_dedata">
       <td class="width-60" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Name}}</td>
       <td class="width-20" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Qty}}</td>
-      <td class="width-20-r" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Price | number:0}}</td>
+      <td class="width-20-r" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">
+          <span ng-if='priv_wongaYN == "N"'>{{y.G_Price | number:0}}</span>
+          <span ng-if='priv_wongaYN == "Y"'>********</span>
+      </td>
     </tr>
     <tr>
-      <td colspan="3" class="td3" style="color: #dd8369; padding:15px 5px 0 0;"><b>총 {{qtysum}}개 / {{pricesum | number:0}}원</b></td>
+      <td colspan="3" class="td3" style="color: #dd8369; padding:15px 5px 0 0;"><b>총 {{qtysum}}개 / <span ng-if='priv_wongaYN == "N"'>{{pricesum | number:0}}원</span><span ng-if='priv_wongaYN == "Y"'>*********원</span></b></td>
     </tr>
     </table>
   </div>
@@ -99,7 +102,12 @@
     <tr>
       <td class="width-30">{{x.IpJi_Date}}</td>
       <td class="width-30"><any ng-if='x.IpJi_Gubun == 701'>현금결제</any><any ng-if='x.IpJi_Gubun == 702'>통장결제</any><any ng-if='x.IpJi_Gubun == 703'>카드결제</any><any ng-if='x.IpJi_Gubun == 704'>어음결제</any></td>
-      <td class="width-20-r"><b>{{x.IpJi_Amt | number:0}}원</b></td>
+      <td class="width-20-r">
+        <b>
+          <span ng-if='priv_wongaYN == "N"'>{{x.IpJi_Amt | number:0}}원</span>
+          <span ng-if='priv_wongaYN == "Y"'>********원</span>
+        </b>
+      </td>
     </tr>
     </table>
   </div>

@@ -101,9 +101,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 재고관리 - 이경민[2016-05] */
 	$scope.jego = function(){
-		// if(ERPiaAPI.toast == 'Y') $cordovaToast.show('준비중입니다.', 'long', 'center');
-		// else alert('준비중입니다.');
-		$rootScope.goto_with_clearHistory("#app/jegoMain"); $scope.sidetab("tab4");
+		if($rootScope.priv_jego.jego_YN == 'Y' && $rootScope.priv_jego.jego == 'Y'){
+			$rootScope.goto_with_clearHistory("#app/jegoMain"); $scope.sidetab("tab4");
+		}else{
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('권한이 없습니다.', 'long', 'center');
+			else console.log('권한이 없습니다.');
+		}
 	}
 
 	/* 버전관리 - 김형석[2016-01] */
@@ -643,11 +646,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			print : ''
 		};
 
-		$rootScope.priv_jego = [
-			{ jego_YN : '', jego : '' },
-			{ jego_YN : '', jego : '' },
-			{ jego_YN : '', jego : '' }
-		]
+		$rootScope.priv_jego ={ 
+			jego_YN : '',
+			jego : '' 
+		}
 
 		$rootScope.priv_wongaYN = 'Y'; // 원가 비공개 설정여부이기 때문에 Y면 원가 비공개 N이면 원가 공개 - 비공개 디폴트[이경민]
 		$rootScope.priv_productYM = 'N' // 상품 조회등록수정 권한이 없을 경우 N -> 상품 상세정보 접근 불가 [이경민]
@@ -829,11 +831,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								$rootScope.priv_meachul.print = data[1].priv_Print;
 
 								/* 재고권한 */
-								var j = 0;
-								for(i=2; i<5; i++){
-									$rootScope.priv_jego[j].jego_YN = data[i].Mpriv;
-									$rootScope.priv_jego[j].jego = data[i].priv;
-									j = j+1;
+								$rootScope.priv_jego.jego_YN = data[2].Mpriv;
+								if(data[2].priv == '0' && data[3].priv == '0' && data[4].priv == '0'){
+									$rootScope.priv_jego.jego = 'N';
+								}else{
+									$rootScope.priv_jego.jego = 'Y';
 								}
 
 								/* 상품정보 권한 */
@@ -842,12 +844,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								}else{
 									$rootScope.priv_productYM = 'Y';
 								}
+
+								console.log('매입권한 =>', $rootScope.priv_meaip);
+								console.log('매출권한 =>', $rootScope.priv_meachul);
+								console.log('재고권한 =>', $rootScope.priv_jego);
+								console.log('상품정보 권한 =>', $rootScope.priv_productYM);
 						});
 
 						/* 원가 공개 설정 여부 [이경민 - 2016-09-01] */ // Y가 원가 비공개 N이 원가 공개
 						PrivService.priv_wonga_Check($scope.loginData.Admin_Code, $scope.loginData.UserId)
 						.then(function(data){
 								$rootScope.priv_wongaYN = data[0].WonGa;
+								console.log('원가공개 설정여부 =>', $rootScope.priv_wongaYN);
 						});
 
 						$timeout(function() {
@@ -1004,11 +1012,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$rootScope.priv_meachul.print = data[1].priv_Print;
 
 					/* 재고권한 */
-					var j = 0;
-					for(i=2; i<5; i++){
-						$rootScope.priv_jego[j].jego_YN = data[i].Mpriv;
-						$rootScope.priv_jego[j].jego = data[i].priv;
-						j = j+1;
+					$rootScope.priv_jego.jego_YN = data[2].Mpriv;
+					if(data[2].priv == '0' && data[3].priv == '0' && data[4].priv == '0'){
+						$rootScope.priv_jego.jego = 'N';
+					}else{
+						$rootScope.priv_jego.jego = 'Y';
 					}
 
 					/* 상품정보 권한 */

@@ -77,7 +77,10 @@ div.col4{width:44%; color: #fff;}
 							<td class="resulttd1-1" rowspan="2" align="center" style="padding-top: 8px;">{{$index+1}}.</td>
 							<td class="resulttd1-2" align="left" style="padding-top: 8px;">{{x.Meaip_Date}}</td>
 							<td class="resulttd1-3" align="left" style="padding-top: 8px;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{x.GerName}}</b><div></td>
-							<td class="resulttd1-4" rowspan="2" align="right" style="padding-top: 8px; vertical-align: middle;">{{x.Meaip_Amt | number:0}}원</td>
+							<td class="resulttd1-4" rowspan="2" align="right" style="padding-top: 8px; vertical-align: middle;">
+								<span ng-if='priv_wongaYN == "N"'>{{x.Meaip_Amt | number:0}}원</span>
+								<span ng-if='priv_wongaYN == "Y"'>********원</span>
+							</td>
 						</tr>
 						<tr>
 							<td colspan="2" class="resulttd2-1" align="left"><div style="width: 100%; height: 21px; overflow: hidden; ">{{x.G_Name}}</div></td>
@@ -104,14 +107,20 @@ div.col4{width:44%; color: #fff;}
 			<tr>
 				<td rowspan="2" style="width: 13%; text-align: center;">기간<br>현황</td>
 				<td style="width: 12%; text-align: left;">매입액</td>
-				<td style="width: 26%; text-align: right;">{{money.meaipchulsum | number:0}}원</td>
+				<td style="width: 26%; text-align: right;">
+					<span ng-if='priv_wongaYN == "N"'>{{money.meaipchulsum | number:0}}원</span>
+					<span ng-if='priv_wongaYN == "Y"'>**********원</span>
+				</td>
 				<td rowspan="2" style="width: 5%;"></td>
 				<td style="width: 15%; text-align: left;"><span ng-if='balance == true'>이월잔액</span></td>
 				<td style="width: 29%; text-align: right; padding-right: 13px;"><span ng-if='balance == true'>{{money.emoon | number:0}}원</span></td>
 			</tr>
 			<tr>
 				<td style="text-align: left;"><span ng-if='balance == true'>지급액</span></td>
-				<td style="text-align: right;"><span ng-if='balance == true'>{{chit_jiSum | number:0}}원</span></td>
+				<td style="text-align: right;">
+					<span ng-if='balance == true && priv_wongaYN == "N"'>{{chit_jiSum | number:0}}원</span>
+					<span ng-if='balance == true && priv_wongaYN == "Y"'>********원</span>
+				</td>
 				<td style="text-align: left;"><span ng-if='balance == true'>총잔액</span></td>
 				<td style="text-align: right; padding-right: 13px;"><span ng-if='balance == true'>{{money.hap | number:0}}원</span></td>
 			</tr>

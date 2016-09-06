@@ -56,9 +56,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		/*환경설정값 있는지 먼저 불러오기.- 이경민*/
 	    	MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId, er_placecode)
 		.then(function(data){
-			console.log('여기가 문제! ==>>', data);
 			if(data != null){
-				console.log('여기넘어오니?');
 				$rootScope.setupData = data;
 			}
 
@@ -609,7 +607,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	$scope.useYN_Check_quick = function(gubun){ // 빠른등록 모달 
 		switch (gubun){
 			case 1 :
-				if($rootScope.priv_meaip.save == 'Y'){
+				if($rootScope.priv_meaip.save == 'Y' && $rootScope.priv_wongaYN == 'N'){ // 저장권한이 있으면서 원가 공개권한이 있는 사람
 					$scope.quickReg();
 				}else{
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록 권한이 없습니다.', 'long', 'center');
@@ -695,7 +693,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		// $ionicHistory.clearHistory();
 
 		if($rootScope.distinction == 'meaip'){
-			if($rootScope.priv_meaip.save == 'Y'){
+			if($rootScope.priv_meaip.save == 'Y' && $rootScope.priv_wongaYN == 'N'){
 				$state.go('app.meaip_IU', {}, {location:'replace'});
 			}else{
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록 권한이 없습니다.', 'short', 'center');
@@ -1814,6 +1812,9 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		if($scope.goodslists[indexnum].G_OnCode.length>11) $scope.G_OnCodeS = $scope.goodslists[indexnum].G_OnCode.substring(0,10) + '<br>' + $scope.goodslists[indexnum].G_OnCode.substring(10,$scope.goodslists[indexnum].G_OnCode.length);
 		var td = '<td width="40%" style="border-right:1px solid black; font-size: 0.8em;">';
 		var td2 = '<td width="55%" style="padding-left:5px; font-size: 0.8em;">';
+		 
+			if($rootScope.priv_wongaYN == 'N')  var wonga_meaip = commaChange($scope.goodslists[indexnum].G_Dn1)
+			else var wonga_meaip = '******'
 		var alert_template = '<table width="100%">' +
 						'<tr>' +
 							td + '상품명</td>' +
@@ -1841,7 +1842,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 						'</tr>' +
 						'<tr>' +
 							td + '매입가</td>' +
-							td2 + commaChange($scope.goodslists[indexnum].G_Dn1) + '</td>' +
+							td2 + wonga_meaip + '</td>' +
 						'</tr>' +
 						'<tr>' +
 							td + '도매가</td>' +
