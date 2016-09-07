@@ -20,7 +20,7 @@ var g_playlists = [{
 
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
-.controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, PrivService, $cordovaSocialSharing, $ionicSideMenuDelegate){
+.controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ActsService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, PrivService, $cordovaSocialSharing, $ionicSideMenuDelegate){
 	$rootScope.PushData = {};
 	/* 인앱브라우져(사이트띄우는거) 기본설정  - 김형석[2016-05] */
 	var browseroptions = {
@@ -1297,6 +1297,36 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$scope.shareURL = function(){
 		var url = 'https://play.google.com/store/apps/details?id=com.ERPia.MyPage';
 		$cordovaSocialSharing.share('ERPIA_Mobile' , '[ERPiaMobile 설치URL 공유]', null, url);
+	}
+
+
+
+	/* 버튼별 로그 기록 저장 - 이경민[20160907] */
+	$rootScope.ActsLog = function(module_M, module_T){
+	// admin_code, id, mac, loginType, M, T
+	console.log('admin_code=>', $rootScope.loginData.admin_code);
+	console.log('id=>', $rootScope.loginData.UserId);
+		if($rootScope.userType == 'ERPia'){
+			var admin_code = $rootScope.loginData.admin_code;
+			var id = $rootScope.loginData.UserId;
+			var mac = $rootScope.deviceInfo.uuid;
+			var loginType = 'E';
+		}else if($rootScope.userType == 'Guest' || $rootScope.userType == undefined){
+			var admin_code = 'Guest';
+			var id = 'Guest';
+			var mac = 'Guest';
+			var loginType = 'G';
+		}else{
+			console.log('저장안할껀데..?');
+		}
+
+		if(loginType == 'E' || loginType == 'G'){
+			ActsService.Acts_save(admin_code, id, mac, loginType, module_M, module_T)
+			.then(function(data){
+				console.log('data');
+			});
+		}
+		
 	}
 })
 

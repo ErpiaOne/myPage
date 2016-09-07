@@ -507,6 +507,26 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 
 			$scope.kind = tabs[index].title;
 
+			var module_T = '';
+			switch ($scope.kind){
+			case 'meaip_jem' : module_T = 'chart1'; break;
+			case 'meachul_jem' : module_T = 'chart2'; break;
+			case 'brand_top5' : module_T = 'chart3'; break;
+			case 'meachul_top5' : module_T = 'chart4'; break;
+			case 'meachul_7' : module_T = 'chart5'; break;
+			case 'meaip_7' : module_T = 'chart6'; break;
+			case 'beasonga' : module_T = 'chart7'; break;
+			case 'beasong_gu' : module_T = 'chart8'; break;
+			case 'meachul_onoff' : module_T = 'chart9'; break;
+			case 'banpum' : module_T = 'chart10'; break;
+			case 'banpum_top5' : module_T = 'chart11'; break;
+			case 'meachul_cs' : module_T = 'chart12'; break;
+			case 'meaip_commgoods' : module_T = 'chart13'; break;
+			case 'JeGo_TurnOver' : module_T = 'chart14'; break;
+			case 'beasongb' : module_T = 'chart15'; break;
+			}
+			
+			$rootScope.ActsLog('chart', module_T);
 			if(index > 0){
 				var titlename = tabs[index].name;
 			}else{

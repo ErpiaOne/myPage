@@ -208,6 +208,33 @@ angular.module('starter.services', [])
 	};
 })
 
+/* ERPia모바일 버튼 로그 기록저장 Service - 이경민[2016-09] */
+.factory('ActsService', function($http, $q, ERPiaAPI){ 
+	return{
+		Acts_save : function(admin_code, id, mac, loginType, M, T){		// 모바일 버튼 로그 기록저장
+			console.log('==================>', admin_code, id, mac, loginType, M, T);
+			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
+			var data = 'Kind=Mobile_Acts&Admin_Code=' + Admin_Code + '&UserId=' + escape(UserId);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response.data.list;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+
+		}
+	};
+})
+
+//Kind=Mobile_Acts&admin_code=onz&id=test1234&mac=undefined&loginType=E&hp=01056579731&Module_M=chart&Module_T=chart1
+
+//Kind=Mobile_Acts&admin_code=GEST&id=GEST&mac=GEST&loginType=G&hp=-&Module_M=chart&Module_T=chart1
+
+
+
 /* 이알피아계정정보 관련Service - 김형석[2015-12] */
 .factory('ERPiaInfoService', function($http, ERPiaAPI){
 	var ERPiaInfo = function(kind, Admin_Code, sDate, eDate){		// 이알피아 계정정보 불러오기 
