@@ -134,8 +134,8 @@
             </td>
             <td style="text-align: right">
                 <button class="button button-psm01" ng-click="m_quick(x.iL_No,ionstar)"><i class="button button-icon button-clear {{ionstar}} starbtn" style="font-size: 11px; color: {{starcss}}" menu-close></i>즐겨찾기</button>
-                <button class="button button-psm03" ng-if='x.Subul_kind == 122 && priv_meaip.print == "Y"' ng-controller="tradeCtrl" ng-click='readTradeDetail(x.iL_No,2)'>거래명세서</button>
-                <button class="button button-psm04" ng-click="useYN_Check_upandde('update',x.iL_No)">수정</button>
+                <button class="button button-psm03" ng-if='x.Subul_kind == 122 && priv_meaip.print == "Y"' ng-controller="tradeCtrl" ng-click='readTradeDetail(x.iL_No,2);ActsLog("meaip", "meaip_select_trade")'>거래명세서</button>
+                <button class="button button-psm04" ng-click="useYN_Check_upandde('update',x.iL_No);ActsLog('meaip', 'meaip_modify')">수정</button>
             </td>
           </tr>
         </table>

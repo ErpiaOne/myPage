@@ -28,12 +28,12 @@
 						홈
 					</a>
 					<!-- <a class="{{tabitem.tab2}} psm_button01" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'> -->
-					<a class="{{tabitem.tab2}} psm_button01" ng-click='useYN_Check(1)'>
+					<a class="{{tabitem.tab2}} psm_button01" ng-click='useYN_Check(1);ActsLog("meaip", "meaip_select_tab")'>
 						<span ng-if="priv_meaip.master_useYN == 'Y' && priv_meaip.useYN == '1'">매입</span>
 						<span style="text-decoration:line-through;" ng-if="priv_meaip.master_useYN == 'N' || priv_meaip.useYN == '0'">매입</span>
 					</a>
 					<!-- <a class="{{tabitem.tab3}} psm_button01" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3")'> -->
-					<a class="{{tabitem.tab3}} psm_button01" ng-click='useYN_Check(2)'>
+					<a class="{{tabitem.tab3}} psm_button01" ng-click='useYN_Check(2);ActsLog("meachul", "meachul_select_tab")'>
 						<span ng-if="priv_meachul.master_useYN == 'Y' && priv_meachul.useYN == '1'">매출</span>
 						<span style="text-decoration:line-through;" ng-if="priv_meachul.master_useYN == 'N' || priv_meachul.useYN == '0'">매출</span>
 					</a>
@@ -68,10 +68,10 @@
 					<a class="{{tabitem.tab1}} psm_button01" ng-click="goHome(); sidetab('tab1')">
 						홈
 					</a>
-					<a class="{{tabitem.tab2}} psm_button01" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'>
+					<a class="{{tabitem.tab2}} psm_button01" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2");ActsLog("meaip", "meaip_select_tab")'>
 						매입
 					</a>
-					<a class="{{tabitem.tab3}} psm_button01" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3")'>
+					<a class="{{tabitem.tab3}} psm_button01" ng-click='goto_with_clearHistory("#app/meachul_page"); sidetab("tab3");ActsLog("meachul", "meachul_select_tab")'>
 						매출
 					</a>
 					<a class="{{tabitem.tab4}} psm_button01" ng-click='jego();'>

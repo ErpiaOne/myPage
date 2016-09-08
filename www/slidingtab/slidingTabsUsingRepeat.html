@@ -4,7 +4,7 @@
 	</ion-nav-title>
 	<ion-nav-buttons side="right">
 		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/introduce');" class="button button-small button-psm04" ng-if="userType == 'Guest' " style="line-height: 12px;">ERPia<br>소개</button>&nbsp;
-		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/cs');" class="button button-small button-psm04" ng-if="userType == 'Guest' " style="line-height: 14px;">가입<br>상담</button>
+		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/cs');ActsLog('act_settings','act_Signup')" class="button button-small button-psm04" ng-if="userType == 'Guest' " style="line-height: 14px;">가입<br>상담</button>
 	</ion-nav-buttons>
 
 	<ion-content scroll="false">

@@ -1,49 +1,3 @@
-<!-- <ion-view style="background: #dce0e1; color: #fff">
-	<ion-nav-title>
-		<div class="psmsmy_title_co">통계 리포트 설정</div>
-	</ion-nav-title>
-	<ion-nav-bar>
-		<ion-nav-back-button ng-click="backno();goBack_with_clearHistory()">뒤로</ion-nav-back-button>
-	</ion-nav-bar>
-	<ion-content class="padding2">
-		<body>
-			<ion-header-bar class="bar-positive" style="background: #795e81; border: 0;">
-				<div class="buttons">
-				<button class="button button-icon icon ion-ios-minus-outline" ng-if="data.showDelete == false" ng-click="data.showDelete = !false;data.showReorder = !true;"></button>
-				<button class="button button-icon ion-ios-checkmark-outline" ng-if="data.showDelete == true" ng-click="data.showDelete = !true;data.showReorder = !true;movesave();"></button>
-				</div>
-				<h1 class="title"  style="text-align: center;">순서/노출여부</h1>
-				<div class="buttons">
-					<button class="button" style="color: #444; border: 0; background: #fff;" ng-if="data.showReorder == false" ng-click="data.showReorder = !false;data.showDelete = !true;">
-					순서변경
-					</button>
-					<button class="button" style="color: #444; border: 0; background: #fff;" ng-if="data.showReorder == true" ng-click="data.showReorder = !true;data.showDelete = !true;movesave();">
-					순서저장
-					</button>
-				</div>
-			</ion-header-bar>
-
-			<ion-content style="background: #dce0e1; padding: 0 15px">
-				<ion-list show-delete="data.showDelete" show-reorder="data.showReorder" style="padding: 15px 15px 55px 15px; ">
-					<ion-item ng-repeat="item in items" item="item" class="item-remove-animate">
-						<any ng-if="item.visible=='Y'">
-							<div style="font-size: 0.85em; "><i class="{{item.icon}}" style='font-size:23px;'></i>&nbsp;&nbsp; {{item.name}}</div>
-							<ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(items, $index)"></ion-delete-button>
-						</any>
-
-						<any ng-if="item.visible=='N'">
-							<div style="color: #FF5E00; text-decoration:line-through; font-size: 0.85em;"><i class="{{item.icon}}" style='font-size:23px;'></i>&nbsp;&nbsp; {{item.name}}</div>
-							<ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(items, $index)"></ion-delete-button>
-						</any>
-						<ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
-
-					</ion-item>
-				</ion-list>
-			</ion-content>
-		</body>
-	</ion-content>
-</ion-view> -->
-
 <ion-view style="background: #dce0e1; color: #fff">
 	<ion-nav-title>
 		<div class="psmsmy_title_co">통계 리포트 설정</div>
@@ -58,7 +12,7 @@
 				</div>
 				<h1 class="title"  style="text-align: center;">순서/노출여부</h1>
 				<div class="buttons">
-					<button class="button" style="color: #444; border: 0; background: #fff;" ng-click="movesave()">
+					<button class="button" style="color: #444; border: 0; background: #fff;" ng-click="movesave();ActsLog('chart', 'chart_save')">
 					순서저장
 					</button>
 				</div>

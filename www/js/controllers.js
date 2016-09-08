@@ -1304,10 +1304,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 버튼별 로그 기록 저장 - 이경민[20160907] */
 	$rootScope.ActsLog = function(module_M, module_T){
 	// admin_code, id, mac, loginType, M, T
-	console.log('admin_code=>', $rootScope.loginData.admin_code);
-	console.log('id=>', $rootScope.loginData.UserId);
 		if($rootScope.userType == 'ERPia'){
-			var admin_code = $rootScope.loginData.admin_code;
+			var admin_code = $rootScope.loginData.Admin_Code;
 			var id = $rootScope.loginData.UserId;
 			var mac = $rootScope.deviceInfo.uuid;
 			var loginType = 'E';

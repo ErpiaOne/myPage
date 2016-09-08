@@ -504,11 +504,12 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			console.log("You have selected " + data.index + " tab");
 			$scope.loadingani();
 			var index = data.index;
-
+			$scope.chart_index = index; // 차트 리스트 현재 설정된 인덱스 저장
 			$scope.kind = tabs[index].title;
 
 			var module_T = '';
 			switch ($scope.kind){
+			case 'Meachul_halfyear' : module_T = 'chart0'; break;
 			case 'meaip_jem' : module_T = 'chart1'; break;
 			case 'meachul_jem' : module_T = 'chart2'; break;
 			case 'brand_top5' : module_T = 'chart3'; break;
@@ -525,8 +526,8 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			case 'JeGo_TurnOver' : module_T = 'chart14'; break;
 			case 'beasongb' : module_T = 'chart15'; break;
 			}
-			
-			$rootScope.ActsLog('chart', module_T);
+			$rootScope.ActsLog('chart', module_T); // 차트 로그 저장
+
 			if(index > 0){
 				var titlename = tabs[index].name;
 			}else{

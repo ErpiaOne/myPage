@@ -214,8 +214,10 @@ angular.module('starter.services', [])
 		Acts_save : function(admin_code, id, mac, loginType, M, T){		// 모바일 버튼 로그 기록저장
 			console.log('==================>', admin_code, id, mac, loginType, M, T);
 			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
-			var data = 'Kind=Mobile_Acts&Admin_Code=' + Admin_Code + '&UserId=' + escape(UserId);
+			var data = 'Kind=Mobile_Acts&admin_code=' + admin_code+ '&id=' + escape(id) +  '&mac=' + mac + '&loginType=' + loginType + '&Module_M=' + M + '&Module_T=' + T;
+			console.log('url ->', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
+				console.log('결과 ->', response);
 				if(typeof response.data == 'object'){
 					return response.data.list;
 				}else{
@@ -228,9 +230,7 @@ angular.module('starter.services', [])
 		}
 	};
 })
-
 //Kind=Mobile_Acts&admin_code=onz&id=test1234&mac=undefined&loginType=E&hp=01056579731&Module_M=chart&Module_T=chart1
-
 //Kind=Mobile_Acts&admin_code=GEST&id=GEST&mac=GEST&loginType=G&hp=-&Module_M=chart&Module_T=chart1
 
 
@@ -1630,6 +1630,7 @@ angular.module('starter.services', [])
 				if(pay.gubun == 4){
 					var end = '</root>&IpJi_YN=N';
 				}else{
+					console.log('meaip구분 =>', pay.gubun);
 					switch(pay.gubun){
 						case 0 : var pay_subul = 701; break; 
 						case 1 : var pay_subul = 702; break; 
@@ -1657,6 +1658,7 @@ angular.module('starter.services', [])
 				if(pay.gubun == 4){
 					var end = '</root>&IpJi_YN=N&Sale_Place_Code='+ setup.basic_Place_Code;
 				}else{
+					console.log('meachul구분 =>', pay.gubun);
 					switch(pay.gubun){
 						case 0 : var pay_subul = 721; break; 
 						case 1 : var pay_subul = 722; break; 

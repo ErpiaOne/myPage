@@ -63,16 +63,18 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		});
 	}
 
-
-	if(window.cordova && window.cordova.plugins.Keyboard) {
-		cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-	}
 	/* Check for network connection - 김형석[2016-04] */
 	if(window.StatusBar) {
 		if (ionic.Platform.isIOS()){
 			ionic.Platform.fullScreen();
+				if(window.cordova && window.cordova.plugins.Keyboard) {
+					cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
+				}
 			StatusBar.hide();
 		}else{
+				if(window.cordova && window.cordova.plugins.Keyboard) {
+					cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+				}
 			StatusBar.styleDefault();
 		}
 	}

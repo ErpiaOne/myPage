@@ -724,10 +724,19 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 
 	/*상세조회셋 슬라이드관련 - 이경민[2015-12]*/
      	$scope.slideChanged = function(index) {
+     		if($rootScope.distinction == 'meaip'){
+     			var module_M = 'meaip';
+     			if(index == 1) var module_T = 'meaip_select_detail_lately';
+     			else var module_T = 'meaip_select_detail_fast';
+     		}else{
+     			var module_M = 'meachul';
+     			if(index == 1) var module_T = 'meachul_select_detail_lately';
+     			else var module_T = 'meachul_select_detail_fast';
+     		}
 		switch(index) {
 			case 0: console.log('I am on slide 0'); break;
-			case 1: $scope.Select_OptSet('L'); $scope.loadingani(); break;
-			case 2: $scope.Select_OptSet('R'); $scope.loadingani(); break;
+			case 1: $scope.Select_OptSet('L'); $rootScope.ActsLog(module_M, module_T); $scope.loadingani(); break;
+			case 2: $scope.Select_OptSet('R'); $rootScope.ActsLog(module_M, module_T); $scope.loadingani(); break;
 		}
 	};
 
@@ -847,6 +856,9 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		MLookupService.lqdetail_set($scope.loginData.Admin_Code, $scope.loginData.UserId,$scope.reqparams,$scope.company,$scope.detail.Place_Code,2,$scope.todate)
 		.then(function(data){
 			if(data.list[0].rslt == 'Y'){
+				if($rootScope.distinction == 'meaip') $rootScope.ActsLog('meaip', 'meaip_save_Favorit');
+				else $rootScope.ActsLog('meachul', 'meachul_save_Favorit');
+
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록되었습니다.', 'short', 'center');
 				else alert('등록되었습니다.');
 			}else{
@@ -975,6 +987,13 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('즐겨찾는 리스트로 등록되었습니다.', 'short', 'center');
 			else alert('즐겨찾는 리스트로 등록되었습니다.');
 
+			if($rootScope.distinction == 'meaip'){
+				$rootScope.ActsLog('meaip', 'meaip_select_Favorit');
+			}else{
+				$rootScope.ActsLog('meachul', 'meachul_select_Favorit');
+			}
+			
+
 	 	}else{
 	 		$scope.ionstar = "ion-android-star-outline";
 	 		$scope.starcss = '#aca5b5';
@@ -1078,9 +1097,11 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('전표가 삭제되었습니다.', 'short', 'center');
 								else alert('전표가 삭제되었습니다.');
 								if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
+									$rootScope.ActsLog('meaip', 'meaip_select_dele');
 									$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 									$state.go('app.meaip_page', {}, {location:'replace'});
 								}else{ /* 매출일 경우 */
+									$rootScope.ActsLog('meachul', 'meachul_select_dele');
 									$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 									$state.go('app.meachul_page', {}, {location:'replace'});
 								}
@@ -1700,6 +1721,27 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		$scope.pageCnt=1;
 		$scope.maxover=0;
 		var goodsname = escape($scope.user.userGoodsName);
+
+		if($rootScope.distinction == 'meaip'){
+			switch ($scope.user.userMode)
+			{
+				case 'Select_GoodsName' : var module_T = 'meaip_save_Goods_Name'; break;
+				case 'Select_G_OnCode' : var module_T = 'meaip_save_Goods_G_OnCode'; break;
+				case 'Select_G_Code' : var module_T = 'meaip_save_Goods_G_Code'; break;
+				case 'Select_GI_Code' : var module_T = 'meaip_save_Goods_GI_Code'; break;
+			}
+			$rootScope.ActsLog('meaip', module_T);
+		}else{
+			switch ($scope.user.userMode)
+			{
+				case 'Select_GoodsName' : var module_T = 'meachul_save_Goods_Name'; break;
+				case 'Select_G_OnCode' : var module_T = 'meachul_save_Goods_G_OnCode'; break;
+				case 'Select_G_Code' : var module_T = 'meachul_save_Goods_G_Code'; break;
+				case 'Select_GI_Code' : var module_T = 'meachul_save_Goods_GI_Code'; break;
+			}
+			$rootScope.ActsLog('meachul', module_T);
+		}
+
 		if($scope.user.userMode == 'Select_GoodsName'){
 			MiuService.goods_sear($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.user.userMode, goodsname, $scope.setupData.basic_Ch_Code,$scope.pageCnt)
 			.then(function(data){
@@ -2078,6 +2120,9 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('일치하는 데이터가 없습니다.', 'short', 'center');
 						else alert('일치하는 데이터가 없습니다.');
 					}else{
+						if($rootScope.distinction == 'meaip') $rootScope.ActsLog('meaip', 'meaip_select_barcode');
+						else $rootScope.ActsLog('meachul', 'meachul_select_barcode'); 
+						
 						for(var b=0; b < data.list.length; b++){
 							$scope.checkedDatas.push(data.list[b]);
 							$scope.bar = 'Y';
@@ -2430,7 +2475,27 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 						type: 'button-positive',
 						onTap: function(e) {
 							$ionicHistory.clearCache();
-							// $ionicHistory.clearHistory();
+							
+							if ($rootScope.distinction == 'meaip') $rootScope.ActsLog('meaip', 'meaip_master_save');
+							else $rootScope.ActsLog('meachul', 'meachul_master_save');
+
+							if($scope.pay.gubun == 0){ // 현금
+								var module_T = 'ij_money';
+							}else if($scope.pay.gubun == 1){ // 통장
+								var module_T = 'ij_bank';
+							}else if($scope.pay.gubun == 2){	//어음
+								var module_T = 'ij_note';
+							}else if($scope.pay.gubun == 3){ // 카드
+								var module_T = 'ij_card';
+							}
+
+							if($rootScope.distinction == 'meaip'){
+								var module_T = 'meaip_save_' + module_T;
+								$rootScope.ActsLog('meaip', module_T);
+							}else {
+								var module_T = 'meachul_save_' + module_T;
+								$rootScope.ActsLog('meachul', module_T);
+							} 
 							if($rootScope.iu == 'i'){
 								MiuService.subulupdate($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.datas.subulkind)
 								.then(function(data){
