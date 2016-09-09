@@ -3,7 +3,7 @@
 		<div class="psmsmy_title_co">상담하기</div>
 	</ion-nav-title>
 	<ion-nav-buttons side="right">
-		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/introduce');" class="button button-small button-psm04" ng-if="userType == 'Guest' ">소개</button>
+		<button menu-toggle="right"  ng-click="goto_with_clearHistory('#/app/introduce');ActsLog('act_settings', 'act_Erpia_introduce')" class="button button-small button-psm04" ng-if="userType == 'Guest' ">소개</button>
 	</ion-nav-buttons>
 	<ion-nav-back-button></ion-nav-back-button>
 	<ion-content>

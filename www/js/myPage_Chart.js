@@ -1,7 +1,6 @@
 //최근갱신일 버튼 눌렀을 경우
 function refresh(kind, gu, admin_code, ERPiaApi_url)
 {	
-
 	$("#loading").css("display","block");
 	// AmCharts.loadJSON(ERPiaApi_url + "/renewalDay.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh"); //최근갱신일 로딩
 	AmCharts.loadJSON(ERPiaApi_url + "/graph_DataUpdate.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh");
@@ -12,14 +11,12 @@ function refresh(kind, gu, admin_code, ERPiaApi_url)
 // 처음 로딩 할때
 function renewalDay(kind, gu, admin_code, ERPiaApi_url)
 {
-	console.log('renewalDay');
 	$("#loading").css("display","block");
 	AmCharts.loadJSON(ERPiaApi_url + "/graph_DataUpdate.asp?admin_code="+ admin_code +"&kind="+ kind +"&swm_gu="+ gu, "refresh");
 	makeCharts(kind, gu, admin_code,ERPiaApi_url);
 }
 
 function makeCharts(kind, gu, admin_code, ERPiaApi_url){
-	console.log('makeCharts');
 	// 날짜
 	var d= new Date();
 	var month = d.getMonth() + 1;

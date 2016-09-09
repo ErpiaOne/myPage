@@ -6,25 +6,25 @@
 		<body>
 			<div ng-switch="loginState">
 				<div class="list">
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/Info')" style="padding-left: 70px;">
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/Info');ActsLog('act_settings', 'setting_program')" style="padding-left: 70px;">
 					<i class="icon ion-information" style="background: #5d9ea8; width: 52px; padding-left: 10px;  color: #fff; margin-left: -11px;"></i>프로그램 정보</a>
 
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/notice')" style="padding-left: 70px;">
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/notice');ActsLog('act_settings', 'setting_Notice')" style="padding-left: 70px;">
 					<i class="icon ion-alert" style="background: #6c5d7c; width: 52px; padding-left: 10px; color: #fff; margin-left: -11px;"></i>공지사항</a>
 
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/custom')" style="padding-left: 70px;">
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/custom');ActsLog('act_settings', 'setting_Use')" style="padding-left: 70px;">
 					<i class="icon ion-person-stalker" style="background: #626968; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>이용약관/개인정보 취급방침</a>
 
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/alarm')" style="padding-left: 70px;">
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/alarm');ActsLog('act_settings', 'setting_alarm')" style="padding-left: 70px;">
 					<i class="icon ion-ios-bell" style="background: #e5b763; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>알림설정</a>
 					<div ng-switch-when="E">
-						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/statistics')" style="padding-left: 70px;">
+						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/statistics');ActsLog('act_settings', 'setting_chart')" style="padding-left: 70px;">
 						<i class="icon ion-stats-bars" style="background: #c7745a; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>통계 리포트 설정</a>
 					</div>
-					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/loginConfig')" style="padding-left: 70px;">
+					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/loginConfig');ActsLog('act_settings', 'setting_login')" style="padding-left: 70px;">
 					<i class="icon ion-person" style="background: #5d9ea8; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>로그인 설정</a>
 					<div ng-switch-when="E">
-						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/meaipchul/m_Setup')" style="padding-left: 70px;">
+						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/meaipchul/m_Setup');ActsLog('act_settings', 'setting_meaipchul')" style="padding-left: 70px;">
 						<i class="icon ion-gear-a" style="background: #6c5d7c; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>매입/매출 설정</a>
 					</div>
 				</div>

@@ -193,7 +193,6 @@ angular.module('starter.services', [])
 		}, priv_wonga_Check : function(Admin_Code, UserId){		// 메인홈(미처리건/미수신건...등등) 정보 조회
 			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
 			var data = 'Kind=ERPia_WonGa_Priv&Admin_Code=' + Admin_Code + '&UserId=' + escape(UserId);
-			console.log('priv_wonga_Check=>' , url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response.data.list;
@@ -212,12 +211,9 @@ angular.module('starter.services', [])
 .factory('ActsService', function($http, $q, ERPiaAPI){ 
 	return{
 		Acts_save : function(admin_code, id, mac, loginType, M, T){		// 모바일 버튼 로그 기록저장
-			console.log('==================>', admin_code, id, mac, loginType, M, T);
 			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
 			var data = 'Kind=Mobile_Acts&admin_code=' + admin_code+ '&id=' + escape(id) +  '&mac=' + mac + '&loginType=' + loginType + '&Module_M=' + M + '&Module_T=' + T;
-			console.log('url ->', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
-				console.log('결과 ->', response);
 				if(typeof response.data == 'object'){
 					return response.data.list;
 				}else{
@@ -230,10 +226,6 @@ angular.module('starter.services', [])
 		}
 	};
 })
-//Kind=Mobile_Acts&admin_code=onz&id=test1234&mac=undefined&loginType=E&hp=01056579731&Module_M=chart&Module_T=chart1
-//Kind=Mobile_Acts&admin_code=GEST&id=GEST&mac=GEST&loginType=G&hp=-&Module_M=chart&Module_T=chart1
-
-
 
 /* 이알피아계정정보 관련Service - 김형석[2015-12] */
 .factory('ERPiaInfoService', function($http, ERPiaAPI){
@@ -710,7 +702,7 @@ angular.module('starter.services', [])
 		}, save_Log : function(uuid, admin_code, loginType, id, phoneno, DeviceInfo){			// 로그인 로그정보저장
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
 			var data = 'Kind=save_Log&Mac=' + uuid + '&admin_code=' + admin_code + '&loginType=' + loginType + '&id=' + escape(id);
-			data += '&model=' + DeviceInfo.model + '&platform=' + DeviceInfo.platform + '&originalhp=' + phoneno;
+			data += '&model=' + DeviceInfo.model + '&platform=' + DeviceInfo.platform + '&originalhp=' + '01056579731';
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;
@@ -802,53 +794,12 @@ angular.module('starter.services', [])
 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 	var PushList = [];
 	return{
-		select : function(Kind, Mode, mac){					// 유저가 받은 푸쉬리스트 출력
-			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&mac=' + mac;
+		select : function(UUID){					// 유저가 받은 푸쉬리스트 출력
+			var data = 'Kind=Mobile_Push_Log&Mode=SELECT&mac=' + UUID;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					PushList = response.data
 					return PushList;
-				}else{
-					return $q.reject(response.data);
-				}
-			}, function(response){
-				return $q.reject(response.data);
-			})
-
-		}, view : function(Kind, Mode, idx, mac){				// 유저에게 보낸 푸쉬  상세내용 보기
-			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&idx=' + idx +'&mac=' + mac;
-			return $http.get(url + '?' + data).then(function(response){
-				if(typeof response.data == 'object'){
-					return response.data;
-				}else{
-					return $q.reject(response.data);
-				}
-			}, function(response){
-				return $q.reject(response.data);
-			})
-
-		}, delete : function(Kind, Mode, idx, mac){			// 유저에게 보낸 푸쉬  삭제
-			var data = 'Value_Kind=list&Kind=' + Kind + '&Mode=' + Mode + '&idx=' + idx +'&mac=' + mac;
-			return $http.get(url + '?' + data).then(function(response){
-				if(typeof response.data == 'object'){
-					return response.data;
-				}else{
-					return $q.reject(response.data);
-				}
-			}, function(response){
-				return $q.reject(response.data);
-			})
-
-		},getData : function(Kind, Mode, mac) {			// 푸쉬리스트 출력
-			var data = 'Value_Kind=list&Kind=' + Kind +'&mac=' + mac;
-			return $http.get(url + '?' + data).then(function(response){
-				if(typeof response.data == 'object'){
-					PushList = response.data;
-					for (var i = 0; i < PushList.length; i++) {
-						if (PushList[i+1].Seq === parseInt(Seq)) {
-							return PushList[i+1];
-						}
-					}
 				}else{
 					return $q.reject(response.data);
 				}
@@ -1003,7 +954,6 @@ angular.module('starter.services', [])
 			}
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&User_id=' + escape(userid) + '&Kind=ERPia_Sale_Select_Place_CName&Mode=Select_CName&Sale_Place_Code=' + meajang_code;
-			console.log('basicSetup=>' , url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;
@@ -1463,7 +1413,6 @@ angular.module('starter.services', [])
 				default : console.log('모드선택안됨 오류'); break;
 			}	
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-			console.log('상품정보 수정 =>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
 					if(response.data == '<!--Parameter Check-->'){
@@ -1632,10 +1581,10 @@ angular.module('starter.services', [])
 				}else{
 					console.log('meaip구분 =>', pay.gubun);
 					switch(pay.gubun){
-						case 0 : var pay_subul = 701; break; 
-						case 1 : var pay_subul = 702; break; 
-						case 2 : var pay_subul = 704; break; 
-						case 3 : var pay_subul = 703; break; 
+						case 0 : var pay_subul = 701; break;  // 현금
+						case 1 : var pay_subul = 702; break;  // 통장
+						case 2 : var pay_subul = 704; break;  // 어음
+						case 3 : var pay_subul = 703; break;  // 카드
 					}
 					var jidata = '<item><Aseq>'+ 1 +'</Aseq><ij_Date>'+ date.payday +'</ij_Date><Comp_No>'+ datas.GerCode +'</Comp_No><Subul_kind>'+ pay_subul +'</Subul_kind><Bank_Code>'+ paylist[0].code +'</Bank_Code><Bank_Name> <![CDATA['+ escape(paylist[0].name) +']]> </Bank_Name><Bank_Account>'+ paylist[0].num +'</Bank_Account><Card_Code>'+ paylist[1].code +'</Card_Code><Card_Name><![CDATA['+ escape(paylist[1].name) +']]></Card_Name><Card_Num>'+ paylist[1].num +'</Card_Num><Hap_Amt>'+ pay.payprice +'</Hap_Amt></item>';
 					var end = '<IpJi>' + jidata + '</IpJi></root>&IpJi_YN=Y';

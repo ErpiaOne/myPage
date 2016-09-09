@@ -12,13 +12,13 @@
 					<span class="{{tabitem.tab1}} psm_button01" ng-click="login(); sidetab('tab1')">
 						로그인
 					</span>
-					<span class="{{tabitem.tab2}} psm_button01" ng-click="goto_with_clearHistory('#/app/introduce'); sidetab('tab2')">
+					<span class="{{tabitem.tab2}} psm_button01" ng-click="goto_with_clearHistory('#/app/introduce'); sidetab('tab2'); ActsLog('act_settings', 'act_Erpia_introduce')">
 						ERPia소개
 					</span>
 					<span class="{{tabitem.tab3}} psm_button01" ng-click="goto_with_clearHistory('#/app/cs'); sidetab('tab3');ActsLog('act_settings','act_Signup')">
 						가입상담
 					</span>
-					<span class="{{tabitem.tab4}} psm_button01" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4')">
+					<span class="{{tabitem.tab4}} psm_button01" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4');ActsLog('act_settings', 'act_homepage')">
 						홈페이지
 					</span>
 				</div>
@@ -136,13 +136,13 @@
 				<div  ng-switch-when="E">
 					<div name="erpia_side" class="button-bar">
 						<a class="button psm_left_mediv psm_left_box1" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/board')"><img src="./img/icon_board.png" class="psm_left_img2"><br>고객센터</a>
-						<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img2"><br>홈페이지</a>
-						<!-- <a class="button psm_left_mediv psm_left_box3" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/push')"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</a> -->
-						<button class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" menu-close ng-click="already()"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</button>
+						<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" ng-click="ActsLog('act_settings', 'act_homepage')" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img2"><br>홈페이지</a>
+						<a class="button psm_left_mediv psm_left_box3" style="border-radius: 0;" ng-if="loginData.Admin_Code != 'ERPMobile'" menu-close ng-click="goto_with_clearHistory('#/app/push');ActsLog('act_settings', 'act_alarmpage')"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</a>
+						<!-- <button class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" menu-close ng-click="already()"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</button> -->
 					</div>
 
 					<div ng-if="priv_meachul.print == 'Y'">
-						<a class="item item-icon-left navi-item" menu-close ng-click="showCheckSano()" >
+						<a class="item item-icon-left navi-item" menu-close ng-click="showCheckSano();ActsLog('trade', 'trade_select')" >
 							<i class="icon"><span class="psm_uplist psm_upcolor1 ion-ios-copy-outline"></span><span class="navi-item-leftText">거래명세표<br>금일 발송건</span><span class="navi-item-rightText" style="color:#ff0000;">{{userData.cntNotRead}} 건</span></i>
 						</a>
 					</div>
@@ -211,7 +211,7 @@
 				<img src="./img/icon-onoff.png" class="psm_left_img2"><br>
 				<span class="psm_left_mespan" ng-bind-html="loginHTML"></span>
 			</a>
-			<a class="button button-light psm_left_mediv" style="border-radius: 0; padding-top:13px;" ng-click='shareURL()'>
+			<a class="button button-light psm_left_mediv" style="border-radius: 0; padding-top:13px;" ng-click='shareURL();ActsLog("act_settings", "act_ShareUrl")'>
 				<i class="ion-android-share-alt" style="font-size: 27px; color: #878787"></i>
 				<span style="display: block; margin-top:-6px;">공유하기</span>
 			</a>

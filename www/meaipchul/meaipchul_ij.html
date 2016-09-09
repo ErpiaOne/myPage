@@ -29,8 +29,8 @@
         <span class="input-label psm_sang_04"><any ng-if="distinction == 'meaip'">지급일</any><any ng-if="distinction == 'meachul'">입금일</any></span>&nbsp;&nbsp;
         <input type="date" style="text-align:right; border-bottom: 1px solid #e0e0e0;" ng-disabled="tax_u" ng-model='date.payday1' ng-change="datechange(date.payday1,2)"><br>
       </label>
+      <div class="input-label psm_sang_04"><any ng-if="distinction == 'meaip'">지급구분</any><any ng-if="distinction == 'meachul'">입금구분</any></div>
       <label class="item">
-        <span class="input-label psm_sang_04"><any ng-if="distinction == 'meaip'">지급구분</any><any ng-if="distinction == 'meachul'">입금구분</any></span>
         <table style="width: 100%;">
           <tr>
             <td style="width: 50%"><ion-checkbox style="font-size:12px; border-radius: 0;" ng-disabled="tax_u" ng-click='Payments_division(0)' ng-model='payment[0].checked'>현금<any ng-if="distinction == 'meaip'">결제</any><any ng-if="distinction == 'meachul'">입금</any></ion-checkbox></td>

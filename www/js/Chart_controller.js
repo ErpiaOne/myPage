@@ -68,8 +68,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 
 		IndexService.dashBoard('erpia_dashBoard', $scope.loginData.Admin_Code, aWeekAgo, nowday)
 		.then(function(processInfo){
-			console.log('erpia_dashBoard', processInfo);
-
+			
 			$scope.dashBoard.E_NewOrder = processInfo.data.list[0].CNT_JuMun_New;
 			$scope.dashBoard.E_BsComplete = processInfo.data.list[0].CNT_BS_NO;
 			$scope.dashBoard.E_InputMno = processInfo.data.list[0].CNT_BS_No_M_No;

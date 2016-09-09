@@ -523,16 +523,16 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
-	/* push - push내용상세화면 - 김형석 */
-	.state('app.erpia_push.push-detail', {
-		url : '/PushList/:Seq',
-		views : {
-			'menuContent' : {
-				templateUrl : 'erpia_push/push-detail.html',
-				controller : 'PushDetailCtrl'
-			}
-		}
-	})
+	// /* push - push내용상세화면 - 김형석 */
+	// .state('app.erpia_push.push-detail', {
+	// 	url : '/PushList/:Seq',
+	// 	views : {
+	// 		'menuContent' : {
+	// 			templateUrl : 'erpia_push/push-detail.html',
+	// 			controller : 'PushDetailCtrl'
+	// 		}
+	// 	}
+	// })
 
 	/* 하단탭메뉴 - 로그인전 - ERPIA소개 - 이경민 */
 	.state('app.erpia_introduce', {

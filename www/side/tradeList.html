@@ -35,7 +35,7 @@
 				<ion-list>
 					<ion-item ng-repeat="item in items" style="padding:0px;">
 						<!-- <any ng-if="YNcheck =='not'">ng-if="item.readYN == 'N'"  -->
-							<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
+							<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1);ActsLog('trade', 'trade_select_detail')"  class="psm_segum16" style="border-bottom: 0;">
 								<table on-swipe-up="search_more(maxover, YNcheck)" border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
 									<tr>
 										<td rowspan="2" class="psm_segum41" style="padding-left: 10px;">{{$index + 1}}</td>
@@ -52,30 +52,6 @@
 								</table>
 							</div>
 							<div ng-if="maxover==0&&$last" style="padding: 5px 0; background: #ded1d1; font-size: 0.8em; text-align: center;"><b>더 보기를 하시려면 위로 쓸어올려주세요.</b></div>
-						<!-- </any> -->
-						<!-- <any ng-if="YNcheck =='all'">
-							<div ng-click="readTradeDetail('{{item.sl_no + '^' + item.G_Name.substring(0,15) + ' 외' + item.totCnt + '건'}}',1)"  class="psm_segum16" style="border-bottom: 0;">
-								<table on-swipe-up="search_more(maxover)" border="0" cellpadding="0" cellspacing="0" class="psm_segum17">
-									<tbody>
-										<tr>
-											<td rowspan="2" class="psm_segum18">{{$index + 1}}</td>
-											<td class="psm_segum19">{{item.in_date}}</td>
-											<td class="psm_segum35" ng-if="userType == 'SCM' || userType =='Normal' ">{{item.Admin_Code}}</td>
-											<td class="psm_segum35" ng-if="userType == 'ERPia'">
-											{{ (item.G_name.length>15?item.G_name.substring(0,12) + "..." : item.G_name) }}
-											</td>
-											<td rowspan="2" class="psm_segum21">{{(item.readYN=='Y'? '열람' : '미열람')}}</td>
-										</tr>
-										<tr>
-											<td colspan="2" class="psm_segum22">{{item.G_Name.substring(0, 15)}} 외 {{item.totCnt}}</td>
-										</tr>
-									</tbody>
-										<tr ng-if="maxover==0&&$last">
-											<td colspan="4" align="center" style="padding: 5px 0; background: #ded1d1; font-size: 0.85em;"><b>더 보기를 하시려면 위로 쓸어올려주세요.</b></td>
-										</tr>
-								</table>
-							</div>
-						</any> -->
 					</ion-item>
 				</ion-list>
 			</div>

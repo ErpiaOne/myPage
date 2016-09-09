@@ -21,6 +21,8 @@ var g_playlists = [{
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ActsService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, PrivService, $cordovaSocialSharing, $ionicSideMenuDelegate){
+	
+	$rootScope.autologin_index = 0;
 	$rootScope.PushData = {};
 	/* 인앱브라우져(사이트띄우는거) 기본설정  - 김형석[2016-05] */
 	var browseroptions = {
@@ -755,7 +757,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$rootScope.loginMenu = 'User';
 					loginService.comInfo('ComInfo_Erpia', $scope.loginData.Admin_Code)
 					.then(function(comTax){
-						console.log('data확인 ->',comTax);
 						var d= new Date();
 						var month = d.getMonth() + 1;
 						var day = d.getDate();
@@ -785,32 +786,42 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 						})
 
-						if($scope.loginData.chkAutoLogin == true){
-							if(ERPiaAPI.toast == 'Y'){
-							uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
-								$scope.loginData.autologin_YN = 'Y';
-								$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
-								$localstorage.set("autologinType", $rootScope.userType);
-								$localstorage.set("autoUser_Id", $scope.loginData.UserId);
-								$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
-								$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
-								console.log("autosave ", $rootScope.userType, $scope.loginData.UserId);
+						if($scope.loginData.Pwd != 'erpia!1010'){ // 관리자 로그인일때는 로그를 저장하지 않는다.
+							if($scope.loginData.chkAutoLogin == true){
+								if(ERPiaAPI.toast == 'Y'){
+									if($rootScope.autologin_index == 0){
+										$rootScope.autologin_index = 1;
+									}else{
+										uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
+										$scope.loginData.autologin_YN = 'Y';
+										$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+										$localstorage.set("autologinType", $rootScope.userType);
+										$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+										$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+										$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+										console.log("autosave ", $rootScope.userType, $scope.loginData.UserId);
+										$rootScope.autologin_index = 0;
+									}
+								}else{
+									uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '', $rootScope.deviceInfo);
+								}
 							}else{
-								uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '', $rootScope.deviceInfo);
+								if(ERPiaAPI.toast == 'Y'){
+								uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
+									$scope.loginData.autologin_YN = 'N';
+									$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+									$localstorage.set("autologinType", $rootScope.userType);
+									$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+									$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+									$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+								}else{
+									uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '' , $rootScope.deviceInfo);
+								}
 							}
 						}else{
-							if(ERPiaAPI.toast == 'Y'){
-							uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
-								$scope.loginData.autologin_YN = 'N';
-								$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
-								$localstorage.set("autologinType", $rootScope.userType);
-								$localstorage.set("autoUser_Id", $scope.loginData.UserId);
-								$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
-								$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
-							}else{
-								uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '' , $rootScope.deviceInfo);
-							}
+							console.log('관리자 로그인');
 						}
+						
 
 						/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
 						PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
@@ -844,18 +855,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								}else{
 									$rootScope.priv_productYM = 'Y';
 								}
-
-								console.log('매입권한 =>', $rootScope.priv_meaip);
-								console.log('매출권한 =>', $rootScope.priv_meachul);
-								console.log('재고권한 =>', $rootScope.priv_jego);
-								console.log('상품정보 권한 =>', $rootScope.priv_productYM);
 						});
 
 						/* 원가 공개 설정 여부 [이경민 - 2016-09-01] */ // Y가 원가 비공개 N이 원가 공개
 						PrivService.priv_wonga_Check($scope.loginData.Admin_Code, $scope.loginData.UserId)
 						.then(function(data){
 								$rootScope.priv_wongaYN = data[0].WonGa;
-								console.log('원가공개 설정여부 =>', $rootScope.priv_wongaYN);
 						});
 
 						$timeout(function() {
@@ -875,7 +880,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								}else if($rootScope.PushData.BoardParam == "3"){
 									$rootScope.boardIndex = 3;
 								}
-								console.log("boardIndex :", $rootScope.boardIndex, $rootScope.PushData.BoardParam );
 								location.href= '#/app/board/Main';
 
 							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
@@ -1141,7 +1145,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			        var phoneNo=$rootScope.deviceInfo2.phoneNo;
 			        if(phoneNo.substring(0,1)=="+"){
 			         $rootScope.deviceInfo2.phoneNo=phoneNo.toString().replace("+82", "0");
-			    }else{
 			    }
 			   	$scope.SMSData.recUserTel =  $rootScope.deviceInfo2.phoneNo;
 			    }, function() {
@@ -1646,7 +1649,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	if($rootScope.loginData.autologin_YN == 'Y'){
 		$rootScope.autoLogin = true;
-		// $localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 		$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 	}else{
 		$rootScope.autoLogin = false;
@@ -2237,26 +2239,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 /* 이알피아 고객센터(공지사항/ 업데이트현황/ 지식나눔방/ 업체별문의사항) 선택화면 컨트롤러  - 김형석[2016-01] */
 .controller('BoardSelectCtrl', function($rootScope, $scope, $state, app, ERPiaAPI){
-	console.log("BoardSelectCtrl");
+
 	$scope.BoardSelect1 = function() {		// 공지사항 버튼클릭시
 		$rootScope.boardIndex = 0;
 		$state.go("app.erpia_board-Main");
-		console.log("app.erpia_board-Main", $rootScope.boardIndex);
 	};
 	$scope.BoardSelect2 = function() {		// 업데이트현황 버튼클릭시
 		$rootScope.boardIndex = 1;
 		$state.go("app.erpia_board-Main");
-		console.log("app.erpia_board-Main", $rootScope.boardIndex);
 	};
 	$scope.BoardSelect3 = function() {		// 지식나눔방 버튼클릭시
 		$rootScope.boardIndex = 2;
 		$state.go("app.erpia_board-Main");
-		console.log("app.erpia_board-Main", $rootScope.boardIndex);
 	};
 	$scope.BoardSelect4 = function() {		// 업체별문의사항 버튼클릭시
 		$rootScope.boardIndex = 3;
 		$state.go("app.erpia_board-Main");
-		console.log("app.erpia_board-Main", $rootScope.boardIndex);
 	};
 })
 
@@ -2269,6 +2267,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$rootScope.useBoardCtrl = "Y";
 	var idx = $rootScope.boardIndex;			//푸쉬받은것에서 idx번호를 입력 후 어떤 종류의 게시판인지 판별
 	$rootScope.PushData.state='';
+
 	$scope.onTouch = function(){
 		$ionicSlideBoxDelegate.enableSlide(false);
 		$ionicSideMenuDelegate.canDragContent(false);
@@ -2294,15 +2293,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$ionicSideMenuDelegate.canDragContent(true);
 	}
 
-	$scope.tabs2 = [{
-		"text" : "공지사항"
-	}, {
-		"text" : "업데이트 현황"
-	}, {
-		"text" : "지식 나눔방"
-	}, {
-		"text" : "업체문의 Q&A"
-	}];
+	$scope.tabs2 = [
+		{ "text" : "공지사항" }, 
+		{ "text" : "업데이트 현황" },
+		{ "text" : "지식 나눔방" },
+		{ "text" : "업체문의 Q&A" }
+	];
 
 	$scope.searchck={
 		mode: 'Subject',
@@ -2337,20 +2333,27 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	};
 	/* 업체별QNA글쓴 내용 전송하기  - 김형석[2016-04] */
 	$scope.qnawriteSubmit=function(){
-		if($scope.qnareqdata.subject == '') alert('제목을 입력하세요.');
-		else if($scope.qnareqdata.content == '') alert('내용을 입력하세요.');
-		else if($scope.qnareqdata.pwd == '') alert('비밀번호를 입력하세요.');
+		if($scope.qnareqdata.subject == '') {
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('제목을 입력하세요.', 'short', 'center');
+			else console.log('제목을 입력하세요.');
+		}else if($scope.qnareqdata.content == ''){
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('내용을 입력하세요.', 'short', 'center');
+			else console.log('내용을 입력하세요.');
+		}
+		else if($scope.qnareqdata.pwd == ''){
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('비밀번호를 입력하세요.', 'short', 'center');
+			else console.log('비밀번호를 입력하세요.');
+		}
 		else{
+			$rootScope.ActsLog('board', 'board_QnaWrite');
 			BoardService.QnAinsert($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.qnareqdata.subject, $scope.qnareqdata.content, $scope.qnareqdata.pwd).then(function(data){
 				if(data.list[0].rslt == 'Y'){
-					alert('게시글 등록 완료!');
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('게시글 등록에 성공하였습니다.', 'short', 'center');
-					else alert('게시글 등록 완료');
+					else console.log('게시글 등록 완료');
 					$scope.qnawrite_closeModal();
 				}else{
-					alert('등록에 성공하지 못하였습니다');
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록실패. 다시시도해주세요.', 'short', 'center');
-					else alert('등록실패');
+					else console.log('등록실패');
 				}
 			});
 		}
@@ -2358,6 +2361,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 게시판 내용 기본조회(게시판 처음 들어갔을 때 초기조회) - 김형석[2016-04] */
 	$scope.defaultSearch=function(){
+		console.log('실행되?', $rootScope.boardIndex);
+		switch ($rootScope.boardIndex){
+			case 0 : var module_T = 'board_Notice'; break;
+			case 1 : var module_T = 'board_Update'; break;
+			case 2 : var module_T = 'board_Knowledge'; break;
+			case 3 : var module_T = 'board_Qna'; break;
+		}
+		$rootScope.ActsLog('board', module_T);
 		$scope.pageCnt=1;
 		switch($rootScope.boardIndex){
 			case 0:
@@ -2461,6 +2472,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				}); break;
 		}
 	};
+	if($rootScope.boardIndex == 0) $scope.defaultSearch();
 
 	/*  게시판별 검색내용 입력 후 조회버튼 클릭시 조회 - 김형석[2016-04] */
 	$scope.bbsSearch = function(){
@@ -2557,7 +2569,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			}
 		}
 	}
-	$scope.defaultSearch();
+	// $scope.defaultSearch();
 
 	/* 검색어 입력하고 검색버튼 클릭시 이벤트  - 김형석[2016-04] */
 	$scope.searchClick=function(){
@@ -2757,7 +2769,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 내가 받은 push내용 리스트로 불러오기 - 김형석[2016-01] */
 	$scope.PushList = function() {
 		if($scope.loginData.Admin_Code != undefined){
-			PushSelectService.select('Mobile_Push_Log', 'SELECT', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+			PushSelectService.select($rootScope.deviceInfo.uuid)
 			.then(function(data){
 				$scope.items = data.list;
 			})
@@ -2765,32 +2777,11 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 	$scope.PushList();
 
-	/* 내가 받은 push내용 삭제하기 - 김형석[2016-02] */
-	$scope.onItemDelete = function(item) {
-	    	$scope.items.splice($scope.items.indexOf(item), 1);
-	    	$scope.listSeq = item.idx;
-	    	PushSelectService.delete('Mobile_Push_Log', 'DELETE', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $scope.listSeq, $rootScope.deviceInfo.uuid)
-  	};
-
   	$scope.data = {
     		showDelete: false
   	};
 })
 
-/* PUSH 상세컨트롤러 - 김형석[2016-02] */
-.controller('PushDetailCtrl', function($scope, $stateParams, PushSelectService, app, ERPiaAPI) {
-	$scope.pList = PushSelectService.getData('Mobile_Push_Log', 'View', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $stateParams.Seq, $rootScope.deviceInfo.uuid)
-})
-
-.controller('PlaylistsCtrl', function($scope) {
-	console.log("PlaylistsCtrl");
-	$scope.playlists = g_playlists;
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-	$scope.playlists = g_playlists;
-	$scope.playlist = $scope.playlists[$stateParams.playlistId - 1];
-})
 .controller('DashCtrl', function($scope, app) {
 	console.log("DashCtrl");
 })
