@@ -1,6 +1,9 @@
 // 재고현황 컨트롤러
-angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $cordovaToast, $state, $location, $ionicPlatform, $ionicModal, ERPiaAPI, app) {
+angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $cordovaToast, jego_Service, $state, $location, $ionicPlatform, $ionicModal, ERPiaAPI, app) {
 	console.log('jegoCtrl(재고현황 조회 컨트롤러)');
+
+	// $rootScope.keyheight = window.innerHeight; // 키보드 높이 ..... 
+
 	$scope.jegoSearch = 'hap';
 
 	$scope.upAnddown = 'ion-arrow-down-b';
@@ -18,6 +21,11 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		{ id : '4444', name : 'test', content : 'test4444444444444444444', trfa: false },
 		{ id : '5555', name : 'test', content : 'test5555555555555555555', trfa: false }
 	]
+
+	// 통합검색어 
+	$scope.jego_searchModule = {
+		all_Search : ''
+	}
 
 	$scope.select_jegoindex = -1;
 
@@ -93,8 +101,16 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 재고조회 - 이경민[2016-08] */
 	$scope.jego_search = function(){
-		console.log('재고조회 할꺼야.');
-		$state.go("app.jego_search");
+		console.log('재고조회 할꺼야.', $scope.jego_searchModule);
+		if($scope.jego_searchModule.all_Search.length == 0){
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('검색어를 입력해주세요.', 'short', 'center');
+			else alert('검색어를 입력해주세요.');
+		}else{
+			jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, '', $scope.jego_searchModule.all_Search, 'N', '')
+			.then(function(data){
+				$state.go("app.jego_search");
+			});
+		}
 	}
 
 	/* 재고 상세조회 - 이경민[2016-09-01] */

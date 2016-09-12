@@ -1834,8 +1834,9 @@ angular.module('starter.services', [])
 /* SCM/NORMAL모드 비밀번호변경 Service - 김형석[2016-06-22] */
 //http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=SCM_PassChange&loginType=N&Admin_Code=onz&GerCode=00926&ID=onz&pwd=onz&changePass=1234&mac=ba8e205a02d20e66
 //http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=Normal_PassChange&Admin_Code=onz&GerCode=00926&ID=aaaa&pwd=aaaaaaa!1&changePass=1234&mac=ba8e205a02d20e66
+
+
 /* 비밀번호 변경전 검사 - 이경민[2016-07-13] */
-//http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=pwdSet&Admin_Code=phj9775&id=555&pwd=555&loginType=S
 .factory('PassChangeService', function($http, $q, $cordovaToast, ERPiaAPI){
 	return{
 		changepass: function(mode, Admin_Code, GerCode, UserID, G_Pass, changePass, UUID){
@@ -1865,5 +1866,30 @@ angular.module('starter.services', [])
 			});
 		}
 		
+	};
+})
+
+/* 재고조회관련 서비스 - 이경민[2016-09-12] */
+.factory('jego_Service', function($http, $q, $cordovaToast, ERPiaAPI){
+	return{
+		main_search: function(Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode){
+			console.log('admin=>', Admin_Code);
+			console.log('UserId=>', UserId);
+			console.log('ChanggoCode=>', ChanggoCode);
+			console.log('keyword=>', keyword);
+			console.log('YN=>', YN);
+			console.log('OneSelectCode=>', OneSelectCode);
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
+			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt=1&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + keyword + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}		
 	};
 });
