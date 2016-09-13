@@ -120,7 +120,7 @@ angular.module('starter.services', [])
 
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + '01056579731' + '&mac=' + UUID;
+			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -702,7 +702,7 @@ angular.module('starter.services', [])
 		}, save_Log : function(uuid, admin_code, loginType, id, phoneno, DeviceInfo){			// 로그인 로그정보저장
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
 			var data = 'Kind=save_Log&Mac=' + uuid + '&admin_code=' + admin_code + '&loginType=' + loginType + '&id=' + escape(id);
-			data += '&model=' + DeviceInfo.model + '&platform=' + DeviceInfo.platform + '&originalhp=' + '01056579731';
+			data += '&model=' + DeviceInfo.model + '&platform=' + DeviceInfo.platform + '&originalhp=' + phoneno;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;
@@ -795,6 +795,7 @@ angular.module('starter.services', [])
 	var PushList = [];
 	return{
 		select : function(UUID){					// 유저가 받은 푸쉬리스트 출력
+			// var data = 'Kind=Mobile_Push_Log&Mode=SELECT&mac=' + UUID;
 			var data = 'Kind=Mobile_Push_Log&Mode=SELECT&mac=' + UUID;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){

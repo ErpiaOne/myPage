@@ -103,18 +103,20 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 재고관리 - 이경민[2016-05] */
 	$scope.jego = function(){
-		if($rootScope.priv_jego.jego_YN == 'Y' && $rootScope.priv_jego.jego == 'Y'){
-			$rootScope.goto_with_clearHistory("#app/jegoMain"); $scope.sidetab("tab4");
-		}else{
-			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('권한이 없습니다.', 'long', 'center');
-			else console.log('권한이 없습니다.');
-		}
+		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('10월 오픈예정입니다', 'long', 'center');
+		else console.log('10월 오픈예정입니다.');
+		// if($rootScope.priv_jego.jego_YN == 'Y' && $rootScope.priv_jego.jego == 'Y'){
+		// 	$rootScope.goto_with_clearHistory("#app/jegoMain"); $scope.sidetab("tab4");
+		// }else{
+		// 	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('권한이 없습니다.', 'long', 'center');
+		// 	else console.log('권한이 없습니다.');
+		// }
 	}
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.0.8',
-   		IOS_version : '0.2.2'	//업데이트시 필수로 변경!!
+   		Android_version : '1.0.9',
+   		IOS_version : '1.0.2'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 - 김형석[2015-12] */
@@ -274,6 +276,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			$rootScope.tabitem.gubun = 'loginout';
 			$rootScope.loginMenu = "selectUser";
 			$rootScope.sideMenuHide = 'true';
+			$rootScope.autologin_index = 0;
 			$localstorage.set("autoLoginYN", $rootScope.autoLoginYN);
 
 			$timeout(function(){
@@ -445,10 +448,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = '박혜진';
 			// $rootScope.loginData.Pwd = '1234';
 
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'kmtest';
-			$rootScope.loginData.Pwd = 'kmtest1!';
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'test1234';
+			// $rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -790,8 +793,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 							if($scope.loginData.chkAutoLogin == true){
 								if(ERPiaAPI.toast == 'Y'){
 									if($rootScope.autologin_index == 0){
-										$rootScope.autologin_index = 1;
-									}else{
 										uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
 										$scope.loginData.autologin_YN = 'Y';
 										$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
@@ -800,7 +801,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 										$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
 										$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
 										console.log("autosave ", $rootScope.userType, $scope.loginData.UserId);
-										$rootScope.autologin_index = 0;
+										$rootScope.autologin_index = 1;
+									}else{
+										console.log('로그인 로그 저장 NO');
 									}
 								}else{
 									uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '', $rootScope.deviceInfo);
@@ -833,7 +836,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								$rootScope.priv_meaip.de = data[0].priv_Delete;
 								$rootScope.priv_meaip.save = data[0].priv_Save;
 								$rootScope.priv_meaip.print = data[0].priv_Print;
-
 								$rootScope.priv_meachul.id = data[1].Menu_NM;
 								$rootScope.priv_meachul.master_useYN = data[1].Mpriv;
 								$rootScope.priv_meachul.useYN = data[1].priv;

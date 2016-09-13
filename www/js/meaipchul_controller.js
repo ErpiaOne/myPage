@@ -1845,6 +1845,12 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		return rResult;
 	}
 
+	$scope.goods_priv = function(){
+		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상품조회 권한이 없습니다.', 'short', 'center');
+		else console.log('상품조회 권한이 없습니다.');
+	}
+
+
 	/* 상품정보 디테일 조회 - 이경민[2015-12] */
 	$scope.goodsDetail=function(indexnum){
 		$scope.G_NameS =  $scope.goodslists[indexnum].G_Name;
