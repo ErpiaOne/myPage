@@ -103,14 +103,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 재고관리 - 이경민[2016-05] */
 	$scope.jego = function(){
-		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('10월 오픈예정입니다', 'long', 'center');
-		else console.log('10월 오픈예정입니다.');
-		// if($rootScope.priv_jego.jego_YN == 'Y' && $rootScope.priv_jego.jego == 'Y'){
-		// 	$rootScope.goto_with_clearHistory("#app/jegoMain"); $scope.sidetab("tab4");
-		// }else{
-		// 	if(ERPiaAPI.toast == 'Y') $cordovaToast.show('권한이 없습니다.', 'long', 'center');
-		// 	else console.log('권한이 없습니다.');
-		// }
+		if($rootScope.priv_jego.jego_YN == 'Y' && $rootScope.priv_jego.jego == 'Y'){
+			$rootScope.goto_with_clearHistory("#app/jegoMain"); $scope.sidetab("tab4");
+		}else{
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('권한이 없습니다.', 'long', 'center');
+			else console.log('권한이 없습니다.');
+		}
 	}
 
 	/* 버전관리 - 김형석[2016-01] */
@@ -448,10 +446,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = '박혜진';
 			// $rootScope.loginData.Pwd = '1234';
 
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'test1234';
-			// $rootScope.loginData.Pwd = 'test1234!';
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId = 'test1234';
+			$rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -1308,27 +1306,27 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버튼별 로그 기록 저장 - 이경민[20160907] */
 	$rootScope.ActsLog = function(module_M, module_T){
-	// admin_code, id, mac, loginType, M, T
-		if($rootScope.userType == 'ERPia'){
-			var admin_code = $rootScope.loginData.Admin_Code;
-			var id = $rootScope.loginData.UserId;
-			var mac = $rootScope.deviceInfo.uuid;
-			var loginType = 'E';
-		}else if($rootScope.userType == 'Guest' || $rootScope.userType == undefined){
-			var admin_code = 'Guest';
-			var id = 'Guest';
-			var mac = 'Guest';
-			var loginType = 'G';
-		}else{
-			console.log('저장안할껀데..?');
-		}
+		// 업데이트전 확인사항 입니다.
+		// if($rootScope.userType == 'ERPia'){
+		// 	var admin_code = $rootScope.loginData.Admin_Code;
+		// 	var id = $rootScope.loginData.UserId;
+		// 	var mac = $rootScope.deviceInfo.uuid;
+		// 	var loginType = 'E';
+		// }else if($rootScope.userType == 'Guest' || $rootScope.userType == undefined){
+		// 	var admin_code = 'Guest';
+		// 	var id = 'Guest';
+		// 	var mac = 'Guest';
+		// 	var loginType = 'G';
+		// }else{
+		// 	console.log('저장안할껀데..?');
+		// }
 
-		if(loginType == 'E' || loginType == 'G'){
-			ActsService.Acts_save(admin_code, id, mac, loginType, module_M, module_T)
-			.then(function(data){
-				console.log('data');
-			});
-		}
+		// if(loginType == 'E' || loginType == 'G'){
+		// 	ActsService.Acts_save(admin_code, id, mac, loginType, module_M, module_T)
+		// 	.then(function(data){
+		// 		console.log('data');
+		// 	});
+		// }
 		
 	}
 })

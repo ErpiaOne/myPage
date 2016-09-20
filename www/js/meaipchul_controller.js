@@ -484,6 +484,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 					}
 				}
 				$scope.moreloading=0;
+
 			}, 1000);
 		})
 	};
@@ -766,7 +767,6 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 
    	/*조회셋 검색 - 이경민[2015-12] */
 	$scope.detailset_up = function(){
-		console.log('여기오니?');
 		$scope.searchmode='detail';
 		if($scope.company.dam == '0') $scope.company.dam = '';
 		if($scope.company.damid == '0') $scope.company.damid = '';

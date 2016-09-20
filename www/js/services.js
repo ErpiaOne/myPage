@@ -1873,24 +1873,45 @@ angular.module('starter.services', [])
 /* 재고조회관련 서비스 - 이경민[2016-09-12] */
 .factory('jego_Service', function($http, $q, $cordovaToast, ERPiaAPI){
 	return{
-		main_search: function(Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode){
-			console.log('admin=>', Admin_Code);
-			console.log('UserId=>', UserId);
-			console.log('ChanggoCode=>', ChanggoCode);
-			console.log('keyword=>', keyword);
-			console.log('YN=>', YN);
-			console.log('OneSelectCode=>', OneSelectCode);
+		main_search: function(Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt){
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
-			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt=1&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + keyword + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
+			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt='+ pageCnt +'&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + escape(keyword) + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
-					return response;
+					for(var i=0; i < response.data.list.length; i++){
+						response.data.list[i].trfa = false;
+					}
+					return response.data;
+				}else{
+					return response.data;
+				}
+			},function(response){
+				return $q.reject(response);
+			}); 
+		}, jego_changgoSearch : function(Admin_Code, UserId){		// 재고 창고리스트 조회
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
+			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Util&Mode=Util_Select_ChangGo';
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});		
+		}, detail_search : function(Admin_Code, UserId, ChangGoCode, OneSelectCode){		// 재고 창고리스트 조회
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
+			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&ChangGoCode=' + ChangGoCode + '&KeyWord=&CodeSearchYN=N&OneSelectCode=' + OneSelectCode;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response.data;
 				}else{
 					return $q.reject(response);
 				}
 			},function(response){
 				return $q.reject(response);
 			});
-		}		
+		}
 	};
 });

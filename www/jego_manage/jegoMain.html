@@ -20,296 +20,300 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 		<button menu-toggle="right"  ng-click="jegoSear_change()" ng-if="jegoSearch == 'detail'" class="button button-small button-psm04" style="line-height: 12px;">통합<br>검색</button>
 		<button menu-toggle="right"  ng-click="jegoSear_change()" ng-if="jegoSearch == 'hap'" class="button button-small button-psm04" style="line-height: 12px;">상세<br>검색</button>
 	</ion-nav-buttons>
-	<ion-content>
-		<tab-slide-box>
-			<div class="tsb-icons" style="padding-top: 2px;"> <!-- class건들이면 안되요..ㅠㅠ -->
-				<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
-					<ion-scroll direction="x" class="tsb-hscroll">
-						<a href="javascript:;">조회조건</a>
-						<a href="javascript:;">최근검색</a>
-						<a href="javascript:;">빠른검색</a>
-					</ion-scroll>
+	<ion-content scroll="false">
+			<tab-slide-box>
+				<div class="tsb-icons" style="padding-top: 2px;"> <!-- class건들이면 안되요..ㅠㅠ -->
+					<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
+						<ion-scroll direction="x" class="tsb-hscroll">
+							<a href="javascript:;">조회조건</a>
+							<a href="javascript:;">최근검색</a>
+							<a href="javascript:;">빠른검색</a>
+						</ion-scroll>
+					</div>
 				</div>
-			</div>
 
-			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index);slideChanged(index)" style="border-top: 1px solid #e0e0e0;">
-				<!-- 조회조건 -->
-				<ion-slide >
-				<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both; background: #dce0e1;">
-					<!-- 통합검색 모드 -->
-					<div class="item div-2" ng-if="jegoSearch == 'hap'">
-						<div style="padding: 40px 10px 30px 10px;">
-							<div style="font-size: 30px; color: #4948FF; padding-top: 10px;">통합 검색</div>
-							<div style="font-size:  0.8em; padding-top: 20px;">상품명,규격,자체코드,로케이션,브랜드,제조처를 입력하세요.<br> 그외 항목은 상단 상세검색을 이용해주세요.</div>
-							<div  style="clear: both; width:100%; padding-top: 40px;">
-								<div style="float: left; width:100%;">
-									<input type="text" style="width: 100%; height: 30px; background: #fff; border:1px; border: 3px solid #4948FF; color: #000; padding-left: 10px; padding-right: 50px;" ng-model="jego_searchModule.all_Search">
+
+				<ion-slide-box does-continue="true" show-pager="true" on-slide-changed="slideHasChanged($index, tabs);slideChanged(index)">
+					<ion-slide on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()" style="background: #e0e0e0; overflow-y: auto; padding-bottom: 0px;" >
+						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+						<!-- 조회조건 -->
+						<!-- 통합검색 모드 -->
+						<div class="item div-2" ng-if="jegoSearch == 'hap'">
+							<div style="padding: 40px 10px 30px 10px;">
+								<div style="font-size: 30px; color: #4948FF; padding-top: 10px;">통합 검색</div>
+								<div style="font-size:  0.8em; padding-top: 20px;">상품명,규격,자체코드,로케이션,브랜드,제조처를 입력하세요.<br> 그외 항목은 상단 상세검색을 이용해주세요.</div>
+								<div  style="clear: both; width:100%; padding-top: 40px;">
+									<div style="float: left; width:100%;">
+										<input type="text" style="width: 100%; height: 30px; background: #fff; border:1px; border: 3px solid #4948FF; color: #000; padding-left: 10px; padding-right: 50px;" ng-model="jego_searchModule.all_Search">
+									</div>
+									<div style="float: left; width:10%; margin-left:-80px;">
+										<i class='ion-android-close' style='font-size: 27px; color:#000; vertical-align: middle;' ng-click='clearc_keyword()'></i>
+									</div>
+									<div style="float: left; width:10%; margin-left:-40px; background-color: #000;" ng-click='jego_barc()'>
+										<i style="font-size: 2.0em; vertical-align:middle; text-align: right;"><img src="./img/barc.png"></i>
+									</div>
 								</div>
-								<div style="float: left; width:10%; margin-left:-40px; background-color: #000;" ng-click='jego_barc()'>
-									<i style="font-size: 2.5em; vertical-align:middle; text-align: right;"><img src="./img/barc.png"></i>
-								</div>
+
 							</div>
-
-						</div>
-						<div style="width: 100%; position: fixed; bottom: 100px; left: 0; padding: 10px 10px 10px 10px;">
-							<button class="button button-block button-psm05" style="border: 0;" ng-click='jego_search()'>조회</button>
-						</div>	
-					</div>
-
-
-
-					<!-- 상세검색 모드 -->
-					<div class="item div-2" ng-if="jegoSearch == 'detail'" style="height: auto;">
-						<!-- 상품선택 -->
-						<div class="list list-inset">
-							<div ng-click="jego_Next(1)" class="div-3">상품선택<i class="{{upAnddown}} psmsmy_semo"></i></div>
-							<div ng-if="basictype" class="div-1">
-								<table>
-									<tr>
-										<td class="td1-1">상품명</td>
-										<td class="td1-2">
-											<input type="search" placeholder="상품명 입력">
-										</td>
-										<td class="td1-3">
-											<div>
-												<i class='ion-android-close i-1'></i>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="td1-1">규격</td>
-										<td class="td1-2">
-											<input type="search" placeholder="규격 입력">
-										</td>
-										<td class="td1-3">
-											<div>
-												<i class='ion-android-close i-1'></i>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="td1-1">자체코드</td>
-										<td class="td1-2">
-											<input type="search" placeholder="자체코드 입력">
-										</td>
-										<td class="td1-3">
-											<div>
-												<i class='ion-android-close i-1'></i>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="td1-1">바코드</td>
-										<td class="td1-2">
-											<input type="search" placeholder="바코드 입력">
-										</td>
-										<td class="td1-3">
-											<div>
-												<i style="font-size: 2.5em; vertical-align:middle; text-align: right; margin-left: -50px;"><img src="./img/barc.png"></i>
-												<i class='ion-android-close i-1'></i>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="td1-1" style="vertical-align: middle;">창고</td>
-										<td style="height: 28px; vertical-align: middle;">
-											<select style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;">
-											  <option ng-selected>본사창고</option>
-											  <option>가짜창고</option>
-											  <option>진짜창고</option>
-											</select>
-										</td>
-									</tr>
-								</table>
-							</div>
+							<div style="width: 100%; left: 0; padding: 10px 10px 50px 10px;">
+								<button class="button button-block button-psm05" style="border: 0;" ng-click='jego_search()'>조회</button>
+							</div>	
 						</div>
 
-						<!-- 상세선택 -->
-						<div class="list list-inset">
-							<div ng-click="jego_Next(2)" class="div-3">상세선택<i class="{{upAnddown2}} psmsmy_semo"></i></div>
-							<div ng-if="basic2type" class="div-1">
-								<table>
-									<tr>
-										<td class="td1-1">로케이션</td>
-										<td class="td1-2">
-											<input type="search" placeholder="로케이션 입력">
-										</td>
-										<td class="td1-3">
-											<div>
-												<i class='ion-android-close i-1'></i>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="td1-1">브랜드</td>
-										<td class="td1-2">
-											<input type="search" placeholder="브랜드 입력">
-										</td>
-										<td class="td1-3">
-											<div>
-												<i class='ion-android-close i-1'></i>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="td1-1">제조처</td>
-										<td class="td1-2">
-											<input type="search" placeholder="제조처 입력">
-										</td>
-										<td class="td1-3">
-											<div>
-												<i class='ion-android-close i-1'></i>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
 
-						<!-- 관심항목 -->
-						<div class="list list-inset">
-							<div ng-click="jego_Next(3)" class="div-3">관심항목<i class="{{upAnddown3}} psmsmy_semo"></i></div>
-							<div ng-if="basic3type" class="div-1">
-								<table>
-									<tr>
-										<td class="td1-1">관심항목</td>
-										<td>
-											<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(1)">목록</button>
-										</td>
-										<td class="td1-2">
-											<input type="search" ng-disabled="true" placeholder="선택해주세요.">
-										</td>
-										<td class="td1-3">
-											<div>
-												<i class='ion-android-close i-1'></i>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="td1-1">MY LIST</td>
-										<td>
-											<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(2)">목록</button>
-										</td>
-										<td class="td1-2">
-											<input type="search" ng-disabled="true" placeholder="선택해주세요.">
-										</td>
-										<td class="td1-3">
-											<div>
-												<i class='ion-android-close i-1'></i>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
 
-						<div class="list list-inset" style="background-color: #fff;">
-								<table>
-									<tr>
-										<td style="height: 8px; vertical-align: middle;">
-											<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000;">
-											  <option ng-selected>-</option>
-											  <option>10</option>
-											  <option>11</option>
-											</select>
-										</td>
-										<td style="color: #000; vertical-align: middle;">개월 내 매출내역</td>
-										<td style="height: 8px; vertical-align: middle;">
-											<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000;">
-											  <option ng-selected>존재</option>
-											  <option>미존재</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="3">
-											<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000; align: right;">
-											  <option ng-selected>재고수량 ALL</option>
-											  <option>재고수량 ≠ 0</option>
-											  <option>재고수량 = 0</option>
-											  <option>재고수량 ≥ 0</option>
-											  <option>재고수량 ≤ 0</option>
-											</select>
-										</td>
-									</tr>
-								</table>
-						</div>
-
-						<div style="padding: 0 10px;"><button class="button button-block psm_login_ink"  ng-click='jego_search()' style="background: #52bcae;">조회</button></div>
-						
-					</div>
-					</ion-scroll>
-				</ion-slide>
-
-				<!-- 최근검색 -->
-				<ion-slide>
-						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both; background: #dce0e1;">
-							<div align="center" style="background: #dce0e1; height: auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
-								<div style="padding: 10px 0 55px 0;">
-									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
-										<tr >
-											<td>상품명</td>
-											<td>규격</td>
-											<td>창고</td>
+						<!-- 상세검색 모드 -->
+						<div class="item div-2" ng-if="jegoSearch == 'detail'" style="height: auto; padding: 10px 10px 50px 10px;">
+							<!-- 상품선택 -->
+							<div class="list list-inset">
+								<div ng-click="jego_Next(1)" class="div-3">상품선택<i class="{{upAnddown}} psmsmy_semo"></i></div>
+								<div ng-if="basictype" class="div-1">
+									<table>
+										<tr>
+											<td class="td1-1">상품명</td>
+											<td class="td1-2">
+												<input type="search" placeholder="상품명 입력">
+											</td>
+											<td class="td1-3">
+												<div>
+													<i class='ion-android-close i-1'></i>
+												</div>
+											</td>
 										</tr>
-										<tr >
-											<td>자체코드</td>
-											<td>로케이션</td>
-											<td>브랜드</td>
+										<tr>
+											<td class="td1-1">규격</td>
+											<td class="td1-2">
+												<input type="search" placeholder="규격 입력">
+											</td>
+											<td class="td1-3">
+												<div>
+													<i class='ion-android-close i-1'></i>
+												</div>
+											</td>
 										</tr>
-									</table>
-									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
-										<tr >
-											<td>상품명</td>
-											<td>규격</td>
-											<td>창고</td>
+										<tr>
+											<td class="td1-1">자체코드</td>
+											<td class="td1-2">
+												<input type="search" placeholder="자체코드 입력">
+											</td>
+											<td class="td1-3">
+												<div>
+													<i class='ion-android-close i-1'></i>
+												</div>
+											</td>
 										</tr>
-										<tr >
-											<td>자체코드</td>
-											<td>로케이션</td>
-											<td>브랜드</td>
+										<tr>
+											<td class="td1-1">바코드</td>
+											<td class="td1-2">
+												<input type="search" placeholder="바코드 입력">
+											</td>
+											<td class="td1-3">
+												<div>
+													<i style="font-size: 2.5em; vertical-align:middle; text-align: right; margin-left: -50px;"><img src="./img/barc.png"></i>
+													<i class='ion-android-close i-1'></i>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="td1-1" style="vertical-align: middle;">창고</td>
+											<td style="height: 28px; vertical-align: middle;">
+												<select style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;">
+												  <option ng-selected>본사창고</option>
+												  <option>가짜창고</option>
+												  <option>진짜창고</option>
+												</select>
+											</td>
 										</tr>
 									</table>
 								</div>
 							</div>
+
+							<!-- 상세선택 -->
+							<div class="list list-inset">
+								<div ng-click="jego_Next(2)" class="div-3">상세선택<i class="{{upAnddown2}} psmsmy_semo"></i></div>
+								<div ng-if="basic2type" class="div-1">
+									<table>
+										<tr>
+											<td class="td1-1">로케이션</td>
+											<td class="td1-2">
+												<input type="search" placeholder="로케이션 입력">
+											</td>
+											<td class="td1-3">
+												<div>
+													<i class='ion-android-close i-1'></i>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="td1-1">브랜드</td>
+											<td class="td1-2">
+												<input type="search" placeholder="브랜드 입력">
+											</td>
+											<td class="td1-3">
+												<div>
+													<i class='ion-android-close i-1'></i>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="td1-1">제조처</td>
+											<td class="td1-2">
+												<input type="search" placeholder="제조처 입력">
+											</td>
+											<td class="td1-3">
+												<div>
+													<i class='ion-android-close i-1'></i>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+
+							<!-- 관심항목 -->
+							<div class="list list-inset">
+								<div ng-click="jego_Next(3)" class="div-3">관심항목<i class="{{upAnddown3}} psmsmy_semo"></i></div>
+								<div ng-if="basic3type" class="div-1">
+									<table>
+										<tr>
+											<td class="td1-1">관심항목</td>
+											<td>
+												<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(1)">목록</button>
+											</td>
+											<td class="td1-2">
+												<input type="search" ng-disabled="true" placeholder="선택해주세요.">
+											</td>
+											<td class="td1-3">
+												<div>
+													<i class='ion-android-close i-1'></i>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="td1-1">MY LIST</td>
+											<td>
+												<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(2)">목록</button>
+											</td>
+											<td class="td1-2">
+												<input type="search" ng-disabled="true" placeholder="선택해주세요.">
+											</td>
+											<td class="td1-3">
+												<div>
+													<i class='ion-android-close i-1'></i>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+
+							<div class="list list-inset" style="background-color: #fff;">
+									<table>
+										<tr>
+											<td style="height: 8px; vertical-align: middle;">
+												<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000;">
+												  <option ng-selected>-</option>
+												  <option>10</option>
+												  <option>11</option>
+												</select>
+											</td>
+											<td style="color: #000; vertical-align: middle;">개월 내 매출내역</td>
+											<td style="height: 8px; vertical-align: middle;">
+												<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000;">
+												  <option ng-selected>존재</option>
+												  <option>미존재</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000; align: right;">
+												  <option ng-selected>재고수량 ALL</option>
+												  <option>재고수량 ≠ 0</option>
+												  <option>재고수량 = 0</option>
+												  <option>재고수량 ≥ 0</option>
+												  <option>재고수량 ≤ 0</option>
+												</select>
+											</td>
+										</tr>
+									</table>
+							</div>
+
+							<button class="button button-block psm_login_ink"  ng-click='jego_search()' style="background: #52bcae;">조회</button>
+							<div style="padding-bottom: 100px;"></div>
+						</div>
 						</ion-scroll>
-				</ion-slide>
+					</ion-slide>
 
-				<!-- 빠른검색 -->
-				<ion-slide disable-scroll="true">
-						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both; background: #dce0e1;">
-							<div align="center" style="background: #dce0e1; height:auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
-								<div style="padding: 10px 0 55px 0;">
-									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
-										<tr >
-											<td>상품명</td>
-											<td>규격</td>
-											<td>창고</td>
-										</tr>
-										<tr >
-											<td>자체코드</td>
-											<td>로케이션</td>
-											<td>브랜드</td>
-										</tr>
-									</table>
-									<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
-										<tr >
-											<td>상품명</td>
-											<td>규격</td>
-											<td>창고</td>
-										</tr>
-										<tr >
-											<td>자체코드</td>
-											<td>로케이션</td>
-											<td>브랜드</td>
-										</tr>
-									</table>
+					<!-- 최근검색 -->
+					<ion-slide>
+							<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both; background: #dce0e1;">
+								<div align="center" style="background: #dce0e1; height: auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
+									<div style="padding: 10px 0 55px 0;">
+										<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
+											<tr >
+												<td>상품명</td>
+												<td>규격</td>
+												<td>창고</td>
+											</tr>
+											<tr >
+												<td>자체코드</td>
+												<td>로케이션</td>
+												<td>브랜드</td>
+											</tr>
+										</table>
+										<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
+											<tr >
+												<td>상품명</td>
+												<td>규격</td>
+												<td>창고</td>
+											</tr>
+											<tr >
+												<td>자체코드</td>
+												<td>로케이션</td>
+												<td>브랜드</td>
+											</tr>
+										</table>
+									</div>
 								</div>
-							</div>
-						</ion-scroll>
-				</ion-slide>
-			</ion-slide-box>
-		</tab-slide-box>
+							</ion-scroll>
+					</ion-slide>
+
+					<!-- 빠른검색 -->
+					<ion-slide disable-scroll="true">
+							<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both; background: #dce0e1;">
+								<div align="center" style="background: #dce0e1; height:auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
+									<div style="padding: 10px 0 55px 0;">
+										<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
+											<tr >
+												<td>상품명</td>
+												<td>규격</td>
+												<td>창고</td>
+											</tr>
+											<tr >
+												<td>자체코드</td>
+												<td>로케이션</td>
+												<td>브랜드</td>
+											</tr>
+										</table>
+										<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px;">
+											<tr >
+												<td>상품명</td>
+												<td>규격</td>
+												<td>창고</td>
+											</tr>
+											<tr >
+												<td>자체코드</td>
+												<td>로케이션</td>
+												<td>브랜드</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</ion-scroll>
+					</ion-slide>
+				</ion-slide-box>
+			</tab-slide-box>
 	</ion-content>
 
 </ion-view>
