@@ -1873,9 +1873,15 @@ angular.module('starter.services', [])
 /* 재고조회관련 서비스 - 이경민[2016-09-12] */
 .factory('jego_Service', function($http, $q, $cordovaToast, ERPiaAPI){
 	return{
-		main_search: function(Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt){
+		main_search: function(Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt){		// 재고조회 (통합 & 바코드)
+			console.log('page =>', pageCnt)
+
+			if(YN == 'Y') var word = keyword;
+			else var word = escape(keyword);
+
+
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
-			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt='+ pageCnt +'&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + escape(keyword) + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
+			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt='+ pageCnt +'&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + word + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					for(var i=0; i < response.data.list.length; i++){
@@ -1900,7 +1906,7 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});		
-		}, detail_search : function(Admin_Code, UserId, ChangGoCode, OneSelectCode){		// 재고 창고리스트 조회
+		}, detail_search : function(Admin_Code, UserId, ChangGoCode, OneSelectCode){		// 재고 창고별 상세 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&ChangGoCode=' + ChangGoCode + '&KeyWord=&CodeSearchYN=N&OneSelectCode=' + OneSelectCode;
 			return $http.get(url + '?' + data).then(function(response){
@@ -1912,6 +1918,18 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});
+		}, Attention_list : function(Admin_Code, UserId, Mode){		// MyList & 관심항목 조회
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
+			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Util&Mode=' + Mode;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object' || typeof response.data == 'string'){
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});		
 		}
 	};
 });

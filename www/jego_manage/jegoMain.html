@@ -109,7 +109,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 											</td>
 											<td class="td1-3">
 												<div>
-													<i style="font-size: 2.5em; vertical-align:middle; text-align: right; margin-left: -50px;"><img src="./img/barc.png"></i>
+													<i style="font-size: 2.5em; vertical-align:middle; text-align: right; margin-left: -50px;" ng-click='jego_barc()'><img src="./img/barc.png"></i>
 													<i class='ion-android-close i-1'></i>
 												</div>
 											</td>
@@ -181,11 +181,11 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 												<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(1)">목록</button>
 											</td>
 											<td class="td1-2">
-												<input type="search" ng-disabled="true" placeholder="선택해주세요.">
+												<input type="search" ng-disabled="true" placeholder="선택해주세요." ng-model="jego_detail_colum.attent_Kshim_name">
 											</td>
 											<td class="td1-3">
 												<div>
-													<i class='ion-android-close i-1'></i>
+													<i class='ion-android-close i-1' ng-click="attent_delete()"></i>
 												</div>
 											</td>
 										</tr>
@@ -195,11 +195,11 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 												<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(2)">목록</button>
 											</td>
 											<td class="td1-2">
-												<input type="search" ng-disabled="true" placeholder="선택해주세요.">
+												<input type="search" ng-disabled="true" placeholder="선택해주세요." ng-model="jego_detail_colum.attent_Mylist_name">
 											</td>
 											<td class="td1-3">
 												<div>
-													<i class='ion-android-close i-1'></i>
+													<i class='ion-android-close i-1' ng-click="attent_delete()"></i>
 												</div>
 											</td>
 										</tr>

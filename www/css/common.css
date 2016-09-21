@@ -98,8 +98,26 @@ select {-webkit-border-radius: 0; height: 35px;}
 	padding-right: 10px;
 	cursor:pointer;
 }
+/* 모달 애니매이션 - 이경민[2016-09-21] */
+.scale-in {
+  transform: scale(0.9);
+  opacity: 0;
+}
+.scale-in.ng-enter,
+.scale-in > .ng-enter {
+  transition: all cubic-bezier(.1, .7, .1, 1) 400ms;
+}
 
+.scale-in.ng-enter-active,
+.scale-in > .ng-enter-active {
+  transform: scale(1);
+  opacity: 1;
+}
 
+.scale-in.ng-leave,
+.scale-in > .ng-leave {
+  transition: all ease-in-out 250ms;
+}
 
 
 .psm_left_img1 {
