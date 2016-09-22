@@ -123,7 +123,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 관심항목/MY LIST 목록조회시 뜨는 모달창(크기 작음) - 이경민[2016-08-30] */
 	$ionicModal.fromTemplateUrl('jego_manage/mylist_modal.html',{
-		scope : $scope
+		scope : $scope,
+		animation: 'scale-in'
 	}).then(function(modal){
 		$scope.mylist_Modal = modal;
 	});
@@ -264,6 +265,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		$scope.jegosele_Modal.hide();
 	}
 
+	/* 상품상세 정보, 등록 모달 오픈 */
 	$scope.jego_detailModal = function(){
 		var i = $scope.select_jegoindex;
 		if($scope.select_jegoindex == -1 || $scope.jego_result[i].trfa == false){
@@ -272,7 +274,12 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}else{
 			$scope.jegosele_Modal.show();
 		}
-		
+	}
+
+	/* 권한이 없습니다. - [이경민 2016-09-22] */
+	$scope.privNo = function(){
+		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('권한이 없습니다.', 'short', 'center');
+		else console.log('권한이 없습니다.');
 	}
 
 	$scope.jego_back = function(){

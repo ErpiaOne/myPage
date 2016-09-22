@@ -694,7 +694,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		// $ionicHistory.clearHistory();
 
 		if($rootScope.distinction == 'meaip'){
-			if($rootScope.priv_meaip.save == 'Y' && $rootScope.priv_wongaYN == 'N'){
+			if($rootScope.priv_meaip.master_useYN == 'Y' && $rootScope.priv_meaip.save == 'Y' && $rootScope.priv_wongaYN == 'N'){
 				$state.go('app.meaip_IU', {}, {location:'replace'});
 			}else{
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록 권한이 없습니다.', 'short', 'center');

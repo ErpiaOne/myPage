@@ -1,17 +1,23 @@
-<ion-modal-view cache-view="false" style="width: 100%; height: 100%; background-color: transparent; background-color: rgba( 53, 53, 53, 0.9 );">
-	<ion-content style="width: 60%; height: auto; top: 10%; left: 40%; right: 0%; bottom: 50%;" scroll="false">
+<ion-modal-view cache-view="false" style="width: 100%; height: 100%; background-color: transparent; background-color: rgba( 53, 53, 53, 0.8 );">
+	<ion-content style="width: auto; height: auto; top: 10%; left: auto; right: 0%; bottom: auto;" scroll="false">
 		<div style="padding: 10px;">
-			<div style="padding-bottom: 10px; float: right; color: #fff; vertical-align: middle;">
-				상품상세 정보 <i class="ion-ios-checkmark-outline" style="color: #fff; font-size: 2em;"></i><br><br>
-			</div>
-			<div style="padding-bottom: 10px; float: right; color: #fff; vertical-align: middle;">
-				선택상품 매입 등록 <i class="ion-ios-checkmark-outline" style="color: #fff; font-size: 2em;"></i><br><br>
-			</div>
-			<div style="padding-bottom: 10px; float: right; color: #fff; vertical-align: middle;">
-				선택상품 매출 등록 <i class="ion-ios-checkmark-outline" style="color: #fff; font-size: 2em;"></i><br><br>
-			</div>
-			<div style="padding-bottom: 10px; float: right; color: #fff; vertical-align: middle;">
-				현 조회조건 빠른검색 저장 <i class="ion-ios-checkmark-outline" style="color: #fff; font-size: 2em;"></i><br><br>
+			<div style="padding-bottom: 10px; float: right; color: #fff;">
+				<span ng-if="priv_productYM == 'Y'">상품상세 정보 <i class="ion-ios-checkmark-outline" style="color: #fff; font-size: 2.5em;"></i></span>
+				<spanng ng-if="priv_productYM == 'N'" style="color: #BDBDBD;" ng-click="privNo()">상품상세 정보 <i class="ion-ios-checkmark-outline" style="color: #BDBDBD; font-size: 2.5em;"></i></span>
+			</div><br><br>
+			<div style="padding-bottom: 10px; float: right; color: #fff;">
+			<span ng-if="priv_meaip.master_useYN == 'Y' && priv_meaip.save == 'Y' && priv_wongaYN == 'N'">선택상품 매입 등록 <i class="ion-ios-checkmark-outline" style="color: #fff; font-size: 2.5em;"></i></span>
+			<span ng-if="priv_meaip.master_useYN != 'Y' || priv_meaip.save != 'Y' || priv_wongaYN != 'N'" style="color: #BDBDBD;" ng-click="privNo()">선택상품 매입 등록 <i class="ion-ios-checkmark-outline" style="color: #BDBDBD; font-size: 2.5em;"></i></span>	
+			</div><br><br>
+			<div style="padding-bottom: 10px; float: right; color: #fff;">
+				<span ng-if="priv_meachul.master_useYN == 'Y' && priv_meachul.save == 'Y'">선택상품 매출 등록 <i class="ion-ios-checkmark-outline" style="color: #fff; font-size: 2.5em;"></i></span>
+				<span ng-if="priv_meachul.master_useYN != 'Y' || priv_meachul.save != 'Y'" style="color: #BDBDBD;" ng-click="privNo()">선택상품 매출 등록 <i class="ion-ios-checkmark-outline" style="color: #BDBDBD; font-size: 2.5em;"></i></span>
+			</div><br><br>
+			<div style="padding-bottom: 10px; float: right; color: #fff;">
+				현 조회조건 빠른검색 저장 <i class="ion-ios-checkmark-outline" style="color: #fff; font-size: 2.5em;"></i>
+			</div><br><br>
+			<div style="padding-bottom: 10px; float: right; color: #fff;">
+				<i class="ion-ios-close-outline" style="color: #fff; font-size: 3em;" ng-click="deletejego_m()"></i>
 			</div>
 		</div>
 	</ion-content>
