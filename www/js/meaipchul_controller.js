@@ -702,7 +702,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 			}
 			
 		}else{
-			if($rootScope.priv_meachul.save == 'Y'){
+			if($rootScope.priv_meachul.master_useYN == 'Y' && $rootScope.priv_meachul.save == 'Y'){
 				$state.go('app.meachul_IU', {}, {location:'replace'});
 			}else{
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록 권한이 없습니다.', 'short', 'center');
@@ -1915,6 +1915,10 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 						'<tr>' +
 							td + '재고</td>' +
 							td2 + $scope.goodslists[indexnum].Jego + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '출고대기</td>' +
+							td2 + $scope.goodslists[indexnum].ChulGoDeagi + '</td>' +
 						'</tr>' +
 						'</table>';
 		$ionicPopup.alert({

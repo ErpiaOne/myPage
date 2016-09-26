@@ -1414,6 +1414,7 @@ angular.module('starter.services', [])
 				default : console.log('모드선택안됨 오류'); break;
 			}	
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
+			console.log('상품검색 유알엘=', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
 					if(response.data == '<!--Parameter Check-->'){
@@ -1447,6 +1448,7 @@ angular.module('starter.services', [])
 							}
 						}
 					}
+					console.log('상품검색 =>', response.data);
 					return response.data;
 				}else{
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
