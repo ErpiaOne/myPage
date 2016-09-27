@@ -863,6 +863,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								$rootScope.priv_wongaYN = data[0].WonGa;
 						});
 
+						/* 재고현황 오픈 기념 */
+						PrivService.JegoOpen($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+						.then(function(data){
+							$rootScope.jegocontroll = parseInt(data[0].rslt2);
+							$rootScope.jego_open = parseInt(data[0].rslt);
+						});
+
 						$timeout(function() {
 							$ionicLoading.hide();
 							$scope.closeLogin();
@@ -1307,6 +1314,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 버튼별 로그 기록 저장 - 이경민[20160907] */
 	$rootScope.ActsLog = function(module_M, module_T){
 		console.log('업데이트 전에 여기찾아라~~~');
+		if(module_T == 'jego_tab') $rootScope.jego_open = $rootScope.jegocontroll;
 		// 업데이트전 확인사항 입니다.
 		// if($rootScope.userType == 'ERPia'){
 		// 	var admin_code = $rootScope.loginData.Admin_Code;

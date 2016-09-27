@@ -202,6 +202,20 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});
+		}, JegoOpen : function(Admin_Code, UserId, mac){		/* 재고현황 오픈 기념 */
+			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
+			var data = 'Kind=Jego_Select&Admin_Code=' + Admin_Code + '&id=' + escape(UserId) + '&mac=' + mac + '&loginType=E';
+			console.log('?????=>', url, '?', data);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					console.log('짜증 =>', response.data.list[0].rslt);
+					return response.data.list;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
 
 		}
 	};
