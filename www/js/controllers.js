@@ -2166,6 +2166,12 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			.then(function(csInfo){
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 성공하였습니다.', 'long', 'center');
 				else alert('등록이 성공하였습니다.');
+
+				/* 문의글 등록시 영업담당자에게 문자 발송 추가 - [이경민-2016-09-28] */
+				csInfoService.cs_message($rootScope.rndNum, $scope.csData.tel, csInfo.data.list[0].idx).then(function(response){
+					console.log('ERPia 영업 담당자에게 전달완료.');
+				})
+
 				$rootScope.goto_with_clearHistory('#/app/login');
 			},function(){
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록이 실패하였습니다.', 'long', 'center');
@@ -2218,6 +2224,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.csData.cs_certify_no= '';
 				$scope.csData.cs_certify_click = true;
 			})
+
+			
 		}
 	};
 	/* 인증번호 확인버튼 클릭시 이벤트  - 김형석[2016-01] */

@@ -1,8 +1,33 @@
 // 재고현황 컨트롤러
-angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $timeout, $cordovaToast, jego_Service, $state, $location, $cordovaBarcodeScanner, $ionicPlatform, $ionicModal, ERPiaAPI, app) {
+angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $timeout, $cordovaToast, jego_Service, $state, $location, $cordovaBarcodeScanner, $ionicPlatform, $ionicModal, ERPiaAPI, app, $ionicScrollDelegate, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
 	console.log('jegoCtrl(재고현황 조회 컨트롤러)');
 
 	// $rootScope.keyheight = window.innerHeight; // 키보드 높이 ..... 
+
+	$scope.onTouch = function(){
+		$ionicSlideBoxDelegate.enableSlide(false);
+		$ionicSideMenuDelegate.canDragContent(false);
+	 };
+
+	$scope.onRelease = function(){
+		$ionicSlideBoxDelegate.enableSlide(true);
+		$ionicSideMenuDelegate.canDragContent(false);
+	};
+
+	$scope.nextSlide = function() {
+		$ionicSlideBoxDelegate.next();
+		$ionicSideMenuDelegate.canDragContent(false);
+	 };
+
+	$scope.previousSlide = function() {
+		$ionicSlideBoxDelegate.previous();
+		$ionicSideMenuDelegate.canDragContent(false);
+	};
+
+	$scope.backbtn = function(){
+		$ionicHistory.goBack();
+		$ionicSideMenuDelegate.canDragContent(true);
+	}
 
 	$scope.jegoSearch = 'hap';
 
@@ -24,30 +49,43 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 상세조회 리스트 */
 	$scope.jego_detail_colum = {
-		pro_name : '',		// 상품명
-		pro_stand : '', 		// 규격
-		pro_OnCode : '',		// 자체코드
-		pro_barCode : '',	// 바코드
-		pro_ChangGo : '',	// 창고
+		pro_name 			: '',		// 상품명
+		pro_stand 			: '', 		// 규격
+		pro_OnCode 		: '',		// 자체코드
+		pro_barCode 		: '',		// 바코드
+		pro_ChangGo 		: '',		// 창고
 
-		detail_location : '',	// 로케이션
-		detail_brand : '', 	// 브랜드
-		detail_Jejo	: '',		// 제조처
+		detail_location 		: '',		// 로케이션
+		detail_brand 		: '', 		// 브랜드
+		detail_Jejo			: '',		// 제조처
 
-		attent_Kshim_name : '',		// 관심항목 이름
-		attent_Kshim_code : '',		// 관심항목 코드
-		attent_Mylist_name : '',		// 관심항목 이름
-		attent_Mylist_code : '',		// 관심항목 코드
+		attent_Kshim_name 	: '',		// 관심항목 이름
+		attent_Kshim_code 	: '',		// 관심항목 코드
+		attent_Mylist_name 	: '',		// 관심항목 이름
+		attent_Mylist_code 	: '',		// 관심항목 코드
+
+		MeachulMonth 		: '0',		// 매출월 1~12
+		MeachulListYN 		: 'Y',		// 매출내역 존재여부	: Y 존재 / N 미존재
+		MeachulListCtlYN 	: 'N',		// 매출내역 존재옵션 사용여부	: Y / N
+		JegoQtyCtl 		: '1',		// 재고수량별 조회 옵션	: 1 -> 재고수량 ALL(기본) / 2 -> 재고 ≠ 0 / 3 -> 재고 = 0 / 4 -> 재고 ≥ 0/ 5 -> 재고 ≤ 0
+		JegoQtyCtlYN 		: 'N',		// 재고수량별 조회 옵션 사용여부	: Y / N 
 	}
 
-	/* 통합/상세 검색 모드변경 [이경민 - 2016-08-29] */
-	$scope.jegoSear_change = function(){
-		if($scope.jegoSearch == 'hap'){
-			$scope.jegoSearch = 'detail';
-		}else if($scope.jegoSearch == 'detail'){
-			$scope.jegoSearch = 'hap';
-		}
-	}
+	/*개월수*/
+	$scope.month = [
+		{ id : 1 },
+		{ id : 2 },
+		{ id : 3 },
+		{ id : 4 },
+		{ id : 5 },
+		{ id : 6 },
+		{ id : 7 },
+		{ id : 8 },
+		{ id : 9 },
+		{ id : 10 },
+		{ id : 11 },
+		{ id : 12 }
+	]
 		
 	/* 재고조회시 창고 리스트 조회 [이경민 - 2016-09-19] */
 	$scope.jego_Changgh = function() {
@@ -59,6 +97,16 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 			$scope.loadingani();
 		}, 1000);
+	}
+
+	/* 통합/상세 검색 모드변경 [이경민 - 2016-08-29] */
+	$scope.jegoSear_change = function(){
+		if($scope.jegoSearch == 'hap'){
+			$scope.jego_Changgh();
+			$scope.jegoSearch = 'detail';
+		}else if($scope.jegoSearch == 'detail'){
+			$scope.jegoSearch = 'hap';
+		}
 	}
 
 	/* 통합검색 바코드 검색 [이경민 - 2016-08-29] */
@@ -167,9 +215,13 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		if($scope.listname == '관심항목'){
 			$scope.jego_detail_colum.attent_Kshim_name = $scope.AttentionList[index].K_Name;
 			$scope.jego_detail_colum.attent_Kshim_code = $scope.AttentionList[index].K_Code;
+			$scope.jego_detail_colum.attent_Mylist_name = '';
+			$scope.jego_detail_colum.attent_Mylist_code = '';
 		}else{
 			$scope.jego_detail_colum.attent_Mylist_name = $scope.AttentionList[index].Name;
 			$scope.jego_detail_colum.attent_Mylist_code = $scope.AttentionList[index].MyCode;
+			$scope.jego_detail_colum.attent_Kshim_name = '';
+			$scope.jego_detail_colum.attent_Kshim_code = '';
 		}
 		$scope.mylist_Modal.hide();
 	}
@@ -191,30 +243,83 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		$scope.jego_searchModule.all_Search = '';
 	}
 
+	/* 상세조회 조회옵션 YN - 이경민[2016-09-28] */
+	$scope.YNCheck = function(val){
+		console.log('??????');
+		if(val == 1){ // 매출월 조회옵션 사용유무
+			if($scope.jego_detail_colum.MeachulMonth == '0'){
+				$scope.jego_detail_colum.MeachulListCtlYN = 'N';
+			}else{
+				$scope.jego_detail_colum.MeachulListCtlYN = 'Y';
+			}
+		}else { // 재고수량별 조회 옵션 사용여부
+			if($scope.jego_detail_colum.JegoQtyCtl == '1'){
+				$scope.jego_detail_colum.JegoQtyCtlYN = 'N';
+			}else{
+				$scope.jego_detail_colum.JegoQtyCtlYN = 'Y';
+			}
+		}
+	}
+
 	/* 재고조회 - 이경민[2016-08] */
 	$scope.jego_search = function(){
-		$rootScope.keyword = $scope.jego_searchModule.all_Search;
-		$timeout(function(){
-			if($scope.jego_searchModule.all_Search.length == 0){
-				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('검색어를 입력해주세요.', 'short', 'center');
-				else console.log('검색어를 입력해주세요.');
+
+		if($scope.jegoSearch == 'hap'){ 	// 통합검색 
+			console.log('통합검색');
+			$rootScope.keyword = $scope.jego_searchModule.all_Search;
+			$timeout(function(){
+				if($scope.jego_searchModule.all_Search.length == 0){
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('검색어를 입력해주세요.', 'short', 'center');
+					else console.log('검색어를 입력해주세요.');
+				}else{
+					$scope.pageCnt = 1;
+					$rootScope.keyword = $scope.jego_searchModule.all_Search;
+					jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, '', $scope.jego_searchModule.all_Search, 'N', '', $scope.pageCnt)
+					.then(function(data){
+						if(data != '<!--Parameter Check-->'){
+							$rootScope.jego_result = data.list;
+							$scope.jego_Changgh();
+							$state.go("app.jego_search");
+						}else{
+							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+							else console.log('조회결과가 없습니다.');
+						}
+					});
+				}
+				$scope.loadingani();
+			}, 1000);
+		}else{ 	// 상세검색
+			console.log('상세검색입니다 =>', $scope.jego_detail_colum);
+			console.log("뭐야 =>", $scope.jego_detail_colum.pro_ChangGo.length);
+			console.log("1111111111=>", $scope.jego_detail_colum.pro_ChangGo(0));
+
+			if($scope.jego_detail_colum.pro_ChangGo.pro_ChangGo[0] == 'ALL'){
+				var mode = "Select_Detail_All";
+				var changgo_keyword = "ALL"
 			}else{
-				$scope.pageCnt = 1;
-				$rootScope.keyword = $scope.jego_searchModule.all_Search;
-				jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, '', $scope.jego_searchModule.all_Search, 'N', '', $scope.pageCnt)
-				.then(function(data){
-					if(data != '<!--Parameter Check-->'){
-						$rootScope.jego_result = data.list;
-						$scope.jego_Changgh();
-						$state.go("app.jego_search");
-					}else{
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-						else console.log('조회결과가 없습니다.');
-					}
-				});
+				var mode = "Select_Detail_ChangGobyul";
+				var changgo_keyword = "";
+				for(var i = 0; i < $scope.jego_detail_colum.pro_ChangGo.length; i++){
+					changgo_keyword = changgo_keyword + $scope.jego_detail_colum.pro_ChangGo[i];
+				}
 			}
-			$scope.loadingani();
-		}, 1000);
+			console.log('모드도 잘나와야함!=>',  mode);
+			console.log('창고가 잘나와야함!=>', changgo_keyword);
+
+			jego_Service.detail_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, mode, jego_detail_colum)
+			.then(function(data){
+				if(data != '<!--Parameter Check-->'){
+					console.log("data=>", data);
+				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+					else console.log('조회결과가 없습니다.');
+				}
+			});
+		}	
+	}
+
+	$scope.check = function(){
+		console.log('멀티플 확인 =>', $scope.jego_detail_colum);
 	}
 
 	/* 재고조회 - 더보기 - 이경민[2016-09-20] */

@@ -20,7 +20,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 		<button menu-toggle="right"  ng-click="jegoSear_change()" ng-if="jegoSearch == 'detail'" class="button button-small button-psm04" style="line-height: 12px;">통합<br>검색</button>
 		<button menu-toggle="right"  ng-click="jegoSear_change()" ng-if="jegoSearch == 'hap'" class="button button-small button-psm04" style="line-height: 12px;">상세<br>검색</button>
 	</ion-nav-buttons>
-	<ion-content scroll="false">
+	<ion-content>
 			<tab-slide-box>
 				<div class="tsb-icons" style="padding-top: 2px;"> <!-- class건들이면 안되요..ㅠㅠ -->
 					<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
@@ -72,7 +72,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										<tr>
 											<td class="td1-1">상품명</td>
 											<td class="td1-2">
-												<input type="search" placeholder="상품명 입력">
+												<input type="search" ng-model="jego_detail_colum.pro_name" placeholder="상품명 입력">
 											</td>
 											<td class="td1-3">
 												<div>
@@ -83,7 +83,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										<tr>
 											<td class="td1-1">규격</td>
 											<td class="td1-2">
-												<input type="search" placeholder="규격 입력">
+												<input type="search" ng-model="jego_detail_colum.pro_stand" placeholder="규격 입력">
 											</td>
 											<td class="td1-3">
 												<div>
@@ -94,7 +94,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										<tr>
 											<td class="td1-1">자체코드</td>
 											<td class="td1-2">
-												<input type="search" placeholder="자체코드 입력">
+												<input type="search" ng-model="jego_detail_colum.pro_OnCode" placeholder="자체코드 입력">
 											</td>
 											<td class="td1-3">
 												<div>
@@ -105,7 +105,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										<tr>
 											<td class="td1-1">바코드</td>
 											<td class="td1-2">
-												<input type="search" placeholder="바코드 입력">
+												<input type="search" ng-model="jego_detail_colum.pro_barCode" placeholder="바코드 입력">
 											</td>
 											<td class="td1-3">
 												<div>
@@ -117,10 +117,9 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										<tr>
 											<td class="td1-1" style="vertical-align: middle;">창고</td>
 											<td style="height: 28px; vertical-align: middle;">
-												<select style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;">
-												  <option ng-selected>본사창고</option>
-												  <option>가짜창고</option>
-												  <option>진짜창고</option>
+												<select style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple">
+													<option value="ALL">전체창고</option>
+													<option ng-repeat="x in Ch_List" value="{{x.Code}}" ng-if="x.Stts != '삭제'">{{x.Name}}</option>
 												</select>
 											</td>
 										</tr>
@@ -136,7 +135,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										<tr>
 											<td class="td1-1">로케이션</td>
 											<td class="td1-2">
-												<input type="search" placeholder="로케이션 입력">
+												<input type="search" ng-model="jego_detail_colum.detail_location" placeholder="로케이션 입력">
 											</td>
 											<td class="td1-3">
 												<div>
@@ -147,7 +146,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										<tr>
 											<td class="td1-1">브랜드</td>
 											<td class="td1-2">
-												<input type="search" placeholder="브랜드 입력">
+												<input type="search" ng-model="jego_detail_colum.detail_brand" placeholder="브랜드 입력">
 											</td>
 											<td class="td1-3">
 												<div>
@@ -158,7 +157,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										<tr>
 											<td class="td1-1">제조처</td>
 											<td class="td1-2">
-												<input type="search" placeholder="제조처 입력">
+												<input type="search" ng-model="jego_detail_colum.detail_Jejo" placeholder="제조처 입력">
 											</td>
 											<td class="td1-3">
 												<div>
@@ -211,28 +210,27 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 									<table>
 										<tr>
 											<td style="height: 8px; vertical-align: middle;">
-												<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000;">
-												  <option ng-selected>-</option>
-												  <option>10</option>
-												  <option>11</option>
+												<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000;" ng-model="jego_detail_colum.MeachulMonth" ng-change="YNCheck(1)">
+												  <option value="0">-</option>
+												  <option ng-repeat = "x in month" value="{{x.id}}">{{x.id}}</option>
 												</select>
 											</td>
 											<td style="color: #000; vertical-align: middle;">개월 내 매출내역</td>
 											<td style="height: 8px; vertical-align: middle;">
-												<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000;">
-												  <option ng-selected>존재</option>
-												  <option>미존재</option>
+												<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000;" ng-model="jego_detail_colum.MeachulListYN">
+												  <option value="Y">존재</option>
+												  <option value="N">미존재</option>
 												</select>
 											</td>
 										</tr>
 										<tr>
 											<td colspan="3">
-												<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000; align: right;">
-												  <option ng-selected>재고수량 ALL</option>
-												  <option>재고수량 ≠ 0</option>
-												  <option>재고수량 = 0</option>
-												  <option>재고수량 ≥ 0</option>
-												  <option>재고수량 ≤ 0</option>
+												<select style="border: 0; border-bottom: 1px solid #000; background: #fff; color: #000; align: right;" ng-model="jego_detail_colum.JegoQtyCtl" ng-change="YNCheck(2)">
+												  <option value="1">재고수량 ALL</option>
+												  <option value="2">재고수량 ≠ 0</option>
+												  <option value="3">재고수량 = 0</option>
+												  <option value="4">재고수량 ≥ 0</option>
+												  <option value="5">재고수량 ≤ 0</option>
 												</select>
 											</td>
 										</tr>
