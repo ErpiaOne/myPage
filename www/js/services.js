@@ -1896,12 +1896,9 @@ angular.module('starter.services', [])
 .factory('jego_Service', function($http, $q, $cordovaToast, ERPiaAPI){
 	return{
 		main_search: function(Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt){		// 재고조회 (통합 & 바코드)
-			console.log('page =>', pageCnt)
-
+			console.log('jego_Service', 'main_search');
 			if(YN == 'Y') var word = keyword;
 			else var word = escape(keyword);
-
-
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt='+ pageCnt +'&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + word + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
 			return $http.get(url + '?' + data).then(function(response){
@@ -1928,7 +1925,7 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});		
-		}, detail_search : function(Admin_Code, UserId, ChangGoCode, OneSelectCode){		// 재고 창고별 상세 조회
+		}, detail_search : function(Admin_Code, UserId, ChangGoCode, OneSelectCode){		// 통합 검색 재고 창고별 상세 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&ChangGoCode=' + ChangGoCode + '&KeyWord=&CodeSearchYN=N&OneSelectCode=' + OneSelectCode;
 			return $http.get(url + '?' + data).then(function(response){
@@ -1952,11 +1949,12 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});		
-		}, detail_search : function(Admin_Code, UserId, Mode, jegoInfo){		// 상세검색을 통한 재고조회
+		}, detailJego_search : function(Admin_Code, UserId, Mode, changgo_key, jegoInfo){		// 상세검색을 통한 재고조회
 			console.log('detail_search =>', jegoInfo);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
-			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=Select_Detail_All&pageCnt=1&pageRow=1000&ChangGoCode=&OneSelectCode=&GoodsName=' + escape('강아지') + '&GoodsStand=&GoodsOnCode=&GoodsBarCode=&GoodsWich=&GoodsBrand=&GoodsJeaJoChe=&GoodsKshimListCode=&GoodsMyListCode=&MeachulMonth=1&MeachulListYN=N&MeachulListCtlYN=Y&JegoQtyCtl=1&JegoQtyCtlYN=Y';		
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=' + Mode + '&pageCnt=1&pageRow=10&ChangGoCode=' + changgo_key + '&OneSelectCode=&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
 
+			console.log("재고 상세조회 =>", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
