@@ -1901,6 +1901,7 @@ angular.module('starter.services', [])
 			else var word = escape(keyword);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt='+ pageCnt +'&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + word + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
+			console.log("main_search ->", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					for(var i=0; i < response.data.list.length; i++){
@@ -1927,7 +1928,8 @@ angular.module('starter.services', [])
 			});		
 		}, detail_search : function(Admin_Code, UserId, ChangGoCode, OneSelectCode){		// 통합 검색 재고 창고별 상세 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
-			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&ChangGoCode=' + ChangGoCode + '&KeyWord=&CodeSearchYN=N&OneSelectCode=' + OneSelectCode;
+			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&ChangGoCode=ALL&KeyWord=&CodeSearchYN=N&OneSelectCode=' + OneSelectCode;
+			console.log("상세조회 ->", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response.data;
@@ -1949,10 +1951,10 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});		
-		}, detailJego_search : function(Admin_Code, UserId, Mode, changgo_key, jegoInfo){		// 상세검색을 통한 재고조회
+		}, detailJego_search : function(Admin_Code, UserId, Mode, changgo_key, jegoInfo, pageCnt){		// 상세검색을 통한 재고조회
 			console.log('detail_search =>', jegoInfo);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
-			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=' + Mode + '&pageCnt=1&pageRow=10&ChangGoCode=' + changgo_key + '&OneSelectCode=&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=' + Mode + '&pageCnt=' + pageCnt + '&pageRow=10&ChangGoCode=' + changgo_key + '&OneSelectCode=' + jegoInfo.OneSelectCode + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
 
 			console.log("재고 상세조회 =>", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
@@ -1964,6 +1966,48 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});		
+		}, proDetail : function(Admin_Code, UserId, code){		// 선택상품 상세조회
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Select_Goods_Detail&OneSelectCode=' + code + '&ChanggoCode=001'
+			console.log("선택상품 상세조회 =>", url,'?',data);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object' || typeof response.data == 'string'){
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});		
+		}, search_Save : function(Admin_Code, UserId, changgo_key, jegoInfo){		// 상세검색을 통한 재고조회
+			console.log('detail_search =>', jegoInfo);
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Reg_Select_OptSet_Rapid&pageCnt=&ChangGoCode=' + changgo_key + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
+
+			console.log("재고 상세조회 =>", url,'?',data);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object' || typeof response.data == 'string'){
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});		
+		}, Opset_search : function(Admin_Code, UserId, gubun){		// 조회셋 리스트 조회
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Select_OptSet_List&RL_Gubun=' + gubun;
+
+			console.log("조회셋 리스트 조회 =>", url,'?',data);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object' || typeof response.data == 'string'){
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});	
 		}
 	};
 });

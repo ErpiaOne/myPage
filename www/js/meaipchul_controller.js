@@ -1157,6 +1157,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	}else{
 		$scope.sbu = false;
 	}
+
 	/* 날짜생성 - 김형석[2015-12] */
 	$scope.dateMinus=function(days){
 	    var nday = new Date();  //오늘 날짜..
@@ -1596,6 +1597,28 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		})
 	});
 
+	/* Jego조회로 넘어온 매입/매출 상품 등록 */
+	if($rootScope.JegoGoods != undefined){
+		if($rootScope.distinction == 'meaip'){
+			$scope.goodsaddlists.push({
+							overlap_color : '#000',
+							name : $rootScope.JegoGoods[0].G_Name,
+							num : 1,
+							goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn1),
+							code : $rootScope.JegoGoods[0].G_Code
+						});
+		}else{
+			$scope.goodsaddlists.push({
+							overlap_color : '#000',
+							name : $rootScope.JegoGoods[0].G_Name,
+							num : 1,
+							goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn2),
+							code : $rootScope.JegoGoods[0].G_Code
+						});
+		}
+		
+	}
+console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 	/*거래처명 초기화 - 이경민[2015-12]*/
 	$scope.clearcompany = function(){
 		$scope.datas.userGerName = '';
@@ -2047,6 +2070,8 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 					}
 				}
 			}
+			console.log("goodsaddlists =>", $scope.goodsaddlists);
+
 		}
 		/*펑션안 펑션 - 서비스거쳐 값안넘어오는 현상때문 - 이경민[2016-01]*/
 		$scope.test1 = function(price,i,bar){

@@ -49,11 +49,12 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 상세조회 리스트 */
 	$scope.jego_detail_colum = {
-		pro_name 			: '',		// 상품명
+		pro_name 			: 'ㄱㅇㅈ',		// 상품명
 		pro_stand 			: '', 		// 규격
 		pro_OnCode 		: '',		// 자체코드
 		pro_barCode 		: '',		// 바코드
-		pro_ChangGo 		: '',		// 창고
+		pro_ChangGo 		: ["ALL"],	// 창고
+		OneSelectCode		: '',		// 선택 상품 코드 - 디테일 조회시 필요 
 
 		detail_location 		: '',		// 로케이션
 		detail_brand 		: '', 		// 브랜드
@@ -90,13 +91,14 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	/* 재고조회시 창고 리스트 조회 [이경민 - 2016-09-19] */
 	$scope.jego_Changgh = function() {
 		$timeout(function(){
+			$scope.loadingani();
 			jego_Service.jego_changgoSearch($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
 			.then(function(data){
 				$rootScope.Ch_List = data.list;
 			});
 
-			$scope.loadingani();
-		}, 1000);
+			// $scope.loadingani();
+		}, 500);
 	}
 
 	/* 통합/상세 검색 모드변경 [이경민 - 2016-08-29] */
@@ -107,37 +109,6 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}else if($scope.jegoSearch == 'detail'){
 			$scope.jegoSearch = 'hap';
 		}
-	}
-
-	/* 통합검색 바코드 검색 [이경민 - 2016-08-29] */
-	$scope.jego_barc = function(){
-		$cordovaBarcodeScanner.scan().then(function(imageData) {
-			if ($ionicHistory.backView()&&imageData.text=='') {
-				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('바코드를 정확히 찍어주세요.', 'short', 'center');
-				else console.log('바코드를 정확히 찍어주세요.');
-			}else{
-				$scope.pageCnt = 1;
-				console.log('pageCnt=>', $scope.pageCnt)
-				$rootScope.keyword = imageData.text;
-				$timeout(function(){
-					$scope.loadingani();
-					jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, '', imageData.text, 'Y', '', $scope.pageCnt)
-					.then(function(data){
-						if(data != '<!--Parameter Check-->'){
-							$rootScope.jego_result = data.list;
-							$scope.jego_Changgh();
-							$state.go("app.jego_search");
-						}else{
-							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-							else console.log('조회결과가 없습니다.');
-						}
-					});
-				$scope.loadingani();
-			}, 1000);
-			}
-		}, function(error) {
-		console.log("An error happened -> " + error);
-		});
 	}
 
 	/* 재고 상세관리 화면 창 컨트롤 [이경민 - 2016-08-29] */
@@ -260,10 +231,115 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}
 	}
 
+	/* X버튼 누르면 조회값 초기화되는 기능 하나로 합침 - 이경민 */
+	$scope.jego_search_delete = function(num){
+		switch (num){
+			case 1 : $scope.jego_detail_colum.pro_name = ''; break;
+			case 2 : $scope.jego_detail_colum.pro_stand = ''; break;
+			case 3 : $scope.jego_detail_colum.pro_OnCode = ''; break;
+			case 4 : $scope.jego_detail_colum.pro_barCode = ''; break;
+			case 5 : $scope.jego_detail_colum.detail_location = ''; break;
+			case 6 : $scope.jego_detail_colum.detail_brand = ''; break;
+			case 7 : $scope.jego_detail_colum.detail_Jejo = ''; break;
+
+			default : console.log('num ->', num); break;
+		}
+	}
+
+	/* 통합 검색 서비스 하나로 합침 - 이경민 */
+	$scope.hapSearch = function(ChanggoCode, keyword, YN, OneSelectCode, pageCnt){
+		/* main_search - Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt */
+		$scope.loadingani();
+		jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt)
+		.then(function(data){
+			if(data != '<!--Parameter Check-->'){
+				$rootScope.jego_result = data.list;
+				$scope.jego_Changgh();
+				$state.go("app.jego_search");
+			}else{
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+				else console.log('조회결과가 없습니다.');
+			}
+		});
+	}
+
+	/* 상세 검색 서비스 하나로 합침 - 이경민 */
+	$scope.detail = function(Mode, changgo_key, jegoInfo, pageCnt){
+		/* Admin_Code, UserId, Mode, changgo_key, jegoInfo, pageCnt */
+		$scope.loadingani();
+		jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, Mode, changgo_key, jegoInfo, pageCnt)
+		.then(function(data){
+			if(data != '<!--Parameter Check-->'){
+				$rootScope.jego_result = data.list;
+				$scope.jego_Changgh();
+				$state.go("app.jego_search");
+			}else{
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+				else console.log('조회결과가 없습니다.');
+			}
+		});
+	}
+
+	/* 통합검색 바코드 검색 [이경민 - 2016-08-29] */
+	$scope.jego_barc = function(){
+		$timeout(function(){
+			$scope.loadingani();
+			$rootScope.jegoMode = $scope.jegoSearch;
+			if($scope.jegoSearch == 'hap'){								// 통합 검색시 바코드검색
+				$cordovaBarcodeScanner.scan().then(function(imageData) {
+					if ($ionicHistory.backView()&&imageData.text=='') {
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('바코드를 정확히 찍어주세요.', 'short', 'center');
+						else console.log('바코드를 정확히 찍어주세요.');
+					}else{
+						$rootScope.keyword = imageData.text;
+						$scope.morebutton = false;
+						$scope.hapSearch('', imageData.text, 'Y', '', 1);
+					}
+				}, function(error) {
+				console.log("An error happened -> " + error);
+				});
+			}else {											// 상세검색시 바코드검색
+				$cordovaBarcodeScanner.scan().then(function(imageData) {
+					if ($ionicHistory.backView()&&imageData.text=='') {
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('바코드를 정확히 찍어주세요.', 'short', 'center');
+						else console.log('바코드를 정확히 찍어주세요.');
+					}else{
+						$scope.jego_detail_colum.pro_barCode = imageData.text;
+						$scope.morebutton = false;
+
+						/* 창고 코드 조합 */
+						if($scope.jego_detail_colum.pro_ChangGo[0] == 'ALL'){
+						var mode = "Select_Detail_All";
+						var changgo_keyword = "ALL"
+						}else{
+							var mode = "Select_Detail_ChangGobyul";
+							var changgo_keyword = "";
+							for(var i = 0; i < $scope.jego_detail_colum.pro_ChangGo.length; i++){
+								if(i == 0){
+									changgo_keyword = $scope.jego_detail_colum.pro_ChangGo[i];
+								}else{
+									changgo_keyword = changgo_keyword + ',' +  $scope.jego_detail_colum.pro_ChangGo[i];
+								}
+							}
+						}
+						console.log("바코드 상세조회 창고 =>", $scope.jego_detail_colum.pro_ChangGo);
+						$rootScope.changgo_keyword = changgo_keyword; // 키워드
+						$rootScope.jegoColum = $scope.jego_detail_colum; // 재고 전체 조회 값
+						$rootScope.jegoMode = $scope.jegoSearch; // 모드
+						$scope.detail(mode, changgo_keyword, $scope.jego_detail_colum, 1);
+					}
+				}, function(error) {
+				console.log("An error happened -> " + error);
+				});
+			}
+		}, 500);
+	}
+
 	/* 재고조회 - 이경민[2016-08] */
 	$scope.jego_search = function(){
 		$timeout(function(){
-			if($scope.jegoSearch == 'hap'){ 	// 통합검색 
+			$scope.loadingani();
+			if($scope.jegoSearch == 'hap'){ 						// 통합검색시 재고조회
 				$rootScope.keyword = $scope.jego_searchModule.all_Search;
 				$rootScope.jegoMode = $scope.jegoSearch; // 모드
 
@@ -271,22 +347,11 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('검색어를 입력해주세요.', 'short', 'center');
 						else console.log('검색어를 입력해주세요.');
 					}else{
-						$scope.pageCnt = 1;
-						$rootScope.keyword = $scope.jego_searchModule.all_Search;
-						jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, '', $scope.jego_searchModule.all_Search, 'N', '', $scope.pageCnt)
-						.then(function(data){
-							if(data != '<!--Parameter Check-->'){
-								$rootScope.jego_result = data.list;
-								$scope.jego_Changgh();
-								$state.go("app.jego_search");
-							}else{
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-								else console.log('조회결과가 없습니다.');
-							}
-						});
+						$scope.pageCnt = 1; // 페이징번호 생성
+						$scope.hapSearch('', $scope.jego_searchModule.all_Search, 'N', '', $scope.pageCnt);
 					}
 					$scope.loadingani();
-			}else{ 	// 상세검색
+			}else{ 										// 상세검색시 재고조회
 				var num = 1;
 				if($scope.jego_detail_colum.pro_name != '') var num = num + 1;
 				if($scope.jego_detail_colum.pro_stand != '') var num = num + 1;
@@ -311,186 +376,157 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 							}
 						}
 					}
-					$timeout(function(){
 						/* 값 가지고 페이지 이동.. */
 						$rootScope.changgo_keyword = changgo_keyword; // 키워드
 						$rootScope.jegoColum = $scope.jego_detail_colum; // 재고 전체 조회 값
 						$rootScope.jegoMode = $scope.jegoSearch; // 모드
-
-						jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, mode, changgo_keyword, $scope.jego_detail_colum)
-						.then(function(data){
-							if(data != '<!--Parameter Check-->'){
-								$rootScope.jego_result = data.list;
-								$scope.jego_Changgh();
-								$state.go("app.jego_search");
-							}else{
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-								else console.log('조회결과가 없습니다.');
-							}
-						});
-					}, 1000);
+						$scope.pageCnt = 1;
+						$scope.detail(mode, changgo_keyword, $scope.jego_detail_colum, $scope.pageCnt);
 				}else{
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회조건은 1개 이상 지정해야 합니다.', 'short', 'center');
 					else console.log('조회조건은 1개 이상 지정해야 합니다.');
 				}
 			}
-		$scope.loadingani();	
-		}, 1000);
+		}, 500);
 	}
 
-	/* X버튼 누르면 조회값 초기화되는 기능 하나로 합침 - 이경민 */
-	$scope.jego_search_delete = function(num){
-		switch (num){
-			case 1 : $scope.jego_detail_colum.pro_name = ''; break;
-			case 2 : $scope.jego_detail_colum.pro_stand = ''; break;
-			case 3 : $scope.jego_detail_colum.pro_OnCode = ''; break;
-			case 4 : $scope.jego_detail_colum.pro_barCode = ''; break;
-			case 5 : $scope.jego_detail_colum.detail_location = ''; break;
-			case 6 : $scope.jego_detail_colum.detail_brand = ''; break;
-			case 7 : $scope.jego_detail_colum.detail_Jejo = ''; break;
-
-			default : console.log('num ->', num); break;
-		}
-	}
 
 	/* 재고조회 - 더보기 - 이경민[2016-09-20] */
 	$scope.jego_more = function(){
 		$timeout(function(){
+			$scope.loadingani();
+			if($scope.changgo_keyword == undefined || $scope.changgo_keyword == "ALL") $scope.changgo_keyword = '';
 			$scope.pageCnt = $scope.pageCnt + 1;
-			jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, '', $rootScope.keyword, 'N', '', $scope.pageCnt)
-			.then(function(data){
-				if(data != '<!--Parameter Check-->'){
-					for(var m = 0; m < data.list.length; m++){
-						$rootScope.jego_result.push(data.list[m]);
+
+			if($rootScope.jegoMode == 'hap'){ 							// 통합조회일 경우 더보기
+				jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.changgo_keyword, $rootScope.keyword, 'N', '', $scope.pageCnt)
+				.then(function(data){
+					if(data != '<!--Parameter Check-->'){
+						for(var m = 0; m < data.list.length; m++){
+							$rootScope.jego_result.push(data.list[m]);
+						}
+					}else{
+						$scope.morebutton = false;
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('더이상 조회결과가 존재하지 않습니다.', 'short', 'center');
+						else console.log('더이상 조회결과가 존재하지 않습니다.');
 					}
-				}else{
-					$scope.morebutton = false;
-					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('더이상 조회결과가 존재하지 않습니다.', 'short', 'center');
-					else console.log('더이상 조회결과가 존재하지 않습니다.');
-				}
-			});
-		$scope.loadingani();
-		}, 1000);
+				});
+			}else{ 												// 상세조회일 경우 더보기
+				/* Admin_Code, UserId, Mode, changgo_key, jegoInfo, pageCnt */
+				if($scope.changgo_keyword == '') var Mode = 'Select_Detail_All';
+				else var Mode = 'Select_Detail_ChangGobyul'; 
+				console.log('키워드 잘넘어오니?', $scope.changgo_keyword);
+				console.log('재고 조회셋 =>', $rootScope.jegoColum);
+				jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, Mode, $scope.changgo_keyword, $rootScope.jegoColum, $scope.pageCnt)
+				.then(function(data){
+					if(data != '<!--Parameter Check-->'){
+						for(var m = 0; m < data.list.length; m++){
+							$rootScope.jego_result.push(data.list[m]);
+						}
+					}else{
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+						else console.log('조회결과가 없습니다.');
+					}
+				});
+			}
+		}, 500);
 	}
 
-	/* 재고 상세조회 - 이경민[2016-09-01] */
+	/* 재고 상세조회 (전체창고나옴)- 이경민[2016-09-01] */
 	$scope.jego_detail = function(index){
-		console.log('!!@@@#### =>', $rootScope.changgo_keyword);
-		console.log('모드 확인 ->', $rootScope.jegoMode);
-
-		if($rootScope.jegoMode == 'hap'){ // 통합조회일 경우 상세조회
-			$timeout(function(){
-
-				/* 재조회시 선택창고 문자열 만들기 */
-				if($scope.jego_detail_colum.pro_ChangGo[0] == 'ALL'){
-					var mode = "Select_Detail_All";
-					var changgo_keyword = "ALL"
-				}else{
-					var mode = "Select_Detail_ChangGobyul";
-					var changgo_keyword = "";
-					for(var i = 0; i < $scope.jego_detail_colum.pro_ChangGo.length; i++){
-						if(i == 0){
-							changgo_keyword = $scope.jego_detail_colum.pro_ChangGo[i];
-						}else{
-							changgo_keyword = changgo_keyword + ',' +  $scope.jego_detail_colum.pro_ChangGo[i];
-						}
+		$timeout(function(){
+			$scope.loadingani();
+			if($rootScope.jego_result[index].trfa == false){		// 열기
+				for(var i = 0; i < $rootScope.jego_result.length; i++){
+					if(i == index){
+						$rootScope.jego_result[index].trfa = true;
+					}else{
+						$rootScope.jego_result[i].trfa = false;
 					}
 				}
 				
-				$scope.pageCnt = 1;
-				jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, '창고코드 가져가야됨.', $rootScope.keyword, 'N', '', $scope.pageCnt)
+				$scope.select_jegoindex = index;
+				if($rootScope.jegoMode == 'hap'){ 						// 통합조회일 경우 상세조회
+					jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, 'ALL', '', 'N', $rootScope.jego_result[index].G_Code, 1)
+					.then(function(data){
+						if(data != '<!--Parameter Check-->'){
+							$rootScope.jego_detail_List = data.list;
+						}else{
+							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+							else console.log('조회결과가 없습니다.');
+						}
+					});
+				}else{												// 상세조회일 경우 상세조회
+					var Mode = 'Select_Detail_One';
+					$rootScope.jegoColum.OneSelectCode = $rootScope.jego_result[index].G_Code;
+					jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, Mode, $scope.changgo_keyword, $rootScope.jegoColum, 1)
+					.then(function(data){
+						if(data != '<!--Parameter Check-->'){
+							$rootScope.jego_detail_List = data.list;
+							$rootScope.jegoColum.OneSelectCode='';
+						}else{
+							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+							else console.log('조회결과가 없습니다.');
+						}
+					});
+				}
+
+			}else{		// 닫기
+				$rootScope.jego_result[index].trfa = false;
+				$rootScope.jego_detail_List = []; // 재고 상세조회 초기화
+				$scope.select_jegoindex = -1;
+			}
+		}, 500);
+	}
+
+	/* 창고 선택 후 재조회 */
+	$scope.reSelect = function(){
+		$timeout(function(){
+			$scope.loadingani();
+			$rootScope.jego_result = [];
+			/* 재조회시 선택창고 문자열 만들기 */
+			if($scope.jego_detail_colum.pro_ChangGo[0] == 'ALL'){
+				var mode = "Select_Detail_All"; // 상세
+				$scope.changgo_keyword = ""
+			}else{
+				var mode = "Select_Detail_ChangGobyul"; // 상세
+				$scope.changgo_keyword = "";
+				for(var i = 0; i < $scope.jego_detail_colum.pro_ChangGo.length; i++){
+					if(i == 0){
+						$scope.changgo_keyword = $scope.jego_detail_colum.pro_ChangGo[i];
+					}else{
+						$scope.changgo_keyword = $scope.changgo_keyword + ',' +  $scope.jego_detail_colum.pro_ChangGo[i];
+					}
+				}
+			}
+
+			$scope.pageCnt = 1; // 재조회일경우 페이지 번호 초기화
+
+			if($rootScope.jegoMode == 'hap'){ 							// 통합조회일 경우 창고선택 조회
+				jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.changgo_keyword, $rootScope.keyword, 'N', '', $scope.pageCnt)
 				.then(function(data){
 					if(data != '<!--Parameter Check-->'){
 						$rootScope.jego_result = data.list;
+						$scope.jego_Changgh();
+					}else{
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+						else console.log('조회결과가 없습니다.');
+					}
+				});
+			}else{ 												// 상세조회일 경우 창고선택 조회
+				jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, mode, $scope.changgo_keyword, $scope.jegoColum, $scope.pageCnt)
+				.then(function(data){
+					if(data != '<!--Parameter Check-->'){
+						$rootScope.jego_result = data.list;
+						$scope.jego_Changgh();
 					}else{
 						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
 						else console.log('조회결과가 없습니다.');
 					}
 				});
 
-				$scope.loadingani();
-			}, 1000);
-
-		}else{ // 상세조회일 경우 상세조회
-			console.log('ㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐㅐ =>', $rootScope.jegoColum);
-			$timeout(function(){
-				if($scope.jego_detail_colum.pro_ChangGo[0] == 'ALL'){
-					var mode = "Select_Detail_All";
-					var changgo_keyword = "ALL"
-					}else{
-						var mode = "Select_Detail_ChangGobyul";
-						var changgo_keyword = "";
-						for(var i = 0; i < $scope.jego_detail_colum.pro_ChangGo.length; i++){
-							if(i == 0){
-								changgo_keyword = $scope.jego_detail_colum.pro_ChangGo[i];
-							}else{
-								changgo_keyword = changgo_keyword + ',' +  $scope.jego_detail_colum.pro_ChangGo[i];
-							}
-						}
-						console.log('잘 되야되는데에.. =>', changgo_keyword);
-					}
-					$timeout(function(){
-						jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, mode, changgo_keyword, $rootScope.jegoColum)
-						.then(function(data){
-							if(data != '<!--Parameter Check-->'){
-								console.log("data=>", data);
-							}else{
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-								else console.log('조회결과가 없습니다.');
-							}
-						});
-					}, 1000);
-				$scope.loadingani();
-			}, 1000);
-		}
-	}
-
-	$scope.reSelect = function(){
-		console.log('확인 =>', $rootScope.jegoColum);
-		console.log('캬캬 =>', $scope.jego_result);
-		$scope.jego_result = [];
-		console.log('되겠지이..?=>', $scope.jego_detail_colum);
-
-		if($rootScope.jegoMode == 'hap'){ 		// 통합검색 일때 창고 선택후 재조회
-
-		}else{			// 상세일때 창고 선택후 다시 조회
-			$timeout(function(){
-				if($scope.jego_detail_colum.pro_ChangGo[0] == 'ALL'){
-					var mode = "Select_Detail_All";
-					var changgo_keyword = "ALL"
-					}else{
-						var mode = "Select_Detail_ChangGobyul";
-						var changgo_keyword = "";
-						for(var i = 0; i < $scope.jego_detail_colum.pro_ChangGo.length; i++){
-							if(i == 0){
-								changgo_keyword = $scope.jego_detail_colum.pro_ChangGo[i];
-							}else{
-								changgo_keyword = changgo_keyword + ',' +  $scope.jego_detail_colum.pro_ChangGo[i];
-							}
-						}
-						console.log('잘 되야되는데에.. =>', changgo_keyword);
-					}
-					$timeout(function(){
-						jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, mode, changgo_keyword, $rootScope.jegoColum)
-						.then(function(data){
-							if(data != '<!--Parameter Check-->'){
-								console.log("data=>", data);
-							}else{
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-								else console.log('조회결과가 없습니다.');
-							}
-						});
-					$scope.loadingani();
-					}, 1000);
-				$scope.loadingani();
-			}, 1000);
-		}
-
-		
-	}
-
-	$scope.deletejego_m = function(){
-		$scope.jegosele_Modal.hide();
+			}
+		}, 500);
 	}
 
 	/* 상품상세 정보, 등록 모달 오픈 */
@@ -502,6 +538,208 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}else{
 			$scope.jegosele_Modal.show();
 		}
+	}
+
+	/* 선택 상품 상세정보 - 이경민 */
+	$scope.pro_detail = function(){
+		var i = $scope.select_jegoindex;
+		var code = $rootScope.jego_result[i].G_Code;
+		// var code = '9806038000057';
+		jego_Service.proDetail($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, code)
+		.then(function(data){
+			if(data != '<!--Parameter Check-->'){
+				$scope.goodslists = data.list;
+				console.log("선택상품 상세정보=>", data);
+				$scope.prodetail_open($scope.goodslists);
+			}else{
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+				else console.log('조회결과가 없습니다.');
+			}
+		});
+	}
+
+	/* 1000단위 콤마 - 이경민[2015-12] */
+	function commaChange(Num){
+		fl=""
+		Num = new String(Num)
+		temp=""
+		co=3
+		num_len=Num.length
+		while (num_len>0){
+			num_len=num_len-co
+			if(num_len<0){
+				co=num_len+co;
+				num_len=0
+			}
+			temp=","+Num.substr(num_len,co)+temp
+		}
+		rResult =  fl+temp.substr(1);
+		return rResult;
+	}
+
+	/* 선택상품 alert 팝업창 */
+	$scope.prodetail_open = function(goodslists){
+		$scope.G_NameS =  goodslists[0].G_Name;
+		$scope.G_OnCodeS = goodslists[0].G_OnCode;
+
+		if(goodslists[0].G_Name.length>7) $scope.G_NameS = goodslists[0].G_Name.substring(0,8) + '<br>' + goodslists[0].G_Name.substring(8,goodslists[0].G_Name.length);
+		if(goodslists[0].G_OnCode.length>11) $scope.G_OnCodeS = goodslists[0].G_OnCode.substring(0,10) + '<br>' + goodslists[0].G_OnCode.substring(10,goodslists[0].G_OnCode.length);
+		var td = '<td width="40%" style="border-right:1px solid black; font-size: 0.8em;">';
+		var td2 = '<td width="55%" style="padding-left:5px; font-size: 0.8em;">';
+		 
+		if($rootScope.priv_wongaYN == 'N')  var wonga_meaip = commaChange(goodslists[0].G_Dn1)
+		else var wonga_meaip = '******'
+		var alert_template = '<table width="100%">' +
+						'<tr>' +
+							td + '상품명</td>' +
+							td2 + $scope.G_NameS + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '규격</td>' +
+							td2 + goodslists[0].G_Stand + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '로케이션</td>' +
+							td2 + goodslists[0].Location + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '자체코드</td>' +
+							td2 + $scope.G_OnCodeS + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '제조사</td>' +
+							td2 + goodslists[0].G_JeaJoChe + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '브랜드</td>' +
+							td2 + goodslists[0]. Brand_Name+ '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '매입가</td>' +
+							td2 + wonga_meaip + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '도매가</td>' +
+							td2 + commaChange(goodslists[0].G_Dn2) + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '인터넷가</td>' +
+							td2 + commaChange(goodslists[0].G_Dn3) + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '소매가</td>' +
+							td2 + commaChange(goodslists[0].G_Dn4) + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '권장소비자가</td>' +
+							td2 + commaChange(goodslists[0].G_Dn5) + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '입수량</td>' +
+							td2 + goodslists[0].Box_In_Qty + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '재고</td>' +
+							td2 + goodslists[0].Jego + '</td>' +
+						'</tr>' +
+						'<tr>' +
+							td + '출고대기</td>' +
+							td2 + goodslists[0].ChulGoDeagi + '</td>' +
+						'</tr>' +
+						'</table>';
+		$ionicPopup.alert({
+			title: '<b>상품 정보</b>',
+			subTitle: '',
+			template: alert_template
+		})
+	}
+
+	/* 선택상품 매입매출 등록 */
+	$scope.meaipchul_Insert = function(gubun){
+		var i = $scope.select_jegoindex;
+		// var code = $rootScope.jego_result[i].G_Code;
+		var code = '9806038000057';
+		$rootScope.Gubun = gubun;
+		jego_Service.proDetail($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, code)
+		.then(function(data){
+			if(data != '<!--Parameter Check-->'){
+				$rootScope.JegoGoods = data.list;
+				$rootScope.iu = 'i';
+				$rootScope.mode='등록';
+				if(gubun == 1){
+					$rootScope.distinction = 'meaip';
+					$state.go('app.meaip_IU');
+				}else{
+					$rootScope.distinction = 'meachul';
+					$state.go('app.meachul_IU', {}, {location:'replace'});
+				} 
+			}else{
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+				else console.log('조회결과가 없습니다.');
+			}
+		});
+		$scope.jego_detail_List = [];
+		$scope.jego_result[i].trfa = false;
+		$scope.jegosele_Modal.hide();
+	}
+
+	/* 현조회조건 저장 기능 */
+	$scope.search_Save = function(){
+		if($rootScope.jegoMode == 'hap'){
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('통합검색은 빠른검색 조건이 <br>등록되지 않습니다. (상세검색만 가능)', 'short', 'center');
+			else console.log('통합검색은 빠른검색 조건이 <br>등록되지 않습니다. (상세검색만 가능)');
+		}else{
+			jego_Service.search_Save($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.changgo_keyword, $rootScope.jegoColum)
+			.then(function(data){
+				if(data != '<!--Parameter Check-->'){
+					console.log('잘됫니? ->', data);
+					if(data.list[0].rslt == 'Y'){
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('빠른검색 조건이 등록되었습니다. <br>상세검색 화면에서 확인할 수 있습니다.', 'short', 'center');
+						else console.log('빠른검색 조건이 등록되었습니다. <br>상세검색 화면에서 확인할 수 있습니다.');
+					}else{
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('빠른검색 조건이 등록되지않았습니다. <br>잠시후 다시 시도해주세요.', 'short', 'center');
+						else console.log('빠른검색 조건이 등록되지않았습니다. <br>잠시후 다시 시도해주세요.');
+					}
+				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+					else console.log('조회결과가 없습니다.');
+				}
+			});
+
+		}
+	}
+
+	/* 최근 & 빠른 검색 조회 */
+	$scope.OptSet = function(gubun){
+		if(gubun == 'L'){
+			console.log("최근검색 =>", gubun);
+			jego_Service.Opset_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, 'L')
+			.then(function(data){
+				if(data != '<!--Parameter Check-->'){
+					console.log('data 확인 =>', data);
+					$scope.Opset_L = data.list;
+					$scope.l_YN = 'Y';
+				}else{
+					$scope.l_YN = 'N';
+				}
+			});
+		}else{
+			console.log('빠른검색 =>', gubun);
+			jego_Service.Opset_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, 'R')
+			.then(function(data){
+				if(data != '<!--Parameter Check-->'){
+					console.log('data 확인 =>', data);
+					$scope.Opset_R = data.list;
+					$scope.r_YN = 'Y';
+				}else{
+					$scope.r_YN = 'N';
+				}
+			});
+		}
+	}
+
+	$scope.deletejego_m = function(){
+		$scope.jegosele_Modal.hide();
 	}
 
 	/* 권한이 없습니다. - [이경민 2016-09-22] */
