@@ -397,9 +397,7 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			if($rootScope.distinction == 'meaip') var data ='kind=select_Trade_Detail_Meaip&Admin_Code=' + Admin_Code + '&iL_No=' + Sl_No;
 			else var data = 'Kind=select_Trade_Detail' + '&Admin_Code=' + Admin_Code + '&Sl_No=' + Sl_No;
-			console.log('ㅇ알엘 ㅗ학인 ->', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
-				console.log('확인 =========>',response);
 				if(typeof response.data == 'object'){
 					for(var i = 0; i > response.data.list.length; i++){
 						if(response.data.list[i].G_name1 != null){
@@ -613,7 +611,6 @@ angular.module('starter.services', [])
 					if(response.data.list.length == 0){
 							response.data.list[0] = {cntOrder : '0', idx : '0', url : "", visible : "Y"};
 					}
-					console.log(response);
 					return response.data;	
 				}else{
 					return $q.reject(response.data);
@@ -1027,7 +1024,6 @@ angular.module('starter.services', [])
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind='+ kind +'&Mode=Select_Ger_Date&GerName='+ escape(gername) +'&pageCnt='+ pageCnt + '&pageRow='+ 5 +'&sDate='+ sedata.sDate +'&eDate='+ sedata.eDate + '&rslt_Amt=' + gubun ;
 			if(gubun == 'N'){
 				return $http.get(url + '?' + data).then(function(response){
-					console.log('data=>', response);
 					if(typeof response == 'object'){
 						if(response.data == '<!--Parameter Check-->'){
 							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
@@ -1137,9 +1133,7 @@ angular.module('starter.services', [])
 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind=' + kind + '&Mode=Update_Check'+ no;
-				console.log('유비포첵=>', url,'?',data);
 				return $http.get(url + '?' + data).then(function(response){
-					console.log(response);
 					if(typeof response == 'object'){
 						return response.data;
 					}else{
@@ -1187,7 +1181,7 @@ angular.module('starter.services', [])
 				})
 
 		}, detailSet: function(admin_code, userid, date, ger, mejang, pageCnt, todate, gubun){			// 상세조회셋 조회
-				console.log("MLookupService and detailSet", ger);
+				console.log("MLookupService and detailSet");
 
 				if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid) + '&rslt_Amt=' + gubun;
 				else var kind = 'ERPia_Sale_Select_Master&Mode=Select_OptSet&GerName=' + escape(ger.name) + '&pageCnt='+ pageCnt + '&pageRow=5&sDate=' + date.sDate + '&eDate=' + date.eDate + '&sel_ipgoPlace=' + mejang + '&sel_user=' + escape(ger.damid) + '&rslt_Amt=' + gubun;
@@ -1434,7 +1428,6 @@ angular.module('starter.services', [])
 				default : console.log('모드선택안됨 오류'); break;
 			}	
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
-			console.log('상품검색 유알엘=', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
 					if(response.data == '<!--Parameter Check-->'){
@@ -1468,7 +1461,6 @@ angular.module('starter.services', [])
 							}
 						}
 					}
-					console.log('상품검색 =>', response.data);
 					return response.data;
 				}else{
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('네트워크환경이 불안정합니다. 다시시도해주세요..', 'short', 'center');
@@ -1563,7 +1555,7 @@ angular.module('starter.services', [])
 			})
 
 		}, ij_data : function(admin_code, userid, index){		// erpia에 등록되어있는 은행&카드 조회
-			console.log("MiuService and ij_data", index);
+			console.log("MiuService and ij_data");
 
 			if(index == '1') var kind = 'ERPia_Meaip_Bank_Card_Select&Mode=Select_Bank';
 			else var kind = 'ERPia_Meaip_Bank_Card_Select&Mode=Select_Card';
@@ -1602,7 +1594,6 @@ angular.module('starter.services', [])
 				if(pay.gubun == 4){
 					var end = '</root>&IpJi_YN=N';
 				}else{
-					console.log('meaip구분 =>', pay.gubun);
 					switch(pay.gubun){
 						case 0 : var pay_subul = 701; break;  // 현금
 						case 1 : var pay_subul = 702; break;  // 통장
@@ -1630,7 +1621,6 @@ angular.module('starter.services', [])
 				if(pay.gubun == 4){
 					var end = '</root>&IpJi_YN=N&Sale_Place_Code='+ setup.basic_Place_Code;
 				}else{
-					console.log('meachul구분 =>', pay.gubun);
 					switch(pay.gubun){
 						case 0 : var pay_subul = 721; break; 
 						case 1 : var pay_subul = 722; break; 
@@ -1644,7 +1634,7 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + escape(userid) + '&Kind='+ kind + '&Mode=&RequestXml=';
 
-			console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
+			// console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
 			return $http.post(url + '?' + data + m_data + goods_xml + middel + end).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;
@@ -1677,7 +1667,6 @@ angular.module('starter.services', [])
 					if(pay.gubun == 4){
 						var end = '</root>&iL_No=' + pay.no + '&IpJi_YN=N&AC_No=' + pay.acno;
 					}else{
-						console.log(pay.gubun);
 						switch(pay.gubun){
 							case 0 : var pay_subul = 701; break; 
 							case 1 : var pay_subul = 702; break; 
@@ -1795,7 +1784,7 @@ angular.module('starter.services', [])
 			})
 
 		}, pay_delete : function(admin_code, userid, acno){			// 지급전표 삭제
-			console.log("MiuService and pay_delete", admin_code, userid,acno);
+			console.log("MiuService and pay_delete");
 			if($rootScope.distinction == 'meaip') var kind = 'ERPia_Meaip_Delete_Goods&Mode=Delete_Acct_Info&AC_No=' + acno;
 			else var kind = 'ERPia_Sale_Delete_Goods&Mode=Delete_Acct_Info&AC_No=' + acno;
 			
@@ -1901,7 +1890,6 @@ angular.module('starter.services', [])
 			else var word = escape(keyword);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt='+ pageCnt +'&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + word + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
-			console.log("main_search ->", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					for(var i=0; i < response.data.list.length; i++){
@@ -1929,7 +1917,6 @@ angular.module('starter.services', [])
 		}, detail_search : function(Admin_Code, UserId, ChangGoCode, OneSelectCode){		// 통합 검색 재고 창고별 상세 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&ChangGoCode=ALL&KeyWord=&CodeSearchYN=N&OneSelectCode=' + OneSelectCode;
-			console.log("상세조회 ->", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response.data;
@@ -1952,11 +1939,9 @@ angular.module('starter.services', [])
 				return $q.reject(response);
 			});		
 		}, detailJego_search : function(Admin_Code, UserId, Mode, changgo_key, jegoInfo, pageCnt){		// 상세검색을 통한 재고조회
-			console.log('detail_search =>', jegoInfo);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=' + Mode + '&pageCnt=' + pageCnt + '&pageRow=10&ChangGoCode=' + changgo_key + '&OneSelectCode=' + jegoInfo.OneSelectCode + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
 
-			console.log("재고 상세조회 =>", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -1969,7 +1954,6 @@ angular.module('starter.services', [])
 		}, proDetail : function(Admin_Code, UserId, code){		// 선택상품 상세조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Select_Goods_Detail&OneSelectCode=' + code + '&ChanggoCode=001'
-			console.log("선택상품 상세조회 =>", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -1979,16 +1963,14 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});		
-		}, search_Save : function(Admin_Code, UserId, changgo_key, jegoInfo){		// 상세검색을 통한 재고조회
-			console.log('detail_search =>', jegoInfo);
+		}, search_Save : function(Admin_Code, UserId, changgo_key, jegoInfo, Mode, text){		// 조회셋 등록
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
-			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Reg_Select_OptSet_Rapid&pageCnt=&ChangGoCode=' + changgo_key + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=' + Mode + '&pageCnt=&ChangGoCode=' + changgo_key + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN + '&sel_name=' + escape(text);
 
-			console.log("재고 상세조회 =>", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
-				}else{
+				}else{Opset_de
 					return $q.reject(response);
 				}
 			},function(response){
@@ -1998,7 +1980,6 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Select_OptSet_List&RL_Gubun=' + gubun;
 
-			console.log("조회셋 리스트 조회 =>", url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -2008,6 +1989,19 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});	
-		}
+		}, Opset_de : function(Admin_Code, UserId, index){		// 조회셋 리스트 삭제
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Del_Select_OptSet_Rapid&sel_idx=' + index;
+
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object' || typeof response.data == 'string'){
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});	
+		},
 	};
 });

@@ -26,14 +26,14 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 					<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
 						<ion-scroll direction="x" class="tsb-hscroll">
 							<a href="javascript:;">조회조건</a>
-							<a href="javascript:;" ng-click="OptSet('L')">최근검색</a>
-							<a href="javascript:;" ng-click='OptSet("R")'>빠른검색</a>
+							<a href="javascript:;">최근검색</a>
+							<a href="javascript:;">빠른검색</a>
 						</ion-scroll>
 					</div>
 				</div>
 
 
-				<ion-slide-box does-continue="true" show-pager="true" on-slide-changed="slideHasChanged($index, tabs);slideChanged(index)">
+				<ion-slide-box does-continue="true" show-pager="true" on-slide-changed="slideHasChanged($index, tabs);lqSlide(index)">
 					<ion-slide on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()" style="background: #e0e0e0; overflow-y: auto; padding-bottom: 0px;" >
 						<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
 						<!-- 조회조건 -->
@@ -117,7 +117,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										<tr>
 											<td class="td1-1" style="vertical-align: middle;">창고</td>
 											<td style="height: 28px; vertical-align: middle;">
-												<select style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple">
+												<select style="width:100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl()">
 													<option value="ALL">전체창고</option>
 													<option ng-repeat="x in Ch_List" value="{{x.Code}}" ng-if="x.Stts != '삭제'">{{x.Name}}</option>
 												</select>
@@ -248,24 +248,41 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 							<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both; background: #dce0e1;">
 								<div align="center" style="background: #dce0e1; height:auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
 									<div style="padding: 10px 0 55px 0;">
-										<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px; table-layout:fixed;" ng-repeat="l in Opset_L" ng-if="l_YN == 'Y'">
-											<tr>
-												<td style="width:30%;">{{((l.sel_GoodsName)?l.sel_GoodsName:'-')}}</td>
-												<td style="width:30%;">{{((l.sel_GoodsStand)?l.sel_GoodsStand:'-')}}</td>
-												<td style="width:30%;">{{((l.sel_ChangGoGode)?l.sel_GoodsStand:'-')}}</td>
-												<td rowspan="2" style="width: 10%; vertical-align: middle;"><i></i></td>
-											</tr>
-											<tr>
-												<td style="width:30%;">{{((l.sel_GoodsOnCode)?l.sel_GoodsOnCode:'-')}}</td>
-												<td style="width:30%;">{{((l.sel_GoodsWich)?l.sel_GoodsWich:'-')}}</td>
-												<td style="width:30%;">{{((l.sel_GoodsBrand)?l.sel_GoodsBrand:'-')}}</td>
-											</tr>
-										</table>
-										<table width="100%" height="30px;" style="text-align:center; background: #fff; margin-bottom: 10px; table-layout:fixed;" ng-if="l_YN == 'N'">
-											<tr >
-												<td style="vertical-align: middle;">검색내역이 존재 하지 않습니다.</td>
-											</tr>
-										</table>
+										<div style="padding-bottom: 10px;">
+											<table style="width: 100%; border-top: 1px solid #e0e0e0; text-align:center; border-left: 1px solid #e0e0e0; background: #A298B0; color: #fff; font-size: 0.85em;">
+												<tr>
+													<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">상품명</td>
+												</tr>
+												<tr>
+													<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">규격</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">창고</td>
+												</tr>
+												<tr>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">자체코드</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">로케이션</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">브랜드</td>
+												</tr>
+											</table>
+										</div>
+										<table style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-repeat="l in Opset_L" ng-if="l_YN == 'Y'" ng-click="insert_LR($index, 'L')">
+												<tr>
+													<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((l.sel_GoodsName)?l.sel_GoodsName:'-')}}</b></div></td>
+												</tr>
+												<tr>
+													<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%;">{{((l.sel_GoodsStand)?l.sel_GoodsStand:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((l.sel_ChangGoName)?l.sel_ChangGoName:'-')}}</td>
+												</tr>
+												<tr>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((l.sel_GoodsOnCode)?l.sel_GoodsOnCode:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((l.sel_GoodsWich)?l.sel_GoodsWich:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((l.sel_GoodsBrand)?l.sel_GoodsBrand:'-')}}</td>
+												</tr>
+											</table>
+											<table width="100%" height="30px;" style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-if="l_YN == 'N'">
+												<tr >
+													<td style="vertical-align: middle;">검색내역이 존재 하지 않습니다.</td>
+												</tr>
+											</table>
 									</div>
 								</div>
 							</ion-scroll>
@@ -276,24 +293,50 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 							<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both; background: #dce0e1;">
 								<div align="center" style="background: #dce0e1; height:auto; font-size: 0.9em; color: #444444; padding: 0 10px; font-size: 0.9em;">
 									<div style="padding: 10px 0 55px 0;">
-										<table width="100%" style="text-align:center; background: #fff; margin-bottom: 10px; table-layout:fixed;" ng-repeat="r in Opset_R" ng-if="r_YN == 'Y'">
-											<tr>
-												<td style="width:30%;">{{((r.sel_GoodsName)?r.sel_GoodsName:'-')}}</td>
-												<td style="width:30%;">{{((r.sel_GoodsStand)?r.sel_GoodsStand:'-')}}</td>
-												<td style="width:30%;">{{((r.sel_ChangGoGode)?r.sel_GoodsStand:'-')}}</td>
-												<td rowspan="2" style="width: 10%; vertical-align: middle;"><i class='ion-close-circled' style="font-size: 2em;"></i></td>
-											</tr>
-											<tr>
-												<td style="width:30%;">{{((r.sel_GoodsOnCode)?r.sel_GoodsOnCode:'-')}}</td>
-												<td style="width:30%;">{{((r.sel_GoodsWich)?r.sel_GoodsWich:'-')}}</td>
-												<td style="width:30%;">{{((r.sel_GoodsBrand)?r.sel_GoodsBrand:'-')}}</td>
-											</tr>
-										</table>
-										<table width="100%" height="30px;" style="text-align:center; background: #fff; margin-bottom: 10px; table-layout:fixed;" ng-if="r_YN == 'N'">
-											<tr >
-												<td style="vertical-align: middle;">검색내역이 존재 하지 않습니다.</td>
-											</tr>
-										</table>
+										<div style="padding-bottom: 10px;">
+											<table style="width: 100%; text-align:center; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; background: #A298B0; color: #fff; font-size: 0.85em;">
+												<tr>
+													<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">상품명</td>
+												</tr>
+												<tr>
+													<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">규격</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">창고</td>
+												</tr>
+												<tr>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">자체코드</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">로케이션</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">브랜드</td>
+												</tr>
+											</table>
+										</div>
+										<div ng-repeat="r in Opset_R">
+											<table style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-if="r_YN == 'Y' && r.nameYN == 'N'" ng-click="insert_LR($index, 'R')">
+												<tr>
+													<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((r.sel_GoodsName)?r.sel_GoodsName:'-')}}</b></div></td>
+													<td rowspan="3" style="width: 10%; vertical-align: middle;"><i class='ion-close-circled' ng-click="opSetDe($index)" style="font-size: 2em;"></i></td>
+												</tr>
+												<tr>
+													<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%;">{{((r.sel_GoodsStand)?r.sel_GoodsStand:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((r.sel_ChangGoName)?r.sel_ChangGoName:'-')}}</td>
+												</tr>
+												<tr>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((r.sel_GoodsOnCode)?r.sel_GoodsOnCode:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((r.sel_GoodsWich)?r.sel_GoodsWich:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((r.sel_GoodsBrand)?r.sel_GoodsBrand:'-')}}</td>
+												</tr>
+											</table>
+											<table width="100%" height="30px;" style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-if="r_YN == 'Y' && r.nameYN == 'Y'" ng-click="insert_LR($index, 'R')">
+												<tr >
+													<td style="vertical-align: middle;"><b>{{r.sel_Name}}</b></td>
+													<td style="width: 10%; vertical-align: middle;"><i class='ion-close-circled' ng-click="opSetDe($index)" style="font-size: 2em;"></i></td>
+												</tr>
+											</table>
+											<table width="100%" height="30px;" style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-if="r_YN == 'N'">
+												<tr >
+													<td style="vertical-align: middle;">검색내역이 존재 하지 않습니다.</td>
+												</tr>
+											</table>
+										</div>
 									</div>
 								</div>
 							</ion-scroll>
