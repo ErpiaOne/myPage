@@ -104,6 +104,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 재고관리 - 이경민[2016-05] */
 	$scope.jego = function(){
 		if($rootScope.priv_jego.jego_YN == 'Y' && $rootScope.priv_jego.jego == 'Y'){
+			$scope.loadingani();
 			$rootScope.goto_with_clearHistory("#app/jegoMain"); $scope.sidetab("tab4");
 		}else{
 			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('권한이 없습니다.', 'long', 'center');

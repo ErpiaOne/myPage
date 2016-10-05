@@ -13,7 +13,7 @@
 		<div style="text-align: center; padding: 10px 10px 50px 10px; color: #000;">
 			<div style="float: left; width: 30%; vertical-align: middle; font-size: 20px;">조회창고</div>
 			<div style="float: right; width: 70%; padding-bottom: 10px;">
-				<select style="background: #ededed; width:90%; border: 0; border-bottom: 1px solid #e0e0e0; color: #000;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple">  <!-- multiple="multiple" -->
+				<select style="background: #ededed; width:90%; border: 0; border-bottom: 1px solid #e0e0e0; color: #000;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl()">  <!-- multiple="multiple" -->
 					<option value="ALL">전체창고</option>
 					<option ng-repeat="x in Ch_List" value="{{x.Code}}" ng-if="x.Stts != '삭제'">{{x.Name}}</option>
 				</select>

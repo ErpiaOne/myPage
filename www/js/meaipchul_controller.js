@@ -1967,6 +1967,28 @@ console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 		}
 	}
 
+	/* 선택상품 재고조회 - 이경민[2016-10-05] */
+	$scope.GoodsJego = function(){
+		var GCode = '';
+		if($scope.checkedDatas.length == 0){
+			console.log('상품을 선택해주세요.');
+		}else if($scope.checkedDatas.length > 3){
+			console.log('20개 이하로 선택해주세요.');
+		}else{
+			for(var i = 0; i < $scope.checkedDatas.length; i++){
+				if(i == 0){
+					var GCode = $scope.checkedDatas[i].G_Code;
+				}else{
+					var GCode = GCode + ',' + $scope.checkedDatas[i].G_Code;
+				}
+			}
+			$scope.goodsmodal.hide();
+		}
+
+		$rootScope.GCode = GCode;
+		$state.go("app.jego_search");
+	}
+
     	/*선택된 상품들을 등록리스트에 저장 --> 이중 $scope - 이경민[2015-12] */
     	$scope.checkdataSave=function(){
 		if($scope.goodsaddlists.length > 0){

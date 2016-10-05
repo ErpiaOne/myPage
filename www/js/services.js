@@ -1882,7 +1882,7 @@ angular.module('starter.services', [])
 })
 
 /* 재고조회관련 서비스 - 이경민[2016-09-12] */
-.factory('jego_Service', function($http, $q, $cordovaToast, ERPiaAPI){
+.factory('jego_Service', function($http, $q, $cordovaToast, ERPiaAPI, $timeout){
 	return{
 		main_search: function(Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt){		// 재고조회 (통합 & 바코드)
 			console.log('jego_Service', 'main_search');
@@ -2002,6 +2002,22 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});	
-		},
+		}, meaipchul_GoodsSearch : function(Admin_Code, UserId, GCode){		// 조회셋 리스트 삭제
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt=1&pageRow=20&ChangGoCode=&KeyWord=&CodeSearchYN=N&OneSelectCode=&GoodsCodeList=' + GCode;
+
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object' || typeof response.data == 'string'){
+					for(var i=0; i < response.data.list.length; i++){
+						response.data.list[i].trfa = false;
+					}
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});	
+		}
 	};
 });

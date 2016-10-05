@@ -266,7 +266,9 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										</div>
 										<table style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-repeat="l in Opset_L" ng-if="l_YN == 'Y'" ng-click="insert_LR($index, 'L')">
 												<tr>
-													<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((l.sel_GoodsName)?l.sel_GoodsName:'-')}}</b></div></td>
+													<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;">
+														<div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((l.sel_GoodsName)?l.sel_GoodsName:'-')}}</b></div>
+													</td>
 												</tr>
 												<tr>
 													<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%;">{{((l.sel_GoodsStand)?l.sel_GoodsStand:'-')}}</td>
@@ -310,24 +312,24 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 											</table>
 										</div>
 										<div ng-repeat="r in Opset_R">
-											<table style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-if="r_YN == 'Y' && r.nameYN == 'N'" ng-click="insert_LR($index, 'R')">
+											<table style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-if="r_YN == 'Y' && r.nameYN == 'N'">
 												<tr>
-													<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((r.sel_GoodsName)?r.sel_GoodsName:'-')}}</b></div></td>
+													<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;"  ng-click="insert_LR($index, 'R')"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((r.sel_GoodsName)?r.sel_GoodsName:'-')}}</b></td>
 													<td rowspan="3" style="width: 10%; vertical-align: middle;"><i class='ion-close-circled' ng-click="opSetDe($index)" style="font-size: 2em;"></i></td>
 												</tr>
 												<tr>
-													<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%;">{{((r.sel_GoodsStand)?r.sel_GoodsStand:'-')}}</td>
-													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((r.sel_ChangGoName)?r.sel_ChangGoName:'-')}}</td>
+													<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsStand)?r.sel_GoodsStand:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;"  ng-click="insert_LR($index, 'R')">{{((r.sel_ChangGoName)?r.sel_ChangGoName:'-')}}</td>
 												</tr>
 												<tr>
-													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((r.sel_GoodsOnCode)?r.sel_GoodsOnCode:'-')}}</td>
-													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((r.sel_GoodsWich)?r.sel_GoodsWich:'-')}}</td>
-													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((r.sel_GoodsBrand)?r.sel_GoodsBrand:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsOnCode)?r.sel_GoodsOnCode:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsWich)?r.sel_GoodsWich:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsBrand)?r.sel_GoodsBrand:'-')}}</td>
 												</tr>
 											</table>
-											<table width="100%" height="30px;" style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-if="r_YN == 'Y' && r.nameYN == 'Y'" ng-click="insert_LR($index, 'R')">
+											<table width="100%" height="30px;" style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-if="r_YN == 'Y' && r.nameYN == 'Y'">
 												<tr >
-													<td style="vertical-align: middle;"><b>{{r.sel_Name}}</b></td>
+													<td style="vertical-align: middle;"  ng-click="insert_LR($index, 'R')"><b>{{r.sel_Name}}</b></td>
 													<td style="width: 10%; vertical-align: middle;"><i class='ion-close-circled' ng-click="opSetDe($index)" style="font-size: 2em;"></i></td>
 												</tr>
 											</table>
