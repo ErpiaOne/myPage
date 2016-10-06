@@ -447,10 +447,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = '박혜진';
 			// $rootScope.loginData.Pwd = '1234';
 
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.Admin_Code = 'ecohomes'; //PC모드
 			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'test1234';
-			$rootScope.loginData.Pwd = 'test1234!';
+			$rootScope.loginData.UserId = 'ecohomes';
+			$rootScope.loginData.Pwd = 'erpia!1010';
+
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId  = 'test1234';
+			// $rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -2784,20 +2789,31 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 /* PUSH컨트롤러 - 김형석[2016-01] */
 .controller('PushCtrl', function($rootScope, $scope, $state, PushSelectService, app, ERPiaAPI){
 	console.log("PushCtrl");
+
 	/* 내가 받은 push내용 리스트로 불러오기 - 김형석[2016-01] */
 	$scope.PushList = function() {
 		if($scope.loginData.Admin_Code != undefined){
-			PushSelectService.select($rootScope.deviceInfo.uuid)
+			PushSelectService.select($rootScope.deviceInfo.uuid, $rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.loginData.loginType)
 			.then(function(data){
 				$scope.items = data.list;
 			})
 		}
 	}
-	$scope.PushList();
 
-  	$scope.data = {
-    		showDelete: false
-  	};
+	/* 알림페이지 확인 및 이동 - 이경민[2016-10-06] */
+	$scope.alramRead = function(index){
+		console.log('읽자~ =>', $scope.items[index]);
+		if($scope.items[index].Read_YN == 'N'){		// 푸시로그 업데이트 
+			PushSelectService.update($rootScope.deviceInfo.uuid, $rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.loginData.loginType, index)
+			.then(function(data){
+				console.log('데이터 확인용 =>', data);
+			})
+		}else{
+
+		}
+	}
+
+	$scope.PushList();
 })
 
 .controller('DashCtrl', function($scope, app) {

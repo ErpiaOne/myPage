@@ -11,29 +11,29 @@
 
 	<ion-content style="background-color: #dce0e1; height: auto">
 		<div style="text-align: center; padding: 10px 10px 50px 10px; color: #000;">
-			<div style="float: left; width: 30%; vertical-align: middle; font-size: 20px;">조회창고</div>
-			<div style="float: right; width: 70%; padding-bottom: 10px;">
-				<select style="background: #ededed; width:90%; border: 0; border-bottom: 1px solid #e0e0e0; color: #000;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl()">  <!-- multiple="multiple" -->
+			<div style="float: left; width: 25%; vertical-align: middle; font-size: 16px; font-weight: bold;">조회창고</div>
+			<div style="float: right; width: 75%; padding-bottom: 10px;">
+				<select style="background: #ededed; width:75%; border: 0; border-bottom: 1px solid #e0e0e0; color: #000;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl()">  <!-- multiple="multiple" -->
 					<option value="ALL">전체창고</option>
 					<option ng-repeat="x in Ch_List" value="{{x.Code}}" ng-if="x.Stts != '삭제'">{{x.Name}}</option>
 				</select>
-				
-				<i class="ion-search" style="width:10%; font-size: 25px; padding-left: 2px; vertical-align: middle;" ng-click="reSelect()"></i>
+
+				<i class="ion-search" style="width:25%; font-size: 25px; padding-left: 7px; vertical-align: middle;" ng-click="reSelect()"></i>
 			</div>
 
 			<div style="padding-bottom: 10px;">
 				<table style="width: 100%; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; background: #A298B0; color: #fff; font-size: 0.85em;">
 					<tr>
-						<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">상품명</td>
+						<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%; padding: 4px 10px; text-align: left;">상품명</td>
 					</tr>
 					<tr>
-						<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">규격</td>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">재고(가용/불용)</td>
+						<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%; padding: 4px 10px; text-align: left;">규격</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">재고(가용/불용)</td>
 					</tr>
 					<tr>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">자체코드</td>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">로케이션</td>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0;">가용-출고대기</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">자체코드</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">로케이션</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">가용-출고대기</td>
 					</tr>
 				</table>
 			</div>
@@ -42,32 +42,32 @@
 
 				<table style="background: #EDEDED; width: 100%; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-if="$index%2 != 0">
 					<tr>
-						<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((x.G_name)?x.G_name:'-')}}</b></div></td>
+						<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%; padding: 4px 10px; text-align: left;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((x.G_name)?x.G_name:'-')}}</b></div></td>
 					</tr>
 					<tr>
-						<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%;">{{((x.G_Stand)?x.G_Stand:'0')}}</td>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{x.Qty | number:0}} ({{x.Qty_GaYong | number:0}}/{{x.Qty_BulYong | number:0}})</td>
+						<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%; padding: 4px 10px; text-align: left;">{{((x.G_Stand)?x.G_Stand:'0')}}</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{x.Qty | number:0}} ({{x.Qty_GaYong | number:0}}/{{x.Qty_BulYong | number:0}})</td>
 					</tr>
 					<tr>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((x.G_OnCode)?x.G_OnCode:'-')}}</td>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((x.G_Wich)?x.G_Wich:'-')}}</td>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{x.Qty_GaYong_ChulGoDagi | number:0}}</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((x.G_OnCode)?x.G_OnCode:'-')}}</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((x.G_Wich)?x.G_Wich:'-')}}</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{x.Qty_GaYong_ChulGoDagi | number:0}}</td>
 					</tr>
 					<tr ng-if="$index%2 != 0 && x.trfa == true" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;">
 						<td colspan="3">
 							<div ng-repeat="y in jego_detail_List">
 								<table style="background: #fff; table-layout:fixed;" ng-if="!$last">
 									<tr>
-										<td style="border-bottom: 1px solid #e0e0e0;">{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</td>
-										<td style="border-bottom: 1px solid #e0e0e0;">{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</td>
-										<td style="border-bottom: 1px solid #e0e0e0;">{{y.Qty_GaYong_ChulGoDagi | number:0}}</td>
+										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;">{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</td>
+										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;">{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</td>
+										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;">{{y.Qty_GaYong_ChulGoDagi | number:0}}</td>
 									</tr>
 								</table>
 								<table style="background: #BDBDBD; table-layout:fixed;" ng-if="$last"> <!-- 마지막줄 -->
 									<tr>
-										<td style="border-bottom: 1px solid #e0e0e0;"><b>{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</b></td>
-										<td style="border-bottom: 1px solid #e0e0e0;"><b>{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</b></td>
-										<td style="border-bottom: 1px solid #e0e0e0;"><b>{{y.Qty_GaYong_ChulGoDagi | number:0}}</b></td>
+										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;"><b>{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</b></td>
+										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;"><b>{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</b></td>
+										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;"><b>{{y.Qty_GaYong_ChulGoDagi | number:0}}</b></td>
 									</tr>
 								</table>
 							</div>
@@ -75,34 +75,34 @@
 					</tr>
 				</table>
 
-				<table style="background: #EDEDED; width: 100%; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed; font-size: 0.85em;" ng-if="$index%2 == 0">
+				<table style="background: #EDEDED; width: 100%; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; font-size: 0.85em;" ng-if="$index%2 == 0">
 					<tr>
-						<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((x.G_name)?x.G_name:'-')}}</b></div></td>
+						<td colspan="3" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%; padding: 4px 10px; text-align: left;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{((x.G_name)?x.G_name:'-')}}</b></div></td>
 					</tr>
 					<tr>
-						<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%;">{{((x.G_Stand)?x.G_Stand:'0')}}</td>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{x.Qty | number:0}} ({{x.Qty_GaYong | number:0}}/{{x.Qty_BulYong | number:0}})</td>
+						<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%; padding: 4px 10px; text-align: left;">{{((x.G_Stand)?x.G_Stand:'0')}}</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{x.Qty | number:0}} ({{x.Qty_GaYong | number:0}}/{{x.Qty_BulYong | number:0}})</td>
 					</tr>
 					<tr>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((x.G_OnCode)?x.G_OnCode:'-')}}</td>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{((x.G_Wich)?x.G_Wich:'-')}}</td>
-						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%;">{{x.Qty_GaYong_ChulGoDagi | number:0}}</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((x.G_OnCode)?x.G_OnCode:'-')}}</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((x.G_Wich)?x.G_Wich:'-')}}</td>
+						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{x.Qty_GaYong_ChulGoDagi | number:0}}</td>
 					</tr>
 					<tr ng-if="$index%2 == 0 && x.trfa == true" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;">
-						<td colspan="3">
-							<div ng-repeat="y in jego_detail_List">
-								<table style="background: #fff; table-layout:fixed;" ng-if="!$last">
+						<td colspan="3" style="width: 100%;">
+							<div ng-repeat="y in jego_detail_List" style="width: 100%;">
+								<table style="background: #fff; width: 100%;" ng-if="!$last">
 									<tr>
-										<td style="border-bottom: 1px solid #e0e0e0;">{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</td>
-										<td style="border-bottom: 1px solid #e0e0e0;">{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</td>
-										<td style="border-bottom: 1px solid #e0e0e0;">{{y.Qty_GaYong_ChulGoDagi | number:0}}</td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{y.Qty_GaYong_ChulGoDagi | number:0}}</td>
 									</tr>
 								</table>
-								<table style="background: #BDBDBD; table-layout:fixed;" ng-if="$last"> <!-- 마지막줄 -->
+								<table style="background: #BDBDBD; width: 100%;" ng-if="$last"> <!-- 마지막줄 -->
 									<tr>
-										<td style="border-bottom: 1px solid #e0e0e0;"><b>{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</b></td>
-										<td style="border-bottom: 1px solid #e0e0e0;"><b>{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</b></td>
-										<td style="border-bottom: 1px solid #e0e0e0;"><b>{{y.Qty_GaYong_ChulGoDagi | number:0}}</b></td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;"><b>{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</b></td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;"><b>{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</b></td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;"><b>{{y.Qty_GaYong_ChulGoDagi | number:0}}</b></td>
 									</tr>
 								</table>
 							</div>
@@ -111,6 +111,7 @@
 				</table>
 			</div>
 			<button class="button button-block psm_login_ink"  ng-click='jego_more()' style="background: #52bcae;" ng-if="morebutton == true">더보기</button>
+			<div style="height: 20px;"></div>
 		</div>
 	</ion-content>
 </ion-view>

@@ -1,20 +1,20 @@
-<ion-modal-view cache-view="false" style="width: 100%; height: 100%; background-color: transparent; background-color: rgba( 255, 255, 255, 0.5 );">
+<ion-modal-view cache-view="false" style="width: 100%; height: 100%; background-color: transparent; background-color: rgba( 53, 53, 53, 0.8 );">
 	<ion-content style="width: 80%; height: 80%; top: 10%; left: 10%; right: 10%; bottom: 10%; background-color: #dce0e1;" scroll="false">
-		<div style="font-size: 25px; height: 7%; padding: 10px; text-align: center; background: #8f6384;">
-			<div style="float: left; color: #fff; font-size: 0.7em; vertical-align: middle;">{{listname}}</div> 
-			<div style="float: right; text-align: middle; color: #fff; font-size: 0.8em; vertical-align: middle;">
+		<div style="font-size: 13px; height: 7%; padding: 10px; text-align: center; background: #8f6384;">
+			<div style="float: left; color: #fff; font-size: 13px; vertical-align: middle;">{{listname}}</div>
+			<div style="float: right; text-align: middle; color: #fff; font-size: 13px; vertical-align: middle;">
 				<i class="ion-document-text" style="padding-right: 10px;"></i>
 				<i class="ion-person" style="padding-right: 10px;"></i>
 				<i class="ion-close-round" ng-click="mylist_cloes()"></i>
-			</div> 
+			</div>
 		</div>
 		<div>
 		<div style="padding: 10px;">
-			<div style="font-size: 0.8em;">* 그룹상품은 나타나지않습니다.</div>
+			<div style="font-size: 12px;">* 그룹상품은 나타나지않습니다.</div>
 			<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
 				<label style="padding-bottom: 10px;" ng-repeat="x in AttentionList" ng-click="Attent_Choose($index)">
-					<button ng-if="listname == '관심항목'" style="font-size: 0.8em; background: #f3eff4; padding: 10px; margin-right: 10px; width: 100%; text-align: left;"><i class="ion-record">&nbsp;&nbsp;&nbsp;{{x.K_Name}}({{x.Count}})</i></button>
-					<button ng-if="listname == 'My LIST'" style="font-size: 0.8em; background: #f3eff4; padding: 10px; margin-right: 10px; width: 100%; text-align: left;"><i class="ion-record">&nbsp;&nbsp;&nbsp;{{x.Name}}({{x.Count}})</i></button>
+					<button ng-if="listname == '관심항목'" style="font-size: 13px; background: #f3eff4; padding: 10px; margin-right: 10px; width: 100%; text-align: left;"><i class="ion-record">&nbsp;&nbsp;&nbsp;{{x.K_Name}}({{x.Count}})</i></button>
+					<button ng-if="listname == 'My LIST'" style="font-size: 13px; background: #f3eff4; padding: 10px; margin-right: 10px; width: 100%; text-align: left;"><i class="ion-record">&nbsp;&nbsp;&nbsp;{{x.Name}}({{x.Count}})</i></button>
 				</label>
 			</ion-scroll>
 		</div>
