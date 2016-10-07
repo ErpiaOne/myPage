@@ -1,9 +1,13 @@
 // 재고현황 컨트롤러
-angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $timeout, $cordovaToast, jego_Service, $state, $location, $cordovaBarcodeScanner, $ionicPlatform, $ionicModal, ERPiaAPI, app, $ionicScrollDelegate, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
-	$timeout(function(){
-			$scope.loadingani();
+angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $timeout, $cordovaToast, jego_Service, $state, $location, $cordovaBarcodeScanner, $ionicPlatform, $ionicLoading, $ionicModal, ERPiaAPI, app, $ionicScrollDelegate, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
 	console.log('jegoCtrl(재고현황 조회 컨트롤러)');
-
+	$ionicLoading.show({
+		content: 'Loading',
+		animation: 'fade-in',
+		showBackdrop: true,
+		maxWidth: 200,
+		showDelay: 0
+	});
 	// $rootScope.keyheight = window.innerHeight; // 키보드 높이 ..... 
 
 	$scope.onTouch = function(){
@@ -42,7 +46,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	$scope.basic3type=false;
 
 	// 통합검색어 
-	$scope.jego_searchModule = { all_Search : 'z' };
+	$scope.jego_searchModule = { all_Search : '' };
 
 	$scope.select_jegoindex = -1;	// 상세보기는 하나씩만 할수있도록...
 	$scope.pageCnt = 1;			// 조회결과 페이징 
@@ -50,7 +54,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	$scope.morebutton = true;		// 더보기 버튼 활성화 유무
 
 	/* 상세조회 리스트 */
-	$scope.jego_detail_colum = {
+	$rootScope.jego_detail_colum = {
 		pro_name 			: '',		// 상품명
 		pro_stand 			: '', 		// 규격
 		pro_OnCode 		: '',		// 자체코드
@@ -96,6 +100,9 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		.then(function(data){
 			$rootScope.Ch_List = data.list;
 		});
+		$timeout(function(){
+			$ionicLoading.hide();
+		}, 500);
 	}
 
 	$scope.jego_Changgh();
@@ -249,52 +256,80 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}
 	}
 
+	/* 더보기 버튼 이슈 - 이경민 */
+	$scope.MoreBt = function(){
+		if($rootScope.jego_result != undefined){
+			if($rootScope.jego_result.length < 10){
+				$scope.morebutton = false;	
+			}else{
+				$scope.morebutton = true;	
+			}
+		}
+	}
+
+	$scope.MoreBt();
+
 	/* 통합 검색 서비스 하나로 합침 - 이경민 */
 	$scope.hapSearch = function(ChanggoCode, keyword, YN, OneSelectCode, pageCnt){
-		$timeout(function(){
-			$scope.loadingani();
-			jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt)
-			.then(function(data){
-				if(data != '<!--Parameter Check-->'){
+		$ionicLoading.show({
+			template: '로딩중..',
+			scope: $scope
+		});
+		jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt)
+		.then(function(data){
+			if(data != '<!--Parameter Check-->'){
 					$rootScope.jego_result = data.list;
 					$scope.jego_Changgh();
+					$scope.MoreBt();
 					$state.go("app.jego_search");
-				}else{
-					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-					else console.log('조회결과가 없습니다.');
-				}
-			});
-		}, 500);
+					$timeout(function(){
+					$ionicLoading.hide();
+				      }, 500);
+			}else{
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+				else console.log('조회결과가 없습니다.');
+				$timeout(function(){
+				$ionicLoading.hide();
+			      }, 500);
+			}
+		});
 	}
 
 
 
 	/* 상세 검색 서비스 하나로 합침 - 이경민 */
 	$scope.detail = function(Mode, changgo_key, jegoInfo, pageCnt){
-		$timeout(function(){
-			$scope.loadingani();
-			jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, Mode, changgo_key, jegoInfo, pageCnt)
-			.then(function(data){
-				if(data != '<!--Parameter Check-->'){
-					$rootScope.jego_result = data.list;
-					$scope.jego_Changgh();
-					if($rootScope.jegoMode != 'hap'){
-						jego_Service.search_Save($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.changgo_keyword, $rootScope.jegoColum, 'Util_Reg_Select_OptSet_Lately', '')
-						.then(function(data){
-							if(data == '<!--Parameter Check-->'){
-								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-								else console.log('조회결과가 없습니다.');
-							}
-						});
-					}
-					
-					$state.go("app.jego_search");
-				}else{
-					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-					else console.log('조회결과가 없습니다.');
+		$ionicLoading.show({
+			template: '로딩중..',
+			scope: $scope
+		});
+		jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, Mode, changgo_key, jegoInfo, pageCnt)
+		.then(function(data){
+			if(data != '<!--Parameter Check-->'){
+				$rootScope.jego_result = data.list;
+				$scope.jego_Changgh();
+				$scope.MoreBt();
+				if($rootScope.jegoMode != 'hap'){
+					jego_Service.search_Save($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.changgo_keyword, $rootScope.jegoColum, 'Util_Reg_Select_OptSet_Lately', '')
+					.then(function(data){
+						if(data == '<!--Parameter Check-->'){
+							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+							else console.log('조회결과가 없습니다.');
+						}
+					});
 				}
-			});
-		}, 500);
+				$timeout(function(){
+					$ionicLoading.hide();
+				}, 500);
+				$state.go("app.jego_search");
+			}else{
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+				else console.log('조회결과가 없습니다.');
+				$timeout(function(){
+					$ionicLoading.hide();
+				}, 500);
+			}
+		});
 	}
 
 	/* 통합검색 바코드 검색 [이경민 - 2016-08-29] */
@@ -305,6 +340,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				if ($ionicHistory.backView()&&imageData.text=='') {
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('바코드를 정확히 찍어주세요.', 'short', 'center');
 					else console.log('바코드를 정확히 찍어주세요.');
+				}else if(imageData.text.length == 0){
+					console.log('취소');
 				}else{
 					$rootScope.keyword = imageData.text;
 					$scope.morebutton = false;
@@ -318,6 +355,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				if ($ionicHistory.backView()&&imageData.text=='') {
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('바코드를 정확히 찍어주세요.', 'short', 'center');
 					else console.log('바코드를 정확히 찍어주세요.');
+				}else if(imageData.text.length == 0){
+					console.log('취소');
 				}else{
 					$scope.jego_detail_colum.pro_barCode = imageData.text;
 					$scope.morebutton = false;
@@ -409,41 +448,50 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 재고조회 - 더보기 - 이경민[2016-09-20] */
 	$scope.jego_more = function(){
-		$timeout(function(){
-			$scope.loadingani();
-			if($scope.changgo_keyword == undefined || $scope.changgo_keyword == "ALL") $scope.changgo_keyword = '';
-			$scope.pageCnt = $scope.pageCnt + 1;
+		$ionicLoading.show({
+			template: '로딩중..',
+			scope: $scope
+		});
+		if($scope.changgo_keyword == undefined || $scope.changgo_keyword == "ALL") $scope.changgo_keyword = '';
+		$scope.pageCnt = $scope.pageCnt + 1;
 
-			if($rootScope.jegoMode == 'hap'){ 							// 통합조회일 경우 더보기
-				jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.changgo_keyword, $rootScope.keyword, 'N', '', $scope.pageCnt)
-				.then(function(data){
-					if(data != '<!--Parameter Check-->'){
-						for(var m = 0; m < data.list.length; m++){
-							$rootScope.jego_result.push(data.list[m]);
-						}
-					}else{
-						$scope.morebutton = false;
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('더이상 조회결과가 존재하지 않습니다.', 'short', 'center');
-						else console.log('더이상 조회결과가 존재하지 않습니다.');
+		if($rootScope.jegoMode == 'hap'){ 							// 통합조회일 경우 더보기
+			jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.changgo_keyword, $rootScope.keyword, 'N', '', $scope.pageCnt)
+			.then(function(data){
+				if(data != '<!--Parameter Check-->'){
+					$scope.MoreBt();
+					for(var m = 0; m < data.list.length; m++){
+						$rootScope.jego_result.push(data.list[m]);
 					}
-				});
-			}else{ 												// 상세조회일 경우 더보기
-				/* Admin_Code, UserId, Mode, changgo_key, jegoInfo, pageCnt */
-				if($scope.changgo_keyword == '') var Mode = 'Select_Detail_All';
-				else var Mode = 'Select_Detail_ChangGobyul'; 
-				jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, Mode, $scope.changgo_keyword, $rootScope.jegoColum, $scope.pageCnt)
-				.then(function(data){
-					if(data != '<!--Parameter Check-->'){
-						for(var m = 0; m < data.list.length; m++){
-							$rootScope.jego_result.push(data.list[m]);
-						}
-					}else{
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-						else console.log('조회결과가 없습니다.');
+				}else{
+					$scope.morebutton = false;
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('더이상 조회결과가 존재하지 않습니다.', 'short', 'center');
+					else console.log('더이상 조회결과가 존재하지 않습니다.');
+				}
+				$timeout(function(){
+					$ionicLoading.hide();
+				}, 500);
+			});
+		}else{ 												// 상세조회일 경우 더보기
+			/* Admin_Code, UserId, Mode, changgo_key, jegoInfo, pageCnt */
+			if($scope.changgo_keyword == '') var Mode = 'Select_Detail_All';
+			else var Mode = 'Select_Detail_ChangGobyul'; 
+			jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, Mode, $scope.changgo_keyword, $rootScope.jegoColum, $scope.pageCnt)
+			.then(function(data){
+				if(data != '<!--Parameter Check-->'){
+					$scope.MoreBt();
+					for(var m = 0; m < data.list.length; m++){
+						$rootScope.jego_result.push(data.list[m]);
 					}
-				});
-			}
-		}, 500);
+				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+					else console.log('조회결과가 없습니다.');
+				}
+				$timeout(function(){
+					$ionicLoading.hide();
+				}, 500);
+			});
+		}
 	}
 
 	/* 재고 상세조회 (전체창고나옴)- 이경민[2016-09-01] */
@@ -471,7 +519,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				});
 			}else{												// 상세조회일 경우 상세조회
 				var Mode = 'Select_Detail_One';
-				console.log('$rootScope=', $rootScope.jego_result);
+				// console.log('$rootScope=', $rootScope.jego_result);
+				// $rootScope.jegoColum = $scope.jego_detail_colum; 
 				$rootScope.jegoColum.OneSelectCode = $rootScope.jego_result[index].G_Code;
 				jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, Mode, $scope.changgo_keyword, $rootScope.jegoColum, 1)
 				.then(function(data){
@@ -494,52 +543,58 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 창고 선택 후 재조회 */
 	$scope.reSelect = function(){
-		$timeout(function(){
-			$scope.loadingani();
-			$rootScope.jego_result = [];
-			/* 재조회시 선택창고 문자열 만들기 */
-			if($scope.jego_detail_colum.pro_ChangGo[0] == 'ALL'){
-				var mode = "Select_Detail_All"; // 상세
-				$scope.changgo_keyword = ""
-			}else{
-				var mode = "Select_Detail_ChangGobyul"; // 상세
-				$scope.changgo_keyword = "";
-				for(var i = 0; i < $scope.jego_detail_colum.pro_ChangGo.length; i++){
-					if(i == 0){
-						$scope.changgo_keyword = $scope.jego_detail_colum.pro_ChangGo[i];
-					}else{
-						$scope.changgo_keyword = $scope.changgo_keyword + ',' +  $scope.jego_detail_colum.pro_ChangGo[i];
-					}
+		$ionicLoading.show({
+			template: '로딩중..',
+			scope: $scope
+		});
+		$rootScope.jego_result = [];
+		/* 재조회시 선택창고 문자열 만들기 */
+		if($scope.jego_detail_colum.pro_ChangGo[0] == 'ALL'){
+			var mode = "Select_Detail_All"; // 상세
+			$scope.changgo_keyword = ""
+		}else{
+			var mode = "Select_Detail_ChangGobyul"; // 상세
+			$scope.changgo_keyword = "";
+			for(var i = 0; i < $scope.jego_detail_colum.pro_ChangGo.length; i++){
+				if(i == 0){
+					$scope.changgo_keyword = $scope.jego_detail_colum.pro_ChangGo[i];
+				}else{
+					$scope.changgo_keyword = $scope.changgo_keyword + ',' +  $scope.jego_detail_colum.pro_ChangGo[i];
 				}
 			}
+		}
 
-			$scope.pageCnt = 1; // 재조회일경우 페이지 번호 초기화
+		$scope.pageCnt = 1; // 재조회일경우 페이지 번호 초기화
 
-			if($rootScope.jegoMode == 'hap'){ 							// 통합조회일 경우 창고선택 조회
-				jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.changgo_keyword, $rootScope.keyword, 'N', '', $scope.pageCnt)
-				.then(function(data){
-					if(data != '<!--Parameter Check-->'){
-						$rootScope.jego_result = data.list;
-						$scope.jego_Changgh();
-					}else{
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-						else console.log('조회결과가 없습니다.');
-					}
-				});
-			}else{ 												// 상세조회일 경우 창고선택 조회
-				jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, mode, $scope.changgo_keyword, $scope.jegoColum, $scope.pageCnt)
-				.then(function(data){
-					if(data != '<!--Parameter Check-->'){
-						$rootScope.jego_result = data.list;
-						$scope.jego_Changgh();
-					}else{
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
-						else console.log('조회결과가 없습니다.');
-					}
-				});
-
-			}
-		}, 1000);
+		if($rootScope.jegoMode == 'hap'){ 							// 통합조회일 경우 창고선택 조회
+			jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.changgo_keyword, $rootScope.keyword, 'N', '', $scope.pageCnt)
+			.then(function(data){
+				if(data != '<!--Parameter Check-->'){
+					$rootScope.jego_result = data.list;
+					$scope.jego_Changgh();
+				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+					else console.log('조회결과가 없습니다.');
+				}
+				$timeout(function(){
+					$ionicLoading.hide();
+				}, 500);
+			});
+		}else{ 												// 상세조회일 경우 창고선택 조회
+			jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, mode, $scope.changgo_keyword, $rootScope.jegoColum, $scope.pageCnt)
+			.then(function(data){
+				if(data != '<!--Parameter Check-->'){
+					$rootScope.jego_result = data.list;
+					$scope.jego_Changgh();
+				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
+					else console.log('조회결과가 없습니다.');
+				}
+				$timeout(function(){
+					$ionicLoading.hide();
+				}, 500);
+			});
+		}
 	}
 
 	/* 상품상세 정보, 등록 모달 오픈 */
@@ -680,9 +735,11 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				if(gubun == 1){
 					$rootScope.distinction = 'meaip';
 					$state.go('app.meaip_IU');
+					$rootScope.Jego_Pro();
 				}else{
 					$rootScope.distinction = 'meachul';
 					$state.go('app.meachul_IU', {}, {location:'replace'});
+					$rootScope.Jego_Pro();
 				} 
 			}else{
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
@@ -923,8 +980,11 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 			}
 		});
 		$rootScope.GCode = '';
-		$rootScope.jegoMode == 'hap'
+		$rootScope.jegoMode = 'hap';
 		$scope.morebutton = false;
+		$timeout(function(){
+			$ionicLoading.hide();
+		}, 500);
 	}
 
 	$scope.deletejego_m = function(){
@@ -942,5 +1002,4 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		$scope.pageCnt = 1; 		 // 초기화
 		$ionicHistory.goBack();
 	}
-}, 500);
 });

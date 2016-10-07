@@ -13,7 +13,7 @@
 		<div style="text-align: center; padding: 10px 10px 50px 10px; color: #000;">
 			<div style="float: left; width: 25%; vertical-align: middle; font-size: 16px; font-weight: bold;">조회창고</div>
 			<div style="float: right; width: 75%; padding-bottom: 10px;">
-				<select style="background: #ededed; width:75%; border: 0; border-bottom: 1px solid #e0e0e0; color: #000;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl()">  <!-- multiple="multiple" -->
+				<select style="background: #ededed; width:75%; border: 0; border-bottom: 1px solid #e0e0e0; color: #000;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl()">
 					<option value="ALL">전체창고</option>
 					<option ng-repeat="x in Ch_List" value="{{x.Code}}" ng-if="x.Stts != '삭제'">{{x.Name}}</option>
 				</select>
@@ -54,20 +54,20 @@
 						<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{x.Qty_GaYong_ChulGoDagi | number:0}}</td>
 					</tr>
 					<tr ng-if="$index%2 != 0 && x.trfa == true" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;">
-						<td colspan="3">
-							<div ng-repeat="y in jego_detail_List">
-								<table style="background: #fff; table-layout:fixed;" ng-if="!$last">
+						<td colspan="3" style="width: 100%;">
+							<div ng-repeat="y in jego_detail_List" style="width: 100%;">
+								<table style="background: #fff; width: 100%;" ng-if="!$last">
 									<tr>
-										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;">{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</td>
-										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;">{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</td>
-										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;">{{y.Qty_GaYong_ChulGoDagi | number:0}}</td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{y.Qty_GaYong_ChulGoDagi | number:0}}</td>
 									</tr>
 								</table>
-								<table style="background: #BDBDBD; table-layout:fixed;" ng-if="$last"> <!-- 마지막줄 -->
+								<table style="background: #BDBDBD; width: 100%;" ng-if="$last"> <!-- 마지막줄 -->
 									<tr>
-										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;"><b>{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</b></td>
-										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;"><b>{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</b></td>
-										<td style="border-bottom: 1px solid #e0e0e0; padding: 4px 10px; text-align: left;"><b>{{y.Qty_GaYong_ChulGoDagi | number:0}}</b></td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;"><b>{{((y.ChangGo_Name)?y.ChangGo_Name:'-')}}</b></td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;"><b>{{y.Qty | number:0}} ({{y.Qty_GaYong | number:0}}/{{y.Qty_BulYong | number:0}})</b></td>
+										<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;"><b>{{y.Qty_GaYong_ChulGoDagi | number:0}}</b></td>
 									</tr>
 								</table>
 							</div>
@@ -110,7 +110,7 @@
 					</tr>
 				</table>
 			</div>
-			<button class="button button-block psm_login_ink"  ng-click='jego_more()' style="background: #52bcae;" ng-if="morebutton == true">더보기</button>
+			<button class="button button-block psm_login_ink"  ng-click='jego_more()' style="background: #52bcae;" ng-if="morebutton == true">더보기{{morebutton}}</button>
 			<div style="height: 20px;"></div>
 		</div>
 	</ion-content>

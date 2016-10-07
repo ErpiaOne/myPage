@@ -1520,6 +1520,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 										}
 									}
 								}
+								console.log('이게 머야 =>', data.list);
 								for(var i=0; i < data.list.length; i++){
 									$scope.goodsaddlists.push({
 										overlap_color : '#000',
@@ -1528,6 +1529,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 										goodsprice : data.list[i].G_Price,
 										code : data.list[i].G_Code,
 										goods_seq : data.list[i].Seq,
+										stand : data.list[i].G_Stand,
 										state : 'u' // 디비에있는 데이터인지 확인하기위해. / 티삭제시 필요
 									});
 								}
@@ -1596,29 +1598,33 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 			})
 		})
 	});
-
-	/* Jego조회로 넘어온 매입/매출 상품 등록 */
-	if($rootScope.JegoGoods != undefined){
-		if($rootScope.distinction == 'meaip'){
-			$scope.goodsaddlists.push({
-							overlap_color : '#000',
-							name : $rootScope.JegoGoods[0].G_Name,
-							num : 1,
-							goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn1),
-							code : $rootScope.JegoGoods[0].G_Code
-						});
-		}else{
-			$scope.goodsaddlists.push({
-							overlap_color : '#000',
-							name : $rootScope.JegoGoods[0].G_Name,
-							num : 1,
-							goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn2),
-							code : $rootScope.JegoGoods[0].G_Code
-						});
+	
+	$rootScope.Jego_Pro = function(){
+		/* Jego조회로 넘어온 매입/매출 상품 등록 */
+		if($rootScope.JegoGoods != undefined){
+			if($rootScope.distinction == 'meaip'){
+				$scope.goodsaddlists.push({
+								overlap_color : '#000',
+								name : $rootScope.JegoGoods[0].G_Name,
+								num : 1,
+								goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn1),
+								code : $rootScope.JegoGoods[0].G_Code,
+								stand : $rootScope.JegoGoods[0].G_Stand
+							});
+			}else{
+				$scope.goodsaddlists.push({
+								overlap_color : '#000',
+								name : $rootScope.JegoGoods[0].G_Name,
+								num : 1,
+								goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn2),
+								code : $rootScope.JegoGoods[0].G_Code,
+								stand : $rootScope.JegoGoods[0].G_Stand
+							});
+			}		
 		}
-		
 	}
-console.log("힝힝힝 ==>", $rootScope.JegoGoods);
+	
+	$rootScope.Jego_Pro();
 	/*거래처명 초기화 - 이경민[2015-12]*/
 	$scope.clearcompany = function(){
 		$scope.datas.userGerName = '';
@@ -1972,8 +1978,8 @@ console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 		var GCode = '';
 		if($scope.checkedDatas.length == 0){
 			console.log('상품을 선택해주세요.');
-		}else if($scope.checkedDatas.length > 3){
-			console.log('20개 이하로 선택해주세요.');
+		}else if($scope.checkedDatas.length > 10){
+			console.log('10개 이하로 선택해주세요.');
 		}else{
 			for(var i = 0; i < $scope.checkedDatas.length; i++){
 				if(i == 0){
@@ -2058,7 +2064,8 @@ console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 										name : $scope.checkedDatas[0].G_Name,
 										num : parseInt($scope.bargoods.num),
 										goodsprice : parseInt(price),
-										code : $scope.checkedDatas[0].G_Code
+										code : $scope.checkedDatas[0].G_Code,
+										stand : $scope.checkedDatas[0].G_Stand
 									});
 									$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
 									$scope.bar = 'N';
@@ -2076,7 +2083,8 @@ console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 							name : $scope.checkedDatas[i].G_Name,
 							num : 1,
 							goodsprice : parseInt(price),
-							code : $scope.checkedDatas[i].G_Code
+							code : $scope.checkedDatas[i].G_Code,
+							stand : $scope.checkedDatas[i].G_Stand
 						});
 					}else{
 						$scope.goodsaddlists.push({
@@ -2086,6 +2094,7 @@ console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 							goodsprice : parseInt(price),
 							code : $scope.checkedDatas[i].G_Code,
 							goods_seq : parseInt($scope.pay.goods_seq_end) + 1,
+							stand : $scope.checkedDatas[i].G_Stand,
 							state : 'i'
 						});
 						$scope.pay.goods_seq_end = parseInt($scope.pay.goods_seq_end) + 1;
@@ -2116,7 +2125,8 @@ console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 										name : $scope.checkedDatas[0].G_Name,
 										num : parseInt($scope.bargoods.num),
 										goodsprice : parseInt(price),
-										code : $scope.checkedDatas[0].G_Code
+										code : $scope.checkedDatas[0].G_Code,
+										stand : $scope.checkedDatas[0].G_Stand
 									});
 									$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
 									$scope.bar = 'N';
@@ -2134,7 +2144,8 @@ console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 						name : $scope.checkedDatas[i].G_Name,
 						num : 1,
 						goodsprice : parseInt(price),
-						code : $scope.checkedDatas[i].G_Code
+						code : $scope.checkedDatas[i].G_Code,
+						stand : $scope.checkedDatas[i].G_Stand
 					});
 				}else{
 					$scope.goodsaddlists.push({
@@ -2144,6 +2155,7 @@ console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 						goodsprice : parseInt(price),
 						code : $scope.checkedDatas[i].G_Code,
 						goods_seq : parseInt($scope.pay.goods_seq_end) + 1,
+						stand : $scope.checkedDatas[i].G_Stand,
 						state : 'i'
 					});
 					$scope.pay.goods_seq_end = parseInt($scope.pay.goods_seq_end) + 1;
@@ -2650,10 +2662,12 @@ console.log("힝힝힝 ==>", $rootScope.JegoGoods);
 					type: 'button-positive',
 					onTap: function(e) {
 						if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
+							$scope.goodsaddlists = [];
 							$ionicHistory.clearCache();
 							$ionicHistory.goBack();
 						}else{ /* 매출일 경우 */
 							$ionicHistory.clearCache();
+							$scope.goodsaddlists = [];
 							$ionicHistory.goBack();
 						}
 					}

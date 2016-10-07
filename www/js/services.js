@@ -120,7 +120,7 @@ angular.module('starter.services', [])
 
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + '01056579731' + '&mac=' + UUID;
+			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -1588,7 +1588,7 @@ angular.module('starter.services', [])
 				// 상품
 				for(var i = 0; i < goods.length; i++){
 					var ii = i+1;
-					var meaipgoods = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><G_vat>'+ parseInt(goods[i].goodsprice)/1.1 +'</G_vat></item>';
+					var meaipgoods = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA['+ escape(goods[i].stand) +']]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><G_vat>'+ parseInt(goods[i].goodsprice)/1.1 +'</G_vat></item>';
 					var goods_xml = goods_xml + meaipgoods;
 				}
 				if(pay.gubun == 4){
@@ -1615,7 +1615,7 @@ angular.module('starter.services', [])
 				// 상품
 				for(var i = 0; i < goods.length; i++){
 					var ii = i+1;
-					var meachulgoods = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><PanMeaDanGa>'+ parseInt(goods[i].goodsprice) +'</PanMeaDanGa></item>';
+					var meachulgoods = '<item><seq>'+ ii + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA['+ escape(goods[i].stand) +']]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><PanMeaDanGa>'+ parseInt(goods[i].goodsprice) +'</PanMeaDanGa></item>';
 					var goods_xml = goods_xml + meachulgoods;
 				}
 				if(pay.gubun == 4){
@@ -1634,7 +1634,7 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + escape(userid) + '&Kind='+ kind + '&Mode=&RequestXml=';
 
-			// console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
+			console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
 			return $http.post(url + '?' + data + m_data + goods_xml + middel + end).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;
@@ -1661,7 +1661,7 @@ angular.module('starter.services', [])
 					// 상품
 					for(var i = 0; i < goods.length; i++){
 						var ii = i+1;
-						var meaipgoods = '<item><seq>'+ goods[i].goods_seq + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><G_vat>'+ parseInt(goods[i].goodsprice)/1.1 +'</G_vat><In_Or_Up>' + goods[i].state + '</In_Or_Up><localSeq>' + ii + '</localSeq></item>';
+						var meaipgoods = '<item><seq>'+ goods[i].goods_seq + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA['+ escape(goods[i].stand) +']]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><G_vat>'+ parseInt(goods[i].goodsprice)/1.1 +'</G_vat><In_Or_Up>' + goods[i].state + '</In_Or_Up><localSeq>' + ii + '</localSeq></item>';
 						var goods_xml = goods_xml + meaipgoods;
 					}
 					if(pay.gubun == 4){
@@ -1688,7 +1688,7 @@ angular.module('starter.services', [])
 					// 상품
 					for(var i = 0; i < goods.length; i++){
 						var ii = i+1;
-						var meachulgoods = '<item><seq>'+ goods[i].goods_seq + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA[]]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><PanMeaDanGa>'+ parseInt(goods[i].goodsprice) +'</PanMeaDanGa><In_Or_Up>' + goods[i].state + '</In_Or_Up><localSeq>' + ii + '</localSeq></item>';
+						var meachulgoods = '<item><seq>'+ goods[i].goods_seq + '</seq><ChangGo_Code>'+ setup.basic_Ch_Code +'</ChangGo_Code><subul_kind>'+ datas.subulkind +'</subul_kind><G_Code>'+ goods[i].code +'</G_Code><G_name><![CDATA['+ escape(goods[i].name) +']]></G_name><G_stand><![CDATA['+ escape(goods[i].stand) +']]></G_stand><G_Price>'+ goods[i].goodsprice +'</G_Price><G_Qty>'+ goods[i].num +'</G_Qty><PanMeaDanGa>'+ parseInt(goods[i].goodsprice) +'</PanMeaDanGa><In_Or_Up>' + goods[i].state + '</In_Or_Up><localSeq>' + ii + '</localSeq></item>';
 						var goods_xml = goods_xml + meachulgoods;
 					}
 					if(pay.gubun == 4){
