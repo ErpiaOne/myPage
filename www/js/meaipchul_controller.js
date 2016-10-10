@@ -1520,13 +1520,13 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 										}
 									}
 								}
-								console.log('이게 머야 =>', data.list);
+
 								for(var i=0; i < data.list.length; i++){
 									$scope.goodsaddlists.push({
 										overlap_color : '#000',
 										name : data.list[i].G_Name,
 										num : parseInt(data.list[i].G_Qty),
-										goodsprice : data.list[i].G_Price,
+										goodsprice : Math.round(parseInt(data.list[i].G_Price)), // 반올림
 										code : data.list[i].G_Code,
 										goods_seq : data.list[i].Seq,
 										stand : data.list[i].G_Stand,
@@ -2531,118 +2531,125 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		    	if($scope.payment[0].checked != true && $scope.payment[1].checked != true && $scope.payment[2].checked != true && $scope.payment[3].checked != true){
 		    		$scope.pay.gubun = 4;
 		    	}
-		    	$ionicPopup.show({
-				title: '<b>전표저장</b>',
-				content: '전표를 저장하시겠습니까?',
-				buttons: [
-					{
-						text: 'No',
-						onTap: function(e){}
-					},
-					{
-						text: 'Yes',
-						type: 'button-positive',
-						onTap: function(e) {
-							$ionicHistory.clearCache();
-							
-							if ($rootScope.distinction == 'meaip') $rootScope.ActsLog('meaip', 'meaip_master_save');
-							else $rootScope.ActsLog('meachul', 'meachul_master_save');
 
-							if($scope.pay.gubun == 0){ // 현금
-								var module_T = 'ij_money';
-							}else if($scope.pay.gubun == 1){ // 통장
-								var module_T = 'ij_bank';
-							}else if($scope.pay.gubun == 2){	//어음
-								var module_T = 'ij_note';
-							}else if($scope.pay.gubun == 3){ // 카드
-								var module_T = 'ij_card';
-							}
+			if ($scope.datas.remk.indexOf("&") != -1 || $scope.datas.remk.indexOf("\\") != -1 || $scope.datas.remk.indexOf("<") != -1 || $scope.datas.remk.indexOf(">") != -1 || $scope.datas.remk.indexOf("'") != -1) {
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('특수문자 "&", "<>", "작은따옴표"는 사용하실수 없습니다.', 'short', 'center');
+					else console.log('특수문자 "&", "<>", "작은따옴표"는 사용하실수 없습니다.');
+			}
+			else {
+				$ionicPopup.show({
+					title: '<b>전표저장</b>',
+					content: '전표를 저장하시겠습니까?',
+					buttons: [
+						{
+							text: 'No',
+							onTap: function(e){}
+						},
+						{
+							text: 'Yes',
+							type: 'button-positive',
+							onTap: function(e) {
+								$ionicHistory.clearCache();
+								
+								if ($rootScope.distinction == 'meaip') $rootScope.ActsLog('meaip', 'meaip_master_save');
+								else $rootScope.ActsLog('meachul', 'meachul_master_save');
 
-							if($rootScope.distinction == 'meaip'){
-								var module_T = 'meaip_save_' + module_T;
-								$rootScope.ActsLog('meaip', module_T);
-							}else {
-								var module_T = 'meachul_save_' + module_T;
-								$rootScope.ActsLog('meachul', module_T);
-							} 
-							if($rootScope.iu == 'i'){
-								MiuService.subulupdate($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.datas.subulkind)
-								.then(function(data){
-								});
+								if($scope.pay.gubun == 0){ // 현금
+									var module_T = 'ij_money';
+								}else if($scope.pay.gubun == 1){ // 통장
+									var module_T = 'ij_bank';
+								}else if($scope.pay.gubun == 2){	//어음
+									var module_T = 'ij_note';
+								}else if($scope.pay.gubun == 3){ // 카드
+									var module_T = 'ij_card';
+								}
 
-								MiuService.i_data($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.pay, $scope.paylist, $scope.date, $scope.goodsaddlists,$scope.setupData,$scope.datas)
-								.then(function(data){
-									$ionicPopup.show({
-										title: '<b>저장완료</b>',
-										content: '전표가 저장되었습니다. <br> 확인하시겠습니까?',
-										buttons: [
-											{
-												text: 'No',
-												onTap: function(e){
-													$scope.ijmodal.hide();
-													if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
-														$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-														$state.go('app.meaip_page', {}, {location:'replace'});
-													}else{ /* 매출일 경우 */
-														$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-														$state.go('app.meachul_page', {}, {location:'replace'});
-													}
-												}
-											},
-											{
-												text: 'Yes',
-												type: 'button-positive',
-												onTap: function(e) {
-													$scope.ijmodal.hide();
-													if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
-														$rootScope.m_no = data.list[0].iL_No;
-														$state.go('app.meaip_depage', {}, {location:'replace'});
-													}else{ /* 매출일 경우 */
-														$rootScope.m_no = data.list[0].SL_No;
-														$state.go('app.meachul_depage', {}, {location:'replace'});
-													}
-												}
-											},
-										]
-									})
-								})
-							}else{
-								if($rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui') $rootScope.iu = 'u';
-								if($scope.pay.gubun == 4 && $scope.pay.delete == false){
-									MiuService.pay_delete($scope.loginData.Admin_Code, $scope.loginData.UserId,$scope.pay.acno)
+								if($rootScope.distinction == 'meaip'){
+									var module_T = 'meaip_save_' + module_T;
+									$rootScope.ActsLog('meaip', module_T);
+								}else {
+									var module_T = 'meachul_save_' + module_T;
+									$rootScope.ActsLog('meachul', module_T);
+								} 
+								if($rootScope.iu == 'i'){
+									MiuService.subulupdate($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.datas.subulkind)
 									.then(function(data){
 									});
-								}
-								MiuService.u_data($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.pay, $scope.paylist, $scope.date, $scope.goodsaddlists,$scope.setupData,$scope.datas,$scope.goods_seqlist)
-								.then(function(data){
-									$ionicPopup.alert({
-										title: '<b>수정완료</b>',
-										content: '전표가 수정되었습니다.',
-									});
-									$scope.ijmodal.hide();
-									$ionicHistory.clearCache();
-									if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
-										$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-										$state.go('app.meaip_page', {}, {location:'replace'});
-									}else{ /* 매출일 경우 */
-										$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-										$state.go('app.meachul_page', {}, {location:'replace'});
-									}
-								})
-								if($scope.pay.goods_del == 'Y'){
-									for(var i = 0; i < $scope.goods_seqlist.length; i++){
-										var seq = $scope.goods_seqlist[i].seq;
-										MiuService.seq_del($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.pay.no, seq)
-										.then(function(data){
+
+									MiuService.i_data($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.pay, $scope.paylist, $scope.date, $scope.goodsaddlists,$scope.setupData,$scope.datas)
+									.then(function(data){
+										$ionicPopup.show({
+											title: '<b>저장완료</b>',
+											content: '전표가 저장되었습니다. <br> 확인하시겠습니까?',
+											buttons: [
+												{
+													text: 'No',
+													onTap: function(e){
+														$scope.ijmodal.hide();
+														if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
+															$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+															$state.go('app.meaip_page', {}, {location:'replace'});
+														}else{ /* 매출일 경우 */
+															$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+															$state.go('app.meachul_page', {}, {location:'replace'});
+														}
+													}
+												},
+												{
+													text: 'Yes',
+													type: 'button-positive',
+													onTap: function(e) {
+														$scope.ijmodal.hide();
+														if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
+															$rootScope.m_no = data.list[0].iL_No;
+															$state.go('app.meaip_depage', {}, {location:'replace'});
+														}else{ /* 매출일 경우 */
+															$rootScope.m_no = data.list[0].SL_No;
+															$state.go('app.meachul_depage', {}, {location:'replace'});
+														}
+													}
+												},
+											]
 										})
+									})
+								}else{
+									if($rootScope.iu == 'sb_u' || $rootScope.iu == 'sb_ui') $rootScope.iu = 'u';
+									if($scope.pay.gubun == 4 && $scope.pay.delete == false){
+										MiuService.pay_delete($scope.loginData.Admin_Code, $scope.loginData.UserId,$scope.pay.acno)
+										.then(function(data){
+										});
 									}
-									$scope.pay.goods_del = 'N';
+									MiuService.u_data($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.pay, $scope.paylist, $scope.date, $scope.goodsaddlists,$scope.setupData,$scope.datas,$scope.goods_seqlist)
+									.then(function(data){
+										$ionicPopup.alert({
+											title: '<b>수정완료</b>',
+											content: '전표가 수정되었습니다.',
+										});
+										$scope.ijmodal.hide();
+										$ionicHistory.clearCache();
+										if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
+											$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+											$state.go('app.meaip_page', {}, {location:'replace'});
+										}else{ /* 매출일 경우 */
+											$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+											$state.go('app.meachul_page', {}, {location:'replace'});
+										}
+									})
+									if($scope.pay.goods_del == 'Y'){
+										for(var i = 0; i < $scope.goods_seqlist.length; i++){
+											var seq = $scope.goods_seqlist[i].seq;
+											MiuService.seq_del($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.pay.no, seq)
+											.then(function(data){
+											})
+										}
+										$scope.pay.goods_del = 'N';
+									}
 								}
 							}
-						}
-					},
-				]
-			})
+						},
+					]
+				})
+			}
 		}
 	}
 

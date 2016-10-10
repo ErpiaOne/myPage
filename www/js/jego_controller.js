@@ -59,7 +59,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		pro_stand 			: '', 		// 규격
 		pro_OnCode 		: '',		// 자체코드
 		pro_barCode 		: '',		// 바코드
-		pro_ChangGo 		: [],		// 창고
+		pro_ChangGo 		: ["ALL"],		// 창고
 		OneSelectCode		: '',		// 선택 상품 코드 - 디테일 조회시 필요 
 
 		detail_location 		: '',		// 로케이션
@@ -96,6 +96,13 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 재고조회시 창고 리스트 조회 [이경민 - 2016-09-19] */
 	$scope.jego_Changgh = function() {
+		console.log("1111111111=>", $rootScope.jegoColum);
+		if($rootScope.jego_result != undefined){
+			$scope.jego_detail_colum.pro_ChangGo = $rootScope.jegoColum.pro_ChangGo;
+			console.log('22222222=>', $scope.jego_detail_colum.pro_ChangGo);
+		}
+
+
 		jego_Service.jego_changgoSearch($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
 		.then(function(data){
 			$rootScope.Ch_List = data.list;
@@ -272,7 +279,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	/* 통합 검색 서비스 하나로 합침 - 이경민 */
 	$scope.hapSearch = function(ChanggoCode, keyword, YN, OneSelectCode, pageCnt){
 		$ionicLoading.show({
-			template: '로딩중..',
+			template: '',
 			scope: $scope
 		});
 		jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt)
@@ -300,7 +307,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	/* 상세 검색 서비스 하나로 합침 - 이경민 */
 	$scope.detail = function(Mode, changgo_key, jegoInfo, pageCnt){
 		$ionicLoading.show({
-			template: '로딩중..',
+			template: '',
 			scope: $scope
 		});
 		jego_Service.detailJego_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, Mode, changgo_key, jegoInfo, pageCnt)
@@ -449,7 +456,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	/* 재고조회 - 더보기 - 이경민[2016-09-20] */
 	$scope.jego_more = function(){
 		$ionicLoading.show({
-			template: '로딩중..',
+			template: '',
 			scope: $scope
 		});
 		if($scope.changgo_keyword == undefined || $scope.changgo_keyword == "ALL") $scope.changgo_keyword = '';
@@ -544,7 +551,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	/* 창고 선택 후 재조회 */
 	$scope.reSelect = function(){
 		$ionicLoading.show({
-			template: '로딩중..',
+			template: '',
 			scope: $scope
 		});
 		$rootScope.jego_result = [];
@@ -565,7 +572,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}
 
 		$scope.pageCnt = 1; // 재조회일경우 페이지 번호 초기화
-
+		$rootScope.jegoColum.pro_ChangGo = $scope.jego_detail_colum.pro_ChangGo; // 재조회 경우 창고 저장
 		if($rootScope.jegoMode == 'hap'){ 							// 통합조회일 경우 창고선택 조회
 			jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.changgo_keyword, $rootScope.keyword, 'N', '', $scope.pageCnt)
 			.then(function(data){

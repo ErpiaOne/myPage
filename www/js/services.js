@@ -1885,7 +1885,7 @@ angular.module('starter.services', [])
 .factory('jego_Service', function($http, $q, $cordovaToast, ERPiaAPI, $timeout){
 	return{
 		main_search: function(Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt){		// 재고조회 (통합 & 바코드)
-			console.log('jego_Service', 'main_search');
+			console.log('jego_Service', 'main_search', ChanggoCode);
 			if(YN == 'Y') var word = keyword;
 			else var word = escape(keyword);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
@@ -1943,6 +1943,7 @@ angular.module('starter.services', [])
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=' + Mode + '&pageCnt=' + pageCnt + '&pageRow=10&ChangGoCode=' + changgo_key + '&OneSelectCode=' + jegoInfo.OneSelectCode + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
 
 			return $http.get(url + '?' + data).then(function(response){
+				console.log('!!!!!!=>', unescape(response));
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					for(var i=0; i < response.data.list.length; i++){
 						response.data.list[i].trfa = false;
