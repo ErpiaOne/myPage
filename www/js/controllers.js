@@ -442,20 +442,20 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'borntoroad';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'test1234';
+			// $rootScope.loginData.Pwd = 'test1234!';
+
+			$rootScope.loginData.Admin_Code = 'ecohomes'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId = 'ecohomes';
+			$rootScope.loginData.Pwd = 'erpia!1010';
+
 			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = '박혜진';
+			// $rootScope.loginData.UserId  = 'phj9775';
 			// $rootScope.loginData.Pwd = '1234';
-
-			// $rootScope.loginData.Admin_Code = 'ecohomes'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'ecohomes';
-			// $rootScope.loginData.Pwd = 'erpia!1010';
-
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId  = 'test1234';
-			$rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -1320,28 +1320,60 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 버튼별 로그 기록 저장 - 이경민[20160907] */
 	$rootScope.ActsLog = function(module_M, module_T){
 		console.log('업데이트 전에 여기찾아라~~~');
-		if(module_T == 'jego_tab') $rootScope.jego_open = $rootScope.jegocontroll;
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
+		$timeout(function(){
+			var current_URL = $location.url();
+			if(current_URL == '/app/slidingtab' && $rootScope.tabitem.tab1 != 'tab-item active'){
+				$rootScope.tabitem.tab1 = 'tab-item active';
+				$rootScope.tabitem.tab2 = 'tab-item';
+				$rootScope.tabitem.tab3 = 'tab-item';
+				$rootScope.tabitem.tab4 = 'tab-item';
+			}else if(current_URL == '/app/meaip_page' && $rootScope.tabitem.tab2 != 'tab-item active'){
+				$rootScope.tabitem.tab1 = 'tab-item';
+				$rootScope.tabitem.tab2 = 'tab-item active';
+				$rootScope.tabitem.tab3 = 'tab-item';
+				$rootScope.tabitem.tab4 = 'tab-item';
+			}else if(current_URL == '/app/meachul_page' && $rootScope.tabitem.tab3 != 'tab-item active'){
+				$rootScope.tabitem.tab1 = 'tab-item';
+				$rootScope.tabitem.tab2 = 'tab-item';
+				$rootScope.tabitem.tab3 = 'tab-item active';
+				$rootScope.tabitem.tab4 = 'tab-item';
+			}else if(current_URL == '/app/jegoMain' && $rootScope.tabitem.tab4 != 'tab-item active'){
+				$rootScope.tabitem.tab1 = 'tab-item';
+				$rootScope.tabitem.tab2 = 'tab-item';
+				$rootScope.tabitem.tab3 = 'tab-item';
+				$rootScope.tabitem.tab4 = 'tab-item active';
+			}
+		$ionicLoading.hide();
+		}, 1000);
+		// if(module_T == 'jego_tab') $rootScope.jego_open = $rootScope.jegocontroll;
 		// 업데이트전 확인사항 입니다.
-		// if($rootScope.userType == 'ERPia'){
-		// 	var admin_code = $rootScope.loginData.Admin_Code;
-		// 	var id = $rootScope.loginData.UserId;
-		// 	var mac = $rootScope.deviceInfo.uuid;
-		// 	var loginType = 'E';
-		// }else if($rootScope.userType == 'Guest' || $rootScope.userType == undefined){
-		// 	var admin_code = 'Guest';
-		// 	var id = 'Guest';
-		// 	var mac = 'Guest';
-		// 	var loginType = 'G';
-		// }else{
-		// 	console.log('저장안할껀데..?');
-		// }
+		if($rootScope.userType == 'ERPia'){
+			var admin_code = $rootScope.loginData.Admin_Code;
+			var id = $rootScope.loginData.UserId;
+			var mac = $rootScope.deviceInfo.uuid;
+			var loginType = 'E';
+		}else if($rootScope.userType == 'Guest' || $rootScope.userType == undefined){
+			var admin_code = 'Guest';
+			var id = 'Guest';
+			var mac = 'Guest';
+			var loginType = 'G';
+		}else{
+			console.log('저장안할껀데..?');
+		}
 
-		// if(loginType == 'E' || loginType == 'G'){
-		// 	ActsService.Acts_save(admin_code, id, mac, loginType, module_M, module_T)
-		// 	.then(function(data){
-		// 		console.log('data');
-		// 	});
-		// }
+		if(loginType == 'E' || loginType == 'G'){
+			ActsService.Acts_save(admin_code, id, mac, loginType, module_M, module_T)
+			.then(function(data){
+				console.log('data');
+			});
+		}
 		
 	}
 })

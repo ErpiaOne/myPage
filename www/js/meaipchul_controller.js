@@ -1601,7 +1601,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	
 	$rootScope.Jego_Pro = function(){
 		/* Jego조회로 넘어온 매입/매출 상품 등록 */
-		if($rootScope.JegoGoods != undefined){
+		if($rootScope.JegoGoods != undefined && $rootScope.JegoGoods.length != 0){
 			if($rootScope.distinction == 'meaip'){
 				$scope.goodsaddlists.push({
 								overlap_color : '#000',
@@ -2656,7 +2656,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	/* 뒤로 제어 - 이경민[2015-12] */
 	$scope.backControll=function(){
 		$ionicPopup.show({
-			title: '<b>경고</b>',
+			title: '<b>경고!!</b>',
 			subTitle: '',
 			content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 			buttons: [
@@ -2668,6 +2668,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 					text: 'Yes',
 					type: 'button-positive',
 					onTap: function(e) {
+						$rootScope.JegoGoods = [];
 						if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
 							$scope.goodsaddlists = [];
 							$ionicHistory.clearCache();

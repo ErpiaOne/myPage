@@ -7,24 +7,24 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	, 'starter.services'])
 
 /* 웹사용 */
- // .constant('ERPiaAPI',{
- // 	  url:'http://localhost:8100/include'
- // 	, url2:'http://localhost:8100'
- // 	, imgUrl:'http://localhost:8100/erpia_update/img'
- // 	, gurl:'http://168.126.146.37/20132354'
- // 	, toast:'N'
- // })
+ .constant('ERPiaAPI',{
+ 	  url:'http://localhost:8100/include'
+ 	, url2:'http://localhost:8100'
+ 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ 	, gurl:'http://168.126.146.37/20132354'
+ 	, toast:'N'
+ })
 
 /* 실제 사용 */
-.constant('ERPiaAPI',{
-	url:'http://www.erpia.net/include',
-	url2: 'http://www.erpia.net',
-	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-	toast:'Y'
-})
+// .constant('ERPiaAPI',{
+// 	url:'http://www.erpia.net/include',
+// 	url2: 'http://www.erpia.net',
+// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+// 	toast:'Y'
+// })
 
 /* 처음 실행 Ctrl - 김형석[2015-11]*/
-.run(function($ionicPlatform, $ionicPush, $location, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast, $ionicSlideBoxDelegate) {
+.run(function($ionicPlatform, $ionicPush, $location, $timeout, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast, $ionicSlideBoxDelegate) {
 	$ionicPlatform.ready(function() {
 
 	/* 새로 추가된 푸쉬 - 김형석[2016-04] */
@@ -78,6 +78,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			StatusBar.styleDefault();
 		}
 	}
+
+
 
 	/* 네트워크 상태 체크 - 김형석[2016-04] */
 	$rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
@@ -135,7 +137,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				location.href = '#/app/meachul_page';
 			}else if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){	
 				$ionicPopup.show({
-					title: '경고',
+					title: '경고@@',
 					subTitle: '',
 					content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 					buttons: [
@@ -147,6 +149,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 							text: 'Yes',
 							type: 'button-positive',
 							onTap: function(e) {
+								$rootScope.JegoGoods = [];
 								if($rootScope.distinction == 'meaip'){ 				// 매입일 경우 
 									$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 									location.href = '#/app/meaip_page';
@@ -199,6 +202,16 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			$rootScope.backButtonPressedOnceToExit = false;	
 		}else{ 			// 현재페이지가 메인이 아니면서 더이상 뒤로갈 곳이 없을 때
 			$rootScope.backButtonPressedOnceToExit = false;
+			
+			$timeout(function(){
+				var current_URL = $location.url();
+				if(current_URL == '/app/login' && $rootScope.tabitem.tab1 != 'tab-item active'){
+					$rootScope.tabitem.tab1 = 'tab-item active';
+					$rootScope.tabitem.tab2 = 'tab-item';
+					$rootScope.tabitem.tab3 = 'tab-item';
+					$rootScope.tabitem.tab4 = 'tab-item';
+				}
+			}, 1000);
 			console.log($rootScope.loginState)
 			if($rootScope.loginState == "R"){   
 				console.log("$rootScope.userType", $rootScope.userType)
@@ -206,14 +219,14 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 					$ionicHistory.clearHistory();
 					$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 					switch($rootScope.userType){
-					case 'ERPia': location.href = '#/app/slidingtab'; break;
-					case 'SCM' : location.href = '#/app/scmhome'; break;
-					case 'Guest': location.href = '#/app/slidingtab'; break;
+					case 'ERPia': location.href = '#/app/login'; break;
+					case 'SCM' : location.href = '#/app/login'; break;
+					case 'Guest': location.href = '#/app/login'; break;
 					default : location.href = '#/app/login'; break;
 				} 
 				
 			}else{
-				window.plugins.toast.showShortCenter("메인으로 이동합니다.",function(a){ },function(b){ });
+				window.plugins.toast.showShortCenter(function(a){ },function(b){ });
 				$ionicHistory.clearCache();
 				$ionicHistory.clearHistory();
 				$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
@@ -254,7 +267,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	$rootScope.goto_with_clearHistory = function(goto_Href){
 		if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){
 			$ionicPopup.show({
-				title: '경고',
+				title: '경고&&',
 				subTitle: '',
 				content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 				buttons: [
@@ -270,12 +283,14 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 							$ionicHistory.clearCache();
 							$ionicHistory.clearHistory();
 							$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-
+							
 							if(goto_Href == '#app/meachul_page'){
+								$rootScope.JegoGoods = [];
 								if($rootScope.distinction == 'meachul') var no = 'N';
 								else $rootScope.distinction = 'meachul';
 							} 
 							else if(goto_Href == '#app/meaip_page'){
+								$rootScope.JegoGoods = [];
 								if($rootScope.distinction == 'meaip') var no = 'N';
 								else $rootScope.distinction = 'meaip';
 							}else if(goto_Href=='#app/config'){

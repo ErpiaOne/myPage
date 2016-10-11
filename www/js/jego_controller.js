@@ -96,10 +96,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 재고조회시 창고 리스트 조회 [이경민 - 2016-09-19] */
 	$scope.jego_Changgh = function() {
-		console.log("1111111111=>", $rootScope.jegoColum);
-		if($rootScope.jego_result != undefined){
+		if($rootScope.jegoColum != undefined){
 			$scope.jego_detail_colum.pro_ChangGo = $rootScope.jegoColum.pro_ChangGo;
-			console.log('22222222=>', $scope.jego_detail_colum.pro_ChangGo);
 		}
 
 
@@ -201,12 +199,14 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	/* MyList & 관심항목 리스트 선택 - 이경민[2016-09-21] */
 	$scope.Attent_Choose = function(index){
 		if($scope.listname == '관심항목'){
+			$rootScope.ActsLog("jego", "jego_Kshim");
 			$scope.jego_detail_colum.attent_Kshim_name = $scope.AttentionList[index].K_Name;
 			$scope.jego_detail_colum.attent_Kshim_code = $scope.AttentionList[index].K_Code;
 			$scope.jego_detail_colum.attent_Mylist_name = '';
 			$scope.jego_detail_colum.attent_Mylist_code = '';
 		}else{
-			$scope.jego_detail_colum.attent_Mylist_name = $scope.AttentionList[index].Name;
+			$rootScope.ActsLog("jego", "jego_Mylist");
+			$scope.jego_detail_colum.attent_Mylist_name = $scope.AttentionList[index].M_Name;
 			$scope.jego_detail_colum.attent_Mylist_code = $scope.AttentionList[index].MyCode;
 			$scope.jego_detail_colum.attent_Kshim_name = '';
 			$scope.jego_detail_colum.attent_Kshim_code = '';
@@ -237,6 +237,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 			if($scope.jego_detail_colum.MeachulMonth == '0'){
 				$scope.jego_detail_colum.MeachulListCtlYN = 'N';
 			}else{
+				$rootScope.ActsLog("jego", "jego_month");
 				$scope.jego_detail_colum.MeachulListCtlYN = 'Y';
 			}
 		}else { // 재고수량별 조회 옵션 사용여부
@@ -399,7 +400,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		if($scope.jegoSearch == 'hap'){ 						// 통합검색시 재고조회
 			$rootScope.keyword = $scope.jego_searchModule.all_Search;
 			$rootScope.jegoMode = $scope.jegoSearch; // 모드
-
+			$scope.jego_detail_colum.pro_ChangGo = ["ALL"];
+			$rootScope.jegoColum = $scope.jego_detail_colum; // 재고 전체 조회 값
 				if($scope.jego_searchModule.all_Search.length == 0){
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('검색어를 입력해주세요.', 'short', 'center');
 					else console.log('검색어를 입력해주세요.');
@@ -421,6 +423,16 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('창고를 선택해주세요.', 'short', 'center');
 				else console.log('창고를 선택해주세요.');
 			}else{
+				console.log("안녕! =>", $scope.jego_detail_colum.JegoQtyCtl);
+				/* 행적로그 저장 */
+				switch ($scope.jego_detail_colum.JegoQtyCtl) {
+					case '1' : $rootScope.ActsLog("jego", "jego_count_all");
+					case '2' : $rootScope.ActsLog("jego", "jego_count_not_jero");
+					case '3' : $rootScope.ActsLog("jego", "jego_count_jero");
+					case '4' : $rootScope.ActsLog("jego", "jego_count_jero_more");
+					case '5' : $rootScope.ActsLog("jego", "jego_count_jero_below");
+				}
+
 				if( num > 1 ){
 					if($scope.jego_detail_colum.pro_ChangGo[0] == 'ALL'){
 					var mode = "Select_Detail_All";
@@ -505,6 +517,9 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	$scope.jego_detail = function(index){
 		$scope.loadingani();
 		if($rootScope.jego_result[index].trfa == false){		// 열기
+
+			$rootScope.ActsLog("jego", "jego_detail_unfold");
+
 			for(var i = 0; i < $rootScope.jego_result.length; i++){
 				if(i == index){
 					$rootScope.jego_result[index].trfa = true;
@@ -617,6 +632,9 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 선택 상품 상세정보 - 이경민 */
 	$scope.pro_detail = function(){
+
+		$rootScope.ActsLog("jego", "jego_proInfo"); 
+
 		var i = $scope.select_jegoindex;
 		var code = $rootScope.jego_result[i].G_Code;
 		// var code = '9806038000057';
@@ -733,6 +751,10 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		var i = $scope.select_jegoindex;
 		var code = $rootScope.jego_result[i].G_Code;
 		$rootScope.Gubun = gubun;
+
+		if(gubun == 1) $rootScope.ActsLog("jego", "jego_meaip"); 
+		else $rootScope.ActsLog("jego", "jego_meachul"); 
+
 		jego_Service.proDetail($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, code)
 		.then(function(data){
 			if(data != '<!--Parameter Check-->'){
@@ -766,7 +788,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}else{
 
 			$scope.data = {};
-
+			$rootScope.ActsLog("jego", "jego_quick_save");  // 행적로그 저장
 			var myPopup = $ionicPopup.show({
 				template: '<input type="text" ng-model="data.text">',
 				title: '빠른검색명을 지정해주세요.',
@@ -779,6 +801,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 						type: 'button-positive',
 						onTap: function(e) {
 							if($scope.data.text == undefined) $scope.data.text = '';
+							else $rootScope.ActsLog("jego", "jego_quick_saveYN"); 
+
 							jego_Service.search_Save($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.changgo_keyword, $rootScope.jegoColum, 'Util_Reg_Select_OptSet_Rapid', $scope.data.text)
 							.then(function(data){
 								if(data != '<!--Parameter Check-->'){
@@ -805,8 +829,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	$scope.lqSlide = function(index){
 		switch(index) {
 			case 0: $scope.loadingani(); break;
-			case 1: $scope.OptSet('L'); $scope.loadingani(); break;
-			case 2: $scope.OptSet('R'); $scope.loadingani(); break;
+			case 1: $scope.OptSet('L'); $rootScope.ActsLog("jego", "jego_lately"); $scope.loadingani(); break;
+			case 2: $scope.OptSet('R'); $rootScope.ActsLog("jego", "jego_quick"); $scope.loadingani(); break;
 		}
 	}
 
@@ -840,6 +864,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}else{
 			jego_Service.Opset_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, 'R')
 			.then(function(data){
+				console.log('여기안와?=.', data);
 				if(data != '<!--Parameter Check-->'){
 					$scope.Opset_R = data.list;
 					for(var i = 0; i < data.list.length; i++){
@@ -869,6 +894,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 					}
 					$scope.r_YN = 'Y';
 				}else{
+					console.log('여기왔지?!');
 					$scope.r_YN = 'N';
 				}
 			});
@@ -884,7 +910,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}else{
 			var info = $scope.Opset_R[index];
 		}
-
+		console.log('info=>', info);
 		$scope.jego_detail_colum.pro_name = info.sel_GoodsName;		// 상품명
 		$scope.jego_detail_colum.pro_stand = info.sel_GoodsStand; 		// 규격
 		$scope.jego_detail_colum.pro_OnCode = info.sel_GoodsOnCode;	// 자체코드
