@@ -1147,7 +1147,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 })
 
 /* 매입&매출 등록/수정 컨트롤러 - 이경민[2015-12] */
-.controller('MiuCtrl', function($scope, $rootScope, $ionicPopup, $ionicModal, $cordovaBarcodeScanner, $ionicHistory, $timeout, $state, $cordovaToast, ERPiaAPI, MconfigService, MiuService, MLookupService, app) {
+.controller('MiuCtrl', function($scope, $rootScope, $ionicPopup, $ionicLoading, $ionicModal, $cordovaBarcodeScanner, $ionicHistory, $timeout, $state, $cordovaToast, ERPiaAPI, MconfigService, MiuService, MLookupService, app) {
 	console.log('MiuCtrl');
 	if($rootScope.iu == 'sb_u'){
 		$scope.sbu = true;
@@ -1366,6 +1366,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	/*erpia 환경설정값*/
 	MconfigService.erpia_basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
 	.then(function(data){
+		console.log('여길오는거니이..?');
 		if(data.list[0].Sale_Place_Code.length == 0){
 			var er_placecode = '000';
 			$scope.placeYN = false;
@@ -1376,6 +1377,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		/*환경설정값 있는지 먼저 불러오기.- 이경민*/
 	    	MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId, er_placecode)
 		.then(function(data){
+			console.log('여기도오니....?');
 			if(data != null){
 				$scope.setupData = data;
 				$scope.m_check.meajangCheck = 't';
@@ -1598,33 +1600,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 			})
 		})
 	});
-	
-	$rootScope.Jego_Pro = function(){
-		/* Jego조회로 넘어온 매입/매출 상품 등록 */
-		if($rootScope.JegoGoods != undefined && $rootScope.JegoGoods.length != 0){
-			if($rootScope.distinction == 'meaip'){
-				$scope.goodsaddlists.push({
-								overlap_color : '#000',
-								name : $rootScope.JegoGoods[0].G_Name,
-								num : 1,
-								goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn1),
-								code : $rootScope.JegoGoods[0].G_Code,
-								stand : $rootScope.JegoGoods[0].G_Stand
-							});
-			}else{
-				$scope.goodsaddlists.push({
-								overlap_color : '#000',
-								name : $rootScope.JegoGoods[0].G_Name,
-								num : 1,
-								goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn2),
-								code : $rootScope.JegoGoods[0].G_Code,
-								stand : $rootScope.JegoGoods[0].G_Stand
-							});
-			}		
-		}
-	}
-	
-	$rootScope.Jego_Pro();
+
 	/*거래처명 초기화 - 이경민[2015-12]*/
 	$scope.clearcompany = function(){
 		$scope.datas.userGerName = '';
@@ -1990,13 +1966,37 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 			}
 			$scope.goodsmodal.hide();
 		}
+		/* 재고컨트롤러 안갔다 온경우 이슈 발생 - 매입매출 쪽에서 다시 선언 */
+		$rootScope.jegoColum = {
+			pro_name 			: '',		// 상품명
+			pro_stand 			: '', 		// 규격
+			pro_OnCode 		: '',		// 자체코드
+			pro_barCode 		: '',		// 바코드
+			pro_ChangGo 		: ["ALL"],		// 창고
+			OneSelectCode		: '',		// 선택 상품 코드 - 디테일 조회시 필요 
 
+			detail_location 		: '',		// 로케이션
+			detail_brand 		: '', 		// 브랜드
+			detail_Jejo			: '',		// 제조처
+
+			attent_Kshim_name 	: '',		// 관심항목 이름
+			attent_Kshim_code 	: '',		// 관심항목 코드
+			attent_Mylist_name 	: '',		// 관심항목 이름
+			attent_Mylist_code 	: '',		// 관심항목 코드
+
+			MeachulMonth 		: '0',		// 매출월 1~12
+			MeachulListYN 		: 'Y',		// 매출내역 존재여부	: Y 존재 / N 미존재
+			MeachulListCtlYN 	: 'N',		// 매출내역 존재옵션 사용여부	: Y / N
+			JegoQtyCtl 		: '1',		// 재고수량별 조회 옵션	: 1 -> 재고수량 ALL(기본) / 2 -> 재고 ≠ 0 / 3 -> 재고 = 0 / 4 -> 재고 ≥ 0/ 5 -> 재고 ≤ 0
+			JegoQtyCtlYN 		: 'N',		// 재고수량별 조회 옵션 사용여부	: Y / N 
+		}
 		$rootScope.GCode = GCode;
 		$state.go("app.jego_search");
 	}
 
     	/*선택된 상품들을 등록리스트에 저장 --> 이중 $scope - 이경민[2015-12] */
     	$scope.checkdataSave=function(){
+    		console.log('너는 머가 나오니???=>', $scope.checkedDatas);
 		if($scope.goodsaddlists.length > 0){
 			var check = 'N';
 			for(var j=0; j < $scope.goodsaddlists.length; j++){
@@ -2101,8 +2101,6 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 					}
 				}
 			}
-			console.log("goodsaddlists =>", $scope.goodsaddlists);
-
 		}
 		/*펑션안 펑션 - 서비스거쳐 값안넘어오는 현상때문 - 이경민[2016-01]*/
 		$scope.test1 = function(price,i,bar){
@@ -2167,6 +2165,55 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		$scope.clear_goods();
 		$scope.goodsmodal.hide(); //goods_seq : data.list[i].Seq
 	}
+
+
+	$rootScope.Jego_Pro = function(){
+		$timeout(function(){
+			/* Jego조회로 넘어온 매입/매출 상품 등록 */
+			if($rootScope.JegoGoods != undefined && $rootScope.JegoGoods.length != 0){
+				$scope.checkedDatas = [{}];
+				$scope.checkedDatas[0].Box_In_Qty = $rootScope.JegoGoods[0].Box_In_Qty;
+				$scope.checkedDatas[0].Brand_Name = $rootScope.JegoGoods[0].Brand_Name;
+				$scope.checkedDatas[0].ChulGoDeagi = parseInt($rootScope.JegoGoods[0].ChulGoDeagi);
+				$scope.checkedDatas[0].G_Code = $rootScope.JegoGoods[0].G_Code;
+				$scope.checkedDatas[0].G_Dn1 = parseInt($rootScope.JegoGoods[0].G_Dn1);
+				$scope.checkedDatas[0].G_Dn2 = parseInt($rootScope.JegoGoods[0].G_Dn2);
+				$scope.checkedDatas[0].G_Dn3 = parseInt($rootScope.JegoGoods[0].G_Dn3);
+				$scope.checkedDatas[0].G_Dn4 = parseInt($rootScope.JegoGoods[0].G_Dn4);
+				$scope.checkedDatas[0].G_Dn5 = parseInt($rootScope.JegoGoods[0].G_Dn5);
+				$scope.checkedDatas[0].G_JeaJoChe = $rootScope.JegoGoods[0].G_JeaJoChe;
+				$scope.checkedDatas[0].G_Name = $rootScope.JegoGoods[0].G_Name;
+				$scope.checkedDatas[0].G_OnCode = $rootScope.JegoGoods[0].G_OnCode;
+				$scope.checkedDatas[0].G_Stand = $rootScope.JegoGoods[0].G_Stand;
+				$scope.checkedDatas[0].Jego = $rootScope.JegoGoods[0].Jego;
+				$scope.checkedDatas[0].Location = $rootScope.JegoGoods[0].Location;
+				$rootScope.JegoGoods = [];
+				$scope.checkdataSave();
+				// if($rootScope.distinction == 'meaip'){
+				// 	$scope.goodsaddlists.push({
+				// 					overlap_color : '#000',
+				// 					name : $rootScope.JegoGoods[0].G_Name,
+				// 					num : 1,
+				// 					goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn1),
+				// 					code : $rootScope.JegoGoods[0].G_Code,
+				// 					stand : $rootScope.JegoGoods[0].G_Stand
+				// 				});
+				// }else{
+				// 	$scope.goodsaddlists.push({
+				// 					overlap_color : '#000',
+				// 					name : $rootScope.JegoGoods[0].G_Name,
+				// 					num : 1,
+				// 					goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn2),
+				// 					code : $rootScope.JegoGoods[0].G_Code,
+				// 					stand : $rootScope.JegoGoods[0].G_Stand
+				// 				});
+				// }		
+			}
+		$ionicLoading.hide();
+		}, 500);
+	}
+	
+	$rootScope.Jego_Pro();
 
 	/*상품조회모달 닫기*/
 	$scope.goods_searchM_close = function(){
@@ -2656,7 +2703,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	/* 뒤로 제어 - 이경민[2015-12] */
 	$scope.backControll=function(){
 		$ionicPopup.show({
-			title: '<b>경고!!</b>',
+			title: '<b>경고</b>',
 			subTitle: '',
 			content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 			buttons: [

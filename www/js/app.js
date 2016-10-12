@@ -137,7 +137,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				location.href = '#/app/meachul_page';
 			}else if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){	
 				$ionicPopup.show({
-					title: '경고@@',
+					title: '경고',
 					subTitle: '',
 					content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 					buttons: [
@@ -267,7 +267,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	$rootScope.goto_with_clearHistory = function(goto_Href){
 		if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){
 			$ionicPopup.show({
-				title: '경고&&',
+				title: '경고',
 				subTitle: '',
 				content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 				buttons: [

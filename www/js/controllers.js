@@ -442,15 +442,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'borntoroad';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'test1234';
-			// $rootScope.loginData.Pwd = 'test1234!';
-
-			$rootScope.loginData.Admin_Code = 'ecohomes'; //PC모드
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
 			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'ecohomes';
-			$rootScope.loginData.Pwd = 'erpia!1010';
+			$rootScope.loginData.UserId = 'test1234';
+			$rootScope.loginData.Pwd = 'test1234!';
+
+			// $rootScope.loginData.Admin_Code = 'ecohomes'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'ecohomes';
+			// $rootScope.loginData.Pwd = 'erpia!1010';
 
 			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
@@ -1350,8 +1350,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.tabitem.tab3 = 'tab-item';
 				$rootScope.tabitem.tab4 = 'tab-item active';
 			}
-		$ionicLoading.hide();
-		}, 1000);
 		// if(module_T == 'jego_tab') $rootScope.jego_open = $rootScope.jegocontroll;
 		// 업데이트전 확인사항 입니다.
 		if($rootScope.userType == 'ERPia'){
@@ -1374,7 +1372,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				console.log('data');
 			});
 		}
-		
+		$ionicLoading.hide();
+	}, 1000);
 	}
 })
 
