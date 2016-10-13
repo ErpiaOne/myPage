@@ -691,8 +691,6 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		$rootScope.iu = 'i';
 		$rootScope.mode='등록';
 		$ionicHistory.clearCache();
-		// $ionicHistory.clearHistory();
-
 		if($rootScope.distinction == 'meaip'){
 			if($rootScope.priv_meaip.master_useYN == 'Y' && $rootScope.priv_meaip.save == 'Y' && $rootScope.priv_wongaYN == 'N'){
 				$state.go('app.meaip_IU', {}, {location:'replace'});
@@ -2703,7 +2701,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	/* 뒤로 제어 - 이경민[2015-12] */
 	$scope.backControll=function(){
 		$ionicPopup.show({
-			title: '<b>경고</b>',
+			title: '<b>경고eeee</b>',
 			subTitle: '',
 			content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 			buttons: [
@@ -2717,13 +2715,19 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 					onTap: function(e) {
 						$rootScope.JegoGoods = [];
 						if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
-							$scope.goodsaddlists = [];
+							// $scope.goodsaddlists = [];
 							$ionicHistory.clearCache();
 							$ionicHistory.goBack();
+							$timeout(function(){
+								$state.go('app.meaip_page');
+							}, 500);
 						}else{ /* 매출일 경우 */
 							$ionicHistory.clearCache();
-							$scope.goodsaddlists = [];
+							// $scope.goodsaddlists = [];
 							$ionicHistory.goBack();
+							$timeout(function(){
+								$state.go('app.meachul_page');
+							}, 500);
 						}
 					}
 				},

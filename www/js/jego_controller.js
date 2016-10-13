@@ -782,19 +782,59 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 		jego_Service.proDetail($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, code)
 		.then(function(data){
+			console.log('루트 모드 =>', $rootScope.mode);
 			if(data != '<!--Parameter Check-->'){
 				$rootScope.JegoGoods = data.list;
 				$rootScope.iu = 'i';
 				$rootScope.mode='등록';
-				if(gubun == 1){
-					$rootScope.distinction = 'meaip';
-					$state.go('app.meaip_IU');
-					$rootScope.Jego_Pro();
+				// $ionicHistory.goBack();
+				/* 구분 1일때는 매입 ./ 구분 2일때는 매출이다! */
+				if($rootScope.distinction == 'meaip'){
+					if(gubun != 1){
+						console.log('666666666666666');
+						$rootScope.distinction = 'meachul';
+						var gogogo = 'app.meachul_IU';
+						$rootScope.tabitem.tab1 = 'tab-item';
+						$rootScope.tabitem.tab2 = 'tab-item';
+						$rootScope.tabitem.tab3 = 'tab-item active';
+						$rootScope.tabitem.tab4 = 'tab-item';
+
+					}else{
+						console.log('7777777777777777');
+						$rootScope.distinction = 'meaip';
+						var gogogo = 'app.meaip_IU';
+						$rootScope.tabitem.tab1 = 'tab-item';
+						$rootScope.tabitem.tab2 = 'tab-item active';
+						$rootScope.tabitem.tab3 = 'tab-item';
+						$rootScope.tabitem.tab4 = 'tab-item';
+					}
 				}else{
-					$rootScope.distinction = 'meachul';
-					$state.go('app.meachul_IU', {}, {location:'replace'});
-					$rootScope.Jego_Pro();
-				} 
+					if(gubun != 2){
+						console.log('8888888888888888888');
+						$rootScope.distinction = 'meaip';
+						var gogogo = 'app.meaip_IU';
+						$rootScope.tabitem.tab1 = 'tab-item';
+						$rootScope.tabitem.tab2 = 'tab-item active';
+						$rootScope.tabitem.tab3 = 'tab-item';
+						$rootScope.tabitem.tab4 = 'tab-item';
+					}else{
+						console.log('9999999999999999');
+						$rootScope.distinction = 'meachul';
+						var gogogo = 'app.meachul_IU';
+						$rootScope.tabitem.tab1 = 'tab-item';
+						$rootScope.tabitem.tab2 = 'tab-item';
+						$rootScope.tabitem.tab3 = 'tab-item active';
+						$rootScope.tabitem.tab4 = 'tab-item';
+					}
+				}
+				
+				$timeout(function(){
+					$state.go(gogogo);
+					$timeout(function(){
+						$rootScope.Jego_Pro();
+					}, 500);
+				}, 500);
+				
 			}else{
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회결과가 없습니다.', 'short', 'center');
 				else console.log('조회결과가 없습니다.');
@@ -935,7 +975,6 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 		}else{
 			var info = $scope.Opset_R[index];
 		}
-		console.log('info=>', info);
 		$scope.jego_detail_colum.pro_name = info.sel_GoodsName;		// 상품명
 		$scope.jego_detail_colum.pro_stand = info.sel_GoodsStand; 		// 규격
 		$scope.jego_detail_colum.pro_OnCode = info.sel_GoodsOnCode;	// 자체코드
