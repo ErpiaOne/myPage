@@ -137,7 +137,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				location.href = '#/app/meachul_page';
 			}else if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){	
 				$ionicPopup.show({
-					title: '경고1',
+					title: '경고',
 					subTitle: '',
 					content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 					buttons: [
@@ -266,10 +266,11 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	}
 
 	$rootScope.goto_with_clearHistory = function(goto_Href){
+		$rootScope.loadingani();
 		if(goto_Href == '#app/jegoMain') $rootScope.distinction = '';
 		if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){
 			$ionicPopup.show({
-				title: '경고2',
+				title: '경고',
 				subTitle: '',
 				content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 				buttons: [
@@ -282,11 +283,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 						type: 'button-positive',
 						onTap: function(e) {
 							var no = 'Y'; 	// 매입&매출 백버튼 이슈사항 때문에 두번눌렸을 경우의 구분을 짓는 변수
-							
-							// if(goto_Href != '#app/jegoMain'){
-								console.log('1111111111111');
+
 								$ionicHistory.clearCache();
-								// $ionicHistory.goBack();
 								$rootScope.JegoGoods = [];
 
 								if(goto_Href == '#app/meachul_page'){
@@ -319,30 +317,24 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 										}, 500);
 									}
 								}else{
-									// $ionicHistory.goBack();
+									$ionicHistory.clearHistory();
 									$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 									$timeout(function(){
 										location.href = goto_Href;
 									}, 500);
 								}
-							// }
-							// else{
-							// 	console.log('222222222222222');
-							// 	$ionicHistory.clearCache();
-							// 	$ionicHistory.clearHistory();
-							// 	$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
-							// 	location.href = goto_Href;
-							// }
 						}
 					},
 				]
 			})
 		}else{
-			console.log('3333333333333333333?');
 			var no = 'Y'; 	// 매입&매출 백버튼 이슈사항 때문에 두번눌렸을 경우의 구분을 짓는 변수
+			if(goto_Href != '#app/meachul_IU' && goto_Href != '#app/meaip_IU'){
+				$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+			}
 			$ionicHistory.clearCache();
 			$ionicHistory.clearHistory();
-			$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
+			
 
 			if(goto_Href == '#app/meachul_page'){
 				if($rootScope.distinction == 'meachul') var no = 'N';
@@ -357,12 +349,10 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			}
 
 			if(no == 'N'){
-				console.log('44444444444444');
 				if($rootScope.distinction == 'meaip') $state.go('app.meaip_page', {}, {reload: true});
 				else if($rootScope.distinction == 'meachul') $state.go('app.meachul_page', {}, {reload: true});
 				else $state.go('app.config', {}, {reload: true});
 			}else{
-				console.log('55555555555555555');
 				location.href = goto_Href;
 			}
 		}

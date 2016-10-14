@@ -37,7 +37,7 @@
     width: 54px;
     font-size: 2.5em;
     color: #444444;
-	-webkit-transform:translate3d(0,8px,0);
+	-webkit-transform:translate3d(0,2px,0);
 }
 
 .tabbed-slidebox .tsb-icons i {
@@ -91,14 +91,18 @@
 	text-decoration: none;
 	margin: 0 15px;
 	border-bottom: 3px solid transparent;
+         padding-bottom: 0px;
 }
+
 .tabbed-slidebox .tsb-icons .scroll a.active {
 	font-size: 1em;
-          color: #fff;
+         color: #fff;
 	border-bottom: 3px solid #c06375;
-          padding-left: 10px;
-          padding-right: 10px;
-          background-color:#6c5e72;
+         padding-left: 10px;
+         padding-right: 10px;
+         padding-bottom: 10px;
+         padding-top: 10px;
+         background-color:#6c5e72;
 }
 
 .tabbed-slidebox .tsb-icons .scroll i{
@@ -109,4 +113,6 @@
     text-decoration: none;
     margin: 0 15px;
     border-bottom: 3px solid transparent;
+    padding-bottom: 0px;
 }
+

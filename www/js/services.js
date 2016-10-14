@@ -1579,6 +1579,7 @@ angular.module('starter.services', [])
 			}else if(setup.basic_Place_Code == '000'){
 				setup.basic_Place_Code = '';
 			}
+			// if($scope.datas.remk.indexOf("<") != -1) 
 			/*매입등록*/
 			if($rootScope.distinction == 'meaip'){
 				var kind = 'ERPia_Meaip_Insert_Goods';
@@ -1890,6 +1891,26 @@ angular.module('starter.services', [])
 			else var word = escape(keyword);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt='+ pageCnt +'&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + word + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					if(response.data != '<!--Parameter Check-->'){
+						for(var i=0; i < response.data.list.length; i++){
+							response.data.list[i].trfa = false;
+						}
+					}
+					return response.data;
+				}else{
+					return response.data;
+				}
+			},function(response){
+				return $q.reject(response);
+			}); 
+		}, meaipchul_search: function(Admin_Code, UserId, ChanggoCode, keyword, YN, OneSelectCode, pageCnt, GCode){		// 창고재조회
+			console.log('jego_Service', 'main_search', ChanggoCode);
+			if(YN == 'Y') var word = keyword;
+			else var word = escape(keyword);
+			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
+			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt=1&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=&CodeSearchYN=N&OneSelectCode=&GoodsCodeList=' + GCode;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					if(response.data != '<!--Parameter Check-->'){

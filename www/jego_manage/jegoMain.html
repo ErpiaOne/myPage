@@ -17,12 +17,12 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 		<div class="psmsmy_title_co">재고현황조회</div>
 	</ion-nav-title>
 	<ion-nav-buttons side="right">
-		<button menu-toggle="right" ng-click="jegoSear_change()" ng-if="jegoSearch == 'detail'" class="button button-outline button-positive" style="border-color: #fff; color: #fff; font-size: 12px; line-height: 12px;">통합<br>검색</button>
-		<button menu-toggle="right" ng-click="jegoSear_change()" ng-if="jegoSearch == 'hap'" class="button button-outline button-positive" style="border-color: #fff; color: #fff; font-size: 12px; line-height: 12px;">상세<br>검색</button>
+		<button menu-toggle="right" ng-click="jegoSear_change()" ng-if="jegoSearch == 'detail'" class="button button-outline button-positive" style="border-color: #fff;"><sapn style="color: #fff; font-size: 12px; line-height: 14px;  display: inline-block; margin-top: 1px;">통합<br>검색</sapn></button>
+		<button menu-toggle="right" ng-click="jegoSear_change()" ng-if="jegoSearch == 'hap'" class="button button-outline button-positive" style="border-color: #fff;"><sapn style="color: #fff; font-size: 12px; line-height: 14px;  display: inline-block; margin-top: 1px;">상세<br>검색</sapn></button>
 	</ion-nav-buttons>
 	<ion-content>
 			<tab-slide-box>
-				<div class="tsb-icons" style="padding-top: 2px;"> <!-- class건들이면 안되요..ㅠㅠ -->
+				<div class="tsb-icons"> <!-- class건들이면 안되요..ㅠㅠ -->
 					<div class="tsb-ic-wrp" style="border-bottom: 1px solid #c2c2c2;"> <!-- class건들이면 안되요..ㅠㅠ -->
 						<ion-scroll direction="x" class="tsb-hscroll">
 							<a href="javascript:;">조회조건</a>
@@ -120,8 +120,8 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 										</tr>
 										<tr>
 											<td class="td1-1" style="vertical-align: middle; text-align: left; padding-left: 15px;">창고</td>
-											<td colspan="2" class="td1-2" style="width: 70px; height: 28px; vertical-align: middle;">
-												<select style="width: 100%; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl();ActsLog('jego', 'jego_changgo')">
+											<td colspan="2" class="td1-2" style="width: 70px; height: 28px; vertical-align: middle; padding-right: 12px;">
+												<select style="width: 100%; height: 28px; border: 0; border-bottom: 1px solid #e0e0e0; background: #5e6472; color: #fff;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl();ActsLog('jego', 'jego_changgo')">
 													<option value="ALL">전체창고</option>
 													<option ng-repeat="x in Ch_List" value="{{x.Code}}" ng-if="x.Stts != '삭제'">{{x.Name}}</option>
 												</select>
@@ -184,7 +184,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 												<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(1)">목록</button>
 											</td>
 											<td class="td1-2">
-												<input type="search" ng-disabled="true" placeholder="선택해주세요." ng-model="jego_detail_colum.attent_Kshim_name">
+												<input type="search" ng-disabled="true" placeholder="선택해주세요." ng-model="jego_detail_colum.attent_Kshim_name" style="padding-left: 10px;">
 											</td>
 											<td class="td1-3">
 												<div>
@@ -198,7 +198,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 												<button class="button button-small button-psm04" style="vertical-align: middle; margin-left: -20px" ng-click="mylist(2)">목록</button>
 											</td>
 											<td class="td1-2">
-												<input type="search" ng-disabled="true" placeholder="선택해주세요." ng-model="jego_detail_colum.attent_Mylist_name">
+												<input type="search" ng-disabled="true" placeholder="선택해주세요." ng-model="jego_detail_colum.attent_Mylist_name" style="padding-left: 10px;">
 											</td>
 											<td class="td1-3">
 												<div>
@@ -279,9 +279,9 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 												<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((l.sel_ChangGoName)?l.sel_ChangGoName:'-')}}</td>
 											</tr>
 											<tr>
-												<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((l.sel_GoodsOnCode)?l.sel_GoodsOnCode:'-')}}</td>
-												<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((l.sel_GoodsWich)?l.sel_GoodsWich:'-')}}</td>
-												<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left;">{{((l.sel_GoodsBrand)?l.sel_GoodsBrand:'-')}}</td>
+												<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left; white-space: normal;">{{((l.sel_GoodsOnCode)?l.sel_GoodsOnCode:'-')}}</td>
+												<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left; white-space: normal;">{{((l.sel_GoodsWich)?l.sel_GoodsWich:'-')}}</td>
+												<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left; white-space: normal;">{{((l.sel_GoodsBrand)?l.sel_GoodsBrand:'-')}}</td>
 											</tr>
 										</table>
 										<table width="100%" height="30px;" style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.9em;" ng-if="l_YN == 'N'">
@@ -328,9 +328,9 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
 													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 30%; padding: 4px 10px; text-align: left;"  ng-click="insert_LR($index, 'R')">{{((r.sel_ChangGoName)?r.sel_ChangGoName:'-')}}</td>
 												</tr>
 												<tr>
-													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 30%; padding: 4px 10px; text-align: left;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsOnCode)?r.sel_GoodsOnCode:'-')}}</td>
-													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 30%; padding: 4px 10px; text-align: left;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsWich)?r.sel_GoodsWich:'-')}}</td>
-													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 30%; padding: 4px 10px; text-align: left;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsBrand)?r.sel_GoodsBrand:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 30%; padding: 4px 10px; text-align: left; white-space: normal;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsOnCode)?r.sel_GoodsOnCode:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 30%; padding: 4px 10px; text-align: left; white-space: normal;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsWich)?r.sel_GoodsWich:'-')}}</td>
+													<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 30%; padding: 4px 10px; text-align: left; white-space: normal;"  ng-click="insert_LR($index, 'R')">{{((r.sel_GoodsBrand)?r.sel_GoodsBrand:'-')}}</td>
 												</tr>
 											</table>
 											<table width="100%" height="30px;" style="background: #EDEDED; text-align:center; width: 100%; margin-bottom: 10px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.9em;" ng-if="r_YN == 'Y' && r.nameYN == 'Y'">

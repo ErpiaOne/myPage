@@ -1364,7 +1364,6 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	/*erpia 환경설정값*/
 	MconfigService.erpia_basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId)
 	.then(function(data){
-		console.log('여길오는거니이..?');
 		if(data.list[0].Sale_Place_Code.length == 0){
 			var er_placecode = '000';
 			$scope.placeYN = false;
@@ -1375,7 +1374,6 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		/*환경설정값 있는지 먼저 불러오기.- 이경민*/
 	    	MconfigService.basicSetup($scope.loginData.Admin_Code, $scope.loginData.UserId, er_placecode)
 		.then(function(data){
-			console.log('여기도오니....?');
 			if(data != null){
 				$scope.setupData = data;
 				$scope.m_check.meajangCheck = 't';
@@ -1988,62 +1986,123 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 			JegoQtyCtl 		: '1',		// 재고수량별 조회 옵션	: 1 -> 재고수량 ALL(기본) / 2 -> 재고 ≠ 0 / 3 -> 재고 = 0 / 4 -> 재고 ≥ 0/ 5 -> 재고 ≤ 0
 			JegoQtyCtlYN 		: 'N',		// 재고수량별 조회 옵션 사용여부	: Y / N 
 		}
+		$rootScope.GCode = '';
 		$rootScope.GCode = GCode;
 		$state.go("app.jego_search");
 	}
 
     	/*선택된 상품들을 등록리스트에 저장 --> 이중 $scope - 이경민[2015-12] */
     	$scope.checkdataSave=function(){
-    		console.log('너는 머가 나오니???=>', $scope.checkedDatas);
-		if($scope.goodsaddlists.length > 0){
-			var check = 'N';
-			for(var j=0; j < $scope.goodsaddlists.length; j++){
-				for(var o=0; o < $scope.checkedDatas.length; o++){
-					if($scope.goodsaddlists[j].code == $scope.checkedDatas[o].G_Code){
-						$scope.goodsaddlists[j].overlap_color = '#FF5E00';
-						$scope.checkedDatas[o].overlap_color = '#FF5E00';
-					}
-				}
-			}
-		}else{
-			for(var o=0; o < $scope.checkedDatas.length; o++){
-				$scope.checkedDatas[o].overlap_color = '#000';
-			}
-		}
-		for(var i=0; i < $scope.checkedDatas.length; i++){
-			if($rootScope.distinction == 'meaip') var d = $scope.setupData.basic_Dn_Meaip;
-			else var d = $scope.setupData.basic_Dn_Sale;
-			if(d == 0) d = '0';
-			if(d == '0' && $scope.datas.GerCode != 0){
-				MiuService.com_Dn($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.checkedDatas[i].G_Code, $scope.datas.GerCode,i,$scope.bar)
-				.then(function(data){
-					if(data.data.list[0].G_Discount_Or_Up == undefined || data.data.list[0].G_Discount_Or_Up != 'D' && data.data.list[0].G_Discount_Or_Up != 'U'){
-						var price = data.data.list[0].G_Dn0;
-					}else{
-						if(data.data.list[0].G_Discount_Or_Up == 'D'){ // 할인
-							var yulsik = parseInt(data.data.list[0].G_Discount_Yul) * 0.01;
-							var yul = parseInt(data.data.list[0].G_Dn0) * yulsik;
-							var price = parseInt(data.data.list[0].G_Dn0) - parseInt(yul);
-						}else{ // 할증
-							var yulsik = parseInt(data.data.list[0].G_Discount_Yul) * 0.01;
-							var yul = parseInt(data.data.list[0].G_Dn0) * yulsik;
-							var price = parseInt(data.data.list[0].G_Dn0) + parseInt(yul);
+    		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+    		$timeout(function(){
+    			if($scope.goodsaddlists.length > 0){
+				var check = 'N';
+				for(var j=0; j < $scope.goodsaddlists.length; j++){
+					for(var o=0; o < $scope.checkedDatas.length; o++){
+						if($scope.goodsaddlists[j].code == $scope.checkedDatas[o].G_Code){
+							$scope.goodsaddlists[j].overlap_color = '#FF5E00';
+							$scope.checkedDatas[o].overlap_color = '#FF5E00';
 						}
 					}
-					$scope.test1(price,data.i,data.bar);
-				})
-			}else{
-				switch(d){
-					case '0': console.log('거래처별 단가'); var price = $scope.checkedDatas[i].G_Dn3; break;
-					case '1': console.log('매입가&매출가'); var price = $scope.checkedDatas[i].G_Dn1; break;
-					case '2': console.log('도매가'); var price = $scope.checkedDatas[i].G_Dn2; break;
-					case '3': console.log('인터넷가'); var price = $scope.checkedDatas[i].G_Dn3; break;
-					case '4': console.log('소매가'); var price = $scope.checkedDatas[i].G_Dn4; break;
-					case '5': console.log('권장소비자가'); var price = $scope.checkedDatas[i].G_Dn5; break;
-
-					default : console.log('설정안되있습니다.'); break;
 				}
-				if($scope.bar == 'Y'){
+			}else{
+				for(var o=0; o < $scope.checkedDatas.length; o++){
+					$scope.checkedDatas[o].overlap_color = '#000';
+				}
+			}
+			for(var i=0; i < $scope.checkedDatas.length; i++){
+				if($rootScope.distinction == 'meaip') var d = $scope.setupData.basic_Dn_Meaip;
+				else var d = $scope.setupData.basic_Dn_Sale;
+				if(d == 0) d = '0';
+				if(d == '0' && $scope.datas.GerCode != 0){
+					MiuService.com_Dn($scope.loginData.Admin_Code, $scope.loginData.UserId, $scope.checkedDatas[i].G_Code, $scope.datas.GerCode,i,$scope.bar)
+					.then(function(data){
+						if(data.data.list[0].G_Discount_Or_Up == undefined || data.data.list[0].G_Discount_Or_Up != 'D' && data.data.list[0].G_Discount_Or_Up != 'U'){
+							var price = data.data.list[0].G_Dn0;
+						}else{
+							if(data.data.list[0].G_Discount_Or_Up == 'D'){ // 할인
+								var yulsik = parseInt(data.data.list[0].G_Discount_Yul) * 0.01;
+								var yul = parseInt(data.data.list[0].G_Dn0) * yulsik;
+								var price = parseInt(data.data.list[0].G_Dn0) - parseInt(yul);
+							}else{ // 할증
+								var yulsik = parseInt(data.data.list[0].G_Discount_Yul) * 0.01;
+								var yul = parseInt(data.data.list[0].G_Dn0) * yulsik;
+								var price = parseInt(data.data.list[0].G_Dn0) + parseInt(yul);
+							}
+						}
+						$scope.test1(price,data.i,data.bar);
+					})
+				}else{
+					switch(d){
+						case '0': console.log('거래처별 단가'); var price = $scope.checkedDatas[i].G_Dn3; break;
+						case '1': console.log('매입가&매출가'); var price = $scope.checkedDatas[i].G_Dn1; break;
+						case '2': console.log('도매가'); var price = $scope.checkedDatas[i].G_Dn2; break;
+						case '3': console.log('인터넷가'); var price = $scope.checkedDatas[i].G_Dn3; break;
+						case '4': console.log('소매가'); var price = $scope.checkedDatas[i].G_Dn4; break;
+						case '5': console.log('권장소비자가'); var price = $scope.checkedDatas[i].G_Dn5; break;
+
+						default : console.log('설정안되있습니다.'); break;
+					}
+					if($scope.bar == 'Y'){
+						$scope.bargoods = {
+							num : 1
+						}
+						$ionicPopup.show({
+							template: '<input type="number" ng-model="bargoods.num" style="text-align:right">',
+							title: '('+ $scope.checkedDatas[0].G_Code +')<br>' + $scope.checkedDatas[0].G_Name,
+							subTitle: '수량을 입력해주세요.',
+							scope: $scope,
+							buttons: [
+								{
+									text: '확인',
+									onTap: function(e){
+									if($scope.bargoods.num != 0){
+										$scope.goodsaddlists.push({
+											overlap_color : $scope.checkedDatas[0].overlap_color,
+											name : $scope.checkedDatas[0].G_Name,
+											num : parseInt($scope.bargoods.num),
+											goodsprice : parseInt(price),
+											code : $scope.checkedDatas[0].G_Code,
+											stand : $scope.checkedDatas[0].G_Stand
+										});
+										$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
+										$scope.bar = 'N';
+										}else{
+											alert('0개는 등록 할 수 없습니다. 다시 시도해주세요.');
+										}
+									}
+								},
+							]
+						});
+					}else{
+						if($rootScope.iu == 'i'){
+							$scope.goodsaddlists.push({
+								overlap_color : $scope.checkedDatas[i].overlap_color,
+								name : $scope.checkedDatas[i].G_Name,
+								num : 1,
+								goodsprice : parseInt(price),
+								code : $scope.checkedDatas[i].G_Code,
+								stand : $scope.checkedDatas[i].G_Stand
+							});
+						}else{
+							$scope.goodsaddlists.push({
+								overlap_color : $scope.checkedDatas[i].overlap_color,
+								name : $scope.checkedDatas[i].G_Name,
+								num : 1,
+								goodsprice : parseInt(price),
+								code : $scope.checkedDatas[i].G_Code,
+								goods_seq : parseInt($scope.pay.goods_seq_end) + 1,
+								stand : $scope.checkedDatas[i].G_Stand,
+								state : 'i'
+							});
+							$scope.pay.goods_seq_end = parseInt($scope.pay.goods_seq_end) + 1;
+						}
+					}
+				}
+			}
+			/*펑션안 펑션 - 서비스거쳐 값안넘어오는 현상때문 - 이경민[2016-01]*/
+			$scope.test1 = function(price,i,bar){
+				if(bar == 'Y'){
 					$scope.bargoods = {
 						num : 1
 					}
@@ -2056,17 +2115,17 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 							{
 								text: '확인',
 								onTap: function(e){
-								if($scope.bargoods.num != 0){
-									$scope.goodsaddlists.push({
-										overlap_color : $scope.checkedDatas[0].overlap_color,
-										name : $scope.checkedDatas[0].G_Name,
-										num : parseInt($scope.bargoods.num),
-										goodsprice : parseInt(price),
-										code : $scope.checkedDatas[0].G_Code,
-										stand : $scope.checkedDatas[0].G_Stand
-									});
-									$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
-									$scope.bar = 'N';
+									if($scope.bargoods.num != 0){
+										$scope.goodsaddlists.push({
+											overlap_color : $scope.checkedDatas[0].overlap_color,
+											name : $scope.checkedDatas[0].G_Name,
+											num : parseInt($scope.bargoods.num),
+											goodsprice : parseInt(price),
+											code : $scope.checkedDatas[0].G_Code,
+											stand : $scope.checkedDatas[0].G_Stand
+										});
+										$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
+										$scope.bar = 'N';
 									}else{
 										alert('0개는 등록 할 수 없습니다. 다시 시도해주세요.');
 									}
@@ -2099,74 +2158,18 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 					}
 				}
 			}
-		}
-		/*펑션안 펑션 - 서비스거쳐 값안넘어오는 현상때문 - 이경민[2016-01]*/
-		$scope.test1 = function(price,i,bar){
-			if(bar == 'Y'){
-				$scope.bargoods = {
-					num : 1
-				}
-				$ionicPopup.show({
-					template: '<input type="number" ng-model="bargoods.num" style="text-align:right">',
-					title: '('+ $scope.checkedDatas[0].G_Code +')<br>' + $scope.checkedDatas[0].G_Name,
-					subTitle: '수량을 입력해주세요.',
-					scope: $scope,
-					buttons: [
-						{
-							text: '확인',
-							onTap: function(e){
-								if($scope.bargoods.num != 0){
-									$scope.goodsaddlists.push({
-										overlap_color : $scope.checkedDatas[0].overlap_color,
-										name : $scope.checkedDatas[0].G_Name,
-										num : parseInt($scope.bargoods.num),
-										goodsprice : parseInt(price),
-										code : $scope.checkedDatas[0].G_Code,
-										stand : $scope.checkedDatas[0].G_Stand
-									});
-									$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
-									$scope.bar = 'N';
-								}else{
-									alert('0개는 등록 할 수 없습니다. 다시 시도해주세요.');
-								}
-							}
-						},
-					]
-				});
-			}else{
-				if($rootScope.iu == 'i'){
-					$scope.goodsaddlists.push({
-						overlap_color : $scope.checkedDatas[i].overlap_color,
-						name : $scope.checkedDatas[i].G_Name,
-						num : 1,
-						goodsprice : parseInt(price),
-						code : $scope.checkedDatas[i].G_Code,
-						stand : $scope.checkedDatas[i].G_Stand
-					});
-				}else{
-					$scope.goodsaddlists.push({
-						overlap_color : $scope.checkedDatas[i].overlap_color,
-						name : $scope.checkedDatas[i].G_Name,
-						num : 1,
-						goodsprice : parseInt(price),
-						code : $scope.checkedDatas[i].G_Code,
-						goods_seq : parseInt($scope.pay.goods_seq_end) + 1,
-						stand : $scope.checkedDatas[i].G_Stand,
-						state : 'i'
-					});
-					$scope.pay.goods_seq_end = parseInt($scope.pay.goods_seq_end) + 1;
-				}
+			$scope.bar = 'N';
+			$scope.user.userGoodsName = '';
+			$scope.clear_goods();
+			if($scope.goodsmodal != undefined){
+				$scope.goodsmodal.hide(); //goods_seq : data.list[i].Seq
 			}
-		}
-		$scope.bar = 'N';
-		$scope.user.userGoodsName = '';
-		$scope.clear_goods();
-		$scope.goodsmodal.hide(); //goods_seq : data.list[i].Seq
+		$ionicLoading.hide();
+    		}, 500);
 	}
 
 
 	$rootScope.Jego_Pro = function(){
-		$timeout(function(){
 			/* Jego조회로 넘어온 매입/매출 상품 등록 */
 			if($rootScope.JegoGoods != undefined && $rootScope.JegoGoods.length != 0){
 				$scope.checkedDatas = [{}];
@@ -2186,29 +2189,8 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 				$scope.checkedDatas[0].Jego = $rootScope.JegoGoods[0].Jego;
 				$scope.checkedDatas[0].Location = $rootScope.JegoGoods[0].Location;
 				$rootScope.JegoGoods = [];
-				$scope.checkdataSave();
-				// if($rootScope.distinction == 'meaip'){
-				// 	$scope.goodsaddlists.push({
-				// 					overlap_color : '#000',
-				// 					name : $rootScope.JegoGoods[0].G_Name,
-				// 					num : 1,
-				// 					goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn1),
-				// 					code : $rootScope.JegoGoods[0].G_Code,
-				// 					stand : $rootScope.JegoGoods[0].G_Stand
-				// 				});
-				// }else{
-				// 	$scope.goodsaddlists.push({
-				// 					overlap_color : '#000',
-				// 					name : $rootScope.JegoGoods[0].G_Name,
-				// 					num : 1,
-				// 					goodsprice : parseInt($rootScope.JegoGoods[0].G_Dn2),
-				// 					code : $rootScope.JegoGoods[0].G_Code,
-				// 					stand : $rootScope.JegoGoods[0].G_Stand
-				// 				});
-				// }		
+				$scope.checkdataSave();	
 			}
-		$ionicLoading.hide();
-		}, 500);
 	}
 	
 	$rootScope.Jego_Pro();
@@ -2577,9 +2559,9 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		    		$scope.pay.gubun = 4;
 		    	}
 
-			if ($scope.datas.remk.indexOf("&") != -1 || $scope.datas.remk.indexOf("\\") != -1 || $scope.datas.remk.indexOf("<") != -1 || $scope.datas.remk.indexOf(">") != -1 || $scope.datas.remk.indexOf("'") != -1) {
-					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('특수문자 "&", "<>", "작은따옴표"는 사용하실수 없습니다.', 'short', 'center');
-					else console.log('특수문자 "&", "<>", "작은따옴표"는 사용하실수 없습니다.');
+			if ($scope.datas.remk.indexOf("\\") != -1 || $scope.datas.remk.indexOf("<") != -1 || $scope.datas.remk.indexOf(">") != -1 || $scope.datas.remk.indexOf("'") != -1 || $scope.datas.remk.indexOf("`") != -1) {
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('특수문자 "`", "<>", "작은따옴표"는 사용하실수 없습니다.', 'short', 'center');
+					else console.log('특수문자 "`", "<>", "작은따옴표"는 사용하실수 없습니다.');
 			}
 			else {
 				$ionicPopup.show({
@@ -2701,7 +2683,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	/* 뒤로 제어 - 이경민[2015-12] */
 	$scope.backControll=function(){
 		$ionicPopup.show({
-			title: '<b>경고eeee</b>',
+			title: '<b>경고</b>',
 			subTitle: '',
 			content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 			buttons: [
