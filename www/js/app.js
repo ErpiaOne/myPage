@@ -268,7 +268,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	$rootScope.goto_with_clearHistory = function(goto_Href){
 		$rootScope.loadingani();
 		if(goto_Href == '#app/jegoMain') $rootScope.distinction = '';
-		if($location.url() == '/app/meaip_IU' || $location.url() == '/app/meachul_IU'){
+		if($location.url() == '/app/meaip_IU' && goto_Href != '#app/jegoMain' || $location.url() == '/app/meachul_IU' && goto_Href != '#app/jegoMain'){
 			$ionicPopup.show({
 				title: '경고',
 				subTitle: '',

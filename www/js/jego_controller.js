@@ -394,6 +394,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 			if($scope.jego_detail_colum.pro_stand != '') var num = num + 1;
 			if($scope.jego_detail_colum.pro_OnCode != '') var num = num + 1;
 			if($scope.jego_detail_colum.pro_barCode != '') var num = num + 1;
+			if($scope.jego_detail_colum.detail_brand != '') var num = num + 1;
+			if($scope.jego_detail_colum.detail_Jejo != '') var num = num + 1;
 			if($scope.jego_detail_colum.detail_location != '') var num = num + 1;
 			if($scope.jego_detail_colum.attent_Kshim_name != '') var num = num + 1;
 			if($scope.jego_detail_colum.attent_Mylist_name != '') var num = num + 1;
@@ -435,6 +437,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				}else{
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회조건은 1개 이상 지정해야 합니다.', 'short', 'center');
 					else console.log('조회조건은 1개 이상 지정해야 합니다.');
+					$ionicLoading.hide();
 				}
 			}
 		}

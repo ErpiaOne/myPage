@@ -114,7 +114,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.0.9',
+   		Android_version : '1.1.0',
    		IOS_version : '1.0.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -442,14 +442,14 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'borntoroad';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'test1234';
-			$rootScope.loginData.Pwd = 'test1234!';
-
-			// $rootScope.loginData.Admin_Code = 'ecohomes'; //PC모드
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'ecohomes';
+			// $rootScope.loginData.UserId = 'test1234';
+			// $rootScope.loginData.Pwd = 'test1234!';
+
+			// $rootScope.loginData.Admin_Code = 'kpage'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'kpage1089';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
 			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드

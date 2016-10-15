@@ -120,7 +120,7 @@ angular.module('starter.services', [])
 
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + '01056579731' + '&mac=' + UUID;
+			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -1963,7 +1963,7 @@ angular.module('starter.services', [])
 			});		
 		}, detailJego_search : function(Admin_Code, UserId, Mode, changgo_key, jegoInfo, pageCnt){		// 상세검색을 통한 재고조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
-			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=' + Mode + '&pageCnt=' + pageCnt + '&pageRow=10&ChangGoCode=' + changgo_key + '&OneSelectCode=' + jegoInfo.OneSelectCode + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=' + Mode + '&pageCnt=' + pageCnt + '&pageRow=10&ChangGoCode=' + changgo_key + '&OneSelectCode=' + jegoInfo.OneSelectCode + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=Y';
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					if(response.data != '<!--Parameter Check-->'){
@@ -1992,7 +1992,7 @@ angular.module('starter.services', [])
 			});		
 		}, search_Save : function(Admin_Code, UserId, changgo_key, jegoInfo, Mode, text){		// 조회셋 등록
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
-			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=' + Mode + '&pageCnt=&ChangGoCode=' + changgo_key + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN + '&sel_name=' + escape(text);
+			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=' + Mode + '&pageCnt=&ChangGoCode=' + changgo_key + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=Y&sel_name=' + escape(text);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
