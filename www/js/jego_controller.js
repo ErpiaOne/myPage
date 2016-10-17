@@ -326,11 +326,15 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				if ($ionicHistory.backView()&&imageData.text=='') {
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('바코드를 정확히 찍어주세요.', 'short', 'center');
 					else console.log('바코드를 정확히 찍어주세요.');
+					$ionicLoading.hide();
 				}else if(imageData.text.length == 0){
 					console.log('취소');
+					$ionicLoading.hide();
 				}else{
 					$rootScope.keyword = imageData.text;
 					$scope.morebutton = false;
+					$rootScope.jego_detail_colum.CodeSearchYN = 'Y';
+					$rootScope.jegoColum = $scope.jego_detail_colum; // 재고 전체 조회 값
 					$scope.hapSearch('', imageData.text, 'Y', '', 1);
 				}
 			}, function(error) {
@@ -341,8 +345,10 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				if ($ionicHistory.backView()&&imageData.text=='') {
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('바코드를 정확히 찍어주세요.', 'short', 'center');
 					else console.log('바코드를 정확히 찍어주세요.');
+					$ionicLoading.hide();
 				}else if(imageData.text.length == 0){
 					console.log('취소');
+					$ionicLoading.hide();
 				}else{
 					$scope.jego_detail_colum.pro_barCode = imageData.text;
 					$scope.morebutton = false;
@@ -380,13 +386,17 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 			$rootScope.keyword = $scope.jego_searchModule.all_Search;
 			$rootScope.jegoMode = $scope.jegoSearch; // 모드
 			$scope.jego_detail_colum.pro_ChangGo = ["ALL"];
+			$rootScope.jego_detail_colum.CodeSearchYN = 'N';
 			$rootScope.jegoColum = $scope.jego_detail_colum; // 재고 전체 조회 값
 				if($scope.jego_searchModule.all_Search.length == 0){
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('검색어를 입력해주세요.', 'short', 'center');
 					else console.log('검색어를 입력해주세요.');
+					$ionicLoading.hide();
+
 				}else{
 					$scope.pageCnt = 1; // 페이징번호 생성
 					$scope.hapSearch('', $scope.jego_searchModule.all_Search, 'N', '', $scope.pageCnt);
+					$ionicLoading.hide();
 				}
 		}else{ 										// 상세검색시 재고조회
 			var num = 1;
@@ -403,6 +413,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 			if($scope.jego_detail_colum.pro_ChangGo.length == 0){
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('창고를 선택해주세요.', 'short', 'center');
 				else console.log('창고를 선택해주세요.');
+				$ionicLoading.hide();
 			}else{
 				/* 행적로그 저장 */
 				switch ($scope.jego_detail_colum.JegoQtyCtl) {
@@ -560,12 +571,13 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				}
 			}
 		}
+		console.log('$rootScope.jegoColum', $rootScope.jegoColum);
 
 		if($rootScope.distinction == undefined || $rootScope.distinction == ''){
 			$scope.pageCnt = 1; // 재조회일경우 페이지 번호 초기화
 			$rootScope.jegoColum.pro_ChangGo = $scope.jego_detail_colum.pro_ChangGo; // 재조회 경우 창고 저장
 			if($rootScope.jegoMode == 'hap'){ 							// 통합조회일 경우 창고선택 조회
-				jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.changgo_keyword, $rootScope.keyword, 'N', '', $scope.pageCnt)
+				jego_Service.main_search($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $scope.changgo_keyword, $rootScope.keyword, $rootScope.jegoColum.CodeSearchYN, '', $scope.pageCnt)
 				.then(function(data){
 					if(data != '<!--Parameter Check-->'){
 						$rootScope.jego_result = data.list;
@@ -753,6 +765,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 				/* 구분 1일때는 매입 ./ 구분 2일때는 매출이다! */
 				if($rootScope.distinction == 'meaip'){
 					if(gubun != 1){
+						console.log('111111111111111111111');
 						$rootScope.distinction = 'meachul';
 						$rootScope.goto_with_clearHistory('#app/meachul_IU');
 						$rootScope.tabitem.tab1 = 'tab-item';
@@ -762,6 +775,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상태가 매출등록으로 변경되었습니다.', 'short', 'center');
 						else console.log('상태가 매출등록으로 변경되었습니다.');
 					}else{
+						console.log('22222222222222222222');
 						$rootScope.distinction = 'meaip';
 						$timeout(function(){
 							$state.go('app.meaip_IU');
@@ -778,6 +792,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 					}
 				}else if($rootScope.distinction == 'meachul'){
 					if(gubun != 2){
+						console.log('3333333333333333333333');
 						$rootScope.distinction = 'meaip';
 						$rootScope.goto_with_clearHistory('#app/meaip_IU');
 						$rootScope.tabitem.tab1 = 'tab-item';
@@ -787,6 +802,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상태가 매입등록으로 변경되었습니다.', 'short', 'center');
 						else console.log('상태가 매입등록으로 변경되었습니다.');
 					}else{
+						console.log('4444444444444444444444');
 						$rootScope.distinction = 'meachul';
 						$timeout(function(){
 							$state.go('app.meachul_IU');
@@ -803,6 +819,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 					}
 				}else{		// 매입매출 컨트롤러 안돌았을 경우
 					if(gubun == 1){ 
+						console.log('55555555555555555555');
 						$rootScope.distinction = 'meaip';
 						$rootScope.goto_with_clearHistory('#app/meaip_IU');
 						$rootScope.tabitem.tab1 = 'tab-item';
@@ -810,6 +827,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 						$rootScope.tabitem.tab3 = 'tab-item';
 						$rootScope.tabitem.tab4 = 'tab-item';
 					}else{
+						console.log('6666666666666666666666');
 						$rootScope.distinction = 'meachul';
 						$rootScope.goto_with_clearHistory('#app/meachul_IU');
 						$rootScope.tabitem.tab1 = 'tab-item';

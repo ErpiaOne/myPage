@@ -2010,6 +2010,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 					$scope.checkedDatas[o].overlap_color = '#000';
 				}
 			}
+			console.log('세팅값 확인 =>', $scope.setupData);
 			for(var i=0; i < $scope.checkedDatas.length; i++){
 				if($rootScope.distinction == 'meaip') var d = $scope.setupData.basic_Dn_Meaip;
 				else var d = $scope.setupData.basic_Dn_Sale;
@@ -2165,7 +2166,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 				$scope.goodsmodal.hide(); //goods_seq : data.list[i].Seq
 			}
 		$ionicLoading.hide();
-    		}, 500);
+    		}, 1000);
 	}
 
 
