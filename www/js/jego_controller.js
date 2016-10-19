@@ -1,7 +1,7 @@
 // 재고현황 컨트롤러
-angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $timeout, $cordovaToast, jego_Service, $state, $location, $cordovaBarcodeScanner, $ionicPlatform, $ionicLoading, $ionicModal, ERPiaAPI, app, $ionicScrollDelegate, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
+angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $timeout, $cordovaToast, jego_Service, $state, $location, $cordovaBarcodeScanner, $ionicPlatform, $ionicLoading, $ionicModal, ERPiaAPI, app, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
 	console.log('jegoCtrl(재고현황 조회 컨트롤러)');
-
+$ionicSideMenuDelegate.canDragContent(true);
 	$scope.onTouch = function(){
 		$ionicSlideBoxDelegate.enableSlide(false);
 		$ionicSideMenuDelegate.canDragContent(false);
@@ -123,27 +123,39 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	$scope.jego_Next = function(num){
 		if(num == 1){ // 상품선택
 			if($scope.basictype == true){
-				$scope.basictype = false;
-				$scope.upAnddown = 'ion-arrow-up-b';
+				$scope.basictype= false;
+				$scope.upAnddown="ion-arrow-down-b";
 			}else{
-				$scope.basictype = true;
-				$scope.upAnddown = 'ion-arrow-down-b';
+				$scope.basictype=true;
+				$scope.basic2type=false;
+				$scope.basic3type=false;
+				$scope.upAnddown="ion-arrow-up-b";
+				$scope.upAnddown2="ion-arrow-down-b";
+				$scope.upAnddown3="ion-arrow-down-b";
 			}
 		}else if(num == 2){ // 상세선택
 			if($scope.basic2type == true){
-				$scope.basic2type = false;
-				$scope.upAnddown2 = 'ion-arrow-up-b';
+				$scope.basic2type= false;
+				$scope.upAnddown2="ion-arrow-down-b";
 			}else{
-				$scope.basic2type = true;
-				$scope.upAnddown2 = 'ion-arrow-down-b';
+				$scope.basic2type=true;
+				$scope.basictype=false;
+				$scope.basic3type=false;
+				$scope.upAnddown2="ion-arrow-up-b";
+				$scope.upAnddown="ion-arrow-down-b";
+				$scope.upAnddown3="ion-arrow-down-b";
 			}
 		}else{ // 관심항목
 			if($scope.basic3type == true){
-				$scope.basic3type = false;
-				$scope.upAnddown3 = 'ion-arrow-up-b';
+				$scope.basic3type= false;
+				$scope.upAnddown3="ion-arrow-down-b";
 			}else{
-				$scope.basic3type = true;
-				$scope.upAnddown3 = 'ion-arrow-down-b';
+				$scope.basic3type=true;
+				$scope.basictype=false;
+				$scope.basic2type=false;
+				$scope.upAnddown3="ion-arrow-up-b";
+				$scope.upAnddown="ion-arrow-down-b";
+				$scope.upAnddown2="ion-arrow-down-b";
 			}
 		}
 	}
@@ -756,18 +768,21 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 		jego_Service.proDetail($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, code)
 		.then(function(data){
-			console.log('루트 모드 =>', $rootScope.mode);
+
 			if(data != '<!--Parameter Check-->'){
 				$rootScope.JegoGoods = data.list;
 				$rootScope.iu = 'i';
 				var ok = 'Y'; // 매입하다가 매출 또는 매출하다가 매입하려고 할때 
-				// $ionicHistory.goBack();
+
 				/* 구분 1일때는 매입 ./ 구분 2일때는 매출이다! */
 				if($rootScope.distinction == 'meaip'){
 					if(gubun != 1){
-						console.log('111111111111111111111');
 						$rootScope.distinction = 'meachul';
-						$rootScope.goto_with_clearHistory('#app/meachul_IU');
+						$ionicHistory.goBack();
+						$timeout(function(){
+							$ionicHistory.clearCache();
+							$state.go('app.meachul_IU', {}, {location:'replace'});
+						}, 500);
 						$rootScope.tabitem.tab1 = 'tab-item';
 						$rootScope.tabitem.tab2 = 'tab-item';
 						$rootScope.tabitem.tab3 = 'tab-item active';
@@ -775,8 +790,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상태가 매출등록으로 변경되었습니다.', 'short', 'center');
 						else console.log('상태가 매출등록으로 변경되었습니다.');
 					}else{
-						console.log('22222222222222222222');
 						$rootScope.distinction = 'meaip';
+						$ionicHistory.goBack();
 						$timeout(function(){
 							$state.go('app.meaip_IU');
 						}, 500);
@@ -792,9 +807,12 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 					}
 				}else if($rootScope.distinction == 'meachul'){
 					if(gubun != 2){
-						console.log('3333333333333333333333');
 						$rootScope.distinction = 'meaip';
-						$rootScope.goto_with_clearHistory('#app/meaip_IU');
+						$ionicHistory.goBack();
+						$timeout(function(){
+							$ionicHistory.clearCache();
+							$state.go('app.meaip_IU', {}, {location:'replace'});
+						}, 500);
 						$rootScope.tabitem.tab1 = 'tab-item';
 						$rootScope.tabitem.tab2 = 'tab-item active';
 						$rootScope.tabitem.tab3 = 'tab-item';
@@ -802,8 +820,8 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상태가 매입등록으로 변경되었습니다.', 'short', 'center');
 						else console.log('상태가 매입등록으로 변경되었습니다.');
 					}else{
-						console.log('4444444444444444444444');
 						$rootScope.distinction = 'meachul';
+						$ionicHistory.goBack();
 						$timeout(function(){
 							$state.go('app.meachul_IU');
 						}, 500);
@@ -819,17 +837,24 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 					}
 				}else{		// 매입매출 컨트롤러 안돌았을 경우
 					if(gubun == 1){ 
-						console.log('55555555555555555555');
 						$rootScope.distinction = 'meaip';
-						$rootScope.goto_with_clearHistory('#app/meaip_IU');
+						$ionicHistory.goBack();
+						$timeout(function(){
+							$ionicHistory.clearCache();
+							$state.go('app.meaip_IU', {}, {location:'replace'});
+						}, 500);
+						
 						$rootScope.tabitem.tab1 = 'tab-item';
 						$rootScope.tabitem.tab2 = 'tab-item active';
 						$rootScope.tabitem.tab3 = 'tab-item';
 						$rootScope.tabitem.tab4 = 'tab-item';
 					}else{
-						console.log('6666666666666666666666');
 						$rootScope.distinction = 'meachul';
-						$rootScope.goto_with_clearHistory('#app/meachul_IU');
+						$ionicHistory.goBack();
+						$timeout(function(){
+							$ionicHistory.clearCache();
+							$state.go('app.meachul_IU', {}, {location:'replace'});
+						}, 500);
 						$rootScope.tabitem.tab1 = 'tab-item';
 						$rootScope.tabitem.tab2 = 'tab-item';
 						$rootScope.tabitem.tab3 = 'tab-item active';

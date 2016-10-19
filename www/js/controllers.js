@@ -1362,7 +1362,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			if(loginType == 'E' || loginType == 'G'){
 				ActsService.Acts_save(admin_code, id, mac, loginType, module_M, module_T)
 				.then(function(data){
-					console.log('data');
 				});
 			}
 			// $ionicLoading.hide();

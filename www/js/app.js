@@ -269,7 +269,6 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		$rootScope.loadingani();
 		if(goto_Href == '#app/jegoMain') $rootScope.distinction = '';
 		if($location.url() == '/app/meaip_IU' && goto_Href != '#app/jegoMain' || $location.url() == '/app/meachul_IU' && goto_Href != '#app/jegoMain'){
-			console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 			$ionicPopup.show({
 				title: '경고22',
 				subTitle: '',
@@ -302,24 +301,26 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 								}
 
 								if(no == 'N'){
-									console.log('77777777777777777777');
 									if($rootScope.distinction == 'meaip'){
+										console.log('11111111111111111');
 										$timeout(function(){
 											$state.go('app.meaip_page');
 										}, 500);
 									}
 									else if($rootScope.distinction == 'meachul'){
+										console.log('22222222222222222');
 										$timeout(function(){
 											$state.go('app.meachul_page');
 										}, 500);
 									}
 									else{
+										console.log('33333333333333333');
 										$timeout(function(){
 											$state.go('app.config');
 										}, 500);
 									}
 								}else{
-									console.log('888888888888888888888');
+									console.log('444444444444');
 									$ionicHistory.clearHistory();
 									$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 									$timeout(function(){
@@ -331,10 +332,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 				]
 			})
 		}else{
-			console.log('@@@@@@@@@@@@@@@@@');
 			var no = 'Y'; 	// 매입&매출 백버튼 이슈사항 때문에 두번눌렸을 경우의 구분을 짓는 변수
 			if(goto_Href != '#app/meachul_IU' && goto_Href != '#app/meaip_IU'){
-				console.log('$$$$$$$$$$$$$$$$$$$$$$$$$');
 				$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 			}
 			$ionicHistory.clearCache();
@@ -354,12 +353,12 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			}
 
 			if(no == 'N'){
-				console.log('999999999999999999999');
+				console.log('55555555555');
 				if($rootScope.distinction == 'meaip') $state.go('app.meaip_page');
 				else if($rootScope.distinction == 'meachul') $state.go('app.meachul_page');
 				else $state.go('app.config');
 			}else{
-				console.log('000000000000000000000000');
+				console.log('666666666666');
 				location.href = goto_Href;
 			}
 		}
