@@ -1,12 +1,3 @@
-<script type="text/javascript">
-    document.body.onkeyup = function(e) {
-    var code = e.keyCode;
-    if(code === 74) { // key code for j
-        window.scrollTo(document.body.scrollLeft,
-                        document.body.scrollTop + 500);
-    }
-};
-</script>
 <style>
 table {width:100%; align:center; vertical-align:middle;}
 table td.td1-1{width: 30%; color: #fff;}
@@ -29,9 +20,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
         <button menu-toggle="right" ng-click="jegoSear_change()" ng-if="jegoSearch == 'detail'" class="button button-outline button-positive" style="border-color: #fff;"><sapn style="color: #fff; font-size: 12px; line-height: 14px;  display: inline-block; margin-top: 1px;">통합<br>검색</sapn></button>
         <button menu-toggle="right" ng-click="jegoSear_change()" ng-if="jegoSearch == 'hap'" class="button button-outline button-positive" style="border-color: #fff;"><sapn style="color: #fff; font-size: 12px; line-height: 14px;  display: inline-block; margin-top: 1px;">상세<br>검색</sapn></button>
     </ion-nav-buttons>
-    <ion-content style="background: #dce0e1;" scroll="false" overflow-scroll="false">
-    <html>
-        <body>
+    <ion-content style="background: #dce0e1;">
         <tab-slide-box>
             <div class="tsb-icons"> <!-- class건들이면 안되요..ㅠㅠ -->
                 <div class="tsb-ic-wrp" style="border-bottom: 1px solid #c2c2c2;"> <!-- class건들이면 안되요..ㅠㅠ -->
@@ -44,33 +33,37 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
             </div>
             <ion-slide-box does-continue="true" show-pager="true" on-slide-changed="slideHasChanged($index, tabs);lqSlide(index)">
                 <ion-slide on-touch="onTouch()" on-release="onRelease()" on-swipe-left="nextSlide()" on-swipe-right="previousSlide()" style="background: #e0e0e0; overflow-y: auto;">
-                    <div>
+                <!-- 윗공간 차지해서 키보드 올라올때 포커싱 - 아이오닉 이상함. -->
+                <table class="hide-on-keyboard-open"  ng-if="jegoSearch == 'hap'" style="width: 100%; height: 17%; clear: both; background: #d7d3db;">
+                </table>
                         <!-- 조회조건 -->
                         <!-- 통합검색 모드 -->
-                        <div class="item div-2" ng-if="jegoSearch == 'hap'" style="padding: 40px 30px 30px 30px; background: #d7d3db;">
-                            <div style=""><img src="./img/img_jego.jpg" style="width: 100%; margin-bottom: 0;"></div>
-                            <div style="height: 160px; padding: 20px; margin-top: 20px; background: #aca5b5;">
-                                <div  style="clear: both; width:100%;">
-                                    <div style="float: left; width:100%;">
-                                        <input type="text" style="width: 100%; height: 50px; background: #fff; border: 1px solid #6c5e72; color: #000; padding-left: 10px; padding-right: 50px;" ng-model="jego_searchModule.all_Search">
-                                    </div>
-                                    <div style="float: left; width:10%; margin-left:-80px; margin-top:10px;">
-                                        <i class='ion-android-close' style='font-size: 27px; color:#000; vertical-align: middle;' ng-click='clearc_keyword()'></i>
-                                    </div>
-                                    <div style="float: left; width:10%; margin-left:-45px;  margin-top:10px;" ng-click='jego_barc();ActsLog("jego", "jego_barc")'>
-                                        <i style="font-size: 2.0em; vertical-align:middle; text-align: right;"><img src="./img/barc_02.png"></i>
-                                    </div>
-                                    <div style="width: 100%; left: 0; padding-top:10px; clear: both; padding-bottom: 10px;">
-                                        <button class="button button-block button-psm05" style="border: 0;" ng-click='jego_search();ActsLog("jego", "jego_search")'>조회</button>
+                        <div style="padding-bottom: 100px; background: #d7d3db;">
+                            <div class="item div-2" ng-if="jegoSearch == 'hap'" style="padding: 0 30px 80px 30px; background: #d7d3db;">
+                                <div style=""><img src="./img/img_jego.jpg" style="width: 100%; margin-bottom: 0;"></div>
+                                <div style="height: 160px; padding: 20px; margin-top: 20px; background: #aca5b5;">
+                                    <div  style="clear: both; width:100%;">
+                                        <div style="float: left; width:100%;">
+                                            <input type="text" style="width: 100%; height: 50px; background: #fff; border: 1px solid #6c5e72; color: #000; padding-left: 10px; padding-right: 50px;" ng-model="jego_searchModule.all_Search">
+                                        </div>
+                                        <div style="float: left; width:10%; margin-left:-80px; margin-top:10px;">
+                                            <i class='ion-android-close' style='font-size: 27px; color:#000; vertical-align: middle;' ng-click='clearc_keyword()'></i>
+                                        </div>
+                                        <div style="float: left; width:10%; margin-left:-45px;  margin-top:10px;" ng-click='jego_barc();ActsLog("jego", "jego_barc")'>
+                                            <i style="font-size: 2.0em; vertical-align:middle; text-align: right;"><img src="./img/barc_02.png"></i>
+                                        </div>
+                                        <div style="width: 100%; left: 0; padding-top:10px; clear: both; padding-bottom: 10px;">
+                                            <button class="button button-block button-psm05" style="border: 0;" ng-click='jego_search();ActsLog("jego", "jego_search")'>조회</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
 
-
+                        <div>
                         <!-- 상세검색 모드 -->
-                        <div class="item div-2" ng-if="jegoSearch == 'detail'" style="height: auto; padding: 0 0 50px 0;">
+                        <div class="item div-2" ng-if="jegoSearch == 'detail'" style="height: auto; padding: 0 0 50px 0; margin-top: -30%;">
                             <!-- 상품선택 -->
                             <div class="list list-inset">
                                 <div ng-click="jego_Next(1)" class="div-3" style="font-size: 13px;">상품선택<i class="{{upAnddown}} psmsmy_semo"></i></div>
@@ -250,7 +243,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
                             </div>
                             <div style="padding-bottom: 100px;"></div>
                         </div>
-                    </div>
+                        </div>
                 </ion-slide>
 
                 <!-- 최근검색 -->
@@ -359,7 +352,5 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
                 </ion-slide>
             </ion-slide-box>
         </tab-slide-box>
-        </body>
-        </html>
     </ion-content>
 </ion-view>
