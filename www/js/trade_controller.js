@@ -264,7 +264,7 @@ angular.module('starter.controllers').controller('tradeCtrl', function($scope, $
 		for(var i = 0; i < detaillist.length; i++){
 			var detail = detaillist[i];
 			var j = i+1;
-			var html_start =  "<html><body><div style='padding: 10px;'>";
+			var html_start =  "<html><body><div style='padding: 10px; width: 1080px;'>";
 			var html_view1 = "<table width=1080>"
 							+ "<tr>"
 								+ "<td name='td_User_Date' width=300 align=left>"+ detail.MeaChul_Date + '('+$scope.loginData.UserId+')'  + "</td>"
@@ -281,7 +281,7 @@ angular.module('starter.controllers').controller('tradeCtrl', function($scope, $
 								+ "<td style='padding: 10px; color:blue; border-bottom:1px solid #0100FF; border-top:1px solid #0100FF; border-right:1px solid #0100FF;'  width=45>등 록<br/>번 호</td>"
 								+ "<td name='td_SaNo2' style='padding: 10px; border-bottom:1px solid #0100FF; border-top:1px solid #0100FF; border-right:1px solid #0100FF;'  colspan=6>" + detail.Sano + "</td>"
 							+ "</tr>";
-				var html_view3 = "<tr>"
+			var html_view3 = "<tr>"
 								+ "<td style='padding: 10px; color:blue; border-right:1px solid #0100FF; border-bottom:1px solid #0100FF;'>상 호</td>"
 								+ "<td name='td_GerName1' style='padding: 10px; border-right:1px solid #0100FF; border-bottom:1px solid #0100FF;' colspan=2>" + detail.R_Snm +"</td>"
 								+ "<td style='padding: 10px; color:blue; border-right:1px solid #0100FF; border-bottom:1px solid #0100FF;' width=10 colspan=2>성 명</td>"
@@ -411,7 +411,7 @@ angular.module('starter.controllers').controller('tradeCtrl', function($scope, $
 						+ "</tr>";
 			var html_view19 = "<tr>"
 							+ "<td rowspan=2 style='padding: 10px; width:45px; height:100px; border-right:1px solid #0100FF;'>비 고<br/><br/>사 항</td>"
-							+ "<td width=450>"+ detail.bigo +"</td>"
+							+ "<td width=450  style='border-bottom:1px solid #fff;'>"+ detail.bigo +"</td>"
 							+ "<td  style='padding: 10px; height:25px; border-right:1px solid #0100FF; border-bottom:1px solid #0100FF; border-left:1px solid #0100FF;'>합계</td>"
 							+ "<td style='padding: 10px; border-right:1px solid #0100FF; border-bottom:1px solid #0100FF;' align=right>"+checklist(detail.numhap)+"</td>"
 							+ "<td style='padding: 10px; border-right:1px solid #0100FF; border-bottom:1px solid #0100FF;' align=right>"+""+"</td>"
