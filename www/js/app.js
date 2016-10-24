@@ -4,24 +4,24 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 'starter.controllers', 'tabSlideBox' ,'ngCordova', 'fcsa-number'
-	, 'starter.services'])
+	, 'starter.services', 'angularjs-dropdown-multiselect'])
 
 /* 웹사용 */
- // .constant('ERPiaAPI',{
- // 	  url:'http://localhost:8100/include'
- // 	, url2:'http://localhost:8100'
- // 	, imgUrl:'http://localhost:8100/erpia_update/img'
- // 	, gurl:'http://168.126.146.37/20132354'
- // 	, toast:'N'
- // })
+ .constant('ERPiaAPI',{
+ 	  url:'http://localhost:8100/include'
+ 	, url2:'http://localhost:8100'
+ 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ 	, gurl:'http://168.126.146.37/20132354'
+ 	, toast:'N'
+ })
 
 /* 실제 사용 */
-.constant('ERPiaAPI',{
-	url:'http://www.erpia.net/include',
-	url2: 'http://www.erpia.net',
-	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-	toast:'Y'
-})
+// .constant('ERPiaAPI',{
+// 	url:'http://www.erpia.net/include',
+// 	url2: 'http://www.erpia.net',
+// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+// 	toast:'Y'
+// })
 
 /* 처음 실행 Ctrl - 김형석[2015-11]*/
 .run(function($ionicPlatform, $ionicPush, $location, $timeout, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast, $ionicSlideBoxDelegate) {
@@ -270,7 +270,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		if(goto_Href == '#app/jegoMain') $rootScope.distinction = '';
 		if($location.url() == '/app/meaip_IU' && goto_Href != '#app/jegoMain' || $location.url() == '/app/meachul_IU' && goto_Href != '#app/jegoMain'){
 			$ionicPopup.show({
-				title: '경고22',
+				title: '경고',
 				subTitle: '',
 				content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
 				buttons: [
@@ -302,25 +302,21 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 
 								if(no == 'N'){
 									if($rootScope.distinction == 'meaip'){
-										console.log('11111111111111111');
 										$timeout(function(){
 											$state.go('app.meaip_page');
 										}, 500);
 									}
 									else if($rootScope.distinction == 'meachul'){
-										console.log('22222222222222222');
 										$timeout(function(){
 											$state.go('app.meachul_page');
 										}, 500);
 									}
 									else{
-										console.log('33333333333333333');
 										$timeout(function(){
 											$state.go('app.config');
 										}, 500);
 									}
 								}else{
-									console.log('444444444444');
 									$ionicHistory.clearHistory();
 									$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 									$timeout(function(){
@@ -353,12 +349,10 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			}
 
 			if(no == 'N'){
-				console.log('55555555555');
 				if($rootScope.distinction == 'meaip') $state.go('app.meaip_page');
 				else if($rootScope.distinction == 'meachul') $state.go('app.meachul_page');
 				else $state.go('app.config');
 			}else{
-				console.log('666666666666');
 				location.href = goto_Href;
 			}
 		}

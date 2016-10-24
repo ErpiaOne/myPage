@@ -10,8 +10,14 @@
   <ion-header-bar class="bar bar-subheader" style="width: 100%; background: #fff; padding-bottom: 10px;">
     <table width="100%" style="background: #fff;">
       <tr>
-        <td style="text-align:center; width: 27%; vertical-align: middle;">상품정보</td>
-        <td style="width: 58%"><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; border: 1px solid #e0e0e0; padding: 15px 35px 15px 15px;"></td>
+        <td style="text-align:center; width: 27%; vertical-align: middle;">
+          <select ng-model="user.userMode" ng-change="modeselect()" style="width: 100%; padding: 0 10px; border: 1px solid #e0e0e0;">
+            <option ng-repeat="x in modeselectlist" value="{{x.Code}}" ng-selected="user.userMode == x.Code">{{x.Name}}</option>
+          </select>
+        </td>
+        <td style="width: 58%">
+          <input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; border: 1px solid #e0e0e0; padding: 15px 35px 15px 15px;">
+        </td>
         <td style="width: 15%;">
             <i class='ion-android-close' style='text-align: left; margin-top:8px; padding-right:20px; margin-left:-25px; vertical-align:middle; font-size: 2em;'  ng-if="sbu == false"ng-click='clear_goods()'></i>
             <i class="ion-search" style="font-size: 2em;  margin-top:8px; vertical-align: middle;" ng-click="goods_searchM(1)"></i>

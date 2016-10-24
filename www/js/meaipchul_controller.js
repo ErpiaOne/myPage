@@ -693,7 +693,10 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		$ionicHistory.clearCache();
 		if($rootScope.distinction == 'meaip'){
 			if($rootScope.priv_meaip.master_useYN == 'Y' && $rootScope.priv_meaip.save == 'Y' && $rootScope.priv_wongaYN == 'N'){
-				$state.go('app.meaip_IU', {}, {location:'replace'});
+				$timeout(function(){
+					$ionicHistory.clearCache();
+					$state.go('app.meaip_IU', {}, {location:'replace'});
+				}, 500);
 			}else{
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록 권한이 없습니다.', 'short', 'center');
 				else console.log('등록 권한이 없습니다.');
@@ -701,7 +704,10 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 			
 		}else{
 			if($rootScope.priv_meachul.master_useYN == 'Y' && $rootScope.priv_meachul.save == 'Y'){
-				$state.go('app.meachul_IU', {}, {location:'replace'});
+				$timeout(function(){
+					$ionicHistory.clearCache();
+					$state.go('app.meachul_IU', {}, {location:'replace'});
+				}, 500);
 			}else{
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('등록 권한이 없습니다.', 'short', 'center');
 				else console.log('등록 권한이 없습니다.');
@@ -2010,7 +2016,6 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 					$scope.checkedDatas[o].overlap_color = '#000';
 				}
 			}
-			console.log('세팅값 확인 =>', $scope.setupData);
 			for(var i=0; i < $scope.checkedDatas.length; i++){
 				if($rootScope.distinction == 'meaip') var d = $scope.setupData.basic_Dn_Meaip;
 				else var d = $scope.setupData.basic_Dn_Sale;
@@ -2699,17 +2704,21 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 						$rootScope.JegoGoods = [];
 						if($rootScope.distinction == 'meaip'){ /* 매입일 경우 */
 							// $scope.goodsaddlists = [];
-							$ionicHistory.clearCache();
+							$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 							$ionicHistory.goBack();
 							$timeout(function(){
-								$state.go('app.meaip_page');
+								$ionicHistory.clearHistory();
+								$ionicHistory.clearCache();
+								$state.go('app.meaip_page', {}, {location:'replace'});
 							}, 500);
 						}else{ /* 매출일 경우 */
-							$ionicHistory.clearCache();
 							// $scope.goodsaddlists = [];
+							$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});
 							$ionicHistory.goBack();
 							$timeout(function(){
-								$state.go('app.meachul_page');
+								$ionicHistory.clearHistory();
+								$ionicHistory.clearCache();
+								$state.go('app.meachul_page', {}, {location:'replace'});
 							}, 500);
 						}
 					}
