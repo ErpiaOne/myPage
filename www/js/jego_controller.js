@@ -38,7 +38,7 @@ $ionicSideMenuDelegate.canDragContent(true);
 	$scope.basic3type=false;
 
 	// 통합검색어 
-	$scope.jego_searchModule = { all_Search : '' };
+	$scope.jego_searchModule = { all_Search : 'ㅁㅅㅌ' };
 
 	$scope.select_jegoindex = -1;	// 상세보기는 하나씩만 할수있도록...
 	$scope.pageCnt = 1;			// 조회결과 페이징 
@@ -70,7 +70,7 @@ $ionicSideMenuDelegate.canDragContent(true);
 		JegoQtyCtlYN 		: 'N',		// 재고수량별 조회 옵션 사용여부	: Y / N 
 	}
 
-	/*개월수*/
+	/* 개월수 */
 	$scope.month = [
 		{ id : '1' },
 		{ id : '2' },
@@ -86,6 +86,21 @@ $ionicSideMenuDelegate.canDragContent(true);
 		{ id : '12' }
 	]
 
+	/* 열었다 접었다 - 재고 조회화면 헤더? */
+	if($rootScope.jegoinfo_header == undefined){
+		$rootScope.jegoinfo_header = true;
+	}
+	
+
+	/* jegoInfo_Header 컨트롤 */
+	$rootScope.infoHeader = function(){
+		if($rootScope.jegoinfo_header == true){
+			$rootScope.jegoinfo_header = false;
+		}else{
+			$rootScope.jegoinfo_header = true;
+		}
+	}
+
 	/* 재고조회시 창고 리스트 조회 [이경민 - 2016-09-19] */
 	$scope.jego_Changgh = function() {
 		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
@@ -98,6 +113,7 @@ $ionicSideMenuDelegate.canDragContent(true);
 			jego_Service.jego_changgoSearch($rootScope.loginData.Admin_Code, $rootScope.loginData.UserId)
 			.then(function(data){
 				$rootScope.Ch_List = data.list;
+				console.log('ckdrh rjator =>', $rootScope.Ch_List)
 			});
 			$ionicLoading.hide();
 		}, 1000);
@@ -783,6 +799,7 @@ $ionicSideMenuDelegate.canDragContent(true);
 							$ionicHistory.clearCache();
 							$state.go('app.meachul_IU', {}, {location:'replace'});
 						}, 500);
+
 						$rootScope.tabitem.tab1 = 'tab-item';
 						$rootScope.tabitem.tab2 = 'tab-item';
 						$rootScope.tabitem.tab3 = 'tab-item active';
@@ -793,8 +810,10 @@ $ionicSideMenuDelegate.canDragContent(true);
 						$rootScope.distinction = 'meaip';
 						$ionicHistory.goBack();
 						$timeout(function(){
-							$state.go('app.meaip_IU');
+							$ionicHistory.clearCache();
+							$state.go('app.meaip_IU', {}, {location:'replace'});
 						}, 500);
+
 						$rootScope.tabitem.tab1 = 'tab-item';
 						$rootScope.tabitem.tab2 = 'tab-item active';
 						$rootScope.tabitem.tab3 = 'tab-item';
@@ -813,6 +832,7 @@ $ionicSideMenuDelegate.canDragContent(true);
 							$ionicHistory.clearCache();
 							$state.go('app.meaip_IU', {}, {location:'replace'});
 						}, 500);
+
 						$rootScope.tabitem.tab1 = 'tab-item';
 						$rootScope.tabitem.tab2 = 'tab-item active';
 						$rootScope.tabitem.tab3 = 'tab-item';
@@ -823,7 +843,8 @@ $ionicSideMenuDelegate.canDragContent(true);
 						$rootScope.distinction = 'meachul';
 						$ionicHistory.goBack();
 						$timeout(function(){
-							$state.go('app.meachul_IU');
+							$ionicHistory.clearCache();
+							$state.go('app.meachul_IU', {}, {location:'replace'});
 						}, 500);
 						$rootScope.tabitem.tab1 = 'tab-item';
 						$rootScope.tabitem.tab2 = 'tab-item';

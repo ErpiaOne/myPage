@@ -13,11 +13,10 @@
 		<div style="text-align: center; padding: 10px 10px 50px 10px; color: #000;">
 			<div style="float: left; width: 25%; vertical-align: middle; font-size: 16px; font-weight: bold; padding-top: 4px;">조회창고</div>
 			<div style="float: right; width: 75%; padding-bottom: 10px;">
-				<!-- <select style="background: #ededed; width:75%; border: 0; border-bottom: 1px solid #e0e0e0; color: #000; height: 28px;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl()">
+				<select style="background: #ededed; width:75%; border: 0; border-bottom: 1px solid #e0e0e0; color: #000; height: 28px;" ng-model="jego_detail_colum.pro_ChangGo" multiple="multiple" ng-change="changgoCtl()">
 					<option value="ALL">전체창고</option>
 					<option ng-repeat="x in Ch_List" value="{{x.Code}}" ng-if="x.Stts != '삭제'">{{x.Name}}</option>
-				</select> -->
-				<div style="border: 0;" ng-dropdown-multiselect="" ng-repeat="x in Ch_List" value="{{x.Code}}" selected-model="example1model">{{x.Name}}</div>
+				</select>
 				<i class="ion-search" style="width:25%; font-size: 25px; padding-left: 7px; vertical-align: middle;" ng-click="reSelect()"></i>
 			</div>
 
