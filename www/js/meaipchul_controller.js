@@ -1997,6 +1997,15 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		$state.go("app.jego_search");
 	}
 
+	$scope.barcode_Controll = '';
+
+	/* 바코드로 찍었을때 상품이 여러개인경우 */
+	$scope.barcodeSelect = function(index){
+		$scope.barcode_Controll = $scope.barcode_Controll + ',' + index;
+		console.log('index확인 =>', $scope.barcode_Controll); // ,0,1 이렇게 나옴
+	}
+
+
     	/*선택된 상품들을 등록리스트에 저장 --> 이중 $scope - 이경민[2015-12] */
     	$scope.checkdataSave=function(){
     		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
@@ -2053,33 +2062,64 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 						$scope.bargoods = {
 							num : 1
 						}
-						$ionicPopup.show({
-							template: '<input type="number" ng-model="bargoods.num" style="text-align:right">',
-							title: '('+ $scope.checkedDatas[0].G_Code +')<br>' + $scope.checkedDatas[0].G_Name,
-							subTitle: '수량을 입력해주세요.',
-							scope: $scope,
-							buttons: [
-								{
-									text: '확인',
-									onTap: function(e){
-									if($scope.bargoods.num != 0){
-										$scope.goodsaddlists.push({
-											overlap_color : $scope.checkedDatas[0].overlap_color,
-											name : $scope.checkedDatas[0].G_Name,
-											num : parseInt($scope.bargoods.num),
-											goodsprice : parseInt(price),
-											code : $scope.checkedDatas[0].G_Code,
-											stand : $scope.checkedDatas[0].G_Stand
-										});
-										$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
-										$scope.bar = 'N';
-										}else{
-											alert('0개는 등록 할 수 없습니다. 다시 시도해주세요.');
+						if($scope.checkedDatas.length > 1){
+							$ionicPopup.show({
+								template: '<any ng-repeat="x in checkedDatas"><ion-checkbox ng-click="barcodeSelect($index)" style="font-size: 0.8em; word-break:break-all;">{{x.G_Name}}</ion-checkbox></any>',
+								title: '동일한 바코드를 가진 상품이 2가지 존재합니다. <br> 등록할 상품을 선택해 주세요.',
+								subTitle: '다중선택가능',
+								scope: $scope,
+								buttons: [
+									{
+										text: '확인',
+										onTap: function(e){
+										// if($scope.bargoods.num != 0){
+										// 	$scope.goodsaddlists.push({
+										// 		overlap_color : $scope.checkedDatas[0].overlap_color,
+										// 		name : $scope.checkedDatas[0].G_Name,
+										// 		num : parseInt($scope.bargoods.num),
+										// 		goodsprice : parseInt(price),
+										// 		code : $scope.checkedDatas[0].G_Code,
+										// 		stand : $scope.checkedDatas[0].G_Stand
+										// 	});
+										// 	$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
+										// 	$scope.bar = 'N';
+										// 	}else{
+										// 		alert('0개는 등록 할 수 없습니다. 다시 시도해주세요.');
+										// 	}
+										console.log('잘되야 되는데!!!!!!!!!!!!!!!!!=>', $scope.barcode_Controll);
 										}
-									}
-								},
-							]
-						});
+									},
+								]
+							});
+						}else{
+							$ionicPopup.show({
+								template: '<input type="number" ng-model="bargoods.num" style="text-align:right">',
+								title: '('+ $scope.checkedDatas[0].G_Code +')<br>' + $scope.checkedDatas[0].G_Name,
+								subTitle: '수량을 입력해주세요.',
+								scope: $scope,
+								buttons: [
+									{
+										text: '확인',
+										onTap: function(e){
+										if($scope.bargoods.num != 0){
+											$scope.goodsaddlists.push({
+												overlap_color : $scope.checkedDatas[0].overlap_color,
+												name : $scope.checkedDatas[0].G_Name,
+												num : parseInt($scope.bargoods.num),
+												goodsprice : parseInt(price),
+												code : $scope.checkedDatas[0].G_Code,
+												stand : $scope.checkedDatas[0].G_Stand
+											});
+											$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
+											$scope.bar = 'N';
+											}else{
+												alert('0개는 등록 할 수 없습니다. 다시 시도해주세요.');
+											}
+										}
+									},
+								]
+							});
+						}
 					}else{
 						if($rootScope.iu == 'i'){
 							$scope.goodsaddlists.push({
@@ -2228,6 +2268,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 						for(var b=0; b < data.list.length; b++){
 							$scope.checkedDatas.push(data.list[b]);
 							$scope.bar = 'Y';
+							console.log('체크 데이터 확인 ->', $scope.checkedDatas)
 						}
 						$scope.checkdataSave();
 					}

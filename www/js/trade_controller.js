@@ -218,6 +218,13 @@ angular.module('starter.controllers').controller('tradeCtrl', function($scope, $
 	function commaChange(Num){
 		fl="";
 		Num = new String(Num);
+		if(Num.indexOf('-') > -1){	// 마이너스 금액 이슈 사항 처리
+			var NumTF = "T";
+			var Num2 = Num.replace("-", "");	
+			Num = Num2;
+		}else{
+			var NumTF = 'F';
+		}
 		temp="";
 		co=3;
 		num_len=Num.length;
@@ -230,6 +237,9 @@ angular.module('starter.controllers').controller('tradeCtrl', function($scope, $
 			temp=","+Num.substr(num_len,co)+temp;
 		}
 		rResult =  fl+temp.substr(1);
+		if ( NumTF == "T" ){
+			rResult = '-' + rResult;
+		}
 		return rResult;
 	}
 	/* 공백이슈 통합 - 이경민[2016-01] */
@@ -419,7 +429,7 @@ angular.module('starter.controllers').controller('tradeCtrl', function($scope, $
 							+ "<td style='padding: 10px; border-bottom:1px solid #0100FF;' align=right>"+checklist2(detail.taxhap)+"</td>"
 						+ "</tr>"
 						+ "<tr>"
-							+ "<td colspan=6 ></td>"
+							+ "<td colspan=6 style='border-top: 1px solid #fff;'></td>"
 						+ "</tr>"
 					+ "</table><span align='center'>(" + j + "/" + detaillist.length + ")</span><br>"
 

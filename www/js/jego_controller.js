@@ -38,7 +38,7 @@ $ionicSideMenuDelegate.canDragContent(true);
 	$scope.basic3type=false;
 
 	// 통합검색어 
-	$scope.jego_searchModule = { all_Search : 'ㅁㅅㅌ' };
+	$scope.jego_searchModule = { all_Search : '' };
 
 	$scope.select_jegoindex = -1;	// 상세보기는 하나씩만 할수있도록...
 	$scope.pageCnt = 1;			// 조회결과 페이징 

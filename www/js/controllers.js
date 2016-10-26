@@ -115,7 +115,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
    		Android_version : '1.1.2',
-   		IOS_version : '1.0.2'	//업데이트시 필수로 변경!!
+   		IOS_version : '1.0.3'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 - 김형석[2015-12] */
@@ -442,10 +442,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'borntoroad';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			$rootScope.loginData.Admin_Code = 'km0421'; //PC모드
+			$rootScope.loginData.Admin_Code = '6178600097'; //PC모드
 			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'kaming311';
-			$rootScope.loginData.Pwd = 'lkmbanana1!';
+			$rootScope.loginData.UserId = 'borntoroad';
+			$rootScope.loginData.Pwd = 'erpia!1010';
 
 			// $rootScope.loginData.Admin_Code = 'kpage'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
@@ -1319,7 +1319,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버튼별 로그 기록 저장 - 이경민[20160907] */
 	$rootScope.ActsLog = function(module_M, module_T){
-		console.log('업데이트 전에 여기찾아라~~~');
 		$timeout(function(){
 			var current_URL = $location.url();
 			if(current_URL == '/app/slidingtab' && $rootScope.tabitem.tab1 != 'tab-item active'){
@@ -1813,7 +1812,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// 발주정보 조회
 			scmInfoService.scmInfo('ScmMain', 'Balju', $scope.loginData.Admin_Code, $rootScope.userData.G_Code, aWeekAgo, nowday)
 			.then(function(scmInfo){
-				console.log('요기와?', scmInfo);
 				var B_TOT = 0;
 				for(var i=0; i<scmInfo.data.list.length; i++){
 					switch(scmInfo.data.list[i].CntStts){
