@@ -2001,8 +2001,14 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 
 	/* 바코드로 찍었을때 상품이 여러개인경우 */
 	$scope.barcodeSelect = function(index){
-		$scope.barcode_Controll = $scope.barcode_Controll + ',' + index;
-		console.log('index확인 =>', $scope.barcode_Controll); // ,0,1 이렇게 나옴
+		console.log('index 머가져와? =>', index);
+		if($scope.barcode_Controll.indexOf(index) > -1){
+			var Str1 = ',' + index;
+			var Str = $scope.barcode_Controll.replace(Str1, '');
+			$scope.barcode_Controll = Str;
+		}else{
+			$scope.barcode_Controll = $scope.barcode_Controll + ',' + index;
+		}
 	}
 
 
@@ -2010,21 +2016,23 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
     	$scope.checkdataSave=function(){
     		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
     		$timeout(function(){
-    			if($scope.goodsaddlists.length > 0){
-				var check = 'N';
-				for(var j=0; j < $scope.goodsaddlists.length; j++){
-					for(var o=0; o < $scope.checkedDatas.length; o++){
-						if($scope.goodsaddlists[j].code == $scope.checkedDatas[o].G_Code){
-							$scope.goodsaddlists[j].overlap_color = '#FF5E00';
-							$scope.checkedDatas[o].overlap_color = '#FF5E00';
+    			if($scope.bar != 'Y'){
+    				if($scope.goodsaddlists.length > 0){
+					var check = 'N';
+					for(var j=0; j < $scope.goodsaddlists.length; j++){
+						for(var o=0; o < $scope.checkedDatas.length; o++){
+							if($scope.goodsaddlists[j].code == $scope.checkedDatas[o].G_Code){
+								$scope.goodsaddlists[j].overlap_color = '#FF5E00';
+								$scope.checkedDatas[o].overlap_color = '#FF5E00';
+							}
 						}
 					}
+				}else{
+					for(var o=0; o < $scope.checkedDatas.length; o++){
+						$scope.checkedDatas[o].overlap_color = '#000';
+					}
 				}
-			}else{
-				for(var o=0; o < $scope.checkedDatas.length; o++){
-					$scope.checkedDatas[o].overlap_color = '#000';
-				}
-			}
+    			}
 			for(var i=0; i < $scope.checkedDatas.length; i++){
 				if($rootScope.distinction == 'meaip') var d = $scope.setupData.basic_Dn_Meaip;
 				else var d = $scope.setupData.basic_Dn_Sale;
@@ -2072,25 +2080,53 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 									{
 										text: '확인',
 										onTap: function(e){
-										// if($scope.bargoods.num != 0){
-										// 	$scope.goodsaddlists.push({
-										// 		overlap_color : $scope.checkedDatas[0].overlap_color,
-										// 		name : $scope.checkedDatas[0].G_Name,
-										// 		num : parseInt($scope.bargoods.num),
-										// 		goodsprice : parseInt(price),
-										// 		code : $scope.checkedDatas[0].G_Code,
-										// 		stand : $scope.checkedDatas[0].G_Stand
-										// 	});
-										// 	$scope.checkedDatas.splice(0, $scope.checkedDatas.length);
-										// 	$scope.bar = 'N';
-										// 	}else{
-										// 		alert('0개는 등록 할 수 없습니다. 다시 시도해주세요.');
-										// 	}
-										console.log('잘되야 되는데!!!!!!!!!!!!!!!!!=>', $scope.barcode_Controll);
+											if($scope.goodsaddlists.length > 0){
+												var check = 'N';
+												for(var j=0; j < $scope.goodsaddlists.length; j++){
+													for(var o=0; o < $scope.checkedDatas.length; o++){
+														if($scope.goodsaddlists[j].code == $scope.checkedDatas[o].G_Code){
+															$scope.goodsaddlists[j].overlap_color = '#FF5E00';
+															$scope.checkedDatas[o].overlap_color = '#FF5E00';
+														}
+													}
+												}
+											}else{
+												for(var o=0; o < $scope.checkedDatas.length; o++){
+													$scope.checkedDatas[o].overlap_color = '#000';
+												}
+											}
+											var str = $scope.barcode_Controll.split(',');
+											for(var i = 1; i < str.length; i++ ){
+												var num = str[i];
+												$scope.goodsaddlists.push({
+													overlap_color : $scope.checkedDatas[num].overlap_color,
+													name : $scope.checkedDatas[num].G_Name,
+													num : parseInt($scope.bargoods.num),
+													goodsprice : parseInt(price),
+													code : $scope.checkedDatas[num].G_Code,
+													stand : $scope.checkedDatas[num].G_Stand
+												});
+
+												if(i == str.length-1){
+													$scope.checkedDatas=[];
+													$scope.bar = 'N';
+													$scope.barcode_Controll = '';
+												}
+											}
 										}
 									},
+									{
+										text: '취소',
+										onTap: function(e){
+											console.log('취소');
+											$scope.checkedDatas=[];
+											$scope.bar = 'N';
+											$scope.barcode_Controll = '';
+										}
+									}
 								]
 							});
+							break;
 						}else{
 							$ionicPopup.show({
 								template: '<input type="number" ng-model="bargoods.num" style="text-align:right">',
