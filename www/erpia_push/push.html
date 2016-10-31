@@ -4,29 +4,29 @@
 	</ion-nav-title>
 	<ion-nav-back-button></ion-nav-back-button>
 	<ion-content overflow-scroll="false" style="padding: 10px; padding-bottom: 100px;">
-	<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
-		<div style="height: 100%;">
-			<ion-list show-delete="data.showDelete">
-				<ion-item ng-if="items.length == 0 || items.length == 'undefined'" style="background: #f3eff4">새로운소식이 없습니다.</ion-item>
-				<ion-item  ng-if="items!==undefined"	ng-repeat="item in items" style="padding:0px; background: #f3eff4" item="item" class="item-remove-animate item-icon-right">
-						<!-- href="#/item/{{item.Seq}}" -->
+		<ion-scroll zooming="false" direction="y" style="width: 100%; height: 100%; clear: both;">
+			<div style="height: 100%;">
+				<ion-list show-delete="data.showDelete">
+					<ion-item ng-if="items.length == 0 || items.length == 'undefined'" style="background: #f3eff4">새로운소식이 없습니다.</ion-item>
+					<ion-item  ng-if="items!==undefined"	ng-repeat="item in items" style="padding:0px; background: #f3eff4" item="item" class="item-remove-animate item-icon-right">
+							<!-- href="#/item/{{item.Seq}}" -->
 
-					<!-- <ui class="list" ng-click="toggle_{{item.idx}} = !toggle_{{item.idx}}">
-						<li class="item"> -->
-						<p>
-							<font>No.{{item.Seq}} {{item.in_date}}</font><br/>
-						</p>
-						<p>{{item.subject}}</p><br/>
-						<pre>{{item.contents}}</pre>
-						<i class="icon ion-chevron-right icon-accessory"></i>
-						<!-- <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button> -->
-						<!-- <i class="icon ion-chevron-right icon-accessory" ng-click="PushDetail()"></i> -->
-						<!-- </li> -->
-					<!-- </ui>
-					<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.Seq}}" ng-animate="'box'" ng-bind-html="item.content"></pre> -->
-				</ion-item>
-			</ion-list>
-		</div>
+						<!-- <ui class="list" ng-click="toggle_{{item.idx}} = !toggle_{{item.idx}}">
+							<li class="item"> -->
+							<p ng-click="PushDetail()">
+								<font>No.{{item.Seq}} {{item.in_date}}</font><br/>
+							</p>
+							<p ng-click="PushDetail()">{{item.Push_title}}</p><br/>
+							<pre ng-click="PushDetail()">{{item.Push_Content}}</pre>
+							<i class="icon ion-minus-circled icon-accessory"  style="color: red"></i>
+							<!-- <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button> -->
+							<!-- <i class="icon ion-chevron-right icon-accessory" ng-click="PushDetail()"></i> -->
+							<!-- </li> -->
+						<!-- </ui>
+						<pre class="Content" style="font-family: sans-serif;" ng-show="toggle_{{item.Seq}}" ng-animate="'box'" ng-bind-html="item.content"></pre> -->
+					</ion-item>
+				</ion-list>
+			</div>
 		</ion-scroll>
 	</ion-content>
 </ion-view>

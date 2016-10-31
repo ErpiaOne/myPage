@@ -811,12 +811,12 @@ angular.module('starter.services', [])
 	var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm_Manage.asp';
 	var PushList = [];
 	return{
-		select : function(UUID){					// 유저가 받은 푸쉬리스트 출력
-			// var data = 'Kind=Mobile_Push_Log&Mode=SELECT&mac=' + UUID;
-			var data = 'Kind=Mobile_Push_Log&Mode=SELECT&mac=' + UUID;
+		select : function(UUID,admin_code,UserId,userType){					// 유저가 받은 푸쉬리스트 출력
+			var data = 'Kind=Mobile_Push_Log&Mode=SELECT&Admin_Code=' + admin_code + '&UserId=' + UserId + '&Mac=10db6b1a3fe76f5e&loginType=' + userType;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					PushList = response.data
+					console.log('있을텐데 =>', PushList);
 					return PushList;
 				}else{
 					return $q.reject(response.data);
@@ -1891,6 +1891,7 @@ angular.module('starter.services', [])
 			else var word = escape(keyword);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt='+ pageCnt +'&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + word + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
+			console.log('통합 조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					if(response.data != '<!--Parameter Check-->'){
@@ -1911,6 +1912,7 @@ angular.module('starter.services', [])
 			else var word = escape(keyword);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt=1&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=&CodeSearchYN=N&OneSelectCode=&GoodsCodeList=' + GCode;
+			console.log('창고 재조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					if(response.data != '<!--Parameter Check-->'){
@@ -1928,6 +1930,7 @@ angular.module('starter.services', [])
 		}, jego_changgoSearch : function(Admin_Code, UserId){		// 재고 창고리스트 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Util&Mode=Util_Select_ChangGo';
+			console.log('창고리스트 조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response.data;
@@ -1940,6 +1943,7 @@ angular.module('starter.services', [])
 		}, detail_search : function(Admin_Code, UserId, ChangGoCode, OneSelectCode){		// 통합 검색 재고 창고별 상세 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&ChangGoCode=ALL&KeyWord=&CodeSearchYN=N&OneSelectCode=' + OneSelectCode;
+			console.log('모든 창고 정보 나옴=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response.data;
@@ -1952,6 +1956,7 @@ angular.module('starter.services', [])
 		}, Attention_list : function(Admin_Code, UserId, Mode){		// MyList & 관심항목 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Util&Mode=' + Mode;
+			console.log('MyList & 관심항목 조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -1964,6 +1969,7 @@ angular.module('starter.services', [])
 		}, detailJego_search : function(Admin_Code, UserId, Mode, changgo_key, jegoInfo, pageCnt){		// 상세검색을 통한 재고조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=' + Mode + '&pageCnt=' + pageCnt + '&pageRow=10&ChangGoCode=' + changgo_key + '&OneSelectCode=' + jegoInfo.OneSelectCode + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
+			console.log('상세검색을 통한 재고조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					if(response.data != '<!--Parameter Check-->'){
@@ -1981,6 +1987,7 @@ angular.module('starter.services', [])
 		}, proDetail : function(Admin_Code, UserId, code){		// 선택상품 상세조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Select_Goods_Detail&OneSelectCode=' + code + '&ChanggoCode=001'
+			console.log('선택상품 상세조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -1993,6 +2000,7 @@ angular.module('starter.services', [])
 		}, search_Save : function(Admin_Code, UserId, changgo_key, jegoInfo, Mode, text){		// 조회셋 등록
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=' + Mode + '&pageCnt=&ChangGoCode=' + changgo_key + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN + '&sel_name=' + escape(text);
+			console.log('조회셋 등록=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -2005,7 +2013,7 @@ angular.module('starter.services', [])
 		}, Opset_search : function(Admin_Code, UserId, gubun){		// 조회셋 리스트 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Select_OptSet_List&RL_Gubun=' + gubun;
-
+			console.log('조회셋 리스트 조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -2018,7 +2026,7 @@ angular.module('starter.services', [])
 		}, Opset_de : function(Admin_Code, UserId, index){		// 조회셋 리스트 삭제
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Del_Select_OptSet_Rapid&sel_idx=' + index;
-
+			console.log('조회셋 리스트 삭제=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -2028,10 +2036,10 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});	
-		}, meaipchul_GoodsSearch : function(Admin_Code, UserId, GCode){		// 조회셋 리스트 삭제
+		}, meaipchul_GoodsSearch : function(Admin_Code, UserId, GCode){		// 상품코드 리스트로 재고조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt=1&pageRow=20&ChangGoCode=&KeyWord=&CodeSearchYN=N&OneSelectCode=&GoodsCodeList=' + GCode;
-
+			console.log('상품코드 리스트로 재고조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					if(response.data != '<!--Parameter Check-->'){

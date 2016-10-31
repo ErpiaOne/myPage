@@ -452,10 +452,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'kpage1089';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			// $rootScope.loginData.Admin_Code = 'phj9775'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId  = 'phj9775';
-			// $rootScope.loginData.Pwd = '1234';
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId  = 'test1234';
+			$rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
