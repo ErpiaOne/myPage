@@ -13,12 +13,12 @@
 
 						<!-- <ui class="list" ng-click="toggle_{{item.idx}} = !toggle_{{item.idx}}">
 							<li class="item"> -->
-							<p ng-click="PushDetail()">
+							<p ng-click="alramRead($index)">
 								<font>No.{{item.Seq}} {{item.in_date}}</font><br/>
 							</p>
-							<p ng-click="PushDetail()">{{item.Push_title}}</p><br/>
-							<pre ng-click="PushDetail()">{{item.Push_Content}}</pre>
-							<i class="icon ion-minus-circled icon-accessory"  style="color: red"></i>
+							<p ng-click="alramRead($index)">{{item.Push_title}}</p><br/>
+							<pre ng-click="alramRead($index)">{{item.Push_Content}}</pre>
+							<i class="icon ion-minus-circled icon-accessory"  style="color: red; font-size: 2em;" ng-click="alramdelete($index)"></i>
 							<!-- <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button> -->
 							<!-- <i class="icon ion-chevron-right icon-accessory" ng-click="PushDetail()"></i> -->
 							<!-- </li> -->

@@ -104,7 +104,7 @@
 									<ui class="list" ng-click="toggle_{{item.key_id}} = !toggle_{{item.key_id}}">
 										<li class="item" style="padding-top: 8px; padding-bottom: 8px; border-bottom: 1px solid #d6562f; background: #f9f9f9;">
 											<font>{{item.inDate}}</font><br/>
-											<font ng-if="item.writer=='ERPia'" style="font-size: 0.9em; background-color: #669043; color:white">답변</font>
+											<font ng-if="item.manageID!='Main'" style="font-size: 0.9em; background-color: #669043; color:white">답변</font>
 											<b style="font-size: 0.9em;">{{item.subject}}</b><br/>
 											<font style="font-size: 0.9em;">글쓴이: {{item.writer}}</font>
 										</li>

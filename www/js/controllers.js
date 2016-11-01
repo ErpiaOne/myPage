@@ -2808,7 +2808,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 })
 
 /* PUSH컨트롤러 - 김형석[2016-01] */
-.controller('PushCtrl', function($rootScope, $scope, $state, PushSelectService, app, ERPiaAPI){
+.controller('PushCtrl', function($rootScope, $scope, $state, PushSelectService, app, ERPiaAPI, $ionicHistory, $timeout, SCMService){
 	console.log("PushCtrl");
 
 	/* 내가 받은 push내용 리스트로 불러오기 - 김형석[2016-01] */
@@ -2821,16 +2821,35 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		}
 	}
 
+	$scope.scmlogin = function(){ // ERPIA 자동로그인 -- 후에 추가할것.
+		SCMService.scmlogin('onz', '00010', '(주)가나씨앤씨');
+		$timeout(function(){
+			window.open('https://www.erpia.net/erpiascm/order/erpia_order.asp','_blank', 'location=yes,closebuttoncaption=Done');
+		}, 1000);
+
+	}
+
 	/* 알림페이지 확인 및 이동 - 이경민[2016-10-06] */
 	$scope.alramRead = function(index){
-		console.log('읽자~ =>', $scope.items[index]);
 		if($scope.items[index].Read_YN == 'N'){		// 푸시로그 업데이트 
-			PushSelectService.update($rootScope.deviceInfo.uuid, $rootScope.loginData.Admin_Code, $rootScope.loginData.UserId, $rootScope.loginData.loginType, index)
-			.then(function(data){
-				console.log('데이터 확인용 =>', data);
-			})
-		}else{
+			PushSelectService.update($rootScope.deviceInfo.uuid, $scope.items[index].idx).then(function(data){})
+			$rootScope.boardIndex = $scope.items[index].BoardParam;
+			$scope.items.splice(index, 1);
+			$ionicHistory.clearCache();
+			// if($scope.items[index].state == 'app.erpia_board-Main'){
 
+			// } -- 일단 지금은 Q&A게시판에만 있어서.. 나중에 추가할것.
+			$state.go('app.erpia_board-Main', {}, {location:'replace'});
+		}
+	}
+
+	/* 알림내역삭제 - 이경민[2016-11-01] */
+	$scope.alramdelete = function(index){
+		if($scope.items[index].Read_YN == 'N'){		// 푸시로그 삭제업데이트 -- 상태값 9로 바뀜
+			PushSelectService.de_alram($rootScope.deviceInfo.uuid, $scope.items[index].idx).then(function(data){})
+			$timeout(function(){
+				$scope.items.splice(index, 1);
+			}, 500);
 		}
 	}
 

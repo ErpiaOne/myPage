@@ -812,12 +812,34 @@ angular.module('starter.services', [])
 	var PushList = [];
 	return{
 		select : function(UUID,admin_code,UserId,userType){					// 유저가 받은 푸쉬리스트 출력
-			var data = 'Kind=Mobile_Push_Log&Mode=SELECT&Admin_Code=' + admin_code + '&UserId=' + UserId + '&Mac=10db6b1a3fe76f5e&loginType=' + userType;
+			var data = 'Kind=Mobile_Push_Log&Mode=SELECT&Admin_Code=' + admin_code + '&UserId=' + UserId + '&Mac=ba8e205a02d20e66&loginType=' + userType;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					PushList = response.data
 					console.log('있을텐데 =>', PushList);
 					return PushList;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})
+		}, update : function(UUID, index){							// 알림 읽음 체크 - 이경민 [2016-11-01]
+			var data = 'Kind=Mobile_Push_Log&Mode=VIEW&Mac=ba8e205a02d20e66&idx=' + index;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})
+		}, de_alram : function(UUID, index){							// 알림 삭제 - 이경민 [2016-11-01]
+			var data = 'Kind=Mobile_Push_Log&Mode=DELETE&Mac=ba8e205a02d20e66&idx=' + index;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response;
 				}else{
 					return $q.reject(response.data);
 				}
@@ -1827,10 +1849,14 @@ angular.module('starter.services', [])
 .factory('SCMService', function($http, ERPiaAPI, $q, $cordovaToast, $rootScope){
 	return{
 		scmlogin: function(admin_code, g_code, ger_name){
-			var url = ERPiaAPI.url2 +'/ERPiaSCM/Mobile_loginChk.asp';
+			var url = ERPiaAPI.url +'/mobile_loginChk.asp';
 			var data = 'hidAdmin_Code=' + admin_code +'&hidGerCode=' + g_code + '&hidGerName='+ escape(ger_name);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
+					if(response.data.result == 'Y'){
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('로그인되었습니다.', 'short', 'center');
+						else console.log('로그인되었습니다.');
+					}
 					return response.data;
 				}else{
 					return $q.reject(response.data);
@@ -1840,9 +1866,9 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 		}
-		
 	};
-
+//http://www.erpia.net/ERPiaSCM/mobile_loginChk.asp?hidAdmin_Code=onz&hidGerCode=00010&hidGerName=%28%uC8FC%29%uAC00%uB098%uC528%uC564%uC528
+//http://localhost:8100/ERPiaSCM/Mobile_loginChk.asp?hidAdmin_Code=onz&hidGerCode=00010&hidGerName=%28%uC8FC%29%uAC00%uB098%uC528%uC564%uC528
 })
 /* SCM/NORMAL모드 비밀번호변경 Service - 김형석[2016-06-22] */
 //http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=SCM_PassChange&loginType=N&Admin_Code=onz&GerCode=00926&ID=onz&pwd=onz&changePass=1234&mac=ba8e205a02d20e66
