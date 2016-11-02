@@ -15,10 +15,10 @@
 					<span class="{{tabitem.tab2}} psm_button01" ng-click="goto_with_clearHistory('#/app/introduce'); sidetab('tab2'); ActsLog('act_settings', 'act_Erpia_introduce')">
 						ERPia소개
 					</span>
-					<span class="{{tabitem.tab3}} psm_button01" ng-click="goto_with_clearHistory('#/app/cs'); sidetab('tab3');ActsLog('act_settings','act_Signup')">
+					<span class="{{tabitem.tab3}} psm_button01" ng-click="goto_with_clearHistory('#/app/cs'); sidetab('tab3');ActsLog('act_settings','act_Signup')" ng-if="iosbutton1 == iosbutton2">
 						가입상담
 					</span>
-					<span class="{{tabitem.tab4}} psm_button01" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4');ActsLog('act_settings', 'act_homepage')">
+					<span class="{{tabitem.tab4}} psm_button01" ng-click="goto_with_clearHistory('#/app/homepage'); sidetab('tab4');ActsLog('act_settings', 'act_homepage')" ng-if="iosbutton1 == iosbutton2">
 						홈페이지
 					</span>
 				</div>
@@ -137,7 +137,7 @@
 				<div  ng-switch-when="E">
 					<div name="erpia_side" class="button-bar">
 						<a class="button psm_left_mediv psm_left_box1" style="border-radius: 0;" menu-close ng-click="goto_with_clearHistory('#/app/board')"><img src="./img/icon_board.png" class="psm_left_img2"><br>고객센터</a>
-						<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" ng-click="ActsLog('act_settings', 'act_homepage')" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank"><img src="./img/icon_home2.png" class="psm_left_img2"><br>홈페이지</a>
+						<a class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" ng-click="ActsLog('act_settings', 'act_homepage')" href="#" onclick="window.open('https://www.erpia.net/','_blank', 'location=yes,closebuttoncaption=Done');" target="blank" ng-if="iosbutton1 == iosbutton2"><img src="./img/icon_home2.png" class="psm_left_img2"><br>홈페이지</a>
 						<a class="button psm_left_mediv psm_left_box3" style="border-radius: 0;" ng-if="loginData.Admin_Code != 'ERPMobile'" menu-close ng-click="goto_with_clearHistory('#/app/push');ActsLog('act_settings', 'act_alarmpage')"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</a>
 						<!-- <button class="button psm_left_mediv psm_left_box2" style="border-radius: 0;" menu-close ng-click="already()"><img src="./img/icon_push.png" class="psm_left_img2"><br>알림</button> -->
 					</div>

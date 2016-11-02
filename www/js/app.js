@@ -7,21 +7,21 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	, 'starter.services'])
 
 /* 웹사용 */
- .constant('ERPiaAPI',{
- 	  url:'http://localhost:8100/include'
- 	, url2:'http://localhost:8100'
- 	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	, gurl:'http://168.126.146.37/20132354'
- 	, toast:'N'
- })
+ // .constant('ERPiaAPI',{
+ // 	  url:'http://localhost:8100/include'
+ // 	, url2:'http://localhost:8100'
+ // 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ // 	, gurl:'http://168.126.146.37/20132354'
+ // 	, toast:'N'
+ // })
 
 /* 실제 사용 */
-// .constant('ERPiaAPI',{
-// 	url:'http://www.erpia.net/include',
-// 	url2: 'http://www.erpia.net',
-// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-// 	toast:'Y'
-// })
+.constant('ERPiaAPI',{
+	url:'http://www.erpia.net/include',
+	url2: 'http://www.erpia.net',
+	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+	toast:'Y'
+})
 
 /* 처음 실행 Ctrl - 김형석[2015-11]*/
 .run(function($ionicPlatform, $ionicPush, $location, $timeout, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast, $ionicSlideBoxDelegate) {

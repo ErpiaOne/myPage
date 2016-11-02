@@ -812,11 +812,10 @@ angular.module('starter.services', [])
 	var PushList = [];
 	return{
 		select : function(UUID,admin_code,UserId,userType){					// 유저가 받은 푸쉬리스트 출력
-			var data = 'Kind=Mobile_Push_Log&Mode=SELECT&Admin_Code=' + admin_code + '&UserId=' + UserId + '&Mac=ba8e205a02d20e66&loginType=' + userType;
+			var data = 'Kind=Mobile_Push_Log&Mode=SELECT&Admin_Code=' + admin_code + '&UserId=' + UserId + '&Mac=' + UUID + '&loginType=' + userType;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
-					PushList = response.data
-					console.log('있을텐데 =>', PushList);
+					PushList = response.data;
 					return PushList;
 				}else{
 					return $q.reject(response.data);
@@ -825,7 +824,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 		}, update : function(UUID, index){							// 알림 읽음 체크 - 이경민 [2016-11-01]
-			var data = 'Kind=Mobile_Push_Log&Mode=VIEW&Mac=ba8e205a02d20e66&idx=' + index;
+			var data = 'Kind=Mobile_Push_Log&Mode=VIEW&Mac=' + UUID + '&idx=' + index;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response;
@@ -836,7 +835,7 @@ angular.module('starter.services', [])
 				return $q.reject(response.data);
 			})
 		}, de_alram : function(UUID, index){							// 알림 삭제 - 이경민 [2016-11-01]
-			var data = 'Kind=Mobile_Push_Log&Mode=DELETE&Mac=ba8e205a02d20e66&idx=' + index;
+			var data = 'Kind=Mobile_Push_Log&Mode=DELETE&Mac=' + UUID + '&idx=' + index;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response;
@@ -1832,6 +1831,17 @@ angular.module('starter.services', [])
 	return{
 		currentVersion: function(){
 			var url = ERPiaAPI.url2 +'/mobile/Mypage_ApkVer.asp';
+			return $http.get(url).then(function(response){
+				if(typeof response == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})
+		}, iosbutton: function(){
+			var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp?Kind=IOSbutton';
 			return $http.get(url).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;

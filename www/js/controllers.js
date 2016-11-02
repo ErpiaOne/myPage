@@ -22,6 +22,17 @@ var g_playlists = [{
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
 .controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ActsService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, PrivService, $cordovaSocialSharing, $ionicSideMenuDelegate){
 	
+	/* IOS전용 */
+	VersionCKService.iosbutton().then(function(data){
+		if(ionic.Platform.isAndroid()==true){
+			$rootScope.iosbutton1 = 1;
+			$rootScope.iosbutton2 = 1;
+		}else{
+			$rootScope.iosbutton1 = data.list[0].button1;
+			$rootScope.iosbutton2 = data.list[0].button2;
+		}
+	});
+
 	$rootScope.autologin_index = 0;
 	$rootScope.PushData = {};
 	/* 인앱브라우져(사이트띄우는거) 기본설정  - 김형석[2016-05] */
@@ -114,8 +125,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.1.3',
-   		IOS_version : '1.0.3'	//업데이트시 필수로 변경!!
+   		Android_version : '1.1.4',
+   		IOS_version : '1.0.6'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 - 김형석[2015-12] */
@@ -452,10 +463,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'kpage1089';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId  = 'test1234';
-			$rootScope.loginData.Pwd = 'test1234!';
+			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId  = 'test1234';
+			// $rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
