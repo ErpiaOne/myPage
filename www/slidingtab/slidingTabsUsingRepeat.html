@@ -8,12 +8,14 @@
 	</ion-nav-buttons>
 
 	<ion-content scroll="false">
-		<!-- <img src="./img/img_erpia.jpg" width="100%"> -->
 		<tab-slide-box>
 			<div class="tsb-icons" style="border-bottom: 1px solid #ccc7cf;"> <!-- class건들이면 안되요..ㅠㅠ -->
 				<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
 					<ion-scroll direction="x" class="tsb-hscroll" style="position: relative; z-index: 1">
-						<a ng-href="javascript:;" class="{{tab.icon}}" style='font-size:25px; padding-top: 0px; padding-bottom: 0px;' ng-repeat="tab in tabs" on-finish-render="test()"></a>
+						<a ng-href="javascript:;" style="padding-top: 0px; padding-bottom: 0px; " ng-repeat="tab in tabs" on-finish-render="test()">
+							<span style="font-size: 2em;" ng-if="tab.pre == '홈'">{{tab.pre}}</span>
+							<span style='font-size:1.1em; line-height: 15px;' ng-if="tab.pre != '홈'">{{tab.pre}}<br>{{tab.befo}}</span>
+						</a>
 					</ion-scroll>
 
 					<ion-scroll style="width: 50px; position: fixed; top: 0px; right: 0; margin-top: -10px; z-index: 2; background: #ccc;">
@@ -59,7 +61,7 @@
 									<div class="psm_home11"><img src="./img/icon_sin.png" class="psm_home12"></div>
 									<div class="psm-box2">
 										<div class="inner psm_home11">
-											<p class="psm_home14">신규 주문</p>
+											<p class="psm_home14">신규 주문{{tabs[1].befo}}</p>
 											<h1 class="psm_home15" ng-bind-html='dashBoard.E_NewOrder'></h1>
 										</div>
 									</div>

@@ -1,7 +1,8 @@
 // 재고현황 컨트롤러
 angular.module('starter.controllers').controller('jegoCtrl', function($scope, $rootScope, $ionicPopup, $ionicHistory, $timeout, $cordovaToast, jego_Service, $state, $location, $cordovaBarcodeScanner, $ionicPlatform, $ionicLoading, $ionicModal, ERPiaAPI, app, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
 	console.log('jegoCtrl(재고현황 조회 컨트롤러)');
-$ionicSideMenuDelegate.canDragContent(true);
+
+	$ionicSideMenuDelegate.canDragContent(true);
 	$scope.onTouch = function(){
 		$ionicSlideBoxDelegate.enableSlide(false);
 		$ionicSideMenuDelegate.canDragContent(false);
@@ -1150,5 +1151,14 @@ $ionicSideMenuDelegate.canDragContent(true);
 		$rootScope.jego_result = []; // 초기화
 		$scope.pageCnt = 1; 		 // 초기화
 		$ionicHistory.goBack();
+	}
+
+	/* 키보드 엔터이슈 - 이경민[2016-11-28] */
+	$scope.checkIfEnterKeyWasPressed = function($event){
+		var keyCode = $event.which || $event.keyCode;
+		if (keyCode === 13) {
+			$scope.jego_search();
+			$rootScope.ActsLog("jego", "jego_search")
+		}
 	}
 });

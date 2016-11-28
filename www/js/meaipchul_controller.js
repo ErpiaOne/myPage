@@ -2629,7 +2629,6 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		$scope.ijmodal.hide();
 	}
 
-
 	$scope.insertGoodsF=function(){
 	    	if($scope.pay.use == false && $scope.pay.payprice == 0){
 	    		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('지급액을 확인해주세요.', 'short', 'center');
@@ -2647,9 +2646,13 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 					else console.log('특수문자 "`", "<>", "작은따옴표"는 사용하실수 없습니다.');
 			}
 			else {
+				if($scope.pay.use == true){
+					if($rootScope.distinction == 'meaip') var content = '지급전표없이 전표를 저장하시겠습니까?';
+					else var content = '입금전표없이 전표를 저장하시겠습니까?';
+				}
 				$ionicPopup.show({
 					title: '<b>전표저장</b>',
-					content: '전표를 저장하시겠습니까?',
+					content: content,
 					buttons: [
 						{
 							text: 'No',

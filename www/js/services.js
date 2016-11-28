@@ -120,7 +120,7 @@ angular.module('starter.services', [])
 
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + '01056579731' + '&mac=' + UUID;
 			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -536,23 +536,23 @@ angular.module('starter.services', [])
 /* 차트관련Service - 이경민[2015-11] */
 .factory('statisticService', function($http, $q, ERPiaAPI, $cordovaToast) {
 	var titles =  [
-		{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home'}
-		, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer'}
-		, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor'}
-		, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags'}
-		, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube'}
+		{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home', pre: '홈', befo: ''}
+		, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
+		, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
+		, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}
+		, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube', pre: '상품별', befo: 'TOP5'}
 		// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
-		, {Idx:5, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard'} 
-		, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit'}
-		, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share'}
-		, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus'}
-		, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph'}
-		, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap'}
-		, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left'}
-		, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker'}
-		, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download'}
-		, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop'}
-		, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open'}
+		, {Idx:5, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard', pre: '실적', befo: '추이'}
+		, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit', pre: '매입', befo: '현황'}
+		, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share', pre: '금일', befo: '출고현황'}
+		, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus', pre: '택배사', befo: '건수'}
+		, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph', pre: '온오프', befo: '비교'}
+		, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap', pre: '매출', befo: '반품'}
+		, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left', pre: '반품', befo: '건수'}
+		, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker', pre: 'CS', befo: '현황'}
+		, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download', pre: '매입', befo: '건수'}
+		, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop', pre: '재고', befo: '회전율'}
+		, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open', pre: '출고', befo: '현황'}
 		];
 
 	return{
@@ -586,6 +586,8 @@ angular.module('starter.services', [])
 						response.data.list[i].title = titles[index].title; 
 						response.data.list[i].name = titles[index].name; 
 						response.data.list[i].icon = titles[index].icon;
+						response.data.list[i].pre = titles[index].pre;
+						response.data.list[i].befo = titles[index].befo;
 					}
 					return response.data.list;	
 				}else{
@@ -868,8 +870,10 @@ angular.module('starter.services', [])
 	return{
 		scm_Chart: function(Kind, Value_Kind, Admin_Code, swm_gu, Ger_code){		// scm차트정보 조회
 			var data = 'Kind=' + Kind + '&Value_Kind=' + Value_Kind + '&admin_code=' + Admin_Code + '&swm_gu=' + swm_gu + '&Ger_code=' + Ger_code;
+			console.log('URL=>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
+					console.log('차트 데이!!!', response.data);
 					return response.data;
 				}else{
 					return $q.reject(response.data);
@@ -882,6 +886,7 @@ angular.module('starter.services', [])
 			var data = 'Kind=' + Kind + '&Value_Kind=' + Value_Kind + '&admin_code=' + Admin_Code + '&swm_gu=' + swm_gu;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
+					console.log('차트 데이!!!', response.data);
 					return response.data;
 				}else{
 					return $q.reject(response.data);
@@ -1043,6 +1048,7 @@ angular.module('starter.services', [])
 
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind='+ kind +'&Mode=Select_Ger_Date&GerName='+ escape(gername) +'&pageCnt='+ pageCnt + '&pageRow='+ 5 +'&sDate='+ sedata.sDate +'&eDate='+ sedata.eDate + '&rslt_Amt=' + gubun ;
+			console.log('매출전표를 조회하자! =>', url, '?', data);
 			if(gubun == 'N'){
 				return $http.get(url + '?' + data).then(function(response){
 					if(typeof response == 'object'){
@@ -1656,7 +1662,7 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code +'&UserId=' + escape(userid) + '&Kind='+ kind + '&Mode=&RequestXml=';
 
-			console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
+			// console.log('등록=>',url,'?',data, m_data, goods_xml, middel, end); //--> 데이터 오류나면 xml확인용
 			return $http.post(url + '?' + data + m_data + goods_xml + middel + end).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;

@@ -58,6 +58,11 @@
         <input type="tel" ng-disabled="pay.use" style="text-align:right; width: 100%; text-align: right; border-bottom: 1px solid #e0e0e0;" min='0' value='0' ng-model='pay.payprice' fcsa-number="{ preventInvalidInput: true }" pattern="\d*"><font size="font-size: 0.8em;">원</font>
       </label>
     </div>
-    <div style="padding: 0 10px;"><button class="button button-block psm_login_ink" ng-click="insertGoodsF()" style="background: #52bcae; ">등록</button></div>
+    <div style="padding: 0 10px;">
+      <button class="button button-block psm_login_ink" ng-click="insertGoodsF()" style="background: #52bcae; ">
+        등록
+        <span ng-if="pay.use == true"><any ng-if="distinction == 'meaip'">(지급</any><any ng-if="distinction == 'meachul'">(입금</any>전표 X)</span>
+      </button>
+    </div>
   </ion-content>
 </ion-modal-view>

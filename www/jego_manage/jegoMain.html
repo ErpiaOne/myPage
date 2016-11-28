@@ -44,7 +44,7 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
                                 <div style="height: 160px; padding: 20px; margin-top: 20px; background: #aca5b5;">
                                     <div  style="clear: both; width:100%;">
                                         <div style="float: left; width:100%;">
-                                            <input type="text" style="width: 100%; height: 50px; background: #fff; border: 1px solid #6c5e72; color: #000; padding-left: 10px; padding-right: 50px;" ng-model="jego_searchModule.all_Search">
+                                            <input type="text" ng-keypress="checkIfEnterKeyWasPressed($event)" style="width: 100%; height: 50px; background: #fff; border: 1px solid #6c5e72; color: #000; padding-left: 10px; padding-right: 50px;" ng-model="jego_searchModule.all_Search">
                                         </div>
                                         <div style="float: left; width:10%; margin-left:-80px; margin-top:10px;">
                                             <i class='ion-android-close' style='font-size: 27px; color:#000; vertical-align: middle;' ng-click='clearc_keyword()'></i>

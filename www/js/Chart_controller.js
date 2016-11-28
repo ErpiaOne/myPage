@@ -148,7 +148,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 		{
 			case "Meachul_halfyear" :
 				strHtml = "<tr><th style='color:white'>순번</th><th style='color:white'>구분</th><th style='color:white'>온라인매출액</th><th style='color:white'>오프라인매출액</th></tr>";
-				strSubject = "최근 6개월 매출액" + strSubgu;
+				strSubject = "최근 6개월 매출액";
 				break;
 			case "meaip_jem" :
 				strHtml = "<tr>" + th +"순번</th>" + th + "구분</th>" + th + "금액</th></tr>";

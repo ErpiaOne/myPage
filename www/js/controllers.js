@@ -453,10 +453,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'borntoroad';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			// $rootScope.loginData.Admin_Code = '6178600097'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'borntoroad';
-			// $rootScope.loginData.Pwd = 'erpia!1010';
+			$rootScope.loginData.Admin_Code = 'ecohomes'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId = 'ecohomes';
+			$rootScope.loginData.Pwd = 'erpia!1010';
 
 			// $rootScope.loginData.Admin_Code = 'kpage'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
@@ -2416,7 +2416,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 게시판 내용 기본조회(게시판 처음 들어갔을 때 초기조회) - 김형석[2016-04] */
 	$scope.defaultSearch=function(){
-		console.log('실행되?', $rootScope.boardIndex);
 		switch ($rootScope.boardIndex){
 			case 0 : var module_T = 'board_Notice'; break;
 			case 1 : var module_T = 'board_Update'; break;
