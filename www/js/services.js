@@ -536,7 +536,7 @@ angular.module('starter.services', [])
 /* 차트관련Service - 이경민[2015-11] */
 .factory('statisticService', function($http, $q, ERPiaAPI, $cordovaToast) {
 	var titles =  [
-		{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home', pre: '홈', befo: ''}
+		{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home', pre: '', befo: '홈'}
 		, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
 		, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
 		, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}

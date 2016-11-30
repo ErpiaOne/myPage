@@ -52,9 +52,9 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 	var aWeekAgo = w.getFullYear() + '-' + (wMonth<10 ? '0':'') + wMonth + '-' + (wDay<10 ? '0' : '') + wDay;
 	$rootScope.nowTime = '최근 조회 시간 :' + nowday + ' ' + nowTime;
 
-	$scope.pushf = function(){
-		console.log('여기와랑~');
-	}
+	// $scope.pushf = function(){
+	// 	console.log('여기와랑~');
+	// }
 
 	/* erpia메인홈 데이터 세팅 - 이경민[2016-01] */
 	$scope.ERPiaBaseData = function(){
@@ -446,9 +446,14 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 	    	var data = {
 	    		index: 0
 	    	}
-
+	    	$ionicSlideBoxDelegate.slide(0, 500);
 	    	$scope.slideHasChanged(0, tabs);
 
+	}
+
+	/* 홉탭 이슈사항 - 이경민[2016-11-30] */
+	$scope.tabsmove = function(){
+		$scope.movezero($scope.tabs);
 	}
 	$scope.events = new SimplePubSub();
 
@@ -544,12 +549,12 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 									'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
 			}
 
-			$scope.htmlCode = '<div class="box-title" style="color:#fff; padding-top:15px; padding-bottom:10px; background: #bcb6c3; color: #000; font-weight: bold; font-size: 1.1em;">'+
+			$scope.htmlCode = '<div class="box-title" style="color:#fff; padding-top:10px; padding-bottom:10px; background: #bcb6c3; color: #000; font-weight: bold; font-size: 1.0em;">'+
 							titlename+
 						'</div>'+
 						'<input type="hidden" name="gu_hidden">' +
 						'<div class="direct-chat">'+
-							'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 13px; vertical-align: top; background: #7a6e80;">'+
+							'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 11px; vertical-align: top; background: #7a6e80;">'+
 								'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
 								'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
 								'<div class="pull-right">'+

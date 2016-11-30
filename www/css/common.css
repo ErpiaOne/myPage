@@ -315,18 +315,18 @@ select {-webkit-border-radius: 0; height: 35px;}
 .psm_home02 {width:100%}
 .psm_home03 {font-size:17pt; font-weight:bold; text-align: left; padding-left: 15px}
 .psm_home04 {width:100%; margin-top: 20px;}
-.psm_home05 {width:80%; display:inline-blank;  text-align: left; padding-left: 15px}
-.psm_home06 {width:20%; cursor:pointer; text-align: right; padding-right: 15px; font-size: 1.5em}
+.psm_home05 {width:80%; height: 3%; display:inline-blank;  text-align: left; padding-left: 15px}
+.psm_home06 {width:20%; height: 3%; cursor:pointer; text-align: right; padding-right: 15px; font-size: 1.5em}
 
 
 .psm_home10 {letter-spacing:-1px; margin-top: 30px; padding: 0 15px;}
 .psm_home11 {text-align:center;}
-.psm_home12 {max-width:120px; width:100%;}
+.psm_home12 {max-width:120px; width:80%;}
 .psm_home13 {max-width:50px; min-width:10px; width:100%;}
-.psm_home14 {margin:10px 0 0 0; word-break:keep-all}
+.psm_home14 {margin:12px 0 0 0; word-break:keep-all; line-height: 15px;}
 .psm_home15 {margin:0 0 10px 0; color: #fff;}
 .psm_home16 {width: 7px;}
-.psm_home17 {padding: 22px 7px 5px 7px;}
+.psm_home17 {padding: 12px 7px 5px 7px;}
 
 .psm_home18 {background: #80b7be;}
 .psm_home19 {background: #9480af;}
@@ -334,7 +334,7 @@ select {-webkit-border-radius: 0; height: 35px;}
 .psm_home21 {background: #d4ab61;}
 .psm_home22 {background: #cd8c79;}
 
-.psm_home30 {letter-spacing:-1px; width:100%; padding-top: 10px;}
+.psm_home30 {letter-spacing:-1px; width:100%; padding-top: 10px; height: 130px;}
 
 .psm_goma {color: #fff;}
 
