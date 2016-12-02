@@ -453,9 +453,9 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'borntoroad';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			$rootScope.loginData.Admin_Code = 'ecohomes'; //PC모드
+			$rootScope.loginData.Admin_Code = 'flexpower'; //PC모드
 			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'ecohomes';
+			$rootScope.loginData.UserId = 'ceo';
 			$rootScope.loginData.Pwd = 'erpia!1010';
 
 			// $rootScope.loginData.Admin_Code = 'kpage'; //PC모드

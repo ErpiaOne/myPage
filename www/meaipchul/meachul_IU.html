@@ -27,7 +27,7 @@
 
 	<!-- 매출정보 -->
 	<div class="list list-inset">
-		<div ng-click="Next()" style="text-align: left; padding: 10px; font-size: 0.85em;">매출정보<i class="{{upAnddown}} psmsmy_semo"></i></div>
+		<div ng-click="Next(); scrollCtr(1)" style="text-align: left; padding: 10px; font-size: 0.85em;">매출정보<i class="{{upAnddown}} psmsmy_semo"></i></div>
 		<div ng-if="basictype" style="padding: 25px 15px 15px 15px; margin-top:5px; border: 1px solid #aaa; background: #5e6472;">
 
 			<table width="100%" style="align:center; vertical-align:middle;">
@@ -96,7 +96,7 @@
 
 	<!-- 상품정보 -->
 	<div class="list list-inset" align="left">
-		<div ng-click="Next2()" style="text-align: left; padding: 10px; font-size: 0.85em;">상품<i class="{{upAnddown2}} psmsmy_semo"></i></div>
+		<div ng-click="Next2(); scrollCtr(2)" style="text-align: left; padding: 10px; font-size: 0.85em;">상품<i class="{{upAnddown2}} psmsmy_semo"></i></div>
 		<div ng-if="basic2type" style="margin-top:5px; border: 1px solid #aaa;">
 
 			<div style="background: #5e6472;">

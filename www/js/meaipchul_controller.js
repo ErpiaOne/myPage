@@ -186,8 +186,8 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 
 	/* 최상단으로 */
 	$scope.scrollTop = function() {
-    	$ionicScrollDelegate.scrollTop();
-    };
+    		$ionicScrollDelegate.scrollTop();
+    	};
 
 	/* 오늘날짜 구하기 */
 	$scope.dateMinus=function(days){
@@ -1151,7 +1151,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 })
 
 /* 매입&매출 등록/수정 컨트롤러 - 이경민[2015-12] */
-.controller('MiuCtrl', function($scope, $rootScope, $ionicPopup, $ionicLoading, $ionicModal, $cordovaBarcodeScanner, $ionicHistory, $timeout, $state, $cordovaToast, ERPiaAPI, MconfigService, MiuService, MLookupService, app) {
+.controller('MiuCtrl', function($scope, $rootScope, $ionicPopup, $ionicLoading, $ionicModal, $cordovaBarcodeScanner, $ionicHistory, $timeout, $state, $cordovaToast, $ionicScrollDelegate, ERPiaAPI, MconfigService, MiuService, MLookupService, app) {
 	console.log('MiuCtrl');
 	if($rootScope.iu == 'sb_u'){
 		$scope.sbu = true;
@@ -1160,6 +1160,12 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		$scope.sbb = true;
 	}else{
 		$scope.sbu = false;
+	}
+
+	$scope.scrollCtr = function(gu){
+		console.log('여기오니?');
+		if(gu == 1) $ionicScrollDelegate.scrollTop();
+		else $ionicScrollDelegate.scrollBottom();
 	}
 
 	/* 날짜생성 - 김형석[2015-12] */
@@ -2412,6 +2418,7 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 			$scope.upAnddown="ion-arrow-up-b";
 		}else{
 			if($scope.m_check.cusCheck == 't' && $scope.m_check.subulCheck == 't' && $scope.m_check.meajangCheck == 't' && $scope.m_check.changoCheck == 't'){
+				$ionicScrollDelegate.scrollBottom();
 				/*상품폼 열기*/
 				$scope.basic2type=true;
 				$scope.upAnddown2="ion-arrow-up-b";
