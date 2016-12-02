@@ -539,7 +539,10 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			}
 
 			// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.) - 이경민
-			if($scope.kind === "beasonga" || $scope.kind == "Meachul_halfyear"){
+			if($scope.kind == "beasonga"){
+				$scope.htmlCode2 = '';
+
+			}else if($scope.kind == "Meachul_halfyear"){
 				$scope.htmlCode2 = '<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
 
 			}else{
@@ -554,10 +557,10 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 						'</div>'+
 						'<input type="hidden" name="gu_hidden">' +
 						'<div class="direct-chat">'+
-							'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 11px; vertical-align: top; background: #7a6e80;">'+
+							'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 11px; vertical-align: top; padding-bottom:5px; background: #7a6e80;">'+
 								'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
 								'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
-								'<div class="pull-right">'+
+								'<div class="pull-right" style="margin-top: -2px;">'+
 									$scope.htmlCode2 +
 								'</div>'+
 							'</div>'+
@@ -578,6 +581,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 								'</div>'+
 							'</div>'+
 						'</div>';
+
 
 			$('#'+data.index).html($scope.htmlCode); renewalDay($scope.kind,'1',$scope.loginData.Admin_Code,ERPiaAPI.url);
 			$scope.loadingani();

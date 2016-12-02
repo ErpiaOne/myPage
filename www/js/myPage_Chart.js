@@ -1008,7 +1008,16 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		case "beasonga" :			//금일 출고 현황
 		console.log('금일 출고 현황');
 
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasonga&value_kind=beasonga&admin_code=" + admin_code + "&swm_gu=" + gu)
+		/* 테스트계정 예외처리! - 이경민[2016-12-02] */
+		if(admin_code == 'ERPMobile'){
+			chartData = [
+				{"name": "배송","value": 16,"color": "#d992a1"},
+				{"name": "출고대기","value": 2,"color": "#8AB4C2"}
+			];
+		}else{
+			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasonga&value_kind=beasonga&admin_code=" + admin_code + "&swm_gu=" + gu)	
+		}
+		
 			// for (var i in chartData) {
 			//   chartData[i].litres = chartData[i].value;
 			//   chartData[i].absValue = Math.abs(chartData[i].value);
@@ -1048,7 +1057,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		console.log('택배사별 구분건수 통계');
 
 		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasong_gu&value_kind=beasong_gu&admin_code=" + admin_code + "&swm_gu=" + gu)
-
+		console.log(ERPiaApi_url,"/JSon_Proc_graph.asp?kind=beasong_gu&value_kind=beasong_gu&admin_code=",admin_code,"&swm_gu=",gu);
 			var chart = AmCharts.makeChart("beasong_gu", {
 					"type": "serial",
 				"theme": "dark",

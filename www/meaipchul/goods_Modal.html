@@ -44,12 +44,14 @@
                   </tr>
                   <tr>
                     <td>
-                      <font style="font-size: 0.8em; display: inline-block; width: 100%; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">규격: {{((x.G_Stand)?x.G_Stand:'-')}}</font><font style="font-size: 0.8em;">
+                      <font style="font-size: 0.8em; display: inline-block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">규격: {{((x.G_Stand)?x.G_Stand:'-')}}</font>
                     </td>
                     <td style="width: 45%; text-align: right;">
-                      <font style="font-size: 0.8em;">가용재고: </font>
-                      <font color="red" ng-if="x.Jego<=0">{{x.Jego|number:0}}</font>
-                      <font color="blue" ng-if="x.Jego>0">{{x.Jego|number:0}}</font>
+                      <span style=" display: inline-block; position: relative; top: -4px;">
+                        <font style="font-size: 0.8em;">가용재고: </font>
+                        <font color="red" ng-if="x.Jego<=0">{{x.Jego|number:0}}</font>
+                        <font color="blue" ng-if="x.Jego>0">{{x.Jego|number:0}}</font>
+                      </span>
                     </td>
                   </tr>
                 </table>
