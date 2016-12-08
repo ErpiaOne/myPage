@@ -10,17 +10,20 @@
 	<ion-content scroll="false">
 		<tab-slide-box>
 			<div class="tsb-icons" style="border-bottom: 1px solid #ccc7cf;"> <!-- class건들이면 안되요..ㅠㅠ -->
-				<div class="tsb-ic-wrp"> <!-- class건들이면 안되요..ㅠㅠ -->
-					<ion-scroll direction="x" class="tsb-hscroll" style="position: relative; z-index: 1">
-						<a ng-href="javascript:;"  ng-repeat="tab in tabs" on-finish-render="test()" style="text-align: center; font-size: 15px; padding-left: 10px; padding-right: 10px; margin-left: 5px; margin-right: 5px;"><!-- style="padding-top: 0px; padding-bottom: 0px; " -->
-							<span ng-if="tab.befo == '홈'" style="display: inline-block; padding-top: 20px;"><font style="display: inline-block; position: relative; top: -10px;">&nbsp;&nbsp;{{tab.befo}}&nbsp;&nbsp;</font></span>
-							<span ng-if="tab.befo != '홈'">{{tab.pre}}<br>{{tab.befo}}</span>
-						</a>
-					</ion-scroll>
-
-					<ion-scroll style="width: 50px; position: fixed; top: 0px; right: 0; margin-top: 0px; z-index: 2; background: #ccc;">
-						<i class="ion-arrow-down-b" style='font-size:30px; margin-top: -10px; vertical-align:middle; color: #914c61;' ng-click='chrtlistF()'></i>
-					</ion-scroll>
+				<div class="tsb-ic-wrp" style="width: 100%"> <!-- class건들이면 안되요..ㅠㅠ -->
+					<div style="width: 87%">
+						<ion-scroll direction="x" class="tsb-hscroll" style="position: relative; z-index: 1">
+							<a ng-href="javascript:;"  ng-repeat="tab in tabs" on-finish-render="test()" style="text-align: center; font-size: 15px; padding-left: 10px; padding-right: 10px; margin-left: 5px; margin-right: 5px;">
+								<span ng-if="tab.befo == '홈'" style="display: inline-block; padding-top: 20px;"><font style="display: inline-block; position: relative; top: -10px;">&nbsp;&nbsp;{{tab.befo}}&nbsp;&nbsp;</font></span>
+								<span ng-if="tab.befo != '홈'">{{tab.pre}}<br>{{tab.befo}}</span>
+							</a>
+						</ion-scroll>
+					</div>
+					<div style="width: 1%">
+						<ion-scroll style="width: 50px; position: fixed; top: 0px; right: 0; margin-top: 0px; z-index: 2; background: #ccc;">
+							<i class="ion-arrow-down-b" style='font-size:30px; margin-top: -10px; vertical-align:middle; color: #914c61;' ng-click='chrtlistF()'></i>
+						</ion-scroll>
+					</div>
 				</div>
 			</div>
 			<!-- 탭 리스트 -->

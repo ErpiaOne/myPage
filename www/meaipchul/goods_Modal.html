@@ -16,7 +16,8 @@
           </select>
         </td>
         <td style="width: 58%">
-          <input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; border: 1px solid #e0e0e0; padding: 15px 35px 15px 15px;">
+          <input type="text" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-click='goods_lately()' ng-keypress="checkIfEnterKeyWasPressed($event)" placeholder="ex)마몽드" ng-model="user.userGoodsName" style="width: 100%; border: 1px solid #e0e0e0; padding: 15px 35px 15px 15px;">
+          <input type="text" ng-if="loginData.Admin_Code != 'ERPMobile'"  ng-click='goods_lately()' ng-keypress="checkIfEnterKeyWasPressed($event)" placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; border: 1px solid #e0e0e0; padding: 15px 35px 15px 15px;">
         </td>
         <td style="width: 15%;">
             <i class='ion-android-close' style='text-align: left; margin-top:8px; padding-right:20px; margin-left:-25px; vertical-align:middle; font-size: 2em;'  ng-if="sbu == false"ng-click='clear_goods()'></i>
@@ -28,18 +29,18 @@
 
   <ion-content style="background: #dce0e1">
     <ui>
-      <li class="item" ng-repeat="x in goodlately_slists"  ng-click="goods_lately_serarch(x.Search_Goods_Name)">{{x.Search_Goods_Name}}</li>
+      <li class="item" ng-repeat="x in goodlately_slists" style="word-break:break-all;"  ng-click="goods_lately_serarch(x.Search_Goods_Name)">{{x.Search_Goods_Name}}</li>
     </ui>
-    <div class="list list-inset" style="align: center; background: #dce0e1" >
+    <div class="list list-inset" style="align: center; background: #dce0e1; margin-top: 5px;" >
       <any ng-repeat="x in goodslists">
-        <table on-swipe-up="goods_more()" style="width:  100%; background: #dce0e1">
+        <table on-swipe-up="goods_more()" style="width:  100%; background: #dce0e1;">
           <tr>
             <td style="width: 90%; background: #fff; font-size: 0.9em;">
               <ion-checkbox ng-click='goodsCheck(x)'>
                 <table style="table-layout:fixed;">
                   <tr>
                     <td colspan="2">
-                      <span ng-bind-html='goodslists[$index].G_Name' style="font-size: 0.8em; width: 90%; display: inline-block; white-space: normal;"></span>
+                      <span ng-bind-html='goodslists[$index].G_Name' style="font-size: 0.8em; width: 90%; display: inline-block; white-space: normal; word-break:break-all;"></span>
                     </td>
                   </tr>
                   <tr>

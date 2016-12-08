@@ -1157,6 +1157,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 	$scope.checkIfEnterKeyWasPressed = function($event){
 		var keyCode = $event.which || $event.keyCode;
 		if (keyCode === 13) {
+			$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 			$scope.jego_search();
 			$rootScope.ActsLog("jego", "jego_search")
 		}

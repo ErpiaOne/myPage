@@ -242,6 +242,12 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			var chart = AmCharts.makeChart("Meachul_halfyear", {
 				"type": "serial",
 				"theme": "dark",
+				"titles": [
+					{
+						"text": "최근 6개월 매출액",
+						"size": 15
+					}
+				],
 				"categoryField": "category",
 				"startDuration": 1,
 				"autoMarginOffset": 10,
@@ -1055,9 +1061,8 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "beasong_gu" :			//택배사별 구분건수 통계
 		console.log('택배사별 구분건수 통계');
+			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasong_gu&value_kind=beasong_gu&admin_code=" + admin_code + "&swm_gu=" + gu)
 
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasong_gu&value_kind=beasong_gu&admin_code=" + admin_code + "&swm_gu=" + gu)
-		console.log(ERPiaApi_url,"/JSon_Proc_graph.asp?kind=beasong_gu&value_kind=beasong_gu&admin_code=",admin_code,"&swm_gu=",gu);
 			var chart = AmCharts.makeChart("beasong_gu", {
 					"type": "serial",
 				"theme": "dark",
@@ -1404,8 +1409,9 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			break;
 
 		case "meachul_cs" :			//CS 컴플레인 현황
-		console.log('CS 컴플레인 현황');
-		chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_cs&value_kind=meachul_cs&admin_code=" + admin_code + "&swm_gu=" + gu)
+			console.log('CS 컴플레인 현황');
+			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_cs&value_kind=meachul_cs&admin_code=" + admin_code + "&swm_gu=" + gu)
+
 			// for (var i in chartData) {
 			//   chartData[i].litres = chartData[i].value;
 			//   chartData[i].absValue = Math.abs(chartData[i].value);
@@ -1552,7 +1558,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 
 		case "JeGo_TurnOver" :			//재고회전율top5
 			console.log('재고회전율top5');
-			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=JeGo_TurnOver&value_kind=JeGo_TurnOver&admin_code=" + admin_code + "&swm_gu=" + gu)
+				chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=JeGo_TurnOver&value_kind=JeGo_TurnOver&admin_code=" + admin_code + "&swm_gu=" + gu)			
 
 			var chart = AmCharts.makeChart("JeGo_TurnOver", {
 				"type": "serial",
@@ -1642,7 +1648,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		case "beasongb" :			//출고현황
 			console.log('출고현황');
 			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=beasongb&value_kind=beasongb&admin_code=" + admin_code + "&swm_gu=" + gu)
-
+			
 			var chart = AmCharts.makeChart("beasongb", {
 			  "type": "serial",
 			"addClassNames": true,

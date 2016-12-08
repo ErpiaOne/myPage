@@ -410,9 +410,35 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		$scope.searchmode='normal'; //더보기 초기화
 		$scope.loadingani();
 
-		if(agoday != 1){
+		if(agoday != 1 && agoday != -1){
 			$scope.reqparams.sDate = $scope.dateMinus(agoday);
 		     	$scope.reqparams.eDate = $scope.dateMinus(0);
+
+	     	}else if(agoday == 1){ // 당월
+	     		var nday = new Date();
+			nday.setDate(nday.getDate());
+			var yy = nday.getFullYear();
+			var mm = nday.getMonth()+1;
+			var dd = nday.getDate();
+
+			if( mm<10) mm="0"+mm;
+			if( dd<10) dd="0"+dd;
+ 
+			$scope.reqparams.sDate = yy + "-" + mm + "-" + '01';
+			$scope.reqparams.eDate = yy + "-" + mm + "-" + dd;
+	     		
+	     	}else if(agoday == -1){ // 전월
+	     		var nday = new Date();
+			nday.setDate(nday.getDate());
+			var yy = nday.getFullYear();
+			var mm = nday.getMonth();
+			var dd = ( new Date( yy, mm, 0) ).getDate();
+
+			if( mm<10) mm="0"+mm;
+			if( dd<10) dd="0"+dd;
+ 
+			$scope.reqparams.sDate = yy + "-" + mm + "-" + '01';
+			$scope.reqparams.eDate = yy + "-" + mm + "-" + dd;
 	     	}
 
 	     	$scope.mydate1($scope.reqparams.sDate);
@@ -1788,6 +1814,16 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 		$scope.goodsmodal.show();
 	}
 
+
+	/* 키보드 엔터이슈 - 이경민[2016-11-28] */
+	$scope.checkIfEnterKeyWasPressed = function($event){
+		var keyCode = $event.which || $event.keyCode;
+		if (keyCode === 13) {
+			$scope.goods_searchM(1);
+		}
+	}
+
+
 	/*상품 최근 검색 조회 - 이경민[2015-12]*/
 	$scope.goods_lately = function(){
 		if($scope.user.userGoodsName.length == 0 || $scope.user.userGoodsName.length == undefined){
@@ -1868,11 +1904,9 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	$scope.goodsDetail=function(indexnum){
 		$scope.G_NameS =  $scope.goodslists[indexnum].G_Name;
 		$scope.G_OnCodeS = $scope.goodslists[indexnum].G_OnCode;
-		//상품명, 자체코드가 11글자보다 크면 <BR>태그를 삽입하여 한줄 띄게 만든다 ( IONIC POPUP 깨지는 문제 해결방안) - 김형석
-		if($scope.goodslists[indexnum].G_Name.length>7) $scope.G_NameS = $scope.goodslists[indexnum].G_Name.substring(0,8) + '<br>' + $scope.goodslists[indexnum].G_Name.substring(8,$scope.goodslists[indexnum].G_Name.length);
-		if($scope.goodslists[indexnum].G_OnCode.length>11) $scope.G_OnCodeS = $scope.goodslists[indexnum].G_OnCode.substring(0,10) + '<br>' + $scope.goodslists[indexnum].G_OnCode.substring(10,$scope.goodslists[indexnum].G_OnCode.length);
+
 		var td = '<td width="40%" style="border-right:1px solid black; font-size: 0.8em;">';
-		var td2 = '<td width="55%" style="padding-left:5px; font-size: 0.8em;">';
+		var td2 = '<td width="55%" style="padding-left:5px; font-size: 0.8em; word-break:break-all;">';
 		 
 			if($rootScope.priv_wongaYN == 'N')  var wonga_meaip = commaChange($scope.goodslists[indexnum].G_Dn1)
 			else var wonga_meaip = '******'
@@ -2638,8 +2672,13 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 
 	$scope.insertGoodsF=function(){
 	    	if($scope.pay.use == false && $scope.pay.payprice == 0){
-	    		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('지급액을 확인해주세요.', 'short', 'center');
-			else alert('지급액을 확인해주세요.');
+	    		if(ERPiaAPI.toast == 'Y'){
+	    			if($rootScope.distinction == 'meaip') $cordovaToast.show('지급액을 확인해주세요.', 'short', 'center');
+	    			else $cordovaToast.show('입금액을 확인해주세요.', 'short', 'center');
+	    		} else{
+	    			if($rootScope.distinction == 'meaip') alert('지급액을 확인해주세요.');
+	    			else alert('입금액을 확인해주세요.');
+	    		} 
 	    	}else if($scope.payment[3].checked == true && $scope.pay.paycardbank == 'no' || $scope.payment[1].checked == true && $scope.pay.paycardbank == 'no'){
 	 		if(ERPiaAPI.toast == 'Y') $cordovaToast.show('카드/통장을 선택해주세요.', 'short', 'center');
 			else alert('카드/통장을 선택해주세요.');

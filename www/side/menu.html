@@ -27,7 +27,7 @@
 					<a class="{{tabitem.tab1}} psm_button01" ng-if="tabitem.tab1 != 'tab-item active'" ng-click="goHome(); sidetab('tab1');">
 						홈
 					</a>
-					<a class="{{tabitem.tab1}} psm_button01" ng-if="tabitem.tab1 == 'tab-item active'" ng-controller="IndexCtrl" ng-click="tabsmove(); sidetab('tab1');">
+					<a class="{{tabitem.tab1}} psm_button01" ng-if="tabitem.tab1 == 'tab-item active'" ng-controller="IndexCtrl" ng-click="tabsmove(); goHome(); sidetab('tab1');">
 						홈
 					</a>
 					<!-- <a class="{{tabitem.tab2}} psm_button01" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2")'> -->
@@ -72,7 +72,7 @@
 					<a class="{{tabitem.tab1}} psm_button01" ng-if="tabitem.tab1 != 'tab-item active'" ng-click="goHome(); sidetab('tab1');">
 						홈
 					</a>
-					<a class="{{tabitem.tab1}} psm_button01" ng-if="tabitem.tab1 == 'tab-item active'" ng-controller="IndexCtrl" ng-click="tabsmove(); sidetab('tab1');">
+					<a class="{{tabitem.tab1}} psm_button01" ng-if="tabitem.tab1 == 'tab-item active'" ng-controller="IndexCtrl" ng-click="tabsmove(); goHome(); sidetab('tab1');">
 						홈
 					</a>
 					<a class="{{tabitem.tab2}} psm_button01" ng-click='goto_with_clearHistory("#app/meaip_page"); sidetab("tab2");ActsLog("meaip", "meaip_select_tab")'>

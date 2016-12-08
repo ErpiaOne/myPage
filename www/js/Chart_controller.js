@@ -276,7 +276,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 					strHtml = strHtml +  (i+1) ;
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + td;
-					strHtml = strHtml + data[i].name;
+					strHtml = strHtml + data[i].name.replace('<br>','');
 					strHtml = strHtml + "</td>";
 					strHtml = strHtml + td;
 					strHtml = strHtml + commaChange(data[i].value) + "건";
@@ -353,7 +353,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 	}
 
 	/* AmCharts에서 Json 데이터를 불러오는 함수 - 이경민[2016-01] */
-	AmCharts.loadJSON = function(url, load_kind) {
+	AmCharts.loadJSON = function(url, kind, load_kind) {
 		// create the request
 		if (window.XMLHttpRequest) {
 		// IE7+, Firefox, Chrome, Opera, Safari
@@ -371,14 +371,18 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 		}
 
 
-		if (load_kind == "refresh")
+		if (load_kind == undefined || load_kind == "refresh")
 		{	$scope.loadingani();
 			response = eval(request.responseText);
 			// $rootScope.time_ref = response[0].in_date;
 			$.each(response[0], function(index, jsonData){
-						tmpAlert += jsonData;
+				if(index == "in_date"){
+					tmpAlert += jsonData;
+					$timeout(function(){
+						$("h3[name=refresh_date]").html(tmpAlert);
+					}, 500);
+				}
 			});
-			$("h3[name=refresh_date]").html(tmpAlert);
 		}
 
 		/* 상세 표 보기 - 이경민[2016-01] */
@@ -389,7 +393,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 				tmpAlert += jsonData;
 			});
 			/* 상세보기 그리드 생성  - 이경민[2016-01] */
-			insertRow(response, $scope.kind);
+			insertRow(response, kind);
 		}
 
 		if(load_kind == undefined){
@@ -455,6 +459,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 	$scope.tabsmove = function(){
 		$scope.movezero($scope.tabs);
 	}
+
 	$scope.events = new SimplePubSub();
 
 	$scope.slideHasChanged = function(index, tabs) {
@@ -538,11 +543,13 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 				var titlename = '최근 6개월간 매출액';
 			}
 
+			$scope.htmlCode = '';
+
 			// 차트를 그리는 부분 (장선임님이 만든 ASP 참조를 참조해서 만들어야함.) - 이경민
 			if($scope.kind == "beasonga"){
 				$scope.htmlCode2 = '';
 
-			}else if($scope.kind == "Meachul_halfyear"){
+			}else if($scope.kind === "Meachul_halfyear"){
 				$scope.htmlCode2 = '<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
 
 			}else{
@@ -551,15 +558,18 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 									'<button name="btnY" style="margin-left: 3px; height:28px;" class="btn bg-purple btn-xs" onclick="makeCharts(\''+ $scope.kind +'\',\'3\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');">년간</button>&nbsp;&nbsp;&nbsp;&nbsp;'+
 									'<button name="btnGrid" class="btn btn-box-tool" style="height:28px;"><i class="fa fa-bars"></i></button>';
 			}
-
-			$scope.htmlCode = '<div class="box-title" style="color:#fff; padding-top:10px; padding-bottom:10px; background: #bcb6c3; color: #000; font-weight: bold; font-size: 1.0em;">'+
+			if($scope.kind != 'Meachul_halfyear'){
+				$scope.htmlCode = '<div class="box-title" style="color:#fff; padding-top:10px; padding-bottom:10px; background: #bcb6c3; color: #000; font-weight: bold; font-size: 1.0em;">'+
 							titlename+
 						'</div>'+
-						'<input type="hidden" name="gu_hidden">' +
+						'<input type="hidden" name="gu_hidden">' ;
+				
+			}
+			$scope.htmlCode = $scope.htmlCode + 
 						'<div class="direct-chat">'+
 							'<div class="box-header" style="text-align: left; padding-left: 20px; padding-top: 11px; vertical-align: top; padding-bottom:5px; background: #7a6e80;">'+
-								'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -18px; margin-right: 10px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
-								'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px;"></h3>'+
+								'<button class="fa fa-refresh" style="-webkit-appearance:none; -webkit-border-radius: 0; width: 28px; height: 28px; color: #fff; background: #dd8369; text-align: center; vertical-align: middle; border: 0; margin-top: -16px; margin-right: 8px; padding: 0;" name="refreshW" data-toggle="" onclick="javascript:refresh(\''+ $scope.kind +'\',\''+$scope.gu+'\',\''+ $scope.loginData.Admin_Code +'\',\'' + ERPiaAPI.url + '\');"  style="height:28px; width: 28px; vertical-align: top; color: #fff; border: 0; background-color: #dd8369;"></button>'+
+								'<h3 class="box-title" name="refresh_date" style="color:#fff; height: 28px; font-size: 0.8em;"></h3>'+
 								'<div class="pull-right" style="margin-top: -2px;">'+
 									$scope.htmlCode2 +
 								'</div>'+
@@ -647,7 +657,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 							$('div[name=gridBody]').css('display','block');
 							$('#' + $scope.kind).css('display', 'none');
 							$scope.gu = $("input[name=gu_hidden]").val();
-							AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $rootScope.userData.GerCode, "gridInfo");
+							AmCharts.loadJSON(ERPiaAPI.url + "/JSon_Proc_graph.asp?kind="+ $scope.kind +"&value_kind="+ $scope.kind +"&admin_code=" + $scope.loginData.Admin_Code + "&swm_gu=" + $scope.gu + "&Ger_code=" + $rootScope.userData.GerCode, $scope.kind, "gridInfo");
 						} else {
 							$("div[name=gridBody]").css('display', 'none');
 							$('#' + $scope.kind).css('display', 'block');

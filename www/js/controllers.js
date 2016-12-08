@@ -126,7 +126,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
    		Android_version : '1.1.4',
-   		IOS_version : '1.0.6'	//업데이트시 필수로 변경!!
+   		IOS_version : '1.0.7'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 - 김형석[2015-12] */
@@ -453,10 +453,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'borntoroad';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			$rootScope.loginData.Admin_Code = 'flexpower'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId = 'ceo';
-			$rootScope.loginData.Pwd = 'erpia!1010';
+			// $rootScope.loginData.Admin_Code = 'km0421'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId = 'kaming311';
+			// $rootScope.loginData.Pwd = 'erpia!1010';
 
 			// $rootScope.loginData.Admin_Code = 'kpage'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드

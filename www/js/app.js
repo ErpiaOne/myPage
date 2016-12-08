@@ -243,6 +243,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	
 	/* TYPE별 메인화면 - 김형석[2016-03] */
 	$rootScope.goHome = function(userType){
+		console.log('커먼!');
 		$ionicHistory.clearCache();
 		$ionicHistory.clearHistory();
 		$ionicHistory.nextViewOptions({disableBack:true, historyRoot:true});

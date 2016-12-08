@@ -683,14 +683,15 @@ angular.module('starter.services', [])
 		var url = ERPiaAPI.url + '/SCP.asp';
 		var data = 'sms_id=erpia&sms_pwd=a12345&send_num=070-7012-3071&rec_num=' + phoneno;
 		data += '&rndNum=' + rndNum + '&SendType=mobile_Certification';
+		console.log('문자 URL=', url,'?',data);
 		return $http.get(url + '?' + data);
 	}
 
-	var cs_message = function(rndNum,phoneno, idx){			// 문의글 등록시 영업담당자에게 문자 발송 추가 - 이경민 20160928
+	var cs_message = function(rndNum,phoneno, idx){			// 문의글 등록시 영업담당자에게 문자 발송 추가 - 이경민 20160928 
 		console.log('csInfoService AND cs_message');
 		var url = ERPiaAPI.url + '/SCP.asp';
-		var data = 'sms_id=erpia&sms_pwd=a12345&send_num=070-7012-3071&rec_num=' + '01056579731';
-		data += '&rndNum=' + rndNum + '&SendType=mobile_CS&idx=' + idx;
+		var data = 'sms_id=erpia&sms_pwd=a12345&send_num=070-7012-3071&rec_num=' + '01039030746';
+		data += '&SendType=mobile_CS&idx=' + idx;
 		return $http.get(url + '?' + data);
 	}
 
@@ -1048,7 +1049,6 @@ angular.module('starter.services', [])
 
 			var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 			var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind='+ kind +'&Mode=Select_Ger_Date&GerName='+ escape(gername) +'&pageCnt='+ pageCnt + '&pageRow='+ 5 +'&sDate='+ sedata.sDate +'&eDate='+ sedata.eDate + '&rslt_Amt=' + gubun ;
-			console.log('매출전표를 조회하자! =>', url, '?', data);
 			if(gubun == 'N'){
 				return $http.get(url + '?' + data).then(function(response){
 					if(typeof response == 'object'){
@@ -1056,12 +1056,12 @@ angular.module('starter.services', [])
 							if(ERPiaAPI.toast == 'Y') $cordovaToast.show('조회된 데이터가 없습니다.', 'short', 'center');
 							else alert('조회된 데이터가 없습니다.');
 						}else{
-							for(var i=0; i<response.data.list.length; i++){
-								if(response.data.list[i].G_Name.length>=10||response.data.list[i].GerName.length>=7){
-									//response.data.list[i].G_Name=response.data.list[i].G_Name.substr(0,14)+'...';
-									//response.data.list[i].GerName=response.data.list[i].GerName.substr(0,10)+'...';
-								}
-							}
+							// for(var i=0; i<response.data.list.length; i++){
+							// 	if(response.data.lis[i].G_Name.length>=10||response.data.list[i].GerName.length>=7){
+							// 		//response.data.list[i].G_Name=response.data.list[i].G_Name.substr(0,14)+'...';
+							// 		//response.data.list[i].GerName=response.data.list[i].GerName.substr(0,10)+'...';
+							// 	}
+							// }
 						}	
 						return response.data;
 					}else{
@@ -1468,24 +1468,24 @@ angular.module('starter.services', [])
 					}else{
 						for(var i=0; i<response.data.list.length; i++){
 							var G_Name1='';
-							if(response.data.list[i].G_Name.length > 13){
-								for(var j=0; j<response.data.list[i].G_Name.length; j += 13){
-									if(j == 0){
-										G_Name1 = G_Name1 + response.data.list[i].G_Name.substring(0,13); 
-									}else if(j+13 > response.data.list[i].G_Name.length){
-										G_Name1 = G_Name1 + '<br>' + response.data.list[i].G_Name.substring(j,response.data.list[i].G_Name.length); 
-										response.data.list[i].G_Name1 = G_Name1;
-									}else{
-										G_Name1 = G_Name1 + '<br>' + response.data.list[i].G_Name.substring(j,j+13);
-										if(response.data.list[i].G_Name.length == j+13){
-											response.data.list[i].G_Name1 = G_Name1;
-										}
-									}
-								}
-							}else{
+							// if(response.data.list[i].G_Name.length > 13){
+							// 	for(var j=0; j<response.data.list[i].G_Name.length; j += 13){
+							// 		if(j == 0){
+							// 			G_Name1 = G_Name1 + response.data.list[i].G_Name.substring(0,13); 
+							// 		}else if(j+13 > response.data.list[i].G_Name.length){
+							// 			G_Name1 = G_Name1 + '<br>' + response.data.list[i].G_Name.substring(j,response.data.list[i].G_Name.length); 
+							// 			response.data.list[i].G_Name1 = G_Name1;
+							// 		}else{
+							// 			G_Name1 = G_Name1 + '<br>' + response.data.list[i].G_Name.substring(j,j+13);
+							// 			if(response.data.list[i].G_Name.length == j+13){
+							// 				response.data.list[i].G_Name1 = G_Name1;
+							// 			}
+							// 		}
+							// 	}
+							// }else{
 								G_Name1 = response.data.list[i].G_Name;
 								response.data.list[i].G_Name1 = G_Name1;
-							}
+							// }
 						}
 					}
 					return response.data;

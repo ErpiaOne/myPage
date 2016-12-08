@@ -34,7 +34,8 @@
 				<tr>
 					<td style="width: 100px; color: #fff;">거래처</td>
 					<td style="text-align: right;">
-						<input type="search" ng-click='company_lately()' ng-model="datas.userGerName" ng-disabled="{{sbu}}" placeholder="거래처명검색" style="border: 0; border-bottom: 1px solid #e0e0e0; padding-left: 10px; padding-right: 35px; width: 100%; -webkit-appearance:none; -webkit-border-radius: 0; background: #5e6472; color: #fff;" ng-change="company_auto()">
+						<input type="search" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-click='company_lately()' ng-model="datas.userGerName" ng-disabled="{{sbu}}" placeholder="ex) 가상승" style="border: 0; border-bottom: 1px solid #e0e0e0; padding-left: 10px; padding-right: 35px; width: 100%; -webkit-appearance:none; -webkit-border-radius: 0; background: #5e6472; color: #fff;" ng-change="company_auto()">
+						<input type="search" ng-if="loginData.Admin_Code != 'ERPMobile'" ng-click='company_lately()' ng-model="datas.userGerName" ng-disabled="{{sbu}}" placeholder="거래처명검색" style="border: 0; border-bottom: 1px solid #e0e0e0; padding-left: 10px; padding-right: 35px; width: 100%; -webkit-appearance:none; -webkit-border-radius: 0; background: #5e6472; color: #fff;" ng-change="company_auto()">
 					</td>
 					<td width="90px;" style="text-align: right;">
 						<div style="position: relative; z-index: 50">
@@ -112,7 +113,10 @@
 							<td style="width: 40px"><i style="font-size: 2.5em; padding-top: 15px; padding-left:10px; vertical-align:middle; text-align: right;" ng-click="scanBarcode()"><img src="./img/barc.png"></i></td>
 						</tr>
 						<tr>
-							<td><input type="text" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; padding: 15px 35px 15px 15px; background: #5e6472; border-top: 0; border-left: 0; border-right: 0; border-bottom: 1px solid #fff; color: #fff;"></td>
+							<td>
+								<input type="text" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-keypress="checkIfEnterKeyWasPressed($event)" ng-click='goods_lately()' placeholder="상품정보를 입력하세요 ex)마몽드" ng-model="user.userGoodsName" style="width: 100%; padding: 15px 35px 15px 15px; background: #5e6472; border-top: 0; border-left: 0; border-right: 0; border-bottom: 1px solid #fff; color: #fff;">
+								<input type="text" ng-if="loginData.Admin_Code != 'ERPMobile'" ng-keypress="checkIfEnterKeyWasPressed($event)" ng-click='goods_lately()' placeholder="상품정보를 입력하세요" ng-model="user.userGoodsName" style="width: 100%; padding: 15px 35px 15px 15px; background: #5e6472; border-top: 0; border-left: 0; border-right: 0; border-bottom: 1px solid #fff; color: #fff;">
+							</td>
 							<td>
 								<i class='ion-android-close' style='text-align: left; margin-top:8px; padding-right:20px; margin-left:-25px; vertical-align:middle; font-size: 2em; color: #fff;'  ng-if="sbu == false"ng-click='clear_goods()'></i>
 								<i class="ion-search" style="text-align: left; margin-top:8px; vertical-align:middle; font-size: 2.2em; color: #fff;" ng-click="goods_searchM(1)"></i>
