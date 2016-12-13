@@ -1,0 +1,21 @@
+<!-- 업데이트현황 모달 -->
+<ion-modal-view>
+  <ion-header-bar class="bar-dark" style="background: #8f6384; border:0;" title-align="center">
+    <div class="psmsmy_title_mo">업데이트현황</div>
+      <div class="buttons" style="position: absolute; right: 0px;">
+            <i ng-click="upList_close()"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
+       </div>
+  </ion-header-bar>
+
+  <ion-content class="padding" style="background: #ececed; padding-bottom: 100px;">
+	<ion-list class="padding">
+		<ion-item ng-repeat="item in upList" style="padding:0px;">
+			<ui class="list" ng-click="toggle_{{item.id}} = !toggle_{{item.id}}">
+				<li class="item" style="border-bottom: 1px solid #d6562f; background: #f9f9f9;">
+					<font>{{item.inDate}}</font><br/><b style="font-size: 0.9em;">{{item.title}}</b>
+				</li>
+			</ui>
+			<pre class="Content" style="padding:15px; font-size: 0.88em; border: 1px solid #d6562f;" ng-show="toggle_{{item.id}}" ng-animate="'box'" ng-bind-html="item.content"></pre>
+		</ion-item>
+	</ion-list>
+  </ion-content>

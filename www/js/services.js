@@ -120,7 +120,7 @@ angular.module('starter.services', [])
 
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + '01056579731' + '&mac=' + UUID;
+			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -202,19 +202,6 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});
-		}, JegoOpen : function(Admin_Code, UserId, mac){		/* 재고현황 오픈 기념 */
-			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
-			var data = 'Kind=Jego_Select&Admin_Code=' + Admin_Code + '&id=' + escape(UserId) + '&mac=' + mac + '&loginType=E';
-			return $http.get(url + '?' + data).then(function(response){
-				if(typeof response.data == 'object'){
-					return response.data.list;
-				}else{
-					return $q.reject(response);
-				}
-			},function(response){
-				return $q.reject(response);
-			});
-
 		}
 	};
 })

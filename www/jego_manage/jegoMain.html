@@ -73,7 +73,8 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
                                             <tr>
                                                 <td class="td1-1" style="text-align: left; padding-left: 15px;">상품명</td>
                                                 <td class="td1-2">
-                                                    <input type="search" ng-model="jego_detail_colum.pro_name" placeholder="상품명 입력" ng-click='ActsLog("jego", "jego_productName")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-model="jego_detail_colum.pro_name" placeholder="ex) 해외구매대행" ng-click='ActsLog("jego", "jego_productName")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code != 'ERPMobile'" ng-model="jego_detail_colum.pro_name" placeholder="상품명 입력" ng-click='ActsLog("jego", "jego_productName")'>
                                                 </td>
                                                 <td class="td1-3">
                                                     <div>
@@ -84,7 +85,8 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
                                             <tr>
                                                 <td class="td1-1" style="text-align: left; padding-left: 15px;">규격</td>
                                                 <td class="td1-2">
-                                                    <input type="search" ng-model="jego_detail_colum.pro_stand" placeholder="규격 입력" ng-click='ActsLog("jego", "jego_stand")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-model="jego_detail_colum.pro_stand" placeholder="ex) 54cm" ng-click='ActsLog("jego", "jego_stand")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code != 'ERPMobile'" ng-model="jego_detail_colum.pro_stand" placeholder="규격 입력" ng-click='ActsLog("jego", "jego_stand")'>
                                                 </td>
                                                 <td class="td1-3">
                                                     <div>
@@ -95,7 +97,8 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
                                             <tr>
                                                 <td class="td1-1" style="text-align: left; padding-left: 15px;">자체코드</td>
                                                 <td class="td1-2">
-                                                    <input type="search" ng-model="jego_detail_colum.pro_OnCode" placeholder="자체코드 입력" ng-click='ActsLog("jego", "jego_G_OnCode")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-model="jego_detail_colum.pro_OnCode" placeholder="ex) 52694" ng-click='ActsLog("jego", "jego_G_OnCode")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code != 'ERPMobile'" ng-model="jego_detail_colum.pro_OnCode" placeholder="자체코드 입력" ng-click='ActsLog("jego", "jego_G_OnCode")'>
                                                 </td>
                                                 <td class="td1-3">
                                                     <div>
@@ -107,7 +110,8 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
                                                 <td class="td1-1" style="text-align: left; padding-left: 15px;">바코드</td>
                                                 <td class="td1-2">
                                                     <div style="position: relative;">
-                                                        <input type="search" ng-model="jego_detail_colum.pro_barCode" placeholder="바코드 입력" >
+                                                        <input type="search" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-model="jego_detail_colum.pro_barCode" placeholder="ex) 9810056001280" >
+                                                        <input type="search" ng-if="loginData.Admin_Code != 'ERPMobile'" ng-model="jego_detail_colum.pro_barCode" placeholder="바코드 입력" >
                                                         <div style="position: absolute; top:7px; right: 0px;" ng-click='jego_barc();ActsLog("jego", "jego_detail_barc")'><img src="./img/barc_03.png"></div>
                                                     </div>
                                                 </td>
@@ -149,7 +153,8 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
                                             <tr>
                                                 <td class="td1-1" style="text-align: left; padding-left: 15px;">브랜드</td>
                                                 <td class="td1-2">
-                                                    <input type="search" ng-model="jego_detail_colum.detail_brand" placeholder="브랜드 입력" ng-click='ActsLog("jego", "jego_brand")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-model="jego_detail_colum.detail_brand" placeholder="ex) MP3" ng-click='ActsLog("jego", "jego_brand")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code != 'ERPMobile'" ng-model="jego_detail_colum.detail_brand" placeholder="브랜드 입력" ng-click='ActsLog("jego", "jego_brand")'>
                                                 </td>
                                                 <td class="td1-3">
                                                     <div>
@@ -160,7 +165,8 @@ div.div-3 {text-align: left; padding: 10px; font-size: 0.85em;}
                                             <tr>
                                                 <td class="td1-1" style="text-align: left; padding-left: 15px;">제조처</td>
                                                 <td class="td1-2">
-                                                    <input type="search" ng-model="jego_detail_colum.detail_Jejo" placeholder="제조처 입력" ng-click='ActsLog("jego", "jego_jejo")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-model="jego_detail_colum.detail_Jejo" placeholder="ex) 아이리버" ng-click='ActsLog("jego", "jego_jejo")'>
+                                                    <input type="search" ng-if="loginData.Admin_Code != 'ERPMobile'" ng-model="jego_detail_colum.detail_Jejo" placeholder="제조처 입력" ng-click='ActsLog("jego", "jego_jejo")'>
                                                 </td>
                                                 <td class="td1-3">
                                                     <div>

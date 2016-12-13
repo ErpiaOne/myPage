@@ -1,6 +1,36 @@
 /* ERPia 차트 컨트롤러 - 이경민[2016-03] */
-angular.module('starter.controllers').controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, ERPiaAPI, statisticService, IndexService, $cordovaToast, app, $ionicLoading, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
+angular.module('starter.controllers').controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, $ionicModal, ERPiaAPI, statisticService, IndexService, $cordovaToast, app, $ionicLoading, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
+	/* 업데이트내역 */
+	$scope.upList = [
+		{ id : 13, title : "1.1.5 Version", inDate : "2016-12-12", content : "1. 메인화면, 매입매출화면 UI수정<br>2. 매입매출 입금/지급전표 등록(미등록)구별로직추가<br>3. 검색로직 키보드엔터연동<br>4. 업데이트현황페이지 추가" },
+		{ id : 12, title : "1.1.4 Version", inDate : "2016-11-02", content : "알림페이지 오픈" },
+		{ id : 11, title : "1.1.3 Version", inDate : "2016-10-27", content : "동일바코드로 상품이 여러개일 경우 이슈사항 수정" },
+		{ id : 10, title : "1.1.2 Version", inDate : "2016-10-25", content : "1. 재고현황 매입매출 연동 이슈수정<br>2. 매입매출 상품검색로직 수정<br>3. 재고현황 조회후 맨위 라인 접을수 있는 UI추가<br>4. 재고현황 포커싱기능개선<br>5. 매입매출 거래처 조회 후 하단 금액에러 수정<br>6. 거래명세서 화질 개선 및 공급받는자용만 나오게 수정" },
+		{ id : 9, title : "1.1.0 Version", inDate : "2016-10-14", content : "재고현황 오픈" },
+		{ id : 8, title : "1.0.9 Version", inDate : "2016-09-12", content : "1. 권한에 대한 기능 추가적용(매입매출/상품/재고조회)<br>2. 각종버그수정" },
+		{ id : 7, title : "1.0.8 Version", inDate : "2016-08-24", content : "1. 리포트 중 매출이익증감율그래프 속도 문제로 제외<br>2. 리포트 금액이상현상 수정<br>3. 매입매출 아이디별 권한수정" },
+		{ id : 6, title : "1.0.7 Version", inDate : "2016-08-19", content : "1. 차트 숨김기능 추가<br>2. 차트 데이터 많을 경우 로딩화면 추가개선<br>3. 차트바로가기 슬라이드 이슈수정<br>4. SCM메인 정보수정" },
+		{ id : 5, title : "1.0.6 Version", inDate : "2016-08-11", content : "1. 한글아이디 매입매출 권한 오류 수정<br>2. 매출전표 원장 집계 이슈사항 수정" },
+		{ id : 4, title : "1.0.4 Version", inDate : "2016-08-09", content : "1. 모바일 매출전표 등록시 고객ID에러 수정<br>2. 모바일 매출전표 등록시 중복 상품가능하게 수정" },
+		{ id : 3, title : "1.0.2 Version", inDate : "2016-08-01", content : "1. ERPia_Mobile 아이디별 권한 추가<br>2. 매입매출 관리비고 수정<br>3. 매입매출 판매단가 수정<br>4. 그래프 날짜 수정" },
+		{ id : 2, title : "1.0.1 Version", inDate : "2016-07-31", content : "ERPia_Mobile 아이디별 권한 추가" },
+		{ id : 1, title : "1.0.0 Version", inDate : "2016-07-23", content : "ERPiaMobile OPEN" }
+	]
+	/*업데이트 현황 보달 - 이경민[2016-12-09]*/
+	$ionicModal.fromTemplateUrl('slidingtab/updateList.html',{
+		scope : $scope,
+		animation: 'scale-in'
+	}).then(function(modal){
+		$scope.uplist_Modal = modal;
+	});
 
+	$scope.updateList = function(){
+		$scope.uplist_Modal.show();
+	}
+
+	$scope.upList_close = function(){
+		$scope.uplist_Modal.hide();
+	}
 
 	/* 차트 리스트 목록관련 - 이경민[2016-01] */
 	$scope.chartlist = false;
@@ -370,11 +400,11 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			response = eval(request.responseText);
 		}
 
-
-		if (load_kind == undefined || load_kind == "refresh")
-		{	$scope.loadingani();
+		if (load_kind == undefined && request.response.length != 3 || load_kind == "refresh")
+		{	
+			$scope.loadingani();
 			response = eval(request.responseText);
-			// $rootScope.time_ref = response[0].in_date;
+
 			$.each(response[0], function(index, jsonData){
 				if(index == "in_date"){
 					tmpAlert += jsonData;

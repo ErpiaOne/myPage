@@ -405,7 +405,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 				"categoryField": "name",
 				"rotate": true,
 				"startDuration": 1,
-
 				"autoMarginOffset": 40,
 				"autoMargins": false,
 				"marginBottom": 50,

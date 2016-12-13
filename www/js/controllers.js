@@ -125,8 +125,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.1.4',
-   		IOS_version : '1.0.7'	//업데이트시 필수로 변경!!
+   		Android_version : '1.1.5',
+   		IOS_version : '1.0.8'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 - 김형석[2015-12] */
@@ -456,7 +456,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.Admin_Code = 'km0421'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
 			// $rootScope.loginData.UserId = 'kaming311';
-			// $rootScope.loginData.Pwd = 'erpia!1010';
+			// $rootScope.loginData.Pwd = 'lkmbanana1!';
 
 			// $rootScope.loginData.Admin_Code = 'kpage'; //PC모드
 			// $rootScope.loginData.loginType = 'E'; //PC모드
@@ -878,13 +878,6 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 						PrivService.priv_wonga_Check($scope.loginData.Admin_Code, $scope.loginData.UserId)
 						.then(function(data){
 								$rootScope.priv_wongaYN = data[0].WonGa;
-						});
-
-						/* 재고현황 오픈 기념 */
-						PrivService.JegoOpen($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
-						.then(function(data){
-							$rootScope.jegocontroll = parseInt(data[0].rslt2);
-							$rootScope.jego_open = parseInt(data[0].rslt);
 						});
 
 						$timeout(function() {
