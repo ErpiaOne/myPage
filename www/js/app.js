@@ -698,6 +698,52 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
+	
+///////////////////////////////////////////////////////////// 간편 상품 & 거래처 관련 //////////////////////////////////////////////////////////
+	/* 매입&매출 환경설정 - 이경민 */
+	.state('app.account_select', {
+		url : '/tab/account_select',
+		views : {
+			'menuContent' : {
+				templateUrl : 'tab/account_select.html',
+				controller : 'EasyCtrl'
+			}
+		}
+	})
+
+	/* 매입&매출 환경설정 - 이경민 */
+	.state('app.account_IU', {
+		url : '/tab/account_IU',
+		views : {
+			'menuContent' : {
+				templateUrl : 'tab/account_IU.html',
+				controller : 'EasyCtrl'
+			}
+		}
+	})
+
+	/* 매입&매출 환경설정 - 이경민 */
+	.state('app.goods_select', {
+		url : '/tab/goods_select',
+		views : {
+			'menuContent' : {
+				templateUrl : 'tab/goods_select.html',
+				controller : 'EasyCtrl'
+			}
+		}
+	})
+
+	/* 매입&매출 환경설정 - 이경민 */
+	.state('app.goods_IU', {
+		url : '/tab/goods_IU',
+		views : {
+			'menuContent' : {
+				templateUrl : 'tab/goods_IU.html',
+				controller : 'EasyCtrl'
+			}
+		}
+	})
+
 ///////////////////////////////////////////////////////////// 매입&매출관련 //////////////////////////////////////////////////////////
 
 	/* 매입&매출 환경설정 - 이경민 */

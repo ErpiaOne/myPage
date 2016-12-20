@@ -20,7 +20,7 @@ var g_playlists = [{
 
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
-.controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ActsService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, PrivService, $cordovaSocialSharing, $ionicSideMenuDelegate){
+.controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $ionicPopover, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ActsService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, PrivService, $cordovaSocialSharing, $ionicSideMenuDelegate){
 	
 	/* IOS전용 */
 	VersionCKService.iosbutton().then(function(data){
@@ -50,6 +50,22 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		tab4: 'tab-item',
 		tab5: 'tab-item'
 	}
+
+	/* 더보기메뉴추가 */
+	$ionicPopover.fromTemplateUrl('tab/tabs.html', {
+	scope: $rootScope
+	}).then(function(popover) {
+	  	$rootScope.tabs = popover;
+	});
+
+	$rootScope.openPopover = function($event) {
+		$rootScope.tabs.show($event);
+	};
+
+	// $rootScope.closePopover = function() {
+	// 	$rootScope.tabs.hide();
+	// };
+
 	$ionicSideMenuDelegate.canDragContent(true);
 	$scope.sidetab= function(tabgubun){
 		switch (tabgubun) {
@@ -92,6 +108,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	}
 
 	$scope.useYN_Check = function(gubun){
+		console.log('여기왜 안오니 ');
 		switch (gubun){
 			case 1 : console.log('매입'); 
 				if($rootScope.priv_meaip.useYN == '1' &&  $rootScope.priv_meaip.master_useYN != 'N'){
@@ -108,6 +125,19 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('접근 권한이 없습니다.', 'long', 'center');
 					else console.log('접근 권한이 없습니다.');
 				}
+				break;
+		}
+	}
+
+	$rootScope.useYN_Check2 = function(gubun){
+		switch (gubun){
+			case 1 : console.log('상품'); 
+				$rootScope.tabs.hide(); $scope.sidetab("tab5");
+				$state.go("app.goods_select");
+				break;
+			case 2 : console.log('거래처'); 
+				$rootScope.tabs.hide(); $scope.sidetab("tab5");
+				$state.go("app.account_select");
 				break;
 		}
 	}
@@ -463,10 +493,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'kpage1089';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId  = 'test1234';
-			// $rootScope.loginData.Pwd = 'test1234!';
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId  = 'test1234';
+			$rootScope.loginData.Pwd = 'test1234!';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
