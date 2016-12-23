@@ -1873,10 +1873,6 @@ angular.module('starter.services', [])
 //http://www.erpia.net/ERPiaSCM/mobile_loginChk.asp?hidAdmin_Code=onz&hidGerCode=00010&hidGerName=%28%uC8FC%29%uAC00%uB098%uC528%uC564%uC528
 //http://localhost:8100/ERPiaSCM/Mobile_loginChk.asp?hidAdmin_Code=onz&hidGerCode=00010&hidGerName=%28%uC8FC%29%uAC00%uB098%uC528%uC564%uC528
 })
-/* SCM/NORMAL모드 비밀번호변경 Service - 김형석[2016-06-22] */
-//http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=SCM_PassChange&loginType=N&Admin_Code=onz&GerCode=00926&ID=onz&pwd=onz&changePass=1234&mac=ba8e205a02d20e66
-//http://www.erpia.net/include/JSon_Proc_Mobile.asp?kind=PassChange&mode=Normal_PassChange&Admin_Code=onz&GerCode=00926&ID=aaaa&pwd=aaaaaaa!1&changePass=1234&mac=ba8e205a02d20e66
-
 
 /* 비밀번호 변경전 검사 - 이경민[2016-07-13] */
 .factory('PassChangeService', function($http, $q, $cordovaToast, ERPiaAPI){
@@ -2084,5 +2080,39 @@ angular.module('starter.services', [])
 				return $q.reject(response);
 			});	
 		}
+	};
+})
+
+/* 간편 상품 거래처 등록 서비스 - 이경민[2016-09-12] */
+.factory('EasyService', function($http, $q, $cordovaToast, ERPiaAPI){
+	return{
+		goods_Select: function(Admin_Code, stts, page, searchKey){
+			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp';
+			var data = 'Kind=ERPia_EasyMode_Goods&Mode=Goods_Search&Admin_Code=' + Admin_Code + '&stts=' + stts + '&page=' + page + '&onePageCnt=20&SearchKey=' + escape(searchKey);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					console.log('상품조회', response);
+					return response;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}, gereachei_Select: function(Admin_Code, page, g_iogu, searchKey){
+			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp'; // ''전체, 603.입출처 / 601.매입처 / 602.매출처
+			var data = 'Kind=ERPia_EasyMode_Gereachei&Mode=Gereachei_Search&Admin_Code=' + Admin_Code + '&page=' + page + '&onePageCnt=20&G_ioGu=' + g_iogu + '&SearchKey=' + escape(searchKey);
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					console.log('거래처조회', response);
+					return response.data;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}
+		
 	};
 });
