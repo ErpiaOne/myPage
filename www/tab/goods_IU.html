@@ -1,9 +1,49 @@
-<ion-view view-title="Account">
-	<ion-content>
-		<ion-list>
-			<ion-toggle  ng-model="settings.enableFriends">
-				Enable Friends
-			</ion-toggle>
-		</ion-list>
+<!-- 상품 등록/수정 모달 -->
+<ion-modal-view title="">
+	<ion-header-bar class="bar-dark" style="background: #8f6384; border:0;" title-align="center">
+		<div class="psmsmy_title_mo">상품 등록/수정</div>
+		<div class="buttons" style="position: absolute; right: 0px;">
+			<i ng-click="M_close(1)"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
+		</div>
+	</ion-header-bar>
+
+	<ion-content style="background: #dce0e1">
+		<div class="list list-inset">
+			<label class="item item-input" style="padding-right: 15px;">
+				<span class="input-label psm_sang_04">상품명(필수)</span>
+				<span style="padding-right: 5px; width: 100%"><input type="text" ng-bind="goods_Object.goodsName" style="width: 100%;" placeholder="상품명을 입력하세요."></span>
+			</label>
+			<label class="item item-input" style="padding-right: 15px;">
+				<span class="input-label psm_sang_04">규격</span>
+				<span style="padding-right: 5px; width: 100%"><input type="text" ng-bind="goods_Object.goodsStand" style="width: 100%;" placeholder="규격을 입력하세요."></span>
+			</label>
+			<label class="item item-input" style="padding-right: 15px;">
+				<span class="input-label psm_sang_04">바코드</span>
+				<span style="padding-right: 5px; width: 100%"><input type="text" ng-bind="goods_Object.barcode" style="width: 100%;" placeholder="바코드를 입력하세요."></span>
+			</label>
+			<label class="item item-input" style="padding-right: 15px;">
+				<span class="input-label psm_sang_04">로케이션</span>
+				<span style="padding-right: 5px; width: 100%"><input type="text" ng-bind="goods_Object.location" style="width: 100%;" placeholder="로케이션을 입력하세요."></span>
+			</label>
+			<label class="item item-input" style="padding-right: 15px;">
+				<span class="input-label psm_sang_04">
+					<table>
+						<tr>
+							<td>
+								<select ng-model="goods_Object.stts" style="font-size: 0.9em;">
+									<option ng-repeat="x in goodsStts" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
+								</select>
+							</td>
+							<td>
+								<select ng-model="goods_Object.stts" style="font-size: 0.9em;">
+									<option ng-repeat="x in goodsStts" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</span>
+				<!-- <span style="padding-right: 5px; width: 100%"><input type="text" style="width: 100%;" placeholder="로케이션을 입력하세요."></span> -->
+			</label>
+		</div>
 	</ion-content>
-</ion-view>
+</ion-modal-view>

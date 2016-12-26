@@ -263,6 +263,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 
 	$rootScope.goto_with_clearHistory = function(goto_Href){
 		$rootScope.loadingani();
+		console.log(goto_Href);
 		if(goto_Href == '#app/jegoMain') $rootScope.distinction = '';
 		if($location.url() == '/app/meaip_IU' && goto_Href != '#app/jegoMain' || $location.url() == '/app/meachul_IU' && goto_Href != '#app/jegoMain'){
 			$ionicPopup.show({
@@ -339,10 +340,20 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 			else if(goto_Href == '#app/meaip_page'){
 				if($rootScope.distinction == 'meaip') var no = 'N';
 				else $rootScope.distinction = 'meaip';
-			}else if(goto_Href=='#app/config'){
+			}
+			else if(goto_Href=='#app/config'){
 				if($rootScope.distinction == 'config') var no = 'N';
 				else $rootScope.distinction = 'config';
 			}
+			// else if(goto_Href == '#app/goods_select'){
+			// 	console.log('111111111111111');
+			// 	if($rootScope.distinction == 'Goods') var no = 'N';
+			// 	else $rootScope.distinction = 'Goods';
+			// }
+			// else if(goto_Href == '#app/account_select'){
+			// 	if($rootScope.distinction == 'Account') var no = 'N';
+			// 	else $rootScope.distinction = 'Account';
+			// }
 
 			if(no == 'N'){
 				if($rootScope.distinction == 'meaip') $state.go('app.meaip_page');
@@ -371,7 +382,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	$rootScope.rndNum = 0;	
 })
 
-/* 이건 나도 모르겠어 .. 아마 예전 아이오닉 푸쉬 사용했을 때 APP_ID 설정하려고 쓴것일듯  - 김형석[2016-04] */
+/* 아마 예전 아이오닉 푸쉬 사용했을 때 APP_ID 설정하려고 쓴것일듯  - 김형석[2016-04] */
 .config(['$ionicAppProvider', function($ionicAppProvider) {
 	$ionicAppProvider.identify({
 	      	app_id: 'b94db7cd', //app id
@@ -700,7 +711,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 
 	
 ///////////////////////////////////////////////////////////// 간편 상품 & 거래처 관련 //////////////////////////////////////////////////////////
-	/* 매입&매출 환경설정 - 이경민 */
+	/* 거래처 조회 - 이경민 */
 	.state('app.account_select', {
 		url : '/tab/account_select',
 		views : {
@@ -711,7 +722,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
-	/* 매입&매출 환경설정 - 이경민 */
+	/* 거래처 수정/등록 - 이경민 */
 	.state('app.account_IU', {
 		url : '/tab/account_IU',
 		views : {
@@ -722,7 +733,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
-	/* 매입&매출 환경설정 - 이경민 */
+	/*상품 조회 - 이경민 */
 	.state('app.goods_select', {
 		url : '/tab/goods_select',
 		views : {
@@ -733,7 +744,7 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
-	/* 매입&매출 환경설정 - 이경민 */
+	/* 상품 수정/등록 - 이경민 */
 	.state('app.goods_IU', {
 		url : '/tab/goods_IU',
 		views : {

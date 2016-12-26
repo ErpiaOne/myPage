@@ -14,120 +14,132 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 	<ion-nav-title>
 		<div class="psmsmy_title_co">상품조회</div>
 	</ion-nav-title>
-	<ion-nav-back-button>
-	</ion-nav-back-button>
+	<ion-nav-buttons side="right">
+		<button menu-toggle="right" class="button button-outline button-positive" style="border-color: #fff;" ng-click="Goods_Gerea_IU(0)">
+			<sapn style="color: #fff; font-size: 0.8em; line-height: 14px;  display: inline-block; margin-top: 1px;">간편<br>등록</sapn>
+		</button>
+	</ion-nav-buttons>
 	<ion-content style="background: #dce0e1;" scroll="true">
 		<div class="item" style="background: #5e6472; border:0; padding-top:15px;">
 			<div  style="clear: both; width:100%">
-				<div style="font-size: 0.7em; color: #fff;">* 상품명,상품코드,바코드,자체코드를 입력해주세요.</div>
+				<div style="font-size: 0.75em; color: #fff;">* 상품명,상품코드,바코드,자체코드를 입력해주세요.</div>
 			</div>
 			<div  style="clear: both; width:100%">
 				<div style="float: left; width:26%; padding-top:6px; color: #fff;"> 
-					<select style="height: 30px; font-size: 0.5em;">
-					  <option>전체(삭세상품제외)</option>
-					  <option>정상</option>
+					<select ng-model="GoodsInfo.stts" style="height: 30px; font-size: 0.6em; background: #5e6472; border:0; border-bottom: 1px solid #fff; color: #fff;">
+					  <option ng-repeat="x in sttsMode" value="{{x.val}}" ng-selected="GoodsInfo.stts == x.val">{{ x.name }}</option>
 					</select>
 				 </div>
 				<div style="float: left; width:50%; padding-top: 10px; margin-left:30px;">
-					<input type="text" ng-if="loginData.Admin_Code != 'ERPMobile'" placeholder="통합검색" style="width: 100%; height: 25px; background: #5e6472; border:0; border-bottom: 1px solid #fff; color: #fff; padding-right: 50px;">
-					<input type="text" ng-if="loginData.Admin_Code == 'ERPMobile'" placeholder="통합검색" style="width: 100%; height: 25px; background: #5e6472; border:0; border-bottom: 1px solid #fff; color: #fff; padding-right: 50px;">
+					<input type="text" ng-if="loginData.Admin_Code != 'ERPMobile'" ng-model="GoodsInfo.searchKey" placeholder="통합검색" style="width: 100%; height: 25px; background: #5e6472; border:0; border-bottom: 1px solid #fff; color: #fff; padding-right: 50px;">
+					<input type="text" ng-if="loginData.Admin_Code == 'ERPMobile'" ng-model="GoodsInfo.searchKey" placeholder="통합검색" style="width: 100%; height: 25px; background: #5e6472; border:0; border-bottom: 1px solid #fff; color: #fff; padding-right: 50px;">
 				</div>
 				<div style="float: left; width:20%; margin-left:-30px; padding-top: 10px;">
-					<i class='ion-android-close' style='font-size: 27px; color:#fff'></i>
+					<i class='ion-android-close' style='font-size: 27px; color:#fff' ng-click="searchKey_Clear(1)"></i>
 				</div>
 			</div>
 			<div style="position: absolute; top: 33px; right: 20px; ">
-				<button class="button button-small button-psm00 ion-search" style="width: 40px; height: 37px; font-size: 1.4em; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;"></button>
+				<button class="button button-small button-psm00 ion-search" ng-click="pagenum();goodsSerch(1)" style="width: 40px; height: 37px; font-size: 1.4em; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;"></button>
 			</div>
 		</div>
 
+		<div style="padding: 10px;"></div>
 
-		<div style="padding: 10px;">
-			<table style="background: #EDEDED; width: 100%; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em; " ng-if="$index%2 != 0">
+		<div style="padding: 10px; margin-top: -10px;" ng-repeat="x in goods_result">
+			<table ng-if="$index != lastNum" style="background: #EDEDED; width: 100%; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; table-layout:fixed;  font-size: 0.85em;" ng-click="toggle_{{x.G_Code}} = !toggle_{{x.G_Code}}">
 				<tr>
-					<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%; padding: 4px 10px; text-align: left;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>LONE 프리미에르 데님자켓(남)</b></div></td>
+					<td colspan="2" style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%; padding: 4px 10px; text-align: left;"><div style="width: 100%; height: 21px; overflow: hidden; "><b>{{ x.G_Name }}</b></div></td>
 				</tr>
 				<tr>
-					<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%; padding: 4px 10px; text-align: left; font-size: 0.8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">규격: 매출할인(매출 시 삭제가 가능합니다 줄을 길게에에에</td>
-					<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left; font-size: 0.8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">가용재고 : 207</td>
+					<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 66%; padding: 4px 10px; text-align: left; font-size: 0.8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">규격: {{ (x.G_Stand)?x.G_Stand:'-' }}</td>
+					<td style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left; font-size: 0.8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">가용재고 : {{ x.Jego | number:0 }}</td>
 				</tr>
 
-				<tr style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;">
+				<tr style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;" ng-show="toggle_{{x.G_Code}}" ng-animate="'box'">
 					<td colspan="2" style="width: 100%;">
 						<div style="width: 100%;">
-							<table style="background: #fff; width: 100%; font-size: 0.85em;" ng-if="!$last">
+							<table style="background: #fff; width: 100%; font-size: 0.85em;">
 								<tr>
 									<td class="resulttd1-1"><b>상품명</b></td>
-									<td class = "resulttd1-2">LONE 프리미에르 데님자켓(남)</td>
+									<td class = "resulttd1-2">{{ (x.G_Name)?x.G_Name:'-' }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>상품코드</b></td>
-									<td class = "resulttd1-2">9801234561</td>
+									<td class = "resulttd1-2">{{ (x.G_Code)?x.G_Code:'-' }}</td>
+								</tr>
+								<tr>
+									<td class="resulttd1-1"><b>바코드</b></td>
+									<td class = "resulttd1-2">{{ (x.Barcode)?x.Barcode:'-' }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>자체코드</b></td>
-									<td class = "resulttd1-2">123456789</td>
+									<td class = "resulttd1-2">{{ (x.G_OnCode)?x.G_OnCode:'-' }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>규격</b></td>
-									<td class = "resulttd1-2">WHITE</td>
-								</tr>
-								<tr>
-									<td class="resulttd1-1"><b>별칭</b></td>
-									<td class = "resulttd1-2">-</td>
+									<td class = "resulttd1-2">{{ (x.G_Stand)?x.G_Stand:'-' }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>상태</b></td>
-									<td class = "resulttd1-2">정상</td>
+									<td class = "resulttd1-2">
+										<span ng-if="x.Dis_Use == '0'">정상</span>
+										<span ng-if="x.Dis_Use == '1'">일시품절</span>
+										<span ng-if="x.Dis_Use == '2'">장기품절</span>
+										<span ng-if="x.Dis_Use == '3'">단종</span>
+										<span ng-if="x.Dis_Use == '4'">비활성화상품</span>
+										<span ng-if="x.Dis_Use == '9'">삭제상품</span>
+									</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>원산지</b></td>
-									<td class = "resulttd1-2">중국</td>
+									<td class = "resulttd1-2">{{ (x.Origin)?x.Origin:'-' }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>매입가</b></td>
-									<td class = "resulttd1-2">7,000</td>
+									<td class = "resulttd1-2">{{ x.G_Dn1 | number:0 }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>도매가</b></td>
-									<td class = "resulttd1-2">4,200</td>
-								</tr>
-								<tr>
-									<td class="resulttd1-1"><b>소매가</b></td>
-									<td class = "resulttd1-2">4,500</td>
+									<td class = "resulttd1-2">{{ x.G_Dn2 | number:0 }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>인터넷가</b></td>
-									<td class = "resulttd1-2">5,300</td>
+									<td class = "resulttd1-2">{{ x.G_Dn3 | number:0 }}</td>
+								</tr>
+								<tr>
+									<td class="resulttd1-1"><b>소매가</b></td>
+									<td class = "resulttd1-2">{{ x.G_Dn4 | number:0 }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>소비자가</b></td>
-									<td class = "resulttd1-2">6,200</td>
+									<td class = "resulttd1-2">{{ x.G_Dn5 | number:0 }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>유/무형구분</b></td>
-									<td class = "resulttd1-2">유형</td>
+									<td class = "resulttd1-2"><span ng-if="x.UM_GUBUN == 'Y'">유형</span><span ng-if="x.UM_GUBUN != 'Y'">무형</span></td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>입수량</b></td>
-									<td class = "resulttd1-2">0</td>
+									<td class = "resulttd1-2">{{ x.Box_In_Qty | number:0 }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>재고</b></td>
-									<td class = "resulttd1-2">247</td>
+									<td class = "resulttd1-2">{{ x.Jego | number:0 }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>출고대기</b></td>
-									<td class = "resulttd1-2">75</td>
+									<td class = "resulttd1-2">{{ x.ChulgoDeagi | number:0 }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>비고</b></td>
-									<td class = "resulttd1-2">[모바일]</td>
+									<td class = "resulttd1-2">{{ (x.bigo)?x.bigo:'-' }}</td>
 								</tr>
 								<tr>
-									<td colspan="2" style="background: #A298B0; font-size: 0.9em; text-align: center;">
-										<button>수정</button>
-										<button>삭제</button>
+									<td colspan="2" style="background: #A298B0; font-size: 0.9em; text-align: right;">
+										<div class="padding">
+											<button class="button button-small button-psm01" style="padding-right: 5px;">수정</button>
+											<button class="button button-small button-psm02">삭제</button>
+										</div>
 									</td>
 								</tr>
 							</table>
@@ -135,6 +147,10 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 					</td>
 				</tr>
 			</table>
+		</div>
+		<!-- 더보기 버튼 -->
+		<div ng-if="moreBtn == page*20" style="padding: 0 10px 10px 10px;">
+			<button class="button button-block icon ion-ios-plus-outline button-psm05" ng-click="goodsSerch(2)">  20개 더보기</button>
 		</div>
 		<div style="padding-bottom: 100px;"></div>
 	</ion-content>

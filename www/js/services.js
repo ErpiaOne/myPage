@@ -2089,9 +2089,9 @@ angular.module('starter.services', [])
 		goods_Select: function(Admin_Code, stts, page, searchKey){
 			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp';
 			var data = 'Kind=ERPia_EasyMode_Goods&Mode=Goods_Search&Admin_Code=' + Admin_Code + '&stts=' + stts + '&page=' + page + '&onePageCnt=20&SearchKey=' + escape(searchKey);
+			console.log(url, "?", data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
-					console.log('상품조회', response);
 					return response;
 				}else{
 					return $q.reject(response);
@@ -2100,12 +2100,12 @@ angular.module('starter.services', [])
 				return $q.reject(response);
 			});
 		}, gereachei_Select: function(Admin_Code, page, g_iogu, searchKey){
-			var url = ERPiaAPI.url + '/JSon_Proc_Mobile.asp'; // ''전체, 603.입출처 / 601.매입처 / 602.매출처
+			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp'; // ''전체, 603.입출처 / 601.매입처 / 602.매출처
 			var data = 'Kind=ERPia_EasyMode_Gereachei&Mode=Gereachei_Search&Admin_Code=' + Admin_Code + '&page=' + page + '&onePageCnt=20&G_ioGu=' + g_iogu + '&SearchKey=' + escape(searchKey);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					console.log('거래처조회', response);
-					return response.data;
+					return response;
 				}else{
 					return $q.reject(response);
 				}
