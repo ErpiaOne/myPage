@@ -2025,7 +2025,6 @@ angular.module('starter.services', [])
 		}, search_Save : function(Admin_Code, UserId, changgo_key, jegoInfo, Mode, text){		// 조회셋 등록
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=' + Mode + '&pageCnt=&ChangGoCode=' + changgo_key + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN + '&sel_name=' + escape(text);
-			console.log('조회셋 등록=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -2038,7 +2037,6 @@ angular.module('starter.services', [])
 		}, Opset_search : function(Admin_Code, UserId, gubun){		// 조회셋 리스트 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Select_OptSet_List&RL_Gubun=' + gubun;
-			console.log('조회셋 리스트 조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -2051,7 +2049,6 @@ angular.module('starter.services', [])
 		}, Opset_de : function(Admin_Code, UserId, index){		// 조회셋 리스트 삭제
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Del_Select_OptSet_Rapid&sel_idx=' + index;
-			console.log('조회셋 리스트 삭제=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -2064,7 +2061,6 @@ angular.module('starter.services', [])
 		}, meaipchul_GoodsSearch : function(Admin_Code, UserId, GCode){		// 상품코드 리스트로 재고조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt=1&pageRow=20&ChangGoCode=&KeyWord=&CodeSearchYN=N&OneSelectCode=&GoodsCodeList=' + GCode;
-			console.log('상품코드 리스트로 재고조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					if(response.data != '<!--Parameter Check-->'){
@@ -2089,7 +2085,6 @@ angular.module('starter.services', [])
 		goods_Select: function(Admin_Code, stts, page, searchKey){
 			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp';
 			var data = 'Kind=ERPia_EasyMode_Goods&Mode=Goods_Search&Admin_Code=' + Admin_Code + '&stts=' + stts + '&page=' + page + '&onePageCnt=20&SearchKey=' + escape(searchKey);
-			console.log(url, "?", data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response;
@@ -2104,7 +2099,50 @@ angular.module('starter.services', [])
 			var data = 'Kind=ERPia_EasyMode_Gereachei&Mode=Gereachei_Search&Admin_Code=' + Admin_Code + '&page=' + page + '&onePageCnt=20&G_ioGu=' + g_iogu + '&SearchKey=' + escape(searchKey);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
-					console.log('거래처조회', response);
+					return response;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}, goods_IU: function(Admin_Code, ID, Info){
+			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp';
+			var data = 'Kind=ERPia_EasyMode_Goods&mode=Goods_Save&Admin_Code=' + Admin_Code + '&ID=' + escape(ID) + '&goodsCode=' + Info.goodsCode + '&stts=' + Info.stts + '&goodsName=' + escape(Info.goodsName);
+			data = data + '&goodsStand=' + escape(Info.goodsStand) +'&ipAmt=' + Info.ipAmt + '&doAmt=' + Info.doAmt + '&interAmt=' + Info.interAmt + '&soAmt=' + Info.soAmt + '&userAmt=' + Info.userAmt;
+			data = data + '&location=' + escape(Info.location) + '&bigo=' + escape('[모바일]') + escape(Info.bigo) + '&umgubun=' + Info.umgubun + '&barcode=' + Info.barcode;
+
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}, gereachei_IU: function(Admin_Code, ID, Info){
+			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp'; // ''전체, 603.입출처 / 601.매입처 / 602.매출처
+			var data = 'Kind=ERPia_EasyMode_Gereachei&mode=Gereachei_Save&Admin_Code=' + Admin_Code + '&ID=' + escape(ID) + '&GerCode=' + Info.GerCode + '&GerName=' + escape(Info.GerName) + '&G_Sano=' + Info.G_Sano + '&G_ioGu=' + Info.G_ioGu;
+			data = data + '&G_up=' + escape(Info.G_up) +'&G_Jong=' + escape(Info.G_Jong) + '&G_Ceo=' + escape(Info.G_Ceo) + '&G_Post1=' + escape(Info.G_Post1) + '&G_Juso1=' + escape(Info.G_Juso1) + '&G_GDamdang=' + escape(Info.G_GDamdang);
+			data = data + '&Hp=' + Info.Hp + '&Tax_GDamdang=' + escape(Info.Tax_GDamdang) + '&Tax_GDamdangTel=' + Info.Tax_GDamdangTel + '&Tax_EMail=' + escape(Info.Tax_EMail) + '&bigo=' + escape('[모바일]') + escape(Info.bigo);
+
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}, test: function(){
+			console.log("아러ㅣ아ㅓ라ㅓ =>",ERPiaAPI.post );
+			var url = 'openapi.epost.go.kr/postal/retrieveLotNumberAdressAreaCdService/retrieveLotNumberAdressAreaCdService/getDetailListAreaCd';
+			var data = 'ServiceKey=VstThgFAeXBTbir%2BBOqLUoUbAFzaMWWZ%2B2COAvCMsnLFIKWWIJ%2FyBuAil6W27SBoiXovE3BhrHNuBf9BcewZLQ%3D%3D&searchSe=dong&srchwrd=' + escape('고등동');
+
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
 					return response;
 				}else{
 					return $q.reject(response);

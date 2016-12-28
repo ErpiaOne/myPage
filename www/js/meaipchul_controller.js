@@ -1189,7 +1189,6 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 	}
 
 	$scope.scrollCtr = function(gu){
-		console.log('여기오니?');
 		if(gu == 1) $ionicScrollDelegate.scrollTop();
 		else $ionicScrollDelegate.scrollBottom();
 	}

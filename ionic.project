@@ -13,6 +13,10 @@
     {
       "path": "/upload",
       "proxyUrl": "http://image.erpia.net"
+    },
+    {
+      "path": "/postal",
+      "proxyUrl": "http://openapi.epost.go.kr/postal/retrieveLotNumberAdressAreaCdService/retrieveLotNumberAdressAreaCdService"
     }
   ]
 }

@@ -131,14 +131,24 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 	$rootScope.useYN_Check2 = function(gubun){
 		switch (gubun){
 			case 1 : console.log('상품'); 
-				$rootScope.tabs.hide(); $scope.sidetab("tab5");
-				$rootScope.distinction = 'Goods';
-				$state.go("app.goods_select");
+				if($rootScope.priv_productYM == 'Y'){
+					$rootScope.tabs.hide(); $scope.sidetab("tab5");
+					$rootScope.distinction = 'Goods';
+					$state.go("app.goods_select");
+				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('접근 권한이 없습니다.', 'long', 'center');
+					else console.log('접근 권한이 없습니다.');
+				}
 				break;
 			case 2 : console.log('거래처'); 
-				$rootScope.tabs.hide(); $scope.sidetab("tab5");
-				$rootScope.distinction = 'Account';
-				$state.go("app.account_select");
+				if($rootScope.privGereachei_Use == 'Y'){
+					$rootScope.tabs.hide(); $scope.sidetab("tab5");
+					$rootScope.distinction = 'Account';
+					$state.go("app.account_select");
+				}else{
+					if(ERPiaAPI.toast == 'Y') $cordovaToast.show('접근 권한이 없습니다.', 'long', 'center');
+					else console.log('접근 권한이 없습니다.');
+				}
 				break;
 		}
 	}
@@ -898,10 +908,20 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								}
 
 								/* 상품정보 권한 */
-								if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0 && data[6].priv == 0){
+								$rootScope.privproduct_Save = data[7].priv_Save;
+								if(data[6].Mpriv == 'N' || data[6].Mpriv == 'Y' && data[6].priv == 0 || data[6].Mpriv == 'Y' && data[7].priv == 0){
 									$rootScope.priv_productYM = 'N';
 								}else{
 									$rootScope.priv_productYM = 'Y';
+								}
+
+								/* 거래처정보 권한 */
+								$rootScope.privGereachei_Save = data[5].priv_Save;
+
+								if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0){
+									$rootScope.privGereachei_Use = 'N';
+								}else{
+									$rootScope.privGereachei_Use = 'Y';
 								}
 						});
 

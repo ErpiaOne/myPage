@@ -1,49 +1,115 @@
 <!-- 상품 등록/수정 모달 -->
 <ion-modal-view title="">
 	<ion-header-bar class="bar-dark" style="background: #8f6384; border:0;" title-align="center">
-		<div class="psmsmy_title_mo">상품 등록/수정</div>
+		<div class="psmsmy_title_mo">상품 {{GGMode}}</div>
 		<div class="buttons" style="position: absolute; right: 0px;">
 			<i ng-click="M_close(1)"><img src="./img/icon_close.png" class="psm_left_img3 psmsmy_close" ></i>
 		</div>
 	</ion-header-bar>
 
-	<ion-content style="background: #dce0e1">
-		<div class="list list-inset">
-			<label class="item item-input" style="padding-right: 15px;">
-				<span class="input-label psm_sang_04">상품명(필수)</span>
-				<span style="padding-right: 5px; width: 100%"><input type="text" ng-bind="goods_Object.goodsName" style="width: 100%;" placeholder="상품명을 입력하세요."></span>
+	<ion-content style="background: #dce0e1" scroll="true">
+		<div class="list list-inset" style="background: #f3eff4;">
+			<label class="item item-input" style="padding: 0;">
+				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;상품명(필수)</i></span>
+				<input type="text" ng-model="goods_Object.goodsName" style="width: 90%; font-size: 0.8em;" placeholder="상품명을 입력하세요."><br>
 			</label>
-			<label class="item item-input" style="padding-right: 15px;">
-				<span class="input-label psm_sang_04">규격</span>
-				<span style="padding-right: 5px; width: 100%"><input type="text" ng-bind="goods_Object.goodsStand" style="width: 100%;" placeholder="규격을 입력하세요."></span>
+
+			<label class="item item-input" style="padding: 0;">
+				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;규격</i></span>
+				<input type="text" ng-model="goods_Object.goodsStand" style="width: 100%; font-size: 0.8em;" placeholder="규격을 입력하세요."><br>
 			</label>
-			<label class="item item-input" style="padding-right: 15px;">
-				<span class="input-label psm_sang_04">바코드</span>
-				<span style="padding-right: 5px; width: 100%"><input type="text" ng-bind="goods_Object.barcode" style="width: 100%;" placeholder="바코드를 입력하세요."></span>
+
+			<label class="item item-input" style="padding: 0;">
+				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;바코드</i></span>
+				<input type="text" ng-model="goods_Object.barcode" style="width: 100%; font-size: 0.8em;" placeholder="바코드를 입력하세요."><br>
 			</label>
-			<label class="item item-input" style="padding-right: 15px;">
-				<span class="input-label psm_sang_04">로케이션</span>
-				<span style="padding-right: 5px; width: 100%"><input type="text" ng-bind="goods_Object.location" style="width: 100%;" placeholder="로케이션을 입력하세요."></span>
+
+			<label class="item item-input" style="padding: 0;">
+				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;로케이션</i></span>
+				<input type="text" ng-model="goods_Object.location" style="width: 100%; font-size: 0.8em;" placeholder="로케이션을 입력하세요."><br>
 			</label>
-			<label class="item item-input" style="padding-right: 15px;">
-				<span class="input-label psm_sang_04">
-					<table>
+
+			<label class="item item-input" style="padding: 0; width: 100%; background: #f3eff4;">
+				<span class="input-label psm_sang_01" style="width: 50%; height: 45px; padding-top: 17px; text-align: center; vertical-align: middle;">
+					<select ng-model="goods_Object.stts" style="width: 70%; font-size: 0.9em;">
+						<option ng-repeat="x in goodsStts" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
+					</select>
+				</span>
+				<span class="input-label psm_sang_01" style="width: 50%; height: 45px; padding-top: 17px; text-align: center; vertical-align: middle;">
+					<select ng-model="goods_Object.umgubun" style="width: 70%; font-size: 0.9em; margin-left: -10px;">
+						<option ng-repeat="x in goods_shapeYN" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
+					</select>
+				</span>
+				<br>
+			</label>
+
+			<div class="list list-inset" align="left" style="background: #f3eff4;">
+				<div style="text-align: left; padding: 0 10px 10px 10px; font-size: 0.85em;"><i class="ion-record">&nbsp;&nbsp;<b>가격</b></i><span style="font-size: 0.7em;"> (*가격을 입력하지 않으시면 자동 0원으로 등록됩니다.)</span></div>
+				<div style="border: 1px solid #dce0e1">
+					<table style="width: 100%;">
 						<tr>
-							<td>
-								<select ng-model="goods_Object.stts" style="font-size: 0.9em;">
-									<option ng-repeat="x in goodsStts" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
-								</select>
+							<td style="width: 50%;">
+								<label class="item item-input" style="padding-right: 0px;">
+									<span style="font-size: 0.8em; padding-right: 5px;">매입가</span>
+									<span style="margin-right: -40px; width: 100%; height: 30px;">
+										<input type="number" ng-model="goods_Object.ipAmt" style="width: 100%; text-align: right;" placeholder="0">
+									</span>
+								</label>	
 							</td>
-							<td>
-								<select ng-model="goods_Object.stts" style="font-size: 0.9em;">
-									<option ng-repeat="x in goodsStts" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
-								</select>
+							<td style="width: 50%;">
+								<label class="item item-input" style="padding-right: 0px;">
+									<span style="font-size: 0.8em; padding-right: 5px;">도매가</span>
+									<span style="margin-right: -40px; width: 100%; height: 30px;">
+										<input type="number" ng-model="goods_Object.doAmt" style="width: 100%; text-align: right;" placeholder="0">
+									</span>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 50%;">
+								<label class="item item-input" style="padding-right: 0px;">
+									<span style="font-size: 0.8em; padding-right: 5px;">인터넷가</span>
+									<span style="margin-right: -40px; width: 100%; height: 30px;">
+										<input type="number" ng-model="goods_Object.interAmt" style="width: 100%; text-align: right;" placeholder="0">
+									</span>
+								</label>	
+							</td>
+							<td style="width: 50%;">
+								<label class="item item-input" style="padding-right: 0px;">
+									<span style="font-size: 0.8em; padding-right: 5px;">소매가</span>
+									<span style="margin-right: -40px; width: 100%; height: 30px;">
+										<input type="number" ng-model="goods_Object.soAmt" style="width: 100%; text-align: right;" placeholder="0">
+									</span>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 50%;">
+								<label class="item item-input" style="padding-right: 0px;">
+									<span style="font-size: 0.7em; padding-right: 5px;">권장소비자가</span>
+									<span style="margin-right: -40px; width: 100%; height: 30px;">
+										<input type="number" ng-model="goods_Object.userAmt" style="width: 100%; text-align: right;" placeholder="0">
+									</span>
+								</label>	
+							</td>
+							<td style="width: 50%;">
+								
 							</td>
 						</tr>
 					</table>
-				</span>
-				<!-- <span style="padding-right: 5px; width: 100%"><input type="text" style="width: 100%;" placeholder="로케이션을 입력하세요."></span> -->
-			</label>
+				</div>
+			</div>
+
+			<div class="list list-inset" align="left" style="background: #f3eff4;">
+				<div style="text-align: left; padding: 0 10px 10px 10px; font-size: 0.85em;"><i class="ion-record">&nbsp;&nbsp;<b>비고</b></i></div>
+				<div style="border: 1px solid #dce0e1">
+					<textarea placeholder="비고란 입니다." ng-model="goods_Object.bigo" style="width: 100%; height: 150px; padding: 15px; font-size: 0.8em;"></textarea>
+				</div>
+			</div>
 		</div>
+		<div style="padding-bottom: 100px;"></div>
 	</ion-content>
+	<div class="bar bar-footer" style="background: #6c5e72;">
+		<div class="title" style="color: #fff;" ng-click="goodsGereachei_IU(1)">{{GGMode}}</div>
+	</div>
 </ion-modal-view>

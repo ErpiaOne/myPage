@@ -5,8 +5,8 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
  .constant('ERPiaAPI',{
  	  url:'http://localhost:8100/include'
  	, url2:'http://localhost:8100'
+ 	, post:'/postal'
  	, imgUrl:'http://localhost:8100/erpia_update/img'
- 	, gurl:'http://168.126.146.37/20132354'
  	, toast:'N'
  })
 
@@ -755,6 +755,16 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		}
 	})
 
+	/* 우편번호 검색 - 이경민 */
+	.state('app.postSelect', {
+		url : '/tab/goods_IU',
+		views : {
+			'menuContent' : {
+				templateUrl : 'tab/post.html',
+				controller : 'EasyCtrl'
+			}
+		}
+	})
 ///////////////////////////////////////////////////////////// 매입&매출관련 //////////////////////////////////////////////////////////
 
 	/* 매입&매출 환경설정 - 이경민 */

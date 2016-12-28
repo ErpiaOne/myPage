@@ -104,7 +104,7 @@ angular.module('starter.controllers').controller('jegoCtrl', function($scope, $r
 
 	/* 재고조회시 창고 리스트 조회 [이경민 - 2016-09-19] */
 	$scope.jego_Changgh = function() {
-		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});$ionicLoading.hide();
 		$timeout(function(){
 			$rootScope.loadingani();
 			if($rootScope.jegoColum != undefined){
