@@ -711,6 +711,7 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 		statisticService.title('myPage_Config_Stat', 'select_Title', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 		.then(function(data){
 			$scope.items = data;
+			console.log(data);
 			$scope.items.splice(0,1);
 		})
 	}

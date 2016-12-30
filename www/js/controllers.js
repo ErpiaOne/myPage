@@ -504,10 +504,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'kpage1089';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.Admin_Code = 'win1089'; //PC모드
 			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId  = 'test1234';
-			$rootScope.loginData.Pwd = 'test1234!';
+			$rootScope.loginData.UserId  = 'win1089';
+			$rootScope.loginData.Pwd = 'erpia!1010';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -811,6 +811,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$rootScope.userData.cnt_user = comInfo.data.list[0].User_Count + ' 명';
 					$rootScope.userData.cnt_site = comInfo.data.list[0].Mall_ID_Count + ' 개';
 					$rootScope.mobile_Certify_YN = comInfo.data.list[0].mobile_CertifyYN;
+					$rootScope.userData.B2BPack_YN = comInfo.data.list[0].B2BPack_YN;
+					console.log("나는 도소매 사용자 입니까?",$rootScope.userData.B2BPack_YN );
 
 					$scope.loginData.isLogin = 'Y';
 					$rootScope.loginMenu = 'User';
@@ -909,6 +911,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 								/* 상품정보 권한 */
 								$rootScope.privproduct_Save = data[7].priv_Save;
+								$rootScope.privproduct_De = data[7].Delete;
 								if(data[6].Mpriv == 'N' || data[6].Mpriv == 'Y' && data[6].priv == 0 || data[6].Mpriv == 'Y' && data[7].priv == 0){
 									$rootScope.priv_productYM = 'N';
 								}else{

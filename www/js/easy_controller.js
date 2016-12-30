@@ -5,7 +5,7 @@ console.log("간편 상품 거래처 컨트롤러");
 
 	/* 상품 조회모드 */
 	$scope.sttsMode = [
-		{ name: '전체(삭세상품제외)', val: '' },
+		{ name: '전체(삭제상품제외)', val: '' },
 		{ name: '정상', val: '0' },
 		{ name: '일시품절', val: '1' },
 		{ name: '장기품절', val: '2' },
@@ -123,7 +123,6 @@ console.log("간편 상품 거래처 컨트롤러");
 		}
 	}
 
-
 	if($rootScope.distinction == 'Goods'){
 		$scope.goodsSerch(1);
 	}else if($rootScope.distinction == 'Account'){
@@ -136,6 +135,7 @@ console.log("간편 상품 거래처 컨트롤러");
 	$ionicModal.fromTemplateUrl('tab/account_IU.html',{
 		scope : $scope
 	}).then(function(modal){
+
 		$scope.accounIU_M = modal;
 	});
 
@@ -175,8 +175,8 @@ console.log("간편 상품 거래처 컨트롤러");
 		{ name: '일시품절', val: '1' },
 		{ name: '장기품절', val: '2' },
 		{ name: '단종', val: '3' },
-		{ name: '비활성화상품', val: '4' },
-		{ name: '삭제상품', val: '9' }
+		{ name: '비활성화상품', val: '4' }
+		// { name: '삭제상품', val: '9' }
 	]
 
 	/* 상품 유무형구분 */
@@ -368,11 +368,41 @@ console.log("간편 상품 거래처 컨트롤러");
 	/* 수정/등록 모달 닫기 = 값 초기화 */
 	$scope.M_close = function(gubun){
 		if(gubun == '1'){
-			$scope.gg_reset(1);
-			$scope.goodsIU_M.hide();
+			$ionicPopup.show({
+				title: '<b>' + $rootScope.GGMode + '확인</b>',
+				content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
+				buttons: [
+					{ 
+						text: '취소', onTap: function(e){} 
+					},
+					{ 
+						text: '확인', 
+						type: 'button-positive', 
+						onTap: function(e){
+							$scope.gg_reset(1);
+							$scope.goodsIU_M.hide();
+						} 
+					}
+				]
+			})
 		}else{
-			$scope.gg_reset(2);
-			$scope.accounIU_M.hide();
+			$ionicPopup.show({
+				title: '<b>' + $rootScope.GGMode + '확인</b>',
+				content: '작성중인 내용이 지워집니다.<br> 계속진행하시겠습니까?',
+				buttons: [
+					{ 
+						text: '취소', onTap: function(e){} 
+					},
+					{ 
+						text: '확인', 
+						type: 'button-positive', 
+						onTap: function(e){
+							$scope.gg_reset(2);
+							$scope.accounIU_M.hide();
+						} 
+					}
+				]
+			})
 		}
 	}	
 
@@ -385,50 +415,67 @@ console.log("간편 상품 거래처 컨트롤러");
 					title: '<b>경고</b>',
 					content: '상품명은 필수기재사항입니다',
 					buttons: [
-						{ text: '확인', onTap: function(e){} }
+						{ text: '확인', type: 'button-positive', onTap: function(e){} }
 					]
 				})
 			}else{
-				$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-				if($scope.goods_Object.ipAmt.length == 0) $scope.goods_Object.ipAmt = 0;
-				if($scope.goods_Object.doAmt.length == 0) $scope.goods_Object.doAmt = 0;
-				if($scope.goods_Object.interAmt.length == 0) $scope.goods_Object.interAmt = 0;
-				if($scope.goods_Object.soAmt.length == 0) $scope.goods_Object.soAmt = 0;
-				if($scope.goods_Object.userAmt.length == 0) $scope.goods_Object.userAmt = 0;
 
-				EasyService.goods_IU($rootScope.loginData.Admin_Code, $scope.loginData.UserId, $scope.goods_Object)
-				.then(function(response){
-					console.log('등록또는 수정후 결과값 ->',response);
-					$ionicLoading.hide();
-					if(response.data.list[0].success == "True"){
-						$ionicPopup.show({
-							title: '<b>' + $rootScope.GGMode + '완료</b>',
-							content: '상품이 ' + $rootScope.GGMode + '되었습니다.',
-							buttons: [
-								{
-									text: '확인',
-									onTap: function(e){
-										$scope.gg_reset(1);
-										$scope.pagenum();
-										$scope.goodsSerch(1);
-										$scope.goodsIU_M.hide();
+				$ionicPopup.show({
+					title: '<b>' + $rootScope.GGMode + '확인</b>',
+					content: '상품을 ' + $rootScope.GGMode + '하시겠습니까?',
+					buttons: [
+						{ 
+							text: '취소', onTap: function(e){} 
+						},
+						{ 
+							text: '확인', 
+							type: 'button-positive', 
+							onTap: function(e){
+								$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+								if($scope.goods_Object.ipAmt.length == 0) $scope.goods_Object.ipAmt = 0;
+								if($scope.goods_Object.doAmt.length == 0) $scope.goods_Object.doAmt = 0;
+								if($scope.goods_Object.interAmt.length == 0) $scope.goods_Object.interAmt = 0;
+								if($scope.goods_Object.soAmt.length == 0) $scope.goods_Object.soAmt = 0;
+								if($scope.goods_Object.userAmt.length == 0) $scope.goods_Object.userAmt = 0;
+
+								EasyService.goods_IU($rootScope.loginData.Admin_Code, $scope.loginData.UserId, $scope.goods_Object)
+								.then(function(response){
+									console.log('등록또는 수정후 결과값 ->',response);
+									$ionicLoading.hide();
+									if(response.data.list[0].success == "True"){
+										$ionicPopup.show({
+											title: '<b>' + $rootScope.GGMode + '완료</b>',
+											content: '상품이 ' + $rootScope.GGMode + '되었습니다.',
+											buttons: [
+												{
+													text: '확인',
+													type: 'button-positive',
+													onTap: function(e){
+														$scope.gg_reset(1);
+														$scope.pagenum();
+														$scope.goodsSerch(1);
+														$scope.goodsIU_M.hide();
+													}
+												}
+											]
+										})
+									}else{
+										$ionicPopup.show({
+											title: '<b>' + $rootScope.GGMode + '실패</b>',
+											content: '일시적 오류가 발생하였습니다. <br>잠시후 다시시도해주세요.',
+											buttons: [
+												{ text: '확인', type: 'button-positive', onTap: function(e){} }
+											]
+										})
 									}
-								}
-							]
-						})
-					}else{
-						$ionicPopup.show({
-							title: '<b>' + $rootScope.GGMode + '실패</b>',
-							content: '일시적 오류가 발생하였습니다. <br>잠시후 다시시도해주세요.',
-							buttons: [
-								{ text: '확인', onTap: function(e){} }
-							]
-						})
-					}
-				},function(){
-					$ionicLoading.hide();
-					alert("error");
-				});
+								},function(){
+									$ionicLoading.hide();
+									alert("error");
+								});
+							} 
+						}
+					]
+				})
 			}
 		}
 		/* 거래처 등록/수정 */
@@ -438,43 +485,59 @@ console.log("간편 상품 거래처 컨트롤러");
 					title: '<b>경고</b>',
 					content: '거래처명은 필수기재사항입니다',
 					buttons: [
-						{ text: '확인', onTap: function(e){} }
+						{ text: '확인', type: 'button-positive', onTap: function(e){} }
 					]
 				})
 			}else{
-				$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-				EasyService.gereachei_IU($rootScope.loginData.Admin_Code, $scope.loginData.UserId, $scope.gereachei_Object)
-				.then(function(response){
-					$ionicLoading.hide();
-					if(response.data.list[0].success == "True"){
-						$ionicPopup.show({
-							title: '<b>' + $rootScope.GGMode + '완료</b>',
-							content: '거래처가 ' + $rootScope.GGMode + '되었습니다.',
-							buttons: [
-								{
-									text: '확인',
-									onTap: function(e){
-										$scope.gg_reset();
-										$scope.pagenum();
-										$scope.gereacheiSerch(1);
-										$scope.accounIU_M.hide();
+				$ionicPopup.show({
+					title: '<b>' + $rootScope.GGMode + '확인</b>',
+					content: '상품을 ' + $rootScope.GGMode + '하시겠습니까?',
+					buttons: [
+						{ 
+							text: '취소', onTap: function(e){} 
+						},
+						{ 
+							text: '확인', 
+							type: 'button-positive', 
+							onTap: function(e){
+								$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+								EasyService.gereachei_IU($rootScope.loginData.Admin_Code, $scope.loginData.UserId, $scope.gereachei_Object)
+								.then(function(response){
+									$ionicLoading.hide();
+									if(response.data.list[0].success == "True"){
+										$ionicPopup.show({
+											title: '<b>' + $rootScope.GGMode + '완료</b>',
+											content: '거래처가 ' + $rootScope.GGMode + '되었습니다.',
+											buttons: [
+												{
+													text: '확인',
+													type: 'button-positive',
+													onTap: function(e){
+														$scope.gg_reset();
+														$scope.pagenum();
+														$scope.gereacheiSerch(1);
+														$scope.accounIU_M.hide();
+													}
+												}
+											]
+										})
+									}else{
+										$ionicPopup.show({
+											title: '<b>' + $rootScope.GGMode + '실패</b>',
+											content: '일시적 오류가 발생하였습니다. <br>잠시후 다시시도해주세요.',
+											buttons: [
+												{ text: '확인', type: 'button-positive', onTap: function(e){} }
+											]
+										})
 									}
-								}
-							]
-						})
-					}else{
-						$ionicPopup.show({
-							title: '<b>' + $rootScope.GGMode + '실패</b>',
-							content: '일시적 오류가 발생하였습니다. <br>잠시후 다시시도해주세요.',
-							buttons: [
-								{ text: '확인', onTap: function(e){} }
-							]
-						})
-					}
-				},function(){
-					$ionicLoading.hide();
-					alert("error");
-				});
+								},function(){
+									$ionicLoading.hide();
+									alert("error");
+								});
+							} 
+						}
+					]
+				})
 			}
 		}
 	}
