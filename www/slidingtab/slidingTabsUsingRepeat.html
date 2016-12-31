@@ -42,7 +42,7 @@
 				</ion-scroll>
 				<ul style="width: 100%; position: fixed; bottom: 55px; left: 0;">
 					<li class="item" style="background: #6c5e72; text-align: right;">
-						<i class='ion-android-settings' style='font-size:25px; text-align: right; color: #fff;' ng-click="goto_with_backButton('#/app/config/statistics')"></i>
+						<i ng-if="userData.B2BPack_YN != 'Y'" class='ion-android-settings' style='font-size:25px; text-align: right; color: #fff;' ng-click="goto_with_backButton('#/app/config/statistics')"></i>
 					</li>
 				</ul>
 			</div>

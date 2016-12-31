@@ -17,7 +17,7 @@
 
 					<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/alarm');ActsLog('act_settings', 'setting_alarm')" style="padding-left: 70px;">
 					<i class="icon ion-ios-bell" style="background: #e5b763; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>알림설정</a>
-					<div ng-switch-when="E">
+					<div ng-switch-when="E" ng-if="userData.B2BPack_YN != 'Y'">
 						<a class="item item-icon-left" ng-click="goto_with_backButton('#/app/config/statistics');ActsLog('act_settings', 'setting_chart')" style="padding-left: 70px;">
 						<i class="icon ion-stats-bars" style="background: #c7745a; width: 52px;  padding-left: 10px; color: #fff; margin-left: -11px;"></i>통계 리포트 설정</a>
 					</div>

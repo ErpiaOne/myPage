@@ -2,6 +2,7 @@
 angular.module('starter.controllers').controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, $ionicModal, ERPiaAPI, statisticService, IndexService, $cordovaToast, app, $ionicLoading, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
 	/* 업데이트내역 */
 	$scope.upList = [
+		{ id : 14, title : "1.1.6 Version", inDate : "2016-01-02", content : "1. 이알피아 도소매버전 오픈<br>2. 간편거래처등록 / 간편상품등록 기능 추가" },
 		{ id : 13, title : "1.1.5 Version", inDate : "2016-12-12", content : "1. 메인화면, 매입매출화면 UI수정<br>2. 매입매출 입금/지급전표 등록(미등록)구별로직추가<br>3. 검색로직 키보드엔터연동<br>4. 업데이트현황페이지 추가" },
 		{ id : 12, title : "1.1.4 Version", inDate : "2016-11-02", content : "알림페이지 오픈" },
 		{ id : 11, title : "1.1.3 Version", inDate : "2016-10-27", content : "동일바코드로 상품이 여러개일 경우 이슈사항 수정" },
@@ -477,12 +478,11 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 	};
 	
 	$scope.movezero = function(tabs){
-	    	var data = {
+		var data = {
 	    		index: 0
 	    	}
 	    	$ionicSlideBoxDelegate.slide(0, 500);
 	    	$scope.slideHasChanged(0, tabs);
-
 	}
 
 	/* 홉탭 이슈사항 - 이경민[2016-11-30] */
@@ -570,7 +570,11 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			if(index > 0){
 				var titlename = tabs[index].name;
 			}else{
-				var titlename = '최근 6개월간 매출액';
+				if($rootScope.userData.B2BPack_YN == 'Y'){
+					var titlename = '매출 실적 추이';
+				}else{
+					var titlename = '최근 6개월간 매출액';
+				}
 			}
 
 			$scope.htmlCode = '';
@@ -711,7 +715,6 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 		statisticService.title('myPage_Config_Stat', 'select_Title', $scope.loginData.Admin_Code, $rootScope.loginState, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
 		.then(function(data){
 			$scope.items = data;
-			console.log(data);
 			$scope.items.splice(0,1);
 		})
 	}
@@ -744,7 +747,6 @@ angular.module('starter.controllers').controller("IndexCtrl", function($rootScop
 			$scope.rsltList += $scope.items[i].Idx + '^';
 			$scope.rsltList += $scope.items[i].visible + '^|';
 		}
-		console.log($scope.rsltList);
 
 	};
 

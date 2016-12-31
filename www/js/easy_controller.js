@@ -45,36 +45,157 @@ console.log("간편 상품 거래처 컨트롤러");
 		$scope.page = 0;
 	}
 
+	$scope.loading = function(){
+		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+		$timeout(function(){
+			$ionicLoading.hide();
+		},1000);
+	}
+
 	/* 상품 검색 */
 	$scope.goodsSerch = function(gubun){
 		$scope.page = $scope.page + 1;	// 페이징 넘버 +1
 		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-		if(gubun == 1){					// 첫페이지 조회시
+		if(gubun == 1){				// 첫페이지 조회시
 			EasyService.goods_Select($rootScope.loginData.Admin_Code, $scope.GoodsInfo.stts, $scope.page, $scope.GoodsInfo.searchKey)
 			.then(function(response){
-				$scope.goods_result = response.data.list;
-				$scope.moreBtn = $scope.goods_result.length-1;
-				$ionicLoading.hide();
-				$ionicScrollDelegate.scrollTop();
+				if(response.data == '<!--Parameter Check-->'){
+					$scope.goods_result = [{ G_Code: 'N' }];
+					$scope.moreBtn = 'N';
+				}else{
+					$scope.goods_result = response.data.list;
+					if($scope.goods_result.length == 21){
+						$scope.goods_result.splice(20,1);
+						$scope.moreBtn = 'Y';
+					}else{
+						$scope.moreBtn = 'N';
+					}
+					$ionicScrollDelegate.scrollTop();
+				}
+				$timeout(function(){
+					$ionicLoading.hide();
+				},1000);
 			},function(){
 				$ionicLoading.hide();
 				alert("error");
 			});
-		}else{							// 더보기 클릭시
-			$scope.goods_result.splice($scope.moreBtn, 1);
+		}else{						// 더보기 클릭시
 			EasyService.goods_Select($rootScope.loginData.Admin_Code, $scope.GoodsInfo.stts, $scope.page, $scope.GoodsInfo.searchKey)
 			.then(function(response){
-				for(var i = 0 ; i < response.data.list.length; i++) {
-					$scope.goods_result.push(response.data.list[i]);
+				if(response.data.list.length == 21){
+					$scope.moreBtn = 'Y';
+					for(var i = 0 ; i < response.data.list.length-1; i++) {
+						$scope.goods_result.push(response.data.list[i]);
+					}
+				}else{
+					$scope.moreBtn = 'N';
+					for(var i = 0 ; i < response.data.list.length; i++) {
+						$scope.goods_result.push(response.data.list[i]);
+					}
 				}
-				$ionicLoading.hide();
-				$scope.moreBtn = $scope.goods_result.length-1;
+				$timeout(function(){
+					$ionicLoading.hide();
+				},1000);
 			},function(){
 				$ionicLoading.hide();
 				alert("error");
 			});
 		}
 		
+	}
+
+	$scope.scrollTop = function(){
+		$ionicScrollDelegate.scrollTop();
+	}
+
+	/* 상품 삭제 OR 복원 */
+	$scope.goodsde = function(gu, code){
+		console.log('상품코드', code);
+		if(gu == 1){
+			$ionicPopup.show({
+				title: '<b>확인</b>',
+				content: '해당상품을 삭제하시겠습니까?',
+				buttons: [
+					{ 
+						text: '취소', onTap: function(e){} 
+					},
+					{ 
+						text: '확인', 
+						type: 'button-positive', 
+						onTap: function(e){
+							EasyService.goodsde($rootScope.loginData.Admin_Code, 'Goods_de', code)
+							.then(function(response){
+								console.log(response);
+								if(response.data.list[0].success == 'False'){
+									$ionicPopup.show({
+										title: '<b>실패</b>',
+										content: '상품의 재고, 출고대기, 대표상품지정여부를 확인해주세요.',
+										buttons: [
+											{ 
+												text: '확인', 
+												type: 'button-positive', 
+												onTap: function(e){} 
+											}
+										]
+									})
+								}else{
+									$scope.page = 0;
+									$timeout(function(){
+										$scope.goodsSerch(1);
+									}, 300);
+									$ionicScrollDelegate.scrollTop();
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('삭제상품으로 변경되었습니다.', 'short', 'center');
+									else console.log('삭제상품으로 변경되었습니다.');
+								}
+								$timeout(function(){
+									$ionicLoading.hide();
+								},1000);
+							},function(){
+								$ionicLoading.hide();
+								alert("error");
+							});
+						} 
+					}
+				]
+			})
+		}else{
+			$ionicPopup.show({
+				title: '<b>확인</b>',
+				content: '해당상품을 복원하시겠습니까?',
+				buttons: [
+					{ 
+						text: '취소', onTap: function(e){} 
+					},
+					{ 
+						text: '확인', 
+						type: 'button-positive', 
+						onTap: function(e){
+							EasyService.goodsde($rootScope.loginData.Admin_Code, 'Goods_re', code)
+							.then(function(response){
+								if(response.data.list[0].success == 'False'){
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('상품수정이 실패했습니다.<br> 잠시후 다시시도해주세요.', 'short', 'center');
+									else console.log('상품수정이 실패했습니다.<br> 잠시후 다시시도해주세요.');
+								}else{
+									$scope.page = 0;
+									$timeout(function(){
+										$scope.goodsSerch(1);
+									}, 300);
+									$ionicScrollDelegate.scrollTop();
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('정상상품으로 변경되었습니다.', 'short', 'center');
+									else console.log('정상상품으로 변경되었습니다.');
+								}
+								$timeout(function(){
+									$ionicLoading.hide();
+								},1000);
+							},function(){
+								$ionicLoading.hide();
+								alert("error");
+							});
+						} 
+					}
+				]
+			})
+		}	
 	}
 
 	/* 거래처 검색 */
@@ -85,27 +206,128 @@ console.log("간편 상품 거래처 컨트롤러");
 		if(gubun == 1){					// 첫페이지 조회시
 			EasyService.gereachei_Select($rootScope.loginData.Admin_Code, $scope.page, $scope.GereacheInfo.g_iogu, $scope.GereacheInfo.searchKey)
 			.then(function(response){
-				$scope.gereachei_result = response.data.list;
-				$scope.moreBtn = $scope.gereachei_result.length-1;
-				$ionicLoading.hide();
-				$ionicScrollDelegate.scrollTop();
+				if(response.data == '<!--Parameter Check-->'){
+					$scope.gereachei_result = [{ GerCode: 'N' }];
+					$scope.moreBtn = 'N';
+				}else{
+					$scope.gereachei_result = response.data.list;
+					if($scope.gereachei_result.length == 21){
+						$scope.gereachei_result.splice(20,1);
+						$scope.moreBtn = 'Y';
+					}else{
+						$scope.moreBtn = 'N';
+					}
+					$ionicScrollDelegate.scrollTop();
+				}
+				$timeout(function(){
+					$ionicLoading.hide();
+				},1000);
 			},function(){
 				$ionicLoading.hide();
 				alert("error");
 			});
 		}else{							// 더보기 클릭시
-			$scope.gereachei_result.splice($scope.moreBtn, 1);
 			EasyService.gereachei_Select($rootScope.loginData.Admin_Code, $scope.page, $scope.GereacheInfo.g_iogu, $scope.GereacheInfo.searchKey)
 			.then(function(response){
-				for(var i = 0 ; i < response.data.list.length; i++) {
-					$scope.gereachei_result.push(response.data.list[i]);
+				if(response.data.list.length == 21){
+					$scope.moreBtn = 'Y';
+					for(var i = 0 ; i < response.data.list.length-1; i++) {
+						$scope.gereachei_result.push(response.data.list[i]);
+					}
+				}else{
+					$scope.moreBtn = 'N';
+					for(var i = 0 ; i < response.data.list.length; i++) {
+						$scope.gereachei_result.push(response.data.list[i]);
+					}
 				}
-				$scope.moreBtn = $scope.gereachei_result.length-1;
-				$ionicLoading.hide();
+				$timeout(function(){
+					$ionicLoading.hide();
+				},1000);
 			},function(){
 				$ionicLoading.hide();
 				alert("error");
 			});
+		}
+	}
+
+	/* 거래처 삭제 */
+	$scope.gereacheide = function(gu, code){
+		if(gu == 1){
+			$ionicPopup.show({
+				title: '<b>확인</b>',
+				content: '해당거래처를를 삭제하시겠습니까?',
+				buttons: [
+					{ 
+						text: '취소', onTap: function(e){} 
+					},
+					{ 
+						text: '확인', 
+						type: 'button-positive', 
+						onTap: function(e){
+							EasyService.gereacheide($rootScope.loginData.Admin_Code, 'Gereachei_de', code)
+							.then(function(response){
+								console.log(response);
+								if(response.data.list[0].success == 'False'){
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('거래처수정이 실패했습니다.<br> 잠시후 다시시도해주세요.', 'short', 'center');
+									else console.log('거래처수정이 실패했습니다.<br> 잠시후 다시시도해주세요.');
+								}else{
+									$scope.page = 0;
+									$timeout(function(){
+										$scope.gereacheiSerch(1);
+									}, 300);
+									$ionicScrollDelegate.scrollTop();
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('거래처가 삭제되었습니다.', 'short', 'center');
+									else console.log('거래처가 삭제되었습니다.');
+								}
+								$timeout(function(){
+									$ionicLoading.hide();
+								},1000);
+							},function(){
+								$ionicLoading.hide();
+								alert("error");
+							});
+						} 
+					}
+				]
+			})
+		}else{
+			$ionicPopup.show({
+				title: '<b>확인</b>',
+				content: '해당거래처를를 복원하시겠습니까?',
+				buttons: [
+					{ 
+						text: '취소', onTap: function(e){} 
+					},
+					{ 
+						text: '확인', 
+						type: 'button-positive', 
+						onTap: function(e){
+							EasyService.gereacheide($rootScope.loginData.Admin_Code, 'Gereachei_re', code)
+							.then(function(response){
+								console.log(response);
+								if(response.data.list[0].success == 'False'){
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('거래처수정이 실패했습니다.<br> 잠시후 다시시도해주세요.', 'short', 'center');
+									else console.log('거래처수정이 실패했습니다.<br> 잠시후 다시시도해주세요.');
+								}else{
+									$scope.page = 0;
+									$timeout(function(){
+										$scope.gereacheiSerch(1);
+									}, 300);
+									$ionicScrollDelegate.scrollTop();
+									if(ERPiaAPI.toast == 'Y') $cordovaToast.show('거래처가 복원되었습니다.', 'short', 'center');
+									else console.log('거래처가 복원되었습니다.');
+								}
+								$timeout(function(){
+									$ionicLoading.hide();
+								},1000);
+							},function(){
+								$ionicLoading.hide();
+								alert("error");
+							});
+						} 
+					}
+				]
+			})
 		}
 	}
 
@@ -193,11 +415,11 @@ console.log("간편 상품 거래처 컨트롤러");
 		goodsName : '',			// 상품이름
 		goodsStand : '',			// 상품규격
 		barcode : '',
-		ipAmt : '',				// 매입가
-		doAmt : '',				// 도매가			
-		interAmt : '',			// 인터넷가
-		soAmt : '',				// 소매가
-		userAmt : '',			// 권장소비자가
+		ipAmt : 0,				// 매입가
+		doAmt : 0,				// 도매가			
+		interAmt : 0,			// 인터넷가
+		soAmt : 0,				// 소매가
+		userAmt : 0,			// 권장소비자가
 		umgubun : '',			// 유무형구분
 		origin : '',				// 원산지
 		making : '',			// 제조처
@@ -240,6 +462,7 @@ console.log("간편 상품 거래처 컨트롤러");
 				$scope.goods_Object.stts = $scope.goods_result[$index].Dis_Use;
 				$scope.goods_Object.goodsName = $scope.goods_result[$index].G_Name;
 				$scope.goods_Object.goodsStand = $scope.goods_result[$index].G_Stand;
+				$scope.goods_Object.location = $scope.goods_result[$index].G_Wich;
 				$scope.goods_Object.barcode = $scope.goods_result[$index].Barcode;
 				$scope.goods_Object.ipAmt = parseInt($scope.goods_result[$index].G_Dn1);
 				$scope.goods_Object.doAmt = parseInt($scope.goods_result[$index].G_Dn2);
@@ -365,6 +588,23 @@ console.log("간편 상품 거래처 컨트롤러");
 		}
 	}
 
+	// $scope.gereacheiClear = function(gubun){
+	// 	console.log('안와?');
+	// 	switch (gubun){
+	// 		case 1: $scope.gereachei_Object.GerName = ''; break;
+	// 		case 2: $scope.gereachei_Object.G_Sano = ''; break;
+	// 		case 3: $scope.gereachei_Object.G_up = ''; break;
+	// 		case 4: $scope.gereachei_Object.G_Jong = ''; break;
+	// 		case 5: $scope.gereachei_Object.G_Ceo = ''; break;
+	// 		case 6: $scope.gereachei_Object.G_Juso1 = ''; break;
+	// 		case 7: $scope.gereachei_Object.G_GDamdang = ''; break;
+	// 		case 8: $scope.gereachei_Object.Hp = ''; break;
+	// 		case 9: $scope.gereachei_Object.Tax_GDamdang = ''; break;
+	// 		case 10: $scope.gereachei_Object.Tax_GDamdangTel = ''; break;
+	// 		case 11: $scope.gereachei_Object.Tax_EMail = ''; break;
+	// 	}
+	// }
+
 	/* 수정/등록 모달 닫기 = 값 초기화 */
 	$scope.M_close = function(gubun){
 		if(gubun == '1'){
@@ -432,11 +672,11 @@ console.log("간편 상품 거래처 컨트롤러");
 							type: 'button-positive', 
 							onTap: function(e){
 								$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-								if($scope.goods_Object.ipAmt.length == 0) $scope.goods_Object.ipAmt = 0;
-								if($scope.goods_Object.doAmt.length == 0) $scope.goods_Object.doAmt = 0;
-								if($scope.goods_Object.interAmt.length == 0) $scope.goods_Object.interAmt = 0;
-								if($scope.goods_Object.soAmt.length == 0) $scope.goods_Object.soAmt = 0;
-								if($scope.goods_Object.userAmt.length == 0) $scope.goods_Object.userAmt = 0;
+								if($scope.goods_Object.ipAmt == null || $scope.goods_Object.ipAmt.length == undefined) $scope.goods_Object.ipAmt = 0;
+								if($scope.goods_Object.doAmt == null || $scope.goods_Object.doAmt.length == undefined) $scope.goods_Object.doAmt = 0;
+								if($scope.goods_Object.interAmt == null || $scope.goods_Object.interAmt.length == undefined) $scope.goods_Object.interAmt = 0;
+								if($scope.goods_Object.soAmt == null || $scope.goods_Object.soAmt.length == undefined) $scope.goods_Object.soAmt = 0;
+								if($scope.goods_Object.userAmt == null || $scope.goods_Object.userAmt.length == undefined) $scope.goods_Object.userAmt = 0;
 
 								EasyService.goods_IU($rootScope.loginData.Admin_Code, $scope.loginData.UserId, $scope.goods_Object)
 								.then(function(response){

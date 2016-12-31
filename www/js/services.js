@@ -120,7 +120,7 @@ angular.module('starter.services', [])
 
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + '01056579731' + '&mac=' + UUID;
+			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -522,28 +522,8 @@ angular.module('starter.services', [])
 
 /* 차트관련Service - 이경민[2015-11] */
 .factory('statisticService', function($http, $q, ERPiaAPI, $cordovaToast, $rootScope) {
-	var titles =  [
-		{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home', pre: '', befo: '홈'}
-		, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
-		, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
-		, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}
-		, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube', pre: '상품별', befo: 'TOP5'}
-		// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
-		, {Idx:5, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard', pre: '실적', befo: '추이'}
-		, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit', pre: '매입', befo: '현황'}
-		, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share', pre: '금일', befo: '출고현황'}
-		, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus', pre: '택배사', befo: '건수'}
-		, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph', pre: '온오프', befo: '비교'}
-		, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap', pre: '매출', befo: '반품'}
-		, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left', pre: '반품', befo: '건수'}
-		, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker', pre: 'CS', befo: '현황'}
-		, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download', pre: '매입', befo: '건수'}
-		, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop', pre: '재고', befo: '회전율'}
-		, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open', pre: '출고', befo: '현황'}
-		];
-
 	return{
-		save : function(kind, mode, Admin_Code, loginType, G_Id, statistic,mac){		// 차트 리스트순서 변경후 저장
+		save : function(kind, mode, Admin_Code, loginType, G_Id, statistic, mac){		// 차트 리스트순서 변경후 저장
 			var url = ERPiaAPI.url + '/JSon_Proc_MyPage_Scm.asp';
 			var data = 'Value_Kind=list&Kind=' + kind + '&mode=' + mode + '&Admin_Code=' + Admin_Code + '&loginType=' + loginType + '&G_Id=' + escape(G_Id) + '&statistic=' + statistic+'&mac=' + mac;
 			return $http.get(url + '?' + data).then(function(response) {
@@ -569,16 +549,31 @@ angular.module('starter.services', [])
 			return $http.get(url + '?' + data).then(function(response) {
 				if(typeof response.data == 'object'){
 					for(var i=0; i<response.data.list.length; i++){
-						var index = parseInt(response.data.list[i].Idx);
-						response.data.list[i].title = titles[index].title; 
-						response.data.list[i].name = titles[index].name; 
-						response.data.list[i].icon = titles[index].icon;
-						response.data.list[i].pre = titles[index].pre;
-						response.data.list[i].befo = titles[index].befo;
-						/* 도소매 버전인경우 물류 차트 제외 -- 이경민 */
-						if($rootScope.userData.B2BPack_YN == 'Y'){
-							if(response.data.list[i].title == 'beasong_gu' || response.data.list[i].title == 'meachul_jem' || response.data.list[i].title == 'beasonga' || response.data.list[i].title == 'JeGo_TurnOver' || response.data.list[i].title == 'beasongb'){
-								response.data.list[i].visible = 'N';
+						if($rootScope.userData.B2BPack_YN == 'Y' && i == 0){
+							var index = parseInt(response.data.list[i].Idx);
+							response.data.list[i].title = $rootScope.titles[5].title; 
+							response.data.list[i].name = $rootScope.titles[5].name; 
+							response.data.list[i].icon = $rootScope.titles[5].icon;
+							response.data.list[i].pre = $rootScope.titles[5].pre;
+							response.data.list[i].befo = $rootScope.titles[5].befo;
+							/* 도소매 버전인경우 물류 차트 제외 -- 이경민 */
+							if($rootScope.userData.B2BPack_YN == 'Y'){
+								if(response.data.list[i].title == 'beasong_gu' || response.data.list[i].title == 'meachul_jem' || response.data.list[i].title == 'beasonga' || response.data.list[i].title == 'JeGo_TurnOver' || response.data.list[i].title == 'beasongb'){
+									response.data.list[i].visible = 'N';
+								}
+							}
+						}else {
+							var index = parseInt(response.data.list[i].Idx);
+							response.data.list[i].title = $rootScope.titles[index].title; 
+							response.data.list[i].name = $rootScope.titles[index].name; 
+							response.data.list[i].icon = $rootScope.titles[index].icon;
+							response.data.list[i].pre = $rootScope.titles[index].pre;
+							response.data.list[i].befo = $rootScope.titles[index].befo;
+							/* 도소매 버전인경우 물류 차트 제외 -- 이경민 */
+							if($rootScope.userData.B2BPack_YN == 'Y'){
+								if(response.data.list[i].title == 'beasong_gu' || response.data.list[i].title == 'meachul_jem' || response.data.list[i].title == 'beasonga' || response.data.list[i].title == 'JeGo_TurnOver' || response.data.list[i].title == 'beasongb' || response.data.list[i].title == 'meachul_7'){
+									response.data.list[i].visible = 'N';
+								}
 							}
 						}
 					}
@@ -589,7 +584,6 @@ angular.module('starter.services', [])
 			}, function(response){
 				return $q.rejec(response.data);
 			})
-
 		}
 	}
 })
@@ -676,7 +670,6 @@ angular.module('starter.services', [])
 		var url = ERPiaAPI.url + '/SCP.asp';
 		var data = 'sms_id=erpia&sms_pwd=a12345&send_num=070-7012-3071&rec_num=' + phoneno;
 		data += '&rndNum=' + rndNum + '&SendType=mobile_Certification';
-		console.log('문자 URL=', url,'?',data);
 		return $http.get(url + '?' + data);
 	}
 
@@ -864,10 +857,8 @@ angular.module('starter.services', [])
 	return{
 		scm_Chart: function(Kind, Value_Kind, Admin_Code, swm_gu, Ger_code){		// scm차트정보 조회
 			var data = 'Kind=' + Kind + '&Value_Kind=' + Value_Kind + '&admin_code=' + Admin_Code + '&swm_gu=' + swm_gu + '&Ger_code=' + Ger_code;
-			console.log('URL=>', url,'?',data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
-					console.log('차트 데이!!!', response.data);
 					return response.data;
 				}else{
 					return $q.reject(response.data);
@@ -880,7 +871,6 @@ angular.module('starter.services', [])
 			var data = 'Kind=' + Kind + '&Value_Kind=' + Value_Kind + '&admin_code=' + Admin_Code + '&swm_gu=' + swm_gu;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response == 'object'){
-					console.log('차트 데이!!!', response.data);
 					return response.data;
 				}else{
 					return $q.reject(response.data);
@@ -1922,7 +1912,6 @@ angular.module('starter.services', [])
 			else var word = escape(keyword);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt='+ pageCnt +'&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=' + word + '&CodeSearchYN='+ YN +'&OneSelectCode=' + OneSelectCode;
-			console.log('통합 조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					if(response.data != '<!--Parameter Check-->'){
@@ -1943,7 +1932,6 @@ angular.module('starter.services', [])
 			else var word = escape(keyword);
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ escape(UserId) +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&pageCnt=1&pageRow=10&ChangGoCode='+ ChanggoCode +'&KeyWord=&CodeSearchYN=N&OneSelectCode=&GoodsCodeList=' + GCode;
-			console.log('창고 재조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					if(response.data != '<!--Parameter Check-->'){
@@ -1961,7 +1949,6 @@ angular.module('starter.services', [])
 		}, jego_changgoSearch : function(Admin_Code, UserId){		// 재고 창고리스트 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Util&Mode=Util_Select_ChangGo';
-			console.log('창고리스트 조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response.data;
@@ -1974,7 +1961,6 @@ angular.module('starter.services', [])
 		}, detail_search : function(Admin_Code, UserId, ChangGoCode, OneSelectCode){		// 통합 검색 재고 창고별 상세 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Select_Master&Mode=Select_Master&ChangGoCode=ALL&KeyWord=&CodeSearchYN=N&OneSelectCode=' + OneSelectCode;
-			console.log('모든 창고 정보 나옴=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
 					return response.data;
@@ -1987,7 +1973,6 @@ angular.module('starter.services', [])
 		}, Attention_list : function(Admin_Code, UserId, Mode){		// MyList & 관심항목 조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code='+ Admin_Code +'&UserId='+ UserId +'&Kind=ERPia_Stock_Util&Mode=' + Mode;
-			console.log('MyList & 관심항목 조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -2000,7 +1985,6 @@ angular.module('starter.services', [])
 		}, detailJego_search : function(Admin_Code, UserId, Mode, changgo_key, jegoInfo, pageCnt){		// 상세검색을 통한 재고조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Select_Detail&Mode=' + Mode + '&pageCnt=' + pageCnt + '&pageRow=10&ChangGoCode=' + changgo_key + '&OneSelectCode=' + jegoInfo.OneSelectCode + '&GoodsName=' + escape(jegoInfo.pro_name) + '&GoodsStand=' + escape(jegoInfo.pro_stand) + '&GoodsOnCode=' + escape(jegoInfo.pro_OnCode) + '&GoodsBarCode=' + escape(jegoInfo.pro_barCode) + '&GoodsWich=' + escape(jegoInfo.detail_location) + '&GoodsBrand=' +escape(jegoInfo.detail_brand) + '&GoodsJeaJoChe=' + escape(jegoInfo.detail_Jejo) + '&GoodsKshimListCode=' + escape(jegoInfo.attent_Kshim_code) + '&GoodsMyListCode=' + escape(jegoInfo.attent_Mylist_code) + '&MeachulMonth=' + jegoInfo.MeachulMonth + '&MeachulListYN=' + jegoInfo.MeachulListYN + '&MeachulListCtlYN=' + jegoInfo.MeachulListCtlYN + '&JegoQtyCtl=' + jegoInfo.JegoQtyCtl + '&JegoQtyCtlYN=' + jegoInfo.JegoQtyCtlYN;
-			console.log('상세검색을 통한 재고조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					if(response.data != '<!--Parameter Check-->'){
@@ -2018,7 +2002,6 @@ angular.module('starter.services', [])
 		}, proDetail : function(Admin_Code, UserId, code){		// 선택상품 상세조회
 			var url = ERPiaAPI.url + '/ERPiaApi_Stock.asp';	
 			var data = 'Admin_Code=' + Admin_Code + '&UserId=' + UserId + '&Kind=ERPia_Stock_Util&Mode=Util_Select_Goods_Detail&OneSelectCode=' + code + '&ChanggoCode=001'
-			console.log('선택상품 상세조회=>', url, '?', data);
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object' || typeof response.data == 'string'){
 					return response.data;
@@ -2092,7 +2075,7 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp';
 			var data = 'Kind=ERPia_EasyMode_Goods&Mode=Goods_Search&Admin_Code=' + Admin_Code + '&stts=' + stts + '&page=' + page + '&onePageCnt=20&SearchKey=' + escape(searchKey);
 			return $http.get(url + '?' + data).then(function(response){
-				if(typeof response.data == 'object'){
+				if(typeof response == 'object'){
 					return response;
 				}else{
 					return $q.reject(response);
@@ -2104,7 +2087,7 @@ angular.module('starter.services', [])
 			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp'; // ''전체, 603.입출처 / 601.매입처 / 602.매출처
 			var data = 'Kind=ERPia_EasyMode_Gereachei&Mode=Gereachei_Search&Admin_Code=' + Admin_Code + '&page=' + page + '&onePageCnt=20&G_ioGu=' + g_iogu + '&SearchKey=' + escape(searchKey);
 			return $http.get(url + '?' + data).then(function(response){
-				if(typeof response.data == 'object'){
+				if(typeof response == 'object'){
 					return response;
 				}else{
 					return $q.reject(response);
@@ -2113,10 +2096,16 @@ angular.module('starter.services', [])
 				return $q.reject(response);
 			});
 		}, goods_IU: function(Admin_Code, ID, Info){
+			if(Info.bigo.indexOf('[모바일]') == -1){
+				Info.bigo = '[모바일]' + Info.bigo;
+			}
+			if(Info.umgubun == ''){
+				Info.umgubun = 'Y';
+			}
 			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp';
 			var data = 'Kind=ERPia_EasyMode_Goods&mode=Goods_Save&Admin_Code=' + Admin_Code + '&ID=' + escape(ID) + '&goodsCode=' + Info.goodsCode + '&stts=' + Info.stts + '&goodsName=' + escape(Info.goodsName);
 			data = data + '&goodsStand=' + escape(Info.goodsStand) +'&ipAmt=' + Info.ipAmt + '&doAmt=' + Info.doAmt + '&interAmt=' + Info.interAmt + '&soAmt=' + Info.soAmt + '&userAmt=' + Info.userAmt;
-			data = data + '&location=' + escape(Info.location) + '&bigo=' + escape('[모바일]') + escape(Info.bigo) + '&umgubun=' + Info.umgubun + '&barcode=' + Info.barcode;
+			data = data + '&location=' + escape(Info.location) + '&bigo=' + escape(Info.bigo) + '&umgubun=' + Info.umgubun + '&barcode=' + Info.barcode;
 
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -2128,10 +2117,13 @@ angular.module('starter.services', [])
 				return $q.reject(response);
 			});
 		}, gereachei_IU: function(Admin_Code, ID, Info){
+			if(Info.bigo.indexOf('[모바일]') == -1){
+				Info.bigo = '[모바일]' + Info.bigo;
+			}
 			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp'; // ''전체, 603.입출처 / 601.매입처 / 602.매출처
 			var data = 'Kind=ERPia_EasyMode_Gereachei&mode=Gereachei_Save&Admin_Code=' + Admin_Code + '&ID=' + escape(ID) + '&GerCode=' + Info.GerCode + '&GerName=' + escape(Info.GerName) + '&G_Sano=' + Info.G_Sano + '&G_ioGu=' + Info.G_ioGu;
 			data = data + '&G_up=' + escape(Info.G_up) +'&G_Jong=' + escape(Info.G_Jong) + '&G_Ceo=' + escape(Info.G_Ceo) + '&G_Post1=' + escape(Info.G_Post1) + '&G_Juso1=' + escape(Info.G_Juso1) + '&G_GDamdang=' + escape(Info.G_GDamdang);
-			data = data + '&Hp=' + Info.Hp + '&Tax_GDamdang=' + escape(Info.Tax_GDamdang) + '&Tax_GDamdangTel=' + Info.Tax_GDamdangTel + '&Tax_EMail=' + escape(Info.Tax_EMail) + '&bigo=' + escape('[모바일]') + escape(Info.bigo);
+			data = data + '&Hp=' + Info.Hp + '&Tax_GDamdang=' + escape(Info.Tax_GDamdang) + '&Tax_GDamdangTel=' + Info.Tax_GDamdangTel + '&Tax_EMail=' + escape(Info.Tax_EMail) + '&bigo='+ escape(Info.bigo);
 
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -2142,13 +2134,25 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});
-		}, test: function(){
-			console.log("아러ㅣ아ㅓ라ㅓ =>",ERPiaAPI.post );
-			var url = 'openapi.epost.go.kr/postal/retrieveLotNumberAdressAreaCdService/retrieveLotNumberAdressAreaCdService/getDetailListAreaCd';
-			var data = 'ServiceKey=VstThgFAeXBTbir%2BBOqLUoUbAFzaMWWZ%2B2COAvCMsnLFIKWWIJ%2FyBuAil6W27SBoiXovE3BhrHNuBf9BcewZLQ%3D%3D&searchSe=dong&srchwrd=' + escape('고등동');
-
+		}, goodsde: function(Admin_Code, mode, code){
+			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp'; // ''전체, 603.입출처 / 601.매입처 / 602.매출처
+			var data = 'Kind=ERPia_EasyMode_Goods&mode=' + mode + '&Admin_Code=' + Admin_Code + '&goodsCode=' + code;
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
+					console.log('response=', response);
+					return response;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
+		}, gereacheide: function(Admin_Code, mode, code){
+			var url = ERPiaAPI.url + '/ERPiaApi_TestProject.asp'; // ''전체, 603.입출처 / 601.매입처 / 602.매출처
+			var data = 'Kind=ERPia_EasyMode_Gereachei&mode=' + mode + '&Admin_code=' + Admin_Code + '&GerCode=' + code;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					console.log('response=', response);
 					return response;
 				}else{
 					return $q.reject(response);
@@ -2157,6 +2161,5 @@ angular.module('starter.services', [])
 				return $q.reject(response);
 			});
 		}
-		
 	};
 });

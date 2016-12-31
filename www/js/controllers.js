@@ -166,7 +166,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.1.5',
+   		Android_version : '1.1.6',
    		IOS_version : '1.0.8'	//업데이트시 필수로 변경!!
    	};
 
@@ -335,7 +335,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$rootScope.loginData = {};
 				$rootScope.userData = {};
 				$scope.dashBoard = {};
-				$rootScope.goto_with_clearHistory('#/app/login');
+				$state.go('app.erpia_login');
+				// $rootScope.goto_with_clearHistory('#/app/login');
 				$scope.login();
 			}, 1000);
 		}else{
@@ -504,10 +505,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'kpage1089';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			$rootScope.loginData.Admin_Code = 'win1089'; //PC모드
-			$rootScope.loginData.loginType = 'E'; //PC모드
-			$rootScope.loginData.UserId  = 'win1089';
-			$rootScope.loginData.Pwd = 'erpia!1010';
+			// $rootScope.loginData.Admin_Code = 'win1089'; //PC모드
+			// $rootScope.loginData.loginType = 'E'; //PC모드
+			// $rootScope.loginData.UserId  = 'win1089';
+			// $rootScope.loginData.Pwd = 'erpia!1010';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -814,6 +815,50 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 					$rootScope.userData.B2BPack_YN = comInfo.data.list[0].B2BPack_YN;
 					console.log("나는 도소매 사용자 입니까?",$rootScope.userData.B2BPack_YN );
 
+					if($rootScope.userData.B2BPack_YN != 'Y'){
+						var titles =  [
+							{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home', pre: '', befo: '홈'}
+							, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
+							, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
+							, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}
+							, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube', pre: '상품별', befo: 'TOP5'}
+							// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
+							, {Idx:5, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard', pre: '실적', befo: '추이'}
+							, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit', pre: '매입', befo: '현황'}
+							, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share', pre: '금일', befo: '출고현황'}
+							, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus', pre: '택배사', befo: '건수'}
+							, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph', pre: '온오프', befo: '비교'}
+							, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap', pre: '매출', befo: '반품'}
+							, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left', pre: '반품', befo: '건수'}
+							, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker', pre: 'CS', befo: '현황'}
+							, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download', pre: '매입', befo: '건수'}
+							, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop', pre: '재고', befo: '회전율'}
+							, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open', pre: '출고', befo: '현황'}
+							];
+					}else{
+						var titles =  [
+							{Idx:0, title:"meachul_7", name: '홈', icon: 'ion-home', pre: '', befo: '홈'}
+							, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
+							, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
+							, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}
+							, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube', pre: '상품별', befo: 'TOP5'}
+							// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
+							, {Idx:5, title:"meachul_7", name:'홈', icon: 'ion-home', pre: '', befo: '홈'}
+							, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit', pre: '매입', befo: '현황'}
+							, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share', pre: '금일', befo: '출고현황'}
+							, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus', pre: '택배사', befo: '건수'}
+							, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph', pre: '온오프', befo: '비교'}
+							, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap', pre: '매출', befo: '반품'}
+							, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left', pre: '반품', befo: '건수'}
+							, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker', pre: 'CS', befo: '현황'}
+							, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download', pre: '매입', befo: '건수'}
+							, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop', pre: '재고', befo: '회전율'}
+							, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open', pre: '출고', befo: '현황'}
+							];	
+					}
+
+					$rootScope.titles = titles;
+
 					$scope.loginData.isLogin = 'Y';
 					$rootScope.loginMenu = 'User';
 					loginService.comInfo('ComInfo_Erpia', $scope.loginData.Admin_Code)
@@ -900,32 +945,61 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 								$rootScope.priv_meachul.de = data[1].priv_Delete;
 								$rootScope.priv_meachul.save = data[1].priv_Save;
 								$rootScope.priv_meachul.print = data[1].priv_Print;
+								/* 패키지가 도소매일경우 거래처별 창고 관리 없음. 예외처리 추가 - 이경민 */
+								if(data.length == 8){
+									/* 재고권한 */
+									$rootScope.priv_jego.jego_YN = data[2].Mpriv;
+									if(data[2].priv == '0' && data[3].priv == '0' && data[4].priv == '0'){
+										$rootScope.priv_jego.jego = 'N';
+									}else{
+										$rootScope.priv_jego.jego = 'Y';
+									}
 
-								/* 재고권한 */
-								$rootScope.priv_jego.jego_YN = data[2].Mpriv;
-								if(data[2].priv == '0' && data[3].priv == '0' && data[4].priv == '0'){
-									$rootScope.priv_jego.jego = 'N';
+									/* 상품정보 권한 */
+									$rootScope.privproduct_Save = data[7].priv_Save;
+									$rootScope.privproduct_De = data[7].Delete;
+									if(data[6].Mpriv == 'N' || data[6].Mpriv == 'Y' && data[6].priv == 0 || data[6].Mpriv == 'Y' && data[7].priv == 0){
+										$rootScope.priv_productYM = 'N';
+									}else{
+										$rootScope.priv_productYM = 'Y';
+									}
+
+									/* 거래처정보 권한 */
+									$rootScope.privGereachei_Save = data[5].priv_Save;
+
+									if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0){
+										$rootScope.privGereachei_Use = 'N';
+									}else{
+										$rootScope.privGereachei_Use = 'Y';
+									}
 								}else{
-									$rootScope.priv_jego.jego = 'Y';
-								}
+									/* 재고권한 */
+									$rootScope.priv_jego.jego_YN = data[2].Mpriv;
+									if(data[2].priv == '0' && data[3].priv == '0'){
+										$rootScope.priv_jego.jego = 'N';
+									}else{
+										$rootScope.priv_jego.jego = 'Y';
+									}
 
-								/* 상품정보 권한 */
-								$rootScope.privproduct_Save = data[7].priv_Save;
-								$rootScope.privproduct_De = data[7].Delete;
-								if(data[6].Mpriv == 'N' || data[6].Mpriv == 'Y' && data[6].priv == 0 || data[6].Mpriv == 'Y' && data[7].priv == 0){
-									$rootScope.priv_productYM = 'N';
-								}else{
-									$rootScope.priv_productYM = 'Y';
-								}
+									/* 상품정보 권한 */
+									$rootScope.privproduct_Save = data[6].priv_Save;
+									$rootScope.privproduct_De = data[6].Delete;
+									if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0 || data[5].Mpriv == 'Y' && data[6].priv == 0){
+										$rootScope.priv_productYM = 'N';
+									}else{
+										$rootScope.priv_productYM = 'Y';
+									}
 
-								/* 거래처정보 권한 */
-								$rootScope.privGereachei_Save = data[5].priv_Save;
+									/* 거래처정보 권한 */
+									$rootScope.privGereachei_Save = data[4].priv_Save;
 
-								if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0){
-									$rootScope.privGereachei_Use = 'N';
-								}else{
-									$rootScope.privGereachei_Use = 'Y';
+									if(data[4].Mpriv == 'N' || data[4].Mpriv == 'Y' && data[4].priv == 0){
+										$rootScope.privGereachei_Use = 'N';
+									}else{
+										$rootScope.privGereachei_Use = 'Y';
+									}
 								}
+								
 						});
 
 						/* 원가 공개 설정 여부 [이경민 - 2016-09-01] */ // Y가 원가 비공개 N이 원가 공개
@@ -1071,34 +1145,72 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
 			PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
 			.then(function(data){
-					/* 매입매출 권한 */
+					/* 매입매출권한 */
 					$rootScope.priv_meaip.id = data[0].Menu_NM;
 					$rootScope.priv_meaip.master_useYN = data[0].Mpriv;
 					$rootScope.priv_meaip.useYN = data[0].priv;
 					$rootScope.priv_meaip.de = data[0].priv_Delete;
 					$rootScope.priv_meaip.save = data[0].priv_Save;
 					$rootScope.priv_meaip.print = data[0].priv_Print;
-
 					$rootScope.priv_meachul.id = data[1].Menu_NM;
 					$rootScope.priv_meachul.master_useYN = data[1].Mpriv;
 					$rootScope.priv_meachul.useYN = data[1].priv;
 					$rootScope.priv_meachul.de = data[1].priv_Delete;
 					$rootScope.priv_meachul.save = data[1].priv_Save;
 					$rootScope.priv_meachul.print = data[1].priv_Print;
+					/* 패키지가 도소매일경우 거래처별 창고 관리 없음. 예외처리 추가 - 이경민 */
+					if(data.length == 8){
+						/* 재고권한 */
+						$rootScope.priv_jego.jego_YN = data[2].Mpriv;
+						if(data[2].priv == '0' && data[3].priv == '0' && data[4].priv == '0'){
+							$rootScope.priv_jego.jego = 'N';
+						}else{
+							$rootScope.priv_jego.jego = 'Y';
+						}
 
-					/* 재고권한 */
-					$rootScope.priv_jego.jego_YN = data[2].Mpriv;
-					if(data[2].priv == '0' && data[3].priv == '0' && data[4].priv == '0'){
-						$rootScope.priv_jego.jego = 'N';
-					}else{
-						$rootScope.priv_jego.jego = 'Y';
-					}
+						/* 상품정보 권한 */
+						$rootScope.privproduct_Save = data[7].priv_Save;
+						$rootScope.privproduct_De = data[7].Delete;
+						if(data[6].Mpriv == 'N' || data[6].Mpriv == 'Y' && data[6].priv == 0 || data[6].Mpriv == 'Y' && data[7].priv == 0){
+							$rootScope.priv_productYM = 'N';
+						}else{
+							$rootScope.priv_productYM = 'Y';
+						}
 
-					/* 상품정보 권한 */
-					if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0 && data[6].priv == 0){
-						$rootScope.priv_productYM = 'N';
+						/* 거래처정보 권한 */
+						$rootScope.privGereachei_Save = data[5].priv_Save;
+
+						if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0){
+							$rootScope.privGereachei_Use = 'N';
+						}else{
+							$rootScope.privGereachei_Use = 'Y';
+						}
 					}else{
-						$rootScope.priv_productYM = 'Y';
+						/* 재고권한 */
+						$rootScope.priv_jego.jego_YN = data[2].Mpriv;
+						if(data[2].priv == '0' && data[3].priv == '0'){
+							$rootScope.priv_jego.jego = 'N';
+						}else{
+							$rootScope.priv_jego.jego = 'Y';
+						}
+
+						/* 상품정보 권한 */
+						$rootScope.privproduct_Save = data[6].priv_Save;
+						$rootScope.privproduct_De = data[6].Delete;
+						if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0 || data[5].Mpriv == 'Y' && data[6].priv == 0){
+							$rootScope.priv_productYM = 'N';
+						}else{
+							$rootScope.priv_productYM = 'Y';
+						}
+
+						/* 거래처정보 권한 */
+						$rootScope.privGereachei_Save = data[4].priv_Save;
+
+						if(data[4].Mpriv == 'N' || data[4].Mpriv == 'Y' && data[4].priv == 0){
+							$rootScope.privGereachei_Use = 'N';
+						}else{
+							$rootScope.privGereachei_Use = 'Y';
+						}
 					}
 			});
 
@@ -1107,6 +1219,25 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			.then(function(data){
 					$rootScope.priv_wongaYN = data[0].WonGa;
 			});
+			$rootScope.titles =  [
+				{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home', pre: '', befo: '홈'}
+				, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
+				, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
+				, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}
+				, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube', pre: '상품별', befo: 'TOP5'}
+				// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
+				, {Idx:5, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard', pre: '실적', befo: '추이'}
+				, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit', pre: '매입', befo: '현황'}
+				, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share', pre: '금일', befo: '출고현황'}
+				, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus', pre: '택배사', befo: '건수'}
+				, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph', pre: '온오프', befo: '비교'}
+				, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap', pre: '매출', befo: '반품'}
+				, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left', pre: '반품', befo: '건수'}
+				, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker', pre: 'CS', befo: '현황'}
+				, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download', pre: '매입', befo: '건수'}
+				, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop', pre: '재고', befo: '회전율'}
+				, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open', pre: '출고', befo: '현황'}
+			];
 
 			$rootScope.goto_with_clearHistory('#/app/slidingtab');
 
@@ -1413,7 +1544,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				var mac = 'Guest';
 				var loginType = 'G';
 			}else{
-				console.log('저장안할껀데..?');
+				console.log('저장안함.');
 			}
 
 			if(loginType == 'E' || loginType == 'G'){

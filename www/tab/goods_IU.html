@@ -10,38 +10,61 @@
 	<ion-content style="background: #dce0e1" scroll="true">
 		<div class="list list-inset" style="background: #f3eff4;">
 			<label class="item item-input" style="padding: 0;">
-				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;상품명(필수)</i></span>
-				<input type="text" ng-model="goods_Object.goodsName" style="width: 90%; font-size: 0.8em;" placeholder="상품명을 입력하세요."><br>
+				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;상품명(필수)</i></span>
+				<span style="width: 63%; display: inline-block;"><input type="text" ng-model="goods_Object.goodsName" style="font-size: 0.8em;" placeholder="상품명을 입력하세요."></span>
+				<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' style='font-size: 27px; color:#000;'></i></span> -->
 			</label>
 
 			<label class="item item-input" style="padding: 0;">
-				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;규격</i></span>
-				<input type="text" ng-model="goods_Object.goodsStand" style="width: 100%; font-size: 0.8em;" placeholder="규격을 입력하세요."><br>
+				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;규격</i></span>
+				<span style="width: 63%; display: inline-block;"><input type="text" ng-model="goods_Object.goodsStand" style="font-size: 0.8em;" placeholder="규격을 입력하세요."></span>
+				<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' style='font-size: 27px; color:#000;'></i></span> -->
 			</label>
 
 			<label class="item item-input" style="padding: 0;">
-				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;바코드</i></span>
-				<input type="text" ng-model="goods_Object.barcode" style="width: 100%; font-size: 0.8em;" placeholder="바코드를 입력하세요."><br>
+				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;바코드</i></span>
+				<span style="width: 63%; display: inline-block;"><input type="text" ng-model="goods_Object.barcode" style="font-size: 0.8em;" placeholder="바코드를 입력하세요."></span>
+				<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' style='font-size: 27px; color:#000;'></i></span> -->
 			</label>
 
 			<label class="item item-input" style="padding: 0;">
-				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;로케이션</i></span>
-				<input type="text" ng-model="goods_Object.location" style="width: 100%; font-size: 0.8em;" placeholder="로케이션을 입력하세요."><br>
+				<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;로케이션</i></span>
+				<span style="width: 63%; display: inline-block;"><input type="text" ng-model="goods_Object.location" style="font-size: 0.8em;" placeholder="로케이션을 입력하세요."></span>
+				<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' style='font-size: 27px; color:#000;'></i></span> -->
 			</label>
 
-			<label class="item item-input" style="padding: 0; width: 100%; background: #f3eff4;">
-				<span class="input-label psm_sang_01" style="width: 50%; height: 45px; padding-top: 17px; text-align: center; vertical-align: middle;">
-					<select ng-model="goods_Object.stts" style="width: 70%; font-size: 0.9em;">
+			<label class="item item-input" style="padding: 0;">
+				<span class="input-label psm_sang_01" style="width: 36%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;상태</i></span>
+				<span style="width: 66%; display: inline-block;">
+					<select ng-model="goods_Object.stts" style="height: 40px; font-size: 0.8em; width: 96%;">
 						<option ng-repeat="x in goodsStts" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
 					</select>
 				</span>
-				<span class="input-label psm_sang_01" style="width: 50%; height: 45px; padding-top: 17px; text-align: center; vertical-align: middle;">
-					<select ng-model="goods_Object.umgubun" style="width: 70%; font-size: 0.9em; margin-left: -10px;">
+			</label>
+
+			<label class="item item-input" style="padding: 0;">
+				<span class="input-label psm_sang_01" style="width: 36%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;유무형구분</i></span>
+				<span style="width: 66%; display: inline-block;">
+					<select ng-model="goods_Object.umgubun" style="height: 40px; font-size: 0.8em; width: 96%;">
+						<option ng-repeat="x in goods_shapeYN" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
+					</select>
+				</span>
+			</label>
+
+
+<!-- 			<label class="item item-input" style="padding: 0; margin: 0; background: #f3eff4;">
+				<span class="input-label" style="width: 50%; height: 45px; padding-top: 17px; padding: 10px 5px 10px 10px; margin: 0;">
+					<select ng-model="goods_Object.stts" style="height: 40px; font-size: 0.8em; width: 96%;">
+						<option ng-repeat="x in goodsStts" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
+					</select>
+				</span>
+				<span class="input-label" style="width: 50%; height: 45px; padding-top: 17px; padding: 10px 10px 10px 5px; margin: 0;">
+					<select ng-model="goods_Object.umgubun" style="height: 40px; font-size: 0.8em; width: 96%;">
 						<option ng-repeat="x in goods_shapeYN" value="{{x.val}}" ng-selected="x.val == goods_Object.stts">{{ x.name }}</option>
 					</select>
 				</span>
 				<br>
-			</label>
+			</label> -->
 
 			<div class="list list-inset" align="left" style="background: #f3eff4;">
 				<div style="text-align: left; padding: 0 10px 10px 10px; font-size: 0.85em;"><i class="ion-record">&nbsp;&nbsp;<b>가격</b></i><span style="font-size: 0.7em;"> (*가격을 입력하지 않으시면 자동 0원으로 등록됩니다.)</span></div>
@@ -100,7 +123,7 @@
 				</div>
 			</div>
 
-			<div class="list list-inset" align="left" style="background: #f3eff4;">
+			<div class="list list-inset" align="left" style="background: #f3eff4; padding-bottom: 10px">
 				<div style="text-align: left; padding: 0 10px 10px 10px; font-size: 0.85em;"><i class="ion-record">&nbsp;&nbsp;<b>비고</b></i></div>
 				<div style="border: 1px solid #dce0e1">
 					<textarea placeholder="비고란 입니다." ng-model="goods_Object.bigo" style="width: 100%; height: 150px; padding: 15px; font-size: 0.8em;"></textarea>

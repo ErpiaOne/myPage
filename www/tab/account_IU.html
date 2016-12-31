@@ -10,100 +10,94 @@
 	<ion-content style="background: #dce0e1" scroll="true">
 		<div class="list list-inset" style="background: #f3eff4;">
 			<!-- 기본정보 -->
-			<div style="width: 100%; height: 45px; text-align: left; padding: 10px; font-size: 0.85em; background: #f3eff4;" ng-click="updown(1)"><b>기본정보</b><i class="{{updown1}} psmsmy_semo"></i></div>
+			<div style="width: 100%; height: 45px; text-align: left; padding: 10px; font-size: 0.85em; background: #aca5b5; color: #fff;" ng-click="updown(1)"><b>기본정보</b><i class="{{updown1}} psmsmy_semo"></i></div>
 			<div ng-if="updown1 == 'ion-arrow-up-b'">
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;거래처명(필수)</i></span>
-					<input type="text" ng-model="gereachei_Object.GerName" style="width: 90%; font-size: 0.8em;" placeholder="거래처명을 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;거래처명(필수)</i></span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.GerName" style="font-size: 0.8em;" placeholder="거래처명을 입력하세요."></span>
+					<!-- <span ng-click="gereacheiClear(1)" style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(1)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;사업자번호</i></span>
-					<input type="text" ng-model="gereachei_Object.G_Sano" style="width: 90%; font-size: 0.8em;" placeholder="사업자번호을 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;사업자번호</i></span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.G_Sano" style="width: 90%; font-size: 0.8em;" placeholder="사업자번호을 입력하세요."></span>
+					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(2)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;입출구분</i></span>
-					<select ng-model="gereachei_Object.G_ioGu" style="height: 40px; font-size: 0.8em;">
-						<option ng-repeat="x in gereacheiGioGu" value="{{x.val}}" ng-selected="x.val == gereachei_Object.G_ioGu">{{ x.name }}</option>
-					</select><br>
+					<span class="input-label psm_sang_01" style="width: 36%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;입출구분</i></span>
+					<span style="width: 66%; display: inline-block;">
+						<select ng-model="gereachei_Object.G_ioGu" style="height: 40px; font-size: 0.8em; width: 96%;">
+							<option ng-repeat="x in gereacheiGioGu" value="{{x.val}}" ng-selected="x.val == gereachei_Object.G_ioGu">{{ x.name }}</option>
+						</select>
+					</span>
 				</label>
 
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;업태</i></span>
-					<input type="text" ng-model="gereachei_Object.G_up" style="width: 90%; font-size: 0.8em;" placeholder="업태를 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;업태</i></span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.G_up" style="width: 90%; font-size: 0.8em;" placeholder="업태를 입력하세요."></span>
+					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(3)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;종목</i></span>
-					<input type="text" ng-model="gereachei_Object.G_Jong" style="width: 90%; font-size: 0.8em;" placeholder="종목을 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;종목</i></span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.G_Jong" style="width: 90%; font-size: 0.8em;" placeholder="종목을 입력하세요."></span>
+					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(4)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;대표자명</i></span>
-					<input type="text" ng-model="gereachei_Object.G_Ceo" style="width: 90%; font-size: 0.8em;" placeholder="대표자명을 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;대표자명</i></span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.G_Ceo" style="width: 90%; font-size: 0.8em;" placeholder="대표자명을 입력하세요."></span>
+					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(5)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 			</div>
+			<div style="padding-bottom: 20px; background: #dce0e1;"></div>
 
 			<!-- 상세정보 -->
-			<div style="width: 100%; height: 45px; text-align: left; padding: 10px; font-size: 0.85em; background: #f3eff4; border-bottom: 1px solid #dce0e1;" ng-click="updown(2)"><b>상세정보</b><i class="{{updown2}} psmsmy_semo"></i></div>
+			<div style="width: 100%; height: 45px; text-align: left; padding: 10px; font-size: 0.85em; background: #aca5b5; color: #fff;" ng-click="updown(2)"><b>상세정보</b><i class="{{updown2}} psmsmy_semo"></i></div>
 			<div class="list list-inset" align="left" style="background: #f3eff4;" ng-if="updown2 == 'ion-arrow-up-b'">
 				<div style="text-align: left; padding: 0 10px 10px 10px; font-size: 0.85em;"><i class="ion-record">&nbsp;&nbsp;주소</i></div>
-				<div style="border: 1px solid #dce0e1">
-					<table style="width: 100%;">
-<!-- 						<tr>
-							<td colspan="2" style="width: 50%;">
-								<label class="item item-input" style="padding-right: 0px;">
-									<span style="font-size: 0.7em; padding-right: 5px; margin-right: -30px;">
-										<button class="button button-small button-psm04" ng-click="postSearch()" style="width: 100%; font-size: 0.8em;">우편번호 검색</button><br>
-									</span>
-									<span style="margin-right: -40px; margin-left: 40px; width: 100%; height: 30px;">
-										<input type="text" style="width: 80%; font-size: 0.85em;" ng-model="gereachei_Object.G_Post1" value="우편번호검색" disabled="ture">
-									</span>
-								</label>	
-							</td>
-						</tr> -->
-						<tr>
-							<td colspan="2" style="width: 50%;">
-								<label class="item item-input" style="padding-right: 0px;">
-									<span style="font-size: 0.7em; padding-right: 5px;"></span>
-									<span style="width: 100%; height: 30px;">
-										<input type="text" ng-model="gereachei_Object.G_Juso1" style="width: 100%; text-align: left;" placeholder="나머지주소">
-									</span>
-								</label>	
-							</td>
-						</tr>
-					</table>
-				</div>
+				<label class="item item-input" style="padding: 0;">
+					<span style="width: 100%; display: inline-block; padding-left: 10px;"><input type="text" ng-model="gereachei_Object.G_Juso1" style="width: 100%; text-align: left;" placeholder="주소"></span>
+					<!-- <span style="display: inline-block; margin-left: -30px;"><i class='ion-android-close' ng-click="gereacheiClear(6)" style='font-size: 27px; color:#000;'></i></span> -->
+				</label>
+
 				<div style="text-align: left; padding: 10px; font-size: 0.85em; border-top: 1px solid #dce0e1;"><i class="ion-record">&nbsp;&nbsp;거래처담당자</i></div>
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px">담당자</span>
-					<input type="text" ng-model="gereachei_Object.G_GDamdang" style="width: 90%; font-size: 0.8em;" placeholder="담당자를 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px">담당자</span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.G_GDamdang" style="width: 90%; font-size: 0.8em;" placeholder="담당자를 입력하세요."></span>
+					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(7)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px">연락처</span>
-					<input type="text" ng-model="gereachei_Object.Hp" style="width: 90%; font-size: 0.8em;" placeholder="연락처를 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px">연락처</span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.Hp" style="width: 90%; font-size: 0.8em;" placeholder="연락처를 입력하세요."></span>
+					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(8)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 
 				<div style="text-align: left; padding: 10px; font-size: 0.85em; border-top: 1px solid #dce0e1;"><i class="ion-record">&nbsp;&nbsp;세금계산서 담당자</i></div>
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px">담당자</span>
-					<input type="text" ng-model="gereachei_Object.Tax_GDamdang" style="width: 90%; font-size: 0.8em;" placeholder="담당자를 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px">담당자</span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.Tax_GDamdang" style="width: 90%; font-size: 0.8em;" placeholder="담당자를 입력하세요."></span>
+					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(9)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px">연락처</span>
-					<input type="text" ng-model="gereachei_Object.Tax_GDamdangTel" style="width: 90%; font-size: 0.8em;" placeholder="연락처를 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px">연락처</span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.Tax_GDamdangTel" style="width: 90%; font-size: 0.8em;" placeholder="연락처를 입력하세요."></span>
+					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(10)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px">이메일</span>
-					<input type="text" ng-model="gereachei_Object.Tax_EMail" style="width: 90%; font-size: 0.8em;" placeholder="이메일을 입력하세요."><br>
+					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px">이메일</span>
+					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.Tax_EMail" style="width: 90%; font-size: 0.8em;" placeholder="이메일을 입력하세요."></span>
+					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(11)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 
 
 			</div>
 
+			<div style="padding-bottom: 20px; background: #dce0e1;"></div>
+
 			<!-- 비고 -->
-			<div style="width: 100%; height: 45px; text-align: left; padding: 10px; font-size: 0.85em; background: #f3eff4; border-top: 1px solid #dce0e1;" ng-click="updown(3)"><b>비고</b><i class="{{updown3}} psmsmy_semo"></i></div>
+			<div style="width: 100%; height: 45px; text-align: left; padding: 10px; font-size: 0.85em; background: #aca5b5; color: #fff;" ng-click="updown(3)"><b>비고</b><i class="{{updown3}} psmsmy_semo"></i></div>
 			<div ng-if="updown3 == 'ion-arrow-up-b'">
 				<label class="item item-input" style="padding: 0;">
 					<textarea placeholder="비고란 입니다." ng-model="gereachei_Object.bigo" style="width: 100%; height: 150px; padding: 15px; font-size: 0.8em;"></textarea>
