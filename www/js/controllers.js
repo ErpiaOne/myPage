@@ -505,10 +505,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'kpage1089';
 			// $rootScope.loginData.Pwd = 'erpia!1010';
 
-			// $rootScope.loginData.Admin_Code = 'win1089'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId  = 'win1089';
-			// $rootScope.loginData.Pwd = 'erpia!1010';
+			$rootScope.loginData.Admin_Code = 'win1089'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId  = 'win1089';
+			$rootScope.loginData.Pwd = 'erpia!1010';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
