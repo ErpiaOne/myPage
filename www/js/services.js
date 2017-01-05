@@ -120,7 +120,7 @@ angular.module('starter.services', [])
 
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + '01056579731' + '&mac=' + UUID;
+			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
 			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -558,7 +558,7 @@ angular.module('starter.services', [])
 							response.data.list[i].befo = $rootScope.titles[5].befo;
 							/* 도소매 버전인경우 물류 차트 제외 -- 이경민 */
 							if($rootScope.userData.B2BPack_YN == 'Y'){
-								if(response.data.list[i].title == 'beasong_gu' || response.data.list[i].title == 'meachul_jem' || response.data.list[i].title == 'beasonga' || response.data.list[i].title == 'JeGo_TurnOver' || response.data.list[i].title == 'beasongb'){
+								if(response.data.list[i].title == 'beasong_gu' || response.data.list[i].title == 'meachul_jem' || response.data.list[i].title == 'beasonga' || response.data.list[i].title == 'JeGo_TurnOver' || response.data.list[i].title == 'beasongb' || response.data.list[i].title == 'meachul_onoff'){
 									response.data.list[i].visible = 'N';
 								}
 							}
@@ -571,7 +571,7 @@ angular.module('starter.services', [])
 							response.data.list[i].befo = $rootScope.titles[index].befo;
 							/* 도소매 버전인경우 물류 차트 제외 -- 이경민 */
 							if($rootScope.userData.B2BPack_YN == 'Y'){
-								if(response.data.list[i].title == 'beasong_gu' || response.data.list[i].title == 'meachul_jem' || response.data.list[i].title == 'beasonga' || response.data.list[i].title == 'JeGo_TurnOver' || response.data.list[i].title == 'beasongb' || response.data.list[i].title == 'meachul_7'){
+								if(response.data.list[i].title == 'beasong_gu' || response.data.list[i].title == 'meachul_jem' || response.data.list[i].title == 'beasonga' || response.data.list[i].title == 'JeGo_TurnOver' || response.data.list[i].title == 'beasongb' || response.data.list[i].title == 'meachul_onoff' || response.data.list[i].title == 'meachul_7'){
 									response.data.list[i].visible = 'N';
 								}
 							}

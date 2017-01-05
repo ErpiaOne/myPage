@@ -57,6 +57,7 @@ console.log("간편 상품 거래처 컨트롤러");
 		$scope.page = $scope.page + 1;	// 페이징 넘버 +1
 		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 		if(gubun == 1){				// 첫페이지 조회시
+			$rootScope.ActsLog('simple', 'simple_Goodsselect');
 			EasyService.goods_Select($rootScope.loginData.Admin_Code, $scope.GoodsInfo.stts, $scope.page, $scope.GoodsInfo.searchKey)
 			.then(function(response){
 				if(response.data == '<!--Parameter Check-->'){
@@ -204,6 +205,7 @@ console.log("간편 상품 거래처 컨트롤러");
 		$scope.page = $scope.page + 1; 	// 페이징 넘버 +1
 		$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
 		if(gubun == 1){					// 첫페이지 조회시
+			$rootScope.ActsLog('simple', 'simple_Gereselect');
 			EasyService.gereachei_Select($rootScope.loginData.Admin_Code, $scope.page, $scope.GereacheInfo.g_iogu, $scope.GereacheInfo.searchKey)
 			.then(function(response){
 				if(response.data == '<!--Parameter Check-->'){

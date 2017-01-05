@@ -64,25 +64,13 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 					<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left; font-size: 0.8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">가용재고 : {{ x.Jego | number:0 }}</td>
 				</tr>
 
-				<tr style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;" ng-show="toggle_{{x.G_Code}}" ng-animate="'box'">
+				<tr style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;" ng-show="toggle_{{x.G_Code}}" ng-click="ActsLog('simple', 'simple_Goodsdetail')" ng-animate="'box'">
 					<td colspan="3" style="width: 100%;">
 						<div style="width: 100%;">
 							<table style="background: #fff; width: 100%; font-size: 0.85em;">
 								<tr>
 									<td class="resulttd1-1"><b>규격</b></td>
 									<td class = "resulttd1-2">{{ (x.G_Stand)?x.G_Stand:'-' }}</td>
-								</tr>
-								<tr>
-									<td class="resulttd1-1"><b>로케이션</b></td>
-									<td class = "resulttd1-2">{{ (x.G_Wich)?x.G_Wich:'-' }}</td>
-								</tr>
-								<tr>
-									<td class="resulttd1-1"><b>자체코드</b></td>
-									<td class = "resulttd1-2">{{ (x.G_OnCode)?x.G_OnCode:'-' }}</td>
-								</tr>
-								<tr>
-									<td class="resulttd1-1"><b>등록일</b></td>
-									<td class = "resulttd1-2">{{ (x.indate)?x.indate:'-' }}</td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>매입가</b></td>
@@ -108,10 +96,6 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 									<td class = "resulttd1-2">{{ x.G_Dn5 | number:0 }}</td>
 								</tr>
 								<tr>
-									<td class="resulttd1-1"><b>유/무형구분</b></td>
-									<td class = "resulttd1-2"><span ng-if="x.UM_GUBUN == 'Y'">유형</span><span ng-if="x.UM_GUBUN != 'Y'">무형</span></td>
-								</tr>
-								<tr>
 									<td class="resulttd1-1"><b>입수량</b></td>
 									<td class = "resulttd1-2">{{ x.Box_In_Qty | number:0 }}</td>
 								</tr>
@@ -124,12 +108,16 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 									<td class = "resulttd1-2">{{ x.ChulgoDeagi | number:0 }}</td>
 								</tr>
 								<tr>
-									<td class="resulttd1-1"><b>원산지</b></td>
-									<td class = "resulttd1-2">{{ (x.Origin)?x.Origin:'-' }}</td>
+									<td class="resulttd1-1"><b>로케이션</b></td>
+									<td class = "resulttd1-2">{{ (x.G_Wich)?x.G_Wich:'-' }}</td>
 								</tr>
 								<tr>
-									<td class="resulttd1-1"><b>비고</b></td>
-									<td class = "resulttd1-2">{{ (x.bigo)?x.bigo:'-' }}</td>
+									<td class="resulttd1-1"><b>자체코드</b></td>
+									<td class = "resulttd1-2">{{ (x.G_OnCode)?x.G_OnCode:'-' }}</td>
+								</tr>
+								<tr>
+									<td class="resulttd1-1"><b>유/무형구분</b></td>
+									<td class = "resulttd1-2"><span ng-if="x.UM_GUBUN == 'Y'">유형</span><span ng-if="x.UM_GUBUN != 'Y'">무형</span></td>
 								</tr>
 								<tr>
 									<td class="resulttd1-1"><b>상태</b></td>
@@ -143,6 +131,10 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 									</td>
 								</tr>
 								<tr>
+									<td class="resulttd1-1"><b>원산지</b></td>
+									<td class = "resulttd1-2">{{ (x.Origin)?x.Origin:'-' }}</td>
+								</tr>
+								<tr>
 									<td class="resulttd1-1"><b>상품코드</b></td>
 									<td class = "resulttd1-2">{{ (x.G_Code)?x.G_Code:'-' }}</td>
 								</tr>
@@ -151,10 +143,18 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 									<td class = "resulttd1-2">{{ (x.Barcode)?x.Barcode:'-' }}</td>
 								</tr>
 								<tr>
+									<td class="resulttd1-1"><b>등록일</b></td>
+									<td class = "resulttd1-2">{{ (x.indate)?x.indate:'-' }}</td>
+								</tr>
+								<tr>
+									<td class="resulttd1-1"><b>비고</b></td>
+									<td class = "resulttd1-2">{{ (x.bigo)?x.bigo:'-' }}</td>
+								</tr>
+								<tr>
 									<td colspan="2" ng-if="x.Dis_Use != '9'" style="background: #A298B0; font-size: 0.9em; text-align: right;">
 										<div class="padding">
-											<button class="button button-small button-psm01" style="padding-right: 5px;" ng-click="goodsUpdate(1,$index)">수정</button>
-											<button class="button button-small button-psm02" ng-click="goodsde(1,x.G_Code)">삭제</button>
+											<button class="button button-small button-psm01" style="padding-right: 5px;" ng-click="goodsUpdate(1,$index);ActsLog('simple', 'simple_Goodsupdate')">수정</button>
+											<button class="button button-small button-psm02" ng-click="goodsde(1,x.G_Code);ActsLog('simple', 'simple_Goodsdelete')">삭제</button>
 										</div>
 									</td>
 								</tr>
@@ -178,7 +178,7 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 		<div style="padding-bottom: 100px;"></div>
 	</ion-content>
 	<div class="hide-on-keyboard-open" style="position: fixed; right: 10px; bottom: 60px;">
-		<i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='Goods_Gerea_IU(0)'></i>&nbsp;&nbsp;
+		<i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='Goods_Gerea_IU(0);ActsLog("simple", "simple_Goodsinsert")'></i>&nbsp;&nbsp;
 		<i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:3.2em; color: #6c5e72; top:2px;" ng-click='scrollTop()'></i>&nbsp;&nbsp;
 	</div>
 </ion-view>

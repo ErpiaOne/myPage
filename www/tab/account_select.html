@@ -67,7 +67,7 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 					<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 0 10px 10px 10px; text-align: left; font-size: 0.8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">담당자 : {{ (x.G_GDamdang)?x.G_GDamdang:'-' }}</td>
 				</tr>
 
-				<tr style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;" ng-show="toggle_{{x.GerCode}}" ng-animate="'box'">
+				<tr style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;" ng-show="toggle_{{x.GerCode}}" ng-click="ActsLog('simple', 'simple_Geredetail')" ng-animate="'box'">
 					<td colspan="3" style="width: 100%;">
 						<div style="width: 100%;">
 							<table style="background: #fff; width: 100%; font-size: 0.85em;">
@@ -134,8 +134,8 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 								<tr>
 									<td ng-if="x.stts != 9" colspan="2" style="background: #A298B0; font-size: 0.9em; text-align: right;">
 										<div class="padding">
-											<button class="button button-small button-psm01" style="padding-right: 5px;" ng-click="goodsUpdate(2,$index)">수정</button>
-											<button class="button button-small button-psm02" ng-click="gereacheide(1,x.GerCode);">삭제</button>
+											<button class="button button-small button-psm01" style="padding-right: 5px;" ng-click="goodsUpdate(2,$index);ActsLog('simple', 'simple_Gereupdate')">수정</button>
+											<button class="button button-small button-psm02" ng-click="gereacheide(1,x.GerCode);ActsLog('simple', 'simple_Geredelete')">삭제</button>
 										</div>
 									</td>
 									<td ng-if="x.stts == 9" colspan="2" style="background: #A298B0; font-size: 0.9em; text-align: right;">
@@ -157,7 +157,7 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 		<div style="padding-bottom: 100px;"></div>
 	</ion-content>
 	<div class="hide-on-keyboard-open" style="position: fixed; right: 10px; bottom: 60px;">
-		<i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='Goods_Gerea_IU(1)'></i>&nbsp;&nbsp;
+		<i class='ion-plus-circled' style="position:relative; z-index:1000;font-size:3em; color: #dd8369" ng-click='Goods_Gerea_IU(1);ActsLog("simple", "simple_Gereinsert")'></i>&nbsp;&nbsp;
 		<i class='ion-android-arrow-dropup-circle' style="position:relative; z-index:1000;font-size:3.2em; color: #6c5e72; top:2px;" ng-click='scrollTop()'></i>&nbsp;&nbsp;
 	</div>
 </ion-view>
