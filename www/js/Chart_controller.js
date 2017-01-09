@@ -2,6 +2,7 @@
 angular.module('starter.controllers').controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, $ionicModal, ERPiaAPI, statisticService, IndexService, $cordovaToast, app, $ionicLoading, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
 	/* 업데이트내역 */
 	$scope.upList = [
+		{ id : 15, title : "1.1.8 Version", inDate : "2016-01-10", content : "1. 거래처 주소 잘림 현상수정<br>2. 사업자번호 유효성체크기능 추가<br>3. 상품단가 에러사항 수정" },
 		{ id : 15, title : "1.1.7 Version", inDate : "2016-01-05", content : "1. 이슈사항 개선" },
 		{ id : 14, title : "1.1.6 Version", inDate : "2016-01-02", content : "1. 이알피아 도소매버전 오픈<br>2. 간편거래처등록 / 간편상품등록 기능 추가" },
 		{ id : 13, title : "1.1.5 Version", inDate : "2016-12-12", content : "1. 메인화면, 매입매출화면 UI수정<br>2. 매입매출 입금/지급전표 등록(미등록)구별로직추가<br>3. 검색로직 키보드엔터연동<br>4. 업데이트현황페이지 추가" },

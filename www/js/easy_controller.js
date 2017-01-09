@@ -438,6 +438,8 @@ console.log("간편 상품 거래처 컨트롤러");
 		{ name: '매출처', val: '602' }
 	]
 
+	$scope.gere_saup = false; // 유효성 검사안했을경우 false
+
 	/* 거래처 수정등록 객체 */
 	$scope.gereachei_Object = {
 		GerCode : '',
@@ -587,6 +589,7 @@ console.log("간편 상품 거래처 컨트롤러");
 			$scope.gereachei_Object.Tax_GDamdangTel = '';
 			$scope.gereachei_Object.Tax_EMail = '';
 			$scope.gereachei_Object.bigo = '';
+			$scope.gere_saup = false;
 		}
 	}
 
@@ -648,6 +651,39 @@ console.log("간편 상품 거래처 컨트롤러");
 		}
 	}	
 
+	/* 사업자 번호 유효성체크추가 - 이경민[2017-01-09] */
+	$scope.saup = function(gubun){
+		if(gubun == 2){
+			$scope.gere_saup = false;
+			$scope.gereachei_Object.G_Sano = '';
+		}else if($scope.gereachei_Object.G_Sano == ''){
+			if(ERPiaAPI.toast == 'Y') $cordovaToast.show('번호를 입력해주세요.', 'short', 'center');
+			else console.log('번호를 입력해주세요.');
+		}else{
+			var bizID = $scope.gereachei_Object.G_Sano;
+			var checkID = new Array(1, 3, 7, 1, 3, 7, 1, 3, 5, 1); 
+			var tmpBizID, i, chkSum=0, c2, remander; 
+			bizID = bizID.replace(/-/gi,''); 
+
+			for (i=0; i<=7; i++) chkSum += checkID[i] * bizID.charAt(i); 
+			c2 = "0" + (checkID[8] * bizID.charAt(8)); 
+			c2 = c2.substring(c2.length - 2, c2.length); 
+			chkSum += Math.floor(c2.charAt(0)) + Math.floor(c2.charAt(1)); 
+			remander = (10 - (chkSum % 10)) % 10 ; 
+
+			if (Math.floor(bizID.charAt(9)) == remander){
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('유효한 사업자 번호입니다.', 'short', 'center');
+				else console.log('유효한 사업자 번호입니다.');
+				$scope.gere_saup = true;
+			}
+			else{
+				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('유효하지 않은 사업자 번호입니다.', 'short', 'center');
+				else console.log('유효하지 않은 사업자 번호입니다.');
+				$scope.gere_saup = false;
+			}
+		}
+	}
+
 	/* 등록/수정 */
 	$scope.goodsGereachei_IU = function(gubun){
 		/* 상품 등록/수정 */
@@ -661,7 +697,6 @@ console.log("간편 상품 거래처 컨트롤러");
 					]
 				})
 			}else{
-
 				$ionicPopup.show({
 					title: '<b>' + $rootScope.GGMode + '확인</b>',
 					content: '상품을 ' + $rootScope.GGMode + '하시겠습니까?',
@@ -674,11 +709,11 @@ console.log("간편 상품 거래처 컨트롤러");
 							type: 'button-positive', 
 							onTap: function(e){
 								$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-								if($scope.goods_Object.ipAmt == null || $scope.goods_Object.ipAmt.length == undefined) $scope.goods_Object.ipAmt = 0;
-								if($scope.goods_Object.doAmt == null || $scope.goods_Object.doAmt.length == undefined) $scope.goods_Object.doAmt = 0;
-								if($scope.goods_Object.interAmt == null || $scope.goods_Object.interAmt.length == undefined) $scope.goods_Object.interAmt = 0;
-								if($scope.goods_Object.soAmt == null || $scope.goods_Object.soAmt.length == undefined) $scope.goods_Object.soAmt = 0;
-								if($scope.goods_Object.userAmt == null || $scope.goods_Object.userAmt.length == undefined) $scope.goods_Object.userAmt = 0;
+								if($scope.goods_Object.ipAmt == null) $scope.goods_Object.ipAmt = 0;
+								if($scope.goods_Object.doAmt == null) $scope.goods_Object.doAmt = 0;
+								if($scope.goods_Object.interAmt == null) $scope.goods_Object.interAmt = 0;
+								if($scope.goods_Object.soAmt == null) $scope.goods_Object.soAmt = 0;
+								if($scope.goods_Object.userAmt == null) $scope.goods_Object.userAmt = 0;
 
 								EasyService.goods_IU($rootScope.loginData.Admin_Code, $scope.loginData.UserId, $scope.goods_Object)
 								.then(function(response){
@@ -730,10 +765,18 @@ console.log("간편 상품 거래처 컨트롤러");
 						{ text: '확인', type: 'button-positive', onTap: function(e){} }
 					]
 				})
+			}else if($scope.gereachei_Object.G_Sano != '' && $scope.gere_saup == false){
+				$ionicPopup.show({
+					title: '<b>경고</b>',
+					content: '사업자번호 유효성체크를 해주세요.',
+					buttons: [
+						{ text: '확인', type: 'button-positive', onTap: function(e){} }
+					]
+				})
 			}else{
 				$ionicPopup.show({
 					title: '<b>' + $rootScope.GGMode + '확인</b>',
-					content: '상품을 ' + $rootScope.GGMode + '하시겠습니까?',
+					content: '거래처를 ' + $rootScope.GGMode + '하시겠습니까?',
 					buttons: [
 						{ 
 							text: '취소', onTap: function(e){} 

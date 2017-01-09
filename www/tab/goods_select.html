@@ -61,7 +61,7 @@ td.resulttd1-2{border-bottom: 1px solid #e0e0e0; width: 60%; padding: 4px 10px; 
 				</tr>
 				<tr>
 					<td style="border-bottom: 1px solid #e0e0e0; width: 66%; padding: 4px 10px; text-align: left; font-size: 0.8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">규격: {{ (x.G_Stand)?x.G_Stand:'-' }}</td>
-					<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left; font-size: 0.8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">가용재고 : {{ x.Jego | number:0 }}</td>
+					<td style="border-bottom: 1px solid #e0e0e0; width: 33%; padding: 4px 10px; text-align: left; font-size: 0.8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">전체재고(가용+불용) : {{ x.Jego | number:0 }}</td>
 				</tr>
 
 				<tr style="border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; width: 100%;" ng-show="toggle_{{x.G_Code}}" ng-click="ActsLog('simple', 'simple_Goodsdetail')" ng-animate="'box'">

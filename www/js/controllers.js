@@ -165,8 +165,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.1.7',
-   		IOS_version : '1.1.0'	//업데이트시 필수로 변경!!
+   		Android_version : '1.1.8',
+   		IOS_version : '1.1.1'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 - 김형석[2015-12] */

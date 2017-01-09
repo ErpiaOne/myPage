@@ -18,11 +18,20 @@
 					<!-- <span ng-click="gereacheiClear(1)" style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(1)" style='font-size: 27px; color:#000;'></i></span> -->
 				</label>
 
-				<label class="item item-input" style="padding: 0;">
-					<span class="input-label psm_sang_01" style="width: 37%; height: 50px; display: inline-block; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;사업자번호</i></span>
-					<span style="width: 63%; display: inline-block;"><input type="text" ng-model="gereachei_Object.G_Sano" style="width: 90%; font-size: 0.8em;" placeholder="사업자번호을 입력하세요."></span>
-					<!-- <span style="display: inline-block; margin-left: -40px;"><i class='ion-android-close' ng-click="gereacheiClear(2)" style='font-size: 27px; color:#000;'></i></span> -->
-				</label>
+				<div style="text-align: left; padding: 10px; font-size: 0.85em; border-top: 1px solid #dce0e1; border-bottom: 1px solid #dce0e1;"><i class="ion-record">&nbsp;&nbsp;사업자번호</i></div>
+				<div class="padding">
+					<table style="width: 100%">
+						<tr>
+							<td style="width: 76%;">
+								<input type="text" ng-model="gereachei_Object.G_Sano" style="width: 90%; font-size: 0.8em; padding-left: 10px;" ng-disabled="gere_saup" placeholder="사업자번호을 입력하세요.">
+							</td>
+							<td style="width: 24%; align-content: center; vertical-align: middle;">
+								<button class="button button-small button-psm04" ng-click="saup(1)" ng-if="gere_saup == false" style="width:100%">유효성체크</button>
+								<button class="button button-small button-psm04" ng-click="saup(2)" ng-if="gere_saup == true" style="width:100%">다시입력</button>
+							</td>
+						</tr>
+					</table>
+				</div>
 
 				<label class="item item-input" style="padding: 0;">
 					<span class="input-label psm_sang_01" style="width: 36%; height: 50px; background: #f3eff4; color: #000; padding-top: 17px"><i class="ion-record">&nbsp;&nbsp;입출구분</i></span>
