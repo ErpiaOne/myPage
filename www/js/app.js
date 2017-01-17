@@ -2,21 +2,21 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 	, 'starter.services'])
 
 /* 웹사용 */
- // .constant('ERPiaAPI',{
- // 	  url:'http://localhost:8100/include'
- // 	, url2:'http://localhost:8100'
- // 	// , post:'/postal'
- // 	, imgUrl:'http://localhost:8100/erpia_update/img'
- // 	, toast:'N'
- // })
+ .constant('ERPiaAPI',{
+ 	  url:'http://localhost:8100/include'
+ 	, url2:'http://localhost:8100'
+ 	// , post:'/postal'
+ 	, imgUrl:'http://localhost:8100/erpia_update/img'
+ 	, toast:'N'
+ })
 
 /* 실제 사용 */
-.constant('ERPiaAPI',{
-	url:'http://www.erpia.net/include',
-	url2: 'http://www.erpia.net',
-	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
-	toast:'Y'
-})
+// .constant('ERPiaAPI',{
+// 	url:'http://www.erpia.net/include',
+// 	url2: 'http://www.erpia.net',
+// 	imgUrl:'http://erpia2.godohosting.com/erpia_update/img',
+// 	toast:'Y'
+// })
 
 /* 처음 실행 Ctrl - 김형석[2015-11]*/
 .run(function($ionicPlatform, $ionicPush, $location, $timeout, $ionicUser, $rootScope, $ionicHistory, $state, $ionicPopup, uuidService, $cordovaNetwork, $ionicSideMenuDelegate, MconfigService, ERPiaAPI, $cordovaToast, $ionicSlideBoxDelegate) {
@@ -472,6 +472,17 @@ angular.module('starter', ['ionic','ionic.service.core','ionic.service.push', 's
 		views : {
 			'menuContent' : {
 				templateUrl : 'side/certification.html',
+				controller : 'AppCtrl'
+			}
+		}
+	})
+
+	/* 업데이트 소개 - 업데이트 관련 소개 모달 - 이경민 */
+	.state('app.check_Update', {
+		url : '/check_Update',
+		views : {
+			'menuContent' : {
+				templateUrl : 'side/check_Update.html',
 				controller : 'AppCtrl'
 			}
 		}

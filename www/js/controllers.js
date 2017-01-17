@@ -61,6 +61,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$rootScope.tabs.show($event);
 	};
 
+	$scope.test = function(){
+		console.log('우편번호 테스트할거에요.');
+	}
+
 	// $rootScope.closePopover = function() {
 	// 	$rootScope.tabs.hide();
 	// };
@@ -165,8 +169,8 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.1.8',
-   		IOS_version : '1.1.1'	//업데이트시 필수로 변경!!
+   		Android_version : '1.1.9',
+   		IOS_version : '1.1.2'	//업데이트시 필수로 변경!!
    	};
 
    	/* 로딩화면 - 김형석[2015-12] */
@@ -218,6 +222,13 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		scope : $scope
 	}).then(function(modal){
 		$scope.check_sano_Modal = modal;
+	});
+
+	/* 업데이트 설명창 - 이경민[2017-01] */
+	$ionicModal.fromTemplateUrl('side/check_Update.html',{
+		scope : $scope
+	}).then(function(modal){
+		$scope.check_Update_Modal = modal;
 	});
 
 
@@ -1054,6 +1065,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('계정정보가 존재하지 않습니다.', 'long', 'center');
 				else alert('comInfo error');
 			});
+		
+			/* 업데이트 인트로 */
+			VersionCKService.updateYN($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+			.then(function(data){
+				if(data.list[0].updateYN == 'N'){
+					$scope.tutorialCheck = { checked: false };
+					$scope.check_Update_Modal.show();
+				}
+			});
+
+
+			
 		}else if($rootScope.userType == 'Normal'){
 			loginService.comInfo('ERPia_Ger_Login', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
 			.then(function(comInfo){
@@ -1246,6 +1269,20 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.LoginPwdCK($rootScope.userType);
 		$scope.LoginUserIdCK($rootScope.userType);
 	};
+
+
+
+	/* 튜토리얼 닫기 - 이경민 */
+	$scope.tutorialM_Close = function(){
+		if($scope.tutorialCheck.checked == true){
+			/* 튜토리얼 더이상 보지 않기 업데이트 */
+			VersionCKService.updateY($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+			.then(function(data){
+				console.log('결과 확인 =>', data.list[0].rslt);
+			});
+		}
+		$scope.check_Update_Modal.hide();
+	}
 
   	$rootScope.loginHTML = "로그인";
 

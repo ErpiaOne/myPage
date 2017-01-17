@@ -221,7 +221,18 @@ angular.module('starter.services', [])
 			},function(response){
 				return $q.reject(response);
 			});
-
+		}, post_test : function(){		// 우편번호 테스트
+			var url = ERPiaAPI.url + '/JSon_Proc_Mypage_Scm_Manage.asp';
+			var data = 'Kind=Mobile_Acts&admin_code=' + admin_code+ '&id=' + escape(id) +  '&mac=' + mac + '&loginType=' + loginType + '&Module_M=' + M + '&Module_T=' + T;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response.data.list;
+				}else{
+					return $q.reject(response);
+				}
+			},function(response){
+				return $q.reject(response);
+			});
 		}
 	};
 })
@@ -1831,6 +1842,28 @@ angular.module('starter.services', [])
 			})
 		}, iosbutton: function(){
 			var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp?Kind=IOSbutton';
+			return $http.get(url).then(function(response){
+				if(typeof response == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})
+		}, updateYN: function(Admin_Code, UserId, UUID){
+			var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp?Kind=UpdateYN&Admin_Code=' + Admin_Code + '&id=' + UserId + '&MacAddress=' + UUID;
+			return $http.get(url).then(function(response){
+				if(typeof response == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})
+		}, updateY: function(Admin_Code, UserId, UUID){
+			var url = ERPiaAPI.url +'/JSon_Proc_MyPage_Scm_Manage.asp?Kind=UpdateY&Admin_Code=' + Admin_Code + '&id=' + UserId + '&MacAddress=' + UUID;
 			return $http.get(url).then(function(response){
 				if(typeof response == 'object'){
 					return response.data;
