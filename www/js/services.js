@@ -120,7 +120,7 @@ angular.module('starter.services', [])
 
 		}else if(kind == 'ERPiaLogin'){		//erpia로그인 
 			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
-			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + phoneNo + '&mac=' + UUID;
+			var data = 'kind=Login_ERPia&loginType=E&Admin_Code=' + Admin_Code + '&id=' + escape(G_id) + '&pwd=' + G_Pass + '&hp=' + '01056579731' + '&mac=' + UUID;
 			
 			return $http.get(url + '?' + data).then(function(response){
 				if(typeof response.data == 'object'){
@@ -247,6 +247,25 @@ angular.module('starter.services', [])
 	return{
 		ERPiaInfo: ERPiaInfo
 	}
+})
+
+/* Erpia / 스마트도소매 구별로직 추가 - 이경민 */
+.factory('EmGubunService', function($http, $q, ERPiaAPI){
+	return{
+		emgubunC: function(Admin_Code, id, loginType){
+			var url = ERPiaAPI.url + '/JSon_Proc_Mobile_Erpia.asp';
+			var data = 'Kind=EM_Gubun&mode=EM_Cheak&Admin_Code=' + Admin_Code + '&id=' + id + '&loginType=' + loginType;
+			return $http.get(url + '?' + data).then(function(response){
+				if(typeof response.data == 'object'){
+					return response.data;
+				}else{
+					return $q.reject(response.data);
+				}
+			}, function(response){
+				return $q.reject(response.data);
+			})
+		}
+	};
 })
 
 /*로그인 할 때  SCM계정정보  관련Service - 김형석[2015-12]*/
@@ -690,6 +709,8 @@ angular.module('starter.services', [])
 		var data = 'sms_id=erpia&sms_pwd=a12345&send_num=070-7012-3071&rec_num=' + '01039030746';
 		data += '&SendType=mobile_CS&idx=' + idx;
 		return $http.get(url + '?' + data);
+
+		//http://www.erpia.net/include/SCP.asp?sms_id=erpia&sms_pwd=a12345&send_num=070-7012-3071&rec_num=01056579731&remk=hello&SendType=mobile_CS&idx=101
 	}
 
 	return{
@@ -1110,6 +1131,7 @@ angular.module('starter.services', [])
 				} 
 				var url = ERPiaAPI.url +'/ERPiaApi_TestProject.asp';
 				var data = 'Admin_Code=' + admin_code + '&UserId=' + escape(userid) + '&Kind='+ kind +'&Mode='+ no;
+				console.log('전표 상세조회 -', url,'?',data);
 				return $http.get(url + '?' + data).then(function(response){
 					if(typeof response == 'object'){
 						return response.data;

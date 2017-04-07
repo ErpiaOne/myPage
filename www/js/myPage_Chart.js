@@ -377,10 +377,7 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 			"innerRadius": "60%",
 			"labelText": "[[title]]<br>[[percents]]%",
 			"labelsEnabled": true,
-			"legend": {
-			"enabled": false,
-			"truncateLabels": 10 // custom parameter
-			},
+			
 			"balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> ([[percents]]%)</span>",
 			"export": {
 				"enabled": true
@@ -1410,11 +1407,6 @@ function makeCharts(kind, gu, admin_code, ERPiaApi_url){
 		case "meachul_cs" :			//CS 컴플레인 현황
 			console.log('CS 컴플레인 현황');
 			chartData = AmCharts.loadJSON(ERPiaApi_url + "/JSon_Proc_graph.asp?kind=meachul_cs&value_kind=meachul_cs&admin_code=" + admin_code + "&swm_gu=" + gu)
-
-			// for (var i in chartData) {
-			//   chartData[i].litres = chartData[i].value;
-			//   chartData[i].absValue = Math.abs(chartData[i].value);
-			// }
 
 			var chart = AmCharts.makeChart("meachul_cs", {
 				"type": "pie",

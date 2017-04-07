@@ -19,7 +19,7 @@ var g_playlists = [{
 }];
 
 angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'tabSlideBox', 'pickadate', 'fcsa-number'])
-.controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $ionicPopover, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ActsService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, PrivService, $cordovaSocialSharing, $ionicSideMenuDelegate){
+.controller('AppCtrl', function($rootScope, $scope, $ionicModal, $timeout, $http, $state, $ionicHistory, $cordovaToast, $ionicLoading, $cordovaDevice, $ionicPopover, $location, loginService, CertifyService, pushInfoService, uuidService, IndexService, tradeDetailService, ActsService, ERPiaAPI, $localstorage, $cordovaInAppBrowser, $ionicPlatform, alarmService, VersionCKService, $ionicPopup, app, $filter, SCMService, PrivService, $cordovaSocialSharing, $ionicSideMenuDelegate, EmGubunService){
 	
 	/* IOS전용 */
 	VersionCKService.iosbutton().then(function(data){
@@ -169,7 +169,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.1.9',
+   		Android_version : '1.2.0',
    		IOS_version : '1.1.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -510,15 +510,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 			// $rootScope.loginData.UserId = 'kaming311';
 			// $rootScope.loginData.Pwd = 'lkmbanana1!';
 
-			// $rootScope.loginData.Admin_Code = 'kpage'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId = 'kpage1089';
-			// $rootScope.loginData.Pwd = 'erpia!1010';
+			$rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			$rootScope.loginData.loginType = 'E'; //PC모드
+			$rootScope.loginData.UserId = 'test1234';
+			$rootScope.loginData.Pwd = 'test1234!';
 
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
-			// $rootScope.loginData.loginType = 'E'; //PC모드
-			// $rootScope.loginData.UserId  = 'test1234';
-			// $rootScope.loginData.Pwd = 'test1234!';
+			// $rootScope.loginData.Admin_Code = 'phj9775556'; //PC모드
+			// $rootScope.loginData.loginType = 'N'; //PC모드
+			// $rootScope.loginData.UserId = 'phj9775556';
+			// $rootScope.loginData.Pwd = 'erpia!1010';
 //test중 일때만.......................
 		}else if(userType =='SCM'){
 			$rootScope.loginMenu = "selectUser";
@@ -577,10 +577,10 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				$scope.loginckbox.PwdCK = true;
 			}
 //test중 일때만.......................
-			// $rootScope.loginData.Admin_Code = 'onz'; //PC모드
+			// $rootScope.loginData.Admin_Code = 'CCTVZONE7'; //PC모드
 			// $rootScope.loginData.loginType = 'N'; //PC모드
-			// $rootScope.loginData.UserId = 'test1234';
-			// $rootScope.loginData.Pwd = 'test1234!';
+			// $rootScope.loginData.UserId = 'CCTVZONE1';
+			// $rootScope.loginData.Pwd = 'erpia!1010';
 //test중 일때만.......................
 		}else if(userType == 'Guest'){
 			$rootScope.loginMenu = "selectUser"; $rootScope.userType = 'Guest'; $scope.footer_menu = 'G';
@@ -792,288 +792,298 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 				else alert('login error');
 			});
 		}else if ($rootScope.userType == 'ERPia'){
-			$scope.dashBoard = {
-				M_today : '',
-				M_before : ''
-			}
-			/*금일 / 전일 매출액 조회 - 이경민[2016-05]*/
-			IndexService.meachulamt($scope.loginData.Admin_Code)
+			EmGubunService.emgubunC($scope.loginData.Admin_Code, $scope.loginData.UserId, 'E')
 			.then(function(response){
-				$scope.dashBoard.M_today = response.list[0].today;
-				$scope.dashBoard.M_before = response.list[0].before;
-			})
-			/* ERPia 로그인 - 김형석[2016-01] */
-			loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
-			.then(function(comInfo){
-				if(comInfo.data.list[0].Result=='1'){
-					$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
-					$rootScope.loginHTML = "로그아웃";
-					$scope.ion_login = "ion-power";
-					if(ERPiaAPI.toast == 'Y'){
-						window.plugins.OneSignal.sendTag("id", $scope.loginData.UserId);
-						window.plugins.OneSignal.sendTag("usertype", "E");
-						window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
-						window.plugins.OneSignal.sendTag("gercode", "");
-						window.plugins.OneSignal.sendTag("key7", "7");
+				var EM_Gubun = response.list[0].rslt;
+				if(EM_Gubun == 'Y'){
+					$scope.dashBoard = {
+						M_today : '',
+						M_before : ''
 					}
-					$rootScope.userData.Com_Code = comInfo.data.list[0].Com_Code;
-					$rootScope.userData.Com_Name = comInfo.data.list[0].Com_Name + '<br>(' + comInfo.data.list[0].Com_Code + ')';
-					$rootScope.userData.package = comInfo.data.list[0].Pack_Name;
-					$rootScope.userData.cnt_user = comInfo.data.list[0].User_Count + ' 명';
-					$rootScope.userData.cnt_site = comInfo.data.list[0].Mall_ID_Count + ' 개';
-					$rootScope.mobile_Certify_YN = comInfo.data.list[0].mobile_CertifyYN;
-					$rootScope.userData.B2BPack_YN = comInfo.data.list[0].B2BPack_YN;
-					console.log("나는 도소매 사용자 입니까?",$rootScope.userData.B2BPack_YN );
-
-					if($rootScope.userData.B2BPack_YN != 'Y'){
-						var titles =  [
-							{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home', pre: '', befo: '홈'}
-							, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
-							, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
-							, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}
-							, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube', pre: '상품별', befo: 'TOP5'}
-							// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
-							, {Idx:5, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard', pre: '실적', befo: '추이'}
-							, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit', pre: '매입', befo: '현황'}
-							, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share', pre: '금일', befo: '출고현황'}
-							, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus', pre: '택배사', befo: '건수'}
-							, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph', pre: '온오프', befo: '비교'}
-							, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap', pre: '매출', befo: '반품'}
-							, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left', pre: '반품', befo: '건수'}
-							, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker', pre: 'CS', befo: '현황'}
-							, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download', pre: '매입', befo: '건수'}
-							, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop', pre: '재고', befo: '회전율'}
-							, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open', pre: '출고', befo: '현황'}
-							];
-					}else{
-						var titles =  [
-							{Idx:0, title:"meachul_7", name: '홈', icon: 'ion-home', pre: '', befo: '홈'}
-							, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
-							, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
-							, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}
-							, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube', pre: '상품별', befo: 'TOP5'}
-							// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
-							, {Idx:5, title:"meachul_7", name:'홈', icon: 'ion-home', pre: '', befo: '홈'}
-							, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit', pre: '매입', befo: '현황'}
-							, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share', pre: '금일', befo: '출고현황'}
-							, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus', pre: '택배사', befo: '건수'}
-							, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph', pre: '온오프', befo: '비교'}
-							, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap', pre: '매출', befo: '반품'}
-							, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left', pre: '반품', befo: '건수'}
-							, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker', pre: 'CS', befo: '현황'}
-							, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download', pre: '매입', befo: '건수'}
-							, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop', pre: '재고', befo: '회전율'}
-							, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open', pre: '출고', befo: '현황'}
-							];	
+					$scope.dashBoard = {
+						M_today : '',
+						M_before : ''
 					}
-
-					$rootScope.titles = titles;
-
-					$scope.loginData.isLogin = 'Y';
-					$rootScope.loginMenu = 'User';
-					loginService.comInfo('ComInfo_Erpia', $scope.loginData.Admin_Code)
-					.then(function(comTax){
-						var d= new Date();
-						var month = d.getMonth() + 1;
-						var day = d.getDate();
-						var data = comTax.data;
-
-						Pay_Method = data.list[0].Pay_Method;
-						Pay_State = data.list[0].Pay_State;
-						Max_Pay_YM = data.list[0].Max_Pay_YM;
-						Pay_Ex_Days = parseInt(data.list[0].Pay_Ex_Days); // 당원결재여부?
-						Pay_Day = parseInt(data.list[0].Pay_Day);
-						Pay_Ex_Date = d.getFullYear() + '-' + (month<10 ? '0':'') + month + '-' + (day<10 ? '0' : '') + day;
-						Last_Pay_YM = data.list[0].Last_Pay_YM;
-						Pay_Date = data.list[0].Max_Pay_YM;
-						$rootScope.userData.expire_date = Last_Pay_YM; // 사용만료일
-						$rootScope.userData.expire_days = Pay_Date; // 월관리비 결제일
-						$scope.management_bill = "330,000원	<br><small>(VAT 포함)</small>";
-						$scope.sms = "15000 개<br><small>(건당 19원)</small>";
-						$scope.tax = "150 개<br><small>(건당 165원)</small>";
-						$scope.e_money = "30,000원<br><small>(자동이체 사용중)</small>";
-						$scope.every = "10,000 P";
-
-						$rootScope.loginState = "E";
-
-						tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'Y', $rootScope.loginState)
-						.then(function(response){
-								$rootScope.userData.cntNotRead = response.list[0].cntNotRead;
-
-						})
-
-						if($scope.loginData.Pwd != 'erpia!1010'){ // 관리자 로그인일때는 로그를 저장하지 않는다.
-							if($scope.loginData.chkAutoLogin == true){
-								if(ERPiaAPI.toast == 'Y'){
-									if($rootScope.autologin_index == 0){
-										uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
-										$scope.loginData.autologin_YN = 'Y';
-										$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
-										$localstorage.set("autologinType", $rootScope.userType);
-										$localstorage.set("autoUser_Id", $scope.loginData.UserId);
-										$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
-										$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
-										console.log("autosave ", $rootScope.userType, $scope.loginData.UserId);
-										$rootScope.autologin_index = 1;
-									}else{
-										console.log('로그인 로그 저장 NO');
-									}
-								}else{
-									uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '', $rootScope.deviceInfo);
-								}
-							}else{
-								if(ERPiaAPI.toast == 'Y'){
-								uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
-									$scope.loginData.autologin_YN = 'N';
-									$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
-									$localstorage.set("autologinType", $rootScope.userType);
-									$localstorage.set("autoUser_Id", $scope.loginData.UserId);
-									$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
-									$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
-								}else{
-									uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '' , $rootScope.deviceInfo);
-								}
+					/*금일 / 전일 매출액 조회 - 이경민[2016-05]*/
+					IndexService.meachulamt($scope.loginData.Admin_Code)
+					.then(function(response){
+						$scope.dashBoard.M_today = response.list[0].today;
+						$scope.dashBoard.M_before = response.list[0].before;
+					})
+					/* ERPia 로그인 - 김형석[2016-01] */
+					loginService.comInfo('ERPiaLogin', $scope.loginData.Admin_Code, $scope.loginData.UserId, escape($scope.loginData.Pwd), $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo.uuid)
+					.then(function(comInfo){
+						if(comInfo.data.list[0].Result=='1'){
+							$ionicLoading.show({template:'<ion-spinner icon="spiral"></ion-spinner>'});
+							$rootScope.loginHTML = "로그아웃";
+							$scope.ion_login = "ion-power";
+							if(ERPiaAPI.toast == 'Y'){
+								window.plugins.OneSignal.sendTag("id", $scope.loginData.UserId);
+								window.plugins.OneSignal.sendTag("usertype", "E");
+								window.plugins.OneSignal.sendTag("admincode", $scope.loginData.Admin_Code);
+								window.plugins.OneSignal.sendTag("gercode", "");
+								window.plugins.OneSignal.sendTag("key7", "7");
 							}
-						}else{
-							console.log('관리자 로그인');
-						}
-						
+							$rootScope.userData.Com_Code = comInfo.data.list[0].Com_Code;
+							$rootScope.userData.Com_Name = comInfo.data.list[0].Com_Name + '<br>(' + comInfo.data.list[0].Com_Code + ')';
+							$rootScope.userData.package = comInfo.data.list[0].Pack_Name;
+							$rootScope.userData.cnt_user = comInfo.data.list[0].User_Count + ' 명';
+							$rootScope.userData.cnt_site = comInfo.data.list[0].Mall_ID_Count + ' 개';
+							$rootScope.mobile_Certify_YN = comInfo.data.list[0].mobile_CertifyYN;
+							$rootScope.userData.B2BPack_YN = comInfo.data.list[0].B2BPack_YN;
+							console.log("나는 도소매 사용자 입니까?",$rootScope.userData.B2BPack_YN );
 
-						/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
-						PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
-						.then(function(data){
-								/* 매입매출권한 */
-								$rootScope.priv_meaip.id = data[0].Menu_NM;
-								$rootScope.priv_meaip.master_useYN = data[0].Mpriv;
-								$rootScope.priv_meaip.useYN = data[0].priv;
-								$rootScope.priv_meaip.de = data[0].priv_Delete;
-								$rootScope.priv_meaip.save = data[0].priv_Save;
-								$rootScope.priv_meaip.print = data[0].priv_Print;
-								$rootScope.priv_meachul.id = data[1].Menu_NM;
-								$rootScope.priv_meachul.master_useYN = data[1].Mpriv;
-								$rootScope.priv_meachul.useYN = data[1].priv;
-								$rootScope.priv_meachul.de = data[1].priv_Delete;
-								$rootScope.priv_meachul.save = data[1].priv_Save;
-								$rootScope.priv_meachul.print = data[1].priv_Print;
-								/* 패키지가 도소매일경우 거래처별 창고 관리 없음. 예외처리 추가 - 이경민 */
-								if(data.length == 8){
-									/* 재고권한 */
-									$rootScope.priv_jego.jego_YN = data[2].Mpriv;
-									if(data[2].priv == '0' && data[3].priv == '0' && data[4].priv == '0'){
-										$rootScope.priv_jego.jego = 'N';
+							if($rootScope.userData.B2BPack_YN != 'Y'){
+								var titles =  [
+									{Idx:0, title:"Meachul_halfyear", name: '홈', icon: 'ion-home', pre: '', befo: '홈'}
+									, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
+									, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
+									, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}
+									, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube', pre: '상품별', befo: 'TOP5'}
+									// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
+									, {Idx:5, title:"meachul_7", name:'매출 실적 추이', icon: 'ion-clipboard', pre: '실적', befo: '추이'}
+									, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit', pre: '매입', befo: '현황'}
+									, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share', pre: '금일', befo: '출고현황'}
+									, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus', pre: '택배사', befo: '건수'}
+									, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph', pre: '온오프', befo: '비교'}
+									, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap', pre: '매출', befo: '반품'}
+									, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left', pre: '반품', befo: '건수'}
+									, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker', pre: 'CS', befo: '현황'}
+									, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download', pre: '매입', befo: '건수'}
+									, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop', pre: '재고', befo: '회전율'}
+									, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open', pre: '출고', befo: '현황'}
+									];
+							}else{
+								var titles =  [
+									{Idx:0, title:"meachul_7", name: '홈', icon: 'ion-home', pre: '', befo: '홈'}
+									, {Idx:1, title:"meaip_jem", name:'거래처별 매입점유율 TOP10', icon: 'ion-social-buffer', pre: '매입', befo: '점유율'}
+									, {Idx:2, title:"meachul_jem", name:'사이트별 매출 점유율', icon: 'ion-monitor', pre: '매출', befo: '점유율'}
+									, {Idx:3, title:"brand_top5", name:'브랜드별 매출 TOP5', icon: 'ion-pricetags', pre: '브랜드', befo: 'TOP5'}
+									, {Idx:4, title:"meachul_top5", name:'상품별 매출 TOP5', icon: 'ion-cube', pre: '상품별', befo: 'TOP5'}
+									// , {Idx:5, title:"Meachul_ik", name:'매출이익증감율', icon: 'ion-stats-bars'} // 매출이익증감율 삭제할것.....
+									, {Idx:5, title:"meachul_7", name:'홈', icon: 'ion-home', pre: '', befo: '홈'}
+									, {Idx:6, title:"meaip_7", name:'매입 현황', icon: 'ion-android-exit', pre: '매입', befo: '현황'}
+									, {Idx:7, title:"beasonga", name:'금일 출고 현황', icon: 'ion-share', pre: '금일', befo: '출고현황'}
+									, {Idx:8, title:"beasong_gu", name:'택배사별 구분 건수 통계', icon: 'ion-android-bus', pre: '택배사', befo: '건수'}
+									, {Idx:9, title:"meachul_onoff", name:'온오프라인 비교 매출', icon: 'ion-pie-graph', pre: '온오프', befo: '비교'}
+									, {Idx:10, title:"banpum", name:'매출반품현황', icon: 'ion-arrow-swap', pre: '매출', befo: '반품'}
+									, {Idx:11, title:"banpum_top5", name:'상품별 매출 반품 건수/반품액 TOP5', icon: 'ion-arrow-return-left', pre: '반품', befo: '건수'}
+									, {Idx:12, title:"meachul_cs", name:'CS 컴플레인 현황', icon: 'ion-person-stalker', pre: 'CS', befo: '현황'}
+									, {Idx:13, title:"meaip_commgoods", name:'상품별 매입건수/매입액 TOP5', icon: 'ion-ios-download', pre: '매입', befo: '건수'}
+									, {Idx:14, title:"JeGo_TurnOver", name:'재고회전율TOP5', icon: 'ion-loop', pre: '재고', befo: '회전율'}
+									, {Idx:15, title:"beasongb", name:'출고현황', icon: 'ion-android-open', pre: '출고', befo: '현황'}
+									];	
+							}
+
+							$rootScope.titles = titles;
+
+							$scope.loginData.isLogin = 'Y';
+							$rootScope.loginMenu = 'User';
+							loginService.comInfo('ComInfo_Erpia', $scope.loginData.Admin_Code)
+							.then(function(comTax){
+								var d= new Date();
+								var month = d.getMonth() + 1;
+								var day = d.getDate();
+								var data = comTax.data;
+
+								Pay_Method = data.list[0].Pay_Method;
+								Pay_State = data.list[0].Pay_State;
+								Max_Pay_YM = data.list[0].Max_Pay_YM;
+								Pay_Ex_Days = parseInt(data.list[0].Pay_Ex_Days); // 당원결재여부?
+								Pay_Day = parseInt(data.list[0].Pay_Day);
+								Pay_Ex_Date = d.getFullYear() + '-' + (month<10 ? '0':'') + month + '-' + (day<10 ? '0' : '') + day;
+								Last_Pay_YM = data.list[0].Last_Pay_YM;
+								Pay_Date = data.list[0].Max_Pay_YM;
+								$rootScope.userData.expire_date = Last_Pay_YM; // 사용만료일
+								$rootScope.userData.expire_days = Pay_Date; // 월관리비 결제일
+								$scope.management_bill = "330,000원	<br><small>(VAT 포함)</small>";
+								$scope.sms = "15000 개<br><small>(건당 19원)</small>";
+								$scope.tax = "150 개<br><small>(건당 165원)</small>";
+								$scope.e_money = "30,000원<br><small>(자동이체 사용중)</small>";
+								$scope.every = "10,000 P";
+
+								$rootScope.loginState = "E";
+
+								tradeDetailService.getCntNotRead($scope.loginData.Admin_Code, 'Y', $rootScope.loginState)
+								.then(function(response){
+										$rootScope.userData.cntNotRead = response.list[0].cntNotRead;
+
+								})
+
+								if($scope.loginData.Pwd != 'erpia!1010'){ // 관리자 로그인일때는 로그를 저장하지 않는다.
+									if($scope.loginData.chkAutoLogin == true){
+										if(ERPiaAPI.toast == 'Y'){
+											if($rootScope.autologin_index == 0){
+												uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
+												$scope.loginData.autologin_YN = 'Y';
+												$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+												$localstorage.set("autologinType", $rootScope.userType);
+												$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+												$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+												$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+												console.log("autosave ", $rootScope.userType, $scope.loginData.UserId);
+												$rootScope.autologin_index = 1;
+											}else{
+												console.log('로그인 로그 저장 NO');
+											}
+										}else{
+											uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '', $rootScope.deviceInfo);
+										}
 									}else{
-										$rootScope.priv_jego.jego = 'Y';
-									}
-
-									/* 상품정보 권한 */
-									$rootScope.privproduct_Save = data[7].priv_Save;
-									$rootScope.privproduct_De = data[7].Delete;
-									if(data[6].Mpriv == 'N' || data[6].Mpriv == 'Y' && data[6].priv == 0 || data[6].Mpriv == 'Y' && data[7].priv == 0){
-										$rootScope.priv_productYM = 'N';
-									}else{
-										$rootScope.priv_productYM = 'Y';
-									}
-
-									/* 거래처정보 권한 */
-									$rootScope.privGereachei_Save = data[5].priv_Save;
-
-									if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0){
-										$rootScope.privGereachei_Use = 'N';
-									}else{
-										$rootScope.privGereachei_Use = 'Y';
+										if(ERPiaAPI.toast == 'Y'){
+										uuidService.save_Log($rootScope.deviceInfo.uuid, $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, $rootScope.deviceInfo2.phoneNo, $rootScope.deviceInfo);
+											$scope.loginData.autologin_YN = 'N';
+											$localstorage.set("autoAdmin_Code", $rootScope.loginData.Admin_Code);
+											$localstorage.set("autologinType", $rootScope.userType);
+											$localstorage.set("autoUser_Id", $scope.loginData.UserId);
+											$localstorage.set("autoPwd", $rootScope.loginData.Pwd);
+											$localstorage.set("autoLoginYN", $rootScope.loginData.autologin_YN);
+										}else{
+											uuidService.save_Log('webTest', $scope.loginData.Admin_Code, $rootScope.userType, $scope.loginData.UserId, '' , $rootScope.deviceInfo);
+										}
 									}
 								}else{
-									/* 재고권한 */
-									$rootScope.priv_jego.jego_YN = data[2].Mpriv;
-									if(data[2].priv == '0' && data[3].priv == '0'){
-										$rootScope.priv_jego.jego = 'N';
-									}else{
-										$rootScope.priv_jego.jego = 'Y';
-									}
-
-									/* 상품정보 권한 */
-									$rootScope.privproduct_Save = data[6].priv_Save;
-									$rootScope.privproduct_De = data[6].Delete;
-									if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0 || data[5].Mpriv == 'Y' && data[6].priv == 0){
-										$rootScope.priv_productYM = 'N';
-									}else{
-										$rootScope.priv_productYM = 'Y';
-									}
-
-									/* 거래처정보 권한 */
-									$rootScope.privGereachei_Save = data[4].priv_Save;
-
-									if(data[4].Mpriv == 'N' || data[4].Mpriv == 'Y' && data[4].priv == 0){
-										$rootScope.privGereachei_Use = 'N';
-									}else{
-										$rootScope.privGereachei_Use = 'Y';
-									}
+									console.log('관리자 로그인');
 								}
 								
-						});
 
-						/* 원가 공개 설정 여부 [이경민 - 2016-09-01] */ // Y가 원가 비공개 N이 원가 공개
-						PrivService.priv_wonga_Check($scope.loginData.Admin_Code, $scope.loginData.UserId)
-						.then(function(data){
-								$rootScope.priv_wongaYN = data[0].WonGa;
-						});
+								/* 로그인시 계정아이디 권한 추가 - 이경민[2016-07] */
+								PrivService.pricheck($scope.loginData.Admin_Code, $scope.loginData.UserId)
+								.then(function(data){
+										/* 매입매출권한 */
+										$rootScope.priv_meaip.id = data[0].Menu_NM;
+										$rootScope.priv_meaip.master_useYN = data[0].Mpriv;
+										$rootScope.priv_meaip.useYN = data[0].priv;
+										$rootScope.priv_meaip.de = data[0].priv_Delete;
+										$rootScope.priv_meaip.save = data[0].priv_Save;
+										$rootScope.priv_meaip.print = data[0].priv_Print;
+										$rootScope.priv_meachul.id = data[1].Menu_NM;
+										$rootScope.priv_meachul.master_useYN = data[1].Mpriv;
+										$rootScope.priv_meachul.useYN = data[1].priv;
+										$rootScope.priv_meachul.de = data[1].priv_Delete;
+										$rootScope.priv_meachul.save = data[1].priv_Save;
+										$rootScope.priv_meachul.print = data[1].priv_Print;
+										/* 패키지가 도소매일경우 거래처별 창고 관리 없음. 예외처리 추가 - 이경민 */
+										if(data.length == 8){
+											/* 재고권한 */
+											$rootScope.priv_jego.jego_YN = data[2].Mpriv;
+											if(data[2].priv == '0' && data[3].priv == '0' && data[4].priv == '0'){
+												$rootScope.priv_jego.jego = 'N';
+											}else{
+												$rootScope.priv_jego.jego = 'Y';
+											}
 
-						$timeout(function() {
-							$ionicLoading.hide();
-							$scope.closeLogin();
-							$scope.pushYNcheck();
+											/* 상품정보 권한 */
+											$rootScope.privproduct_Save = data[7].priv_Save;
+											$rootScope.privproduct_De = data[7].Delete;
+											if(data[6].Mpriv == 'N' || data[6].Mpriv == 'Y' && data[6].priv == 0 || data[6].Mpriv == 'Y' && data[7].priv == 0){
+												$rootScope.priv_productYM = 'N';
+											}else{
+												$rootScope.priv_productYM = 'Y';
+											}
 
-						/* 여기가 푸쉬받은 주소 이동할지 말지 결정 - 김형석[2016-01] */
-						if($rootScope.PushData.state == "app.erpia_board-Main"){
-							$rootScope.boardIndex = $rootScope.PushData.state;
-								if($rootScope.PushData.BoardParam == "0"){
-									$rootScope.boardIndex = 0;
-								}else if($rootScope.PushData.BoardParam == "1"){
-									$rootScope.boardIndex = 1;
-								}else if($rootScope.PushData.BoardParam == "2"){
-									$rootScope.boardIndex = 2;
-								}else if($rootScope.PushData.BoardParam == "3"){
-									$rootScope.boardIndex = 3;
-								}
-								location.href= '#/app/board/Main';
+											/* 거래처정보 권한 */
+											$rootScope.privGereachei_Save = data[5].priv_Save;
 
-							}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
-								$scope.showCheckSano();
-							}else if($rootScope.PushData.state != "" || !isUndefined($rootScope.PushData.state) || $rootScope.PushData.state != "undefined"){ //기타 이벤트
-								if (jsonData.additionalData || jsonData.additionalData != undefined) {
-									if (jsonData.additionalData.launchURL){
-										$cordovaInAppBrowser.open(jsonData.additionalData.launchURL, '_blank', browseroptions)
-										.then(function(event) {
-										// success
-										}).catch(function(event) {
-										// error
-										});
+											if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0){
+												$rootScope.privGereachei_Use = 'N';
+											}else{
+												$rootScope.privGereachei_Use = 'Y';
+											}
+										}else{
+											/* 재고권한 */
+											$rootScope.priv_jego.jego_YN = data[2].Mpriv;
+											if(data[2].priv == '0' && data[3].priv == '0'){
+												$rootScope.priv_jego.jego = 'N';
+											}else{
+												$rootScope.priv_jego.jego = 'Y';
+											}
+
+											/* 상품정보 권한 */
+											$rootScope.privproduct_Save = data[6].priv_Save;
+											$rootScope.privproduct_De = data[6].Delete;
+											if(data[5].Mpriv == 'N' || data[5].Mpriv == 'Y' && data[5].priv == 0 || data[5].Mpriv == 'Y' && data[6].priv == 0){
+												$rootScope.priv_productYM = 'N';
+											}else{
+												$rootScope.priv_productYM = 'Y';
+											}
+
+											/* 거래처정보 권한 */
+											$rootScope.privGereachei_Save = data[4].priv_Save;
+
+											if(data[4].Mpriv == 'N' || data[4].Mpriv == 'Y' && data[4].priv == 0){
+												$rootScope.privGereachei_Use = 'N';
+											}else{
+												$rootScope.privGereachei_Use = 'Y';
+											}
+										}
+										
+								});
+
+								/* 원가 공개 설정 여부 [이경민 - 2016-09-01] */ // Y가 원가 비공개 N이 원가 공개
+								PrivService.priv_wonga_Check($scope.loginData.Admin_Code, $scope.loginData.UserId)
+								.then(function(data){
+										$rootScope.priv_wongaYN = data[0].WonGa;
+								});
+
+								$timeout(function() {
+									$ionicLoading.hide();
+									$scope.closeLogin();
+									$scope.pushYNcheck();
+
+								/* 여기가 푸쉬받은 주소 이동할지 말지 결정 - 김형석[2016-01] */
+								if($rootScope.PushData.state == "app.erpia_board-Main"){
+									$rootScope.boardIndex = $rootScope.PushData.state;
+										if($rootScope.PushData.BoardParam == "0"){
+											$rootScope.boardIndex = 0;
+										}else if($rootScope.PushData.BoardParam == "1"){
+											$rootScope.boardIndex = 1;
+										}else if($rootScope.PushData.BoardParam == "2"){
+											$rootScope.boardIndex = 2;
+										}else if($rootScope.PushData.BoardParam == "3"){
+											$rootScope.boardIndex = 3;
+										}
+										location.href= '#/app/board/Main';
+
+									}else if($rootScope.PushData.state == "app.tradeList"){//거래명세서 도착
+										$scope.showCheckSano();
+									}else if($rootScope.PushData.state != "" || !isUndefined($rootScope.PushData.state) || $rootScope.PushData.state != "undefined"){ //기타 이벤트
+										if (jsonData.additionalData || jsonData.additionalData != undefined) {
+											if (jsonData.additionalData.launchURL){
+												$cordovaInAppBrowser.open(jsonData.additionalData.launchURL, '_blank', browseroptions)
+												.then(function(event) {
+												// success
+												}).catch(function(event) {
+												// error
+												});
+											}
+										}
 									}
-								}
-							}
-						}, 1000);
-					},
-					function(){
-						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('계정정보가 존재하지 않습니다', 'long', 'center');
-						else alert('comTax error');
-					})
-				}else{
-					if(ERPiaAPI.toast == 'Y') $cordovaToast.show(comInfo.data.list[0].Comment, 'long', 'center');
-					else alert(comInfo.data.list[0].Comment);
+								}, 1000);
+							},
+							function(){
+								if(ERPiaAPI.toast == 'Y') $cordovaToast.show('계정정보가 존재하지 않습니다', 'long', 'center');
+								else alert('comTax error');
+							})
+						}else{
+							if(ERPiaAPI.toast == 'Y') $cordovaToast.show(comInfo.data.list[0].Comment, 'long', 'center');
+							else alert(comInfo.data.list[0].Comment);
+						}
+					},function(){
+						if(ERPiaAPI.toast == 'Y') $cordovaToast.show('계정정보가 존재하지 않습니다.', 'long', 'center');
+						else alert('comInfo error');
+					});
 				}
-			},function(){
-				if(ERPiaAPI.toast == 'Y') $cordovaToast.show('계정정보가 존재하지 않습니다.', 'long', 'center');
-				else alert('comInfo error');
 			});
 		
 			/* 업데이트 인트로 */
-			VersionCKService.updateYN($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
-			.then(function(data){
-				if(data.list[0].updateYN == 'N'){
-					$scope.tutorialCheck = { checked: false };
-					$scope.check_Update_Modal.show();
-				}
-			});
+			// VersionCKService.updateYN($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.deviceInfo.uuid)
+			// .then(function(data){
+			// 	if(data.list[0].updateYN == 'N'){
+			// 		$scope.tutorialCheck = { checked: false };
+			// 		$scope.check_Update_Modal.show();
+			// 	}
+			// });
 
 
 			
