@@ -1,0 +1,28 @@
+<style type="text/css">
+	.psm_pop_dom {position: fixed; bottom:0; width: 100%; height: 100%;}
+	.psm_pop_dom .psm_pop_table, 
+	.psm_pop_dom .psm_pop_img {padding:0; border:0; margin:0; width: 100%; vertical-align: top;}
+	.psm_pop_x {position: absolute; top:0; right:0;}
+	.psm_pop_x img {padding:0; border:0; margin:0; width: 30%;}
+
+	.modal_view { width: 100%; height: 100%; top: 79%; left: 0%; right: 0%; bottom: 0%; }
+	.modal_content { padding:0; border:0; margin:0; height: 100% }
+</style>
+
+<!-- 튜토리얼 모달 -->
+<ion-modal-view cache-view="false" class="modal_view">
+	<ion-content class="modal_content" scroll="false">
+		 <div class="psm_pop_dom">	
+			<div class="psm_pop_x" ng-click="tutoClose()"><img src="./img/pop/pop_x.png" align="right"></div>
+			<table border="0" cellpadding="0" cellspacing="0"  style="width: 100%;" class="psm_pop_table">
+				<tr>
+					<td style="width: 100%;" colspan="2"><img src="./img/pop/pop_drseller.png" class="psm_pop_img"></td>
+				</tr>
+				<tr>
+					<td style="width: 50%;" ng-click="download_dr()"><img src="./img/pop/pop_bt_01.png" class="psm_pop_img"></td>
+					<td style="width: 50%;" ng-click="detail_dr()"><img src="./img/pop/pop_bt_02.png" class="psm_pop_img"></td>
+				</tr>
+			</table>
+		 </div>
+	</ion-content>
+</ion-modal-view>

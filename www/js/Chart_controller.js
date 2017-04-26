@@ -2,6 +2,7 @@
 angular.module('starter.controllers').controller("IndexCtrl", function($rootScope, $scope, $stateParams, $q, $location, $window, $timeout, $ionicModal, ERPiaAPI, statisticService, IndexService, $cordovaToast, app, $ionicLoading, $ionicSlideBoxDelegate, $ionicSideMenuDelegate) {
 	/* 업데이트내역 */
 	$scope.upList = [
+		{ id : 16, title : "1.2.1 Version", inDate : "2016-04-13", content : "1. 매출전표 - 물류정보 추가" },
 		{ id : 16, title : "1.1.9 Version", inDate : "2016-01-17", content : "1. 상품, 거래처 튜토리얼 추가" },
 		{ id : 15, title : "1.1.8 Version", inDate : "2016-01-10", content : "1. 거래처 주소 잘림 현상수정<br>2. 사업자번호 유효성체크기능 추가<br>3. 상품단가 에러사항 수정" },
 		{ id : 15, title : "1.1.7 Version", inDate : "2016-01-05", content : "1. 이슈사항 개선" },

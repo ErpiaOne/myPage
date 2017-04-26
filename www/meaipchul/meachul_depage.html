@@ -66,22 +66,24 @@
 
 	<div style="padding: 10px 15px;" style="width: 100%;">
 		<table class="table1" style="width: 100%;">
-		<tr>
-			<td class="width-60" style="text-align: center;">상품명</td>
-			<td class="width-20">수량</td>
-			<td class="width-20-r2">단가</td>
-		</tr>
-		<tr>
-			<td colspan="3"><hr></td>
-		</tr>
-		<tr ng-repeat="y in chit_dedata">
-			<td class="width-60" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Name}}</td>
-			<td class="width-20" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Qty}}</td>
-			<td class="width-20-r" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Price | number:0}}</td>
-		</tr>
-		<tr>
-			<td colspan="3" class="td3" style="color: #dd8369; padding:15px 5px 0 0;"><b>총 {{qtysum}}개 / {{pricesum | number:0}}원</b></td>
-		</tr>
+			<tr>
+				<td class="width-50" style="text-align: center; vertical-align: middle;">상품명</td>
+				<td class="width-20" style="vertical-align: middle;">수량</td>
+				<td class="width-20-r2" style="vertical-align: middle;">단가</td>
+				<td class="width-20" style="line-height: 15px; vertical-align: middle;">출고<br>여부</td>
+			</tr>
+			<tr>
+				<td colspan="4"><hr></td>
+			</tr>
+			<tr ng-repeat="y in chit_dedata">
+				<td class="width-50" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Name}}</td>
+				<td class="width-20" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Qty}}</td>
+				<td class="width-20-r" style="padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle;">{{y.G_Price | number:0}}</td>
+				<td class="width-20" style="font-size: 0.85em; padding: 5px; border-bottom: 1px solid #dddbda; vertical-align: middle; line-height: 15px;">{{y.ChulGo_Gu}}</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="td3" style="color: #dd8369; padding:15px 5px 0 0;"><b>총 {{qtysum}}개 / {{pricesum | number:0}}원</b></td>
+			</tr>
 		</table>
 	</div>
 
@@ -99,16 +101,20 @@
 			<tr>
 				<td style="width: 30%;"><span style="padding-left: 20px;">배송여부</span></td>
 				<td style="width: 70%;" colspan="3">
-					<span style="padding-left: 20px;">
-						<i class="ion-ios-checkmark" ng-if="x.ChulGo_Gu == '출고'"></i><i class="ion-ios-checkmark-outline" ng-if="x.ChulGo_Gu == '미출고' || x.ChulGo_Gu == '미송장완료'"></i>&nbsp;&nbsp;지정&nbsp;&nbsp;
-						<i class="ion-ios-checkmark" ng-if="x.ChulGo_Gu == '미출고' || x.ChulGo_Gu == '미송장완료'"></i><i class="ion-ios-checkmark-outline" ng-if="x.ChulGo_Gu == '출고'"></i>&nbsp;&nbsp;미지정
-					</span>
+					<div style="padding-left: 20px;">
+						<i class="ion-ios-checkmark" ng-if="x.ChulGo_Gu == '출고' && x.ChulGo_Hap == 'same'"></i><i class="ion-ios-checkmark-outline" ng-if="x.ChulGo_Gu != '출고'"></i>&nbsp;&nbsp;출고&nbsp;&nbsp;
+						<i class="ion-ios-checkmark" ng-if="x.ChulGo_Gu == '미출고' && x.ChulGo_Hap == 'same'"></i><i class="ion-ios-checkmark-outline" ng-if="x.ChulGo_Gu != '미출고'"></i>&nbsp;&nbsp;미출고
+					</div>
+					<div style="padding-left: 20px;">
+						<i class="ion-ios-checkmark" ng-if="x.ChulGo_Gu == '미송장완료' && x.ChulGo_Hap == 'same'"></i><i class="ion-ios-checkmark-outline" ng-if="x.ChulGo_Gu != '미송장완료'"></i>&nbsp;&nbsp;미송장완료&nbsp;&nbsp;
+						<i class="ion-ios-checkmark" ng-if="x.ChulGo_Hap == 'different'"></i><i class="ion-ios-checkmark-outline" ng-if="x.ChulGo_Hap != 'different'"></i>&nbsp;&nbsp;부분출고&nbsp;&nbsp;<i class="ion-help-circled" ng-click="bubun()"></i>
+					</div>
 				</td>
 			</tr>
-			<tr ng-if="x.ChulGo_Gu == '출고'">
+			<tr>
 				<td colspan="4"><hr></td>
 			</tr>
-			<tr ng-if="x.ChulGo_Gu == '출고'">
+			<tr>
 				<td colspan="4" style="padding-left: 20px;">
 					<table>
 						<tr>

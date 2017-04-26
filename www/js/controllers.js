@@ -169,7 +169,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 
 	/* 버전관리 - 김형석[2016-01] */
 	$rootScope.version={
-   		Android_version : '1.2.0',
+   		Android_version : '1.2.2',
    		IOS_version : '1.1.2'	//업데이트시 필수로 변경!!
    	};
 
@@ -229,6 +229,15 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		scope : $scope
 	}).then(function(modal){
 		$scope.check_Update_Modal = modal;
+	});
+
+	/* 튜토리얼 모달 */
+	$ionicModal.fromTemplateUrl('tab/tutorialM.html',{
+		scope : $scope,
+		// animation: 'scale-in'
+		 animation: 'slide-in-up'
+	}).then(function(modal){
+		$scope.tutoModal = modal;
 	});
 
 
@@ -1278,9 +1287,24 @@ angular.module('starter.controllers', ['starter.services', 'ionic', 'ngCordova',
 		$scope.LoginAdminCodeCK($rootScope.userType);
 		$scope.LoginPwdCK($rootScope.userType);
 		$scope.LoginUserIdCK($rootScope.userType);
+		$timeout(function(){
+			if($rootScope.iosbutton1 == $rootScope.iosbutton2) $scope.tutoModal.show();
+		}, 2000);
 	};
 
+	/* 닥터셀러 다운로드이동 */
+	$scope.download_dr = function(){
+		if(ionic.Platform.isAndroid()==true) window.open("https://play.google.com/store/apps/details?id=com.ionicframework.drseller495967",'_system', 'location=yes,closebuttoncaption=Done');
+		else location.href=window.open($rootScope.ckversion.IURL,'_system', 'location=yes,closebuttoncaption=Done');
+	}
+	/* 닥터셀러 자세히 보기 */
+	$scope.detail_dr = function(){
+		window.open("http://drseller.net/joinPayS/jpsServiceIntro.asp",'_system', 'location=yes,closebuttoncaption=Done');
+	}
 
+	$scope.tutoClose = function(){
+		$scope.tutoModal.hide();
+	}
 
 	/* 튜토리얼 닫기 - 이경민 */
 	$scope.tutorialM_Close = function(){

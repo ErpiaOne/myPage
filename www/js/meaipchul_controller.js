@@ -982,7 +982,6 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
  	/*매출매입 상세조회 - 이경민[2015-12]*/
 	MLookupService.chit_delookup($scope.loginData.Admin_Code, $scope.loginData.UserId, $rootScope.m_no)
 	.then(function(data){
-		console.log('여기! =>',data);
 		$scope.chit_dedata = data.list;
 		if($scope.chit_dedata[0].MobileQuickReg == 'N'){
 			$scope.ionstar = "ion-android-star-outline";
@@ -1006,6 +1005,20 @@ angular.module('starter.controllers').controller('MconfigCtrl', function($scope,
 			$scope.pricesum = parseInt($scope.pricesum) + parseInt($scope.gop);
 		}
 	})
+
+	$scope.bubun = function(){
+		$ionicPopup.show({
+			title: '<b>확인</b>',
+			subTitle: '',
+			content: '부분출고일 경우, 개별배송되어 상품별로 다른 출고상태입니다.',
+			buttons: [
+			{
+				text: '확인',
+				type: 'button-positive',
+				onTap: function(e){}
+			},
+		]})
+	}
 
 	/*빠른등록 사용&미사용 - 이경민[2015-12]*/
 	$scope.m_quick = function(no,starname){

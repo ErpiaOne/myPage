@@ -744,7 +744,7 @@ angular.module('starter.controllers').controller('tradeCtrl', function($scope, $
 	/* 거래명세서 인증모달창 인증확인 - 이경민[2016-01] */
 	$scope.check_Sano = function(){
 		if($rootScope.userType == "SCM" || $rootScope.userType == "Normal" ){
-			if($rootScope.userData.G_Sano.substring($rootScope.userData.G_Sano.lastIndexOf('-') + 1) == $rootScope.userData.Sano){ 
+			if($rootScope.userData.G_Sano.substring($rootScope.userData.G_Sano.lastIndexOf('-') + 1) == $rootScope.userData.Sano || $rootScope.userData.G_Sano.substring($rootScope.userData.G_Sano.lastIndexOf('-') + 1) == ''){ 
 			// if($rootScope.userData.Sano== $rootScope.userData.Sano){ //=========== 수정하고 올릴것.
 				$scope.check_sano_Modal.hide();
 				$ionicHistory.nextViewOptions({
